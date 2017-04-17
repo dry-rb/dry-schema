@@ -1,22 +1,24 @@
-[gem]: https://rubygems.org/gems/dry-validation
-[travis]: https://travis-ci.org/dry-rb/dry-validation
-[gemnasium]: https://gemnasium.com/dry-rb/dry-validation
-[codeclimate]: https://codeclimate.com/github/dry-rb/dry-validation
-[coveralls]: https://coveralls.io/r/dry-rb/dry-validation
-[inchpages]: http://inch-ci.org/github/dry-rb/dry-validation
+[gem]: https://rubygems.org/gems/dry-schema
+[travis]: https://travis-ci.org/dry-rb/dry-schema
+[gemnasium]: https://gemnasium.com/dry-rb/dry-schema
+[codeclimate]: https://codeclimate.com/github/dry-rb/dry-schema
+[coveralls]: https://coveralls.io/r/dry-rb/dry-schema
+[inchpages]: http://inch-ci.org/github/dry-rb/dry-schema
 
-# dry-validation [![Join the chat at https://gitter.im/dry-rb/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dry-rb/chat)
+# dry-schema [![Join the chat at https://gitter.im/dry-rb/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dry-rb/chat)
 
-[![Gem Version](https://badge.fury.io/rb/dry-validation.svg)][gem]
-[![Build Status](https://travis-ci.org/dry-rb/dry-validation.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/dry-rb/dry-validation.svg)][gemnasium]
-[![Code Climate](https://codeclimate.com/github/dry-rb/dry-validation/badges/gpa.svg)][codeclimate]
-[![Test Coverage](https://codeclimate.com/github/dry-rb/dry-validation/badges/coverage.svg)][codeclimate]
-[![Inline docs](http://inch-ci.org/github/dry-rb/dry-validation.svg?branch=master)][inchpages]
+[![Gem Version](https://badge.fury.io/rb/dry-schema.svg)][gem]
+[![Build Status](https://travis-ci.org/dry-rb/dry-schema.svg?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/dry-rb/dry-schema.svg)][gemnasium]
+[![Code Climate](https://codeclimate.com/github/dry-rb/dry-schema/badges/gpa.svg)][codeclimate]
+[![Test Coverage](https://codeclimate.com/github/dry-rb/dry-schema/badges/coverage.svg)][codeclimate]
+[![Inline docs](http://inch-ci.org/github/dry-rb/dry-schema.svg?branch=master)][inchpages]
+
+# WIP: dry-schema extraction from dry-validation
 
 ## Links
 
-* [Documentation](http://dry-rb.org/gems/dry-validation)
+* [Documentation](http://dry-rb.org/gems/dry-schema)
 
 ## License
 
