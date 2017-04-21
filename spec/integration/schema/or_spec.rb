@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema, 'OR messages' do
+RSpec.describe Dry::Schema, 'OR messages' do
   context 'with two predicates' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { str? | int? }
       end
     end
@@ -18,7 +18,7 @@ RSpec.describe Dry::Validation::Schema, 'OR messages' do
 
   context 'with a predicate and a conjunction of predicates' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { str? | (int? & gt?(18)) }
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe Dry::Validation::Schema, 'OR messages' do
 
   context 'with a predicate and an each operation' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { str? | each(:int?) }
       end
     end
@@ -66,7 +66,7 @@ RSpec.describe Dry::Validation::Schema, 'OR messages' do
 
   context 'with a predicate and a schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { str? | schema { required(:bar).filled } }
       end
     end

@@ -1,4 +1,4 @@
-RSpec.describe Dry::Validation::Schema, 'defining schema context with option API' do
+RSpec.describe Dry::Schema, 'defining schema context with option API' do
   shared_context 'valid schema with :db option' do
     before do
       DB = [{ email: 'jane@doe' }]
@@ -20,7 +20,7 @@ RSpec.describe Dry::Validation::Schema, 'defining schema context with option API
 
   context 'with a default value' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           option :db, -> { DB }
 
@@ -42,7 +42,7 @@ RSpec.describe Dry::Validation::Schema, 'defining schema context with option API
 
   context 'without a default value' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           option :db
 

@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema, 'for a hash' do
+RSpec.describe Dry::Schema, 'for a hash' do
   context 'without type specs' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         hash? do
           required(:prefix).filled
           required(:value).filled
@@ -22,7 +22,7 @@ RSpec.describe Dry::Validation::Schema, 'for a hash' do
 
   context 'with type specs' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
 
         hash? do

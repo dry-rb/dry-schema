@@ -1,30 +1,30 @@
-require 'dry/validation/messages/i18n'
+require 'dry/schema/messages/i18n'
 
-RSpec.describe Schema do
+RSpec.describe Dry::Schema do
   describe '.messages' do
     context 'with default setting' do
       let(:schema) do
-        Class.new(Schema)
+        Class.new(Dry::Schema)
       end
 
       it 'returns default yaml messages' do
-        expect(schema.messages).to be_instance_of(Messages::YAML)
+        expect(schema.messages).to be_instance_of(Dry::Schema::Messages::YAML)
       end
     end
 
     context 'with i18n setting' do
       let(:schema) do
-        Class.new(Schema) { configure { config.messages = :i18n } }
+        Class.new(Dry::Schema) { configure { config.messages = :i18n } }
       end
 
       it 'returns default i18n messages' do
-        expect(schema.messages).to be_instance_of(Messages::I18n)
+        expect(schema.messages).to be_instance_of(Dry::Schema::Messages::I18n)
       end
     end
 
     context 'with an invalid setting' do
       let(:schema) do
-        Class.new(Schema) { configure { config.messages = :oops } }
+        Class.new(Dry::Schema) { configure { config.messages = :oops } }
       end
 
       it 'returns default i18n messages' do

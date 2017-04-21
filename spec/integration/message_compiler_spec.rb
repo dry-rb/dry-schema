@@ -1,12 +1,12 @@
-require 'dry/validation/message_compiler'
+require 'dry/schema/message_compiler'
 
-RSpec.describe Dry::Validation::MessageCompiler do
-  subject(:message_compiler) { MessageCompiler.new(messages) }
+RSpec.describe Dry::Schema::MessageCompiler do
+  subject(:message_compiler) { Dry::Schema::MessageCompiler.new(messages) }
 
   include_context 'predicate helper'
 
   let(:messages) do
-    Messages.default.merge(
+   Dry::Schema::Messages.default.merge(
       en: {
         errors: {
           key?: {

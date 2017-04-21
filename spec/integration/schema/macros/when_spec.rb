@@ -1,7 +1,7 @@
 RSpec.describe 'Macros #when' do
   context 'with a result rule returned from the block' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:email).maybe
 
         required(:login).filled.when(:true?) do
@@ -21,7 +21,7 @@ RSpec.describe 'Macros #when' do
 
   describe 'with a result rule depending on another result' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:left).maybe(:int?)
         required(:right).maybe(:int?)
 
@@ -42,7 +42,7 @@ RSpec.describe 'Macros #when' do
 
   context 'predicate with options' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:bar).maybe
 
         required(:foo).filled.when(size?: 3) do

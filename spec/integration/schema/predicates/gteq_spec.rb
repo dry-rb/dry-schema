@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Gteq' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { gteq?(23) }
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe 'Predicates: Gteq' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         optional(:foo) { gteq?(23) }
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe 'Predicates: Gteq' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).value(gteq?: 23)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).filled(gteq?: 23)
           end
         end
@@ -259,7 +259,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).maybe(gteq?: 23)
           end
         end
@@ -325,7 +325,7 @@ RSpec.describe 'Predicates: Gteq' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).value(gteq?: 23)
           end
         end
@@ -389,7 +389,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).filled(gteq?: 23)
           end
         end
@@ -453,7 +453,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).maybe(gteq?: 23)
           end
         end

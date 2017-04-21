@@ -4,7 +4,7 @@ RSpec.context 'Predicates: Included In' do
 
     context 'with required' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:foo) { included_in?([1, 3, 5]) }
         end
       end
@@ -60,7 +60,7 @@ RSpec.context 'Predicates: Included In' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           optional(:foo) { included_in?([1, 3, 5]) }
         end
       end
@@ -118,7 +118,7 @@ RSpec.context 'Predicates: Included In' do
       context 'with required' do
         context 'with value' do
           subject(:schema) do
-            Dry::Validation.Schema do
+            Dry::Schema.build do
               required(:foo).value(included_in?: [1, 3, 5])
             end
           end
@@ -174,7 +174,7 @@ RSpec.context 'Predicates: Included In' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Validation.Schema do
+            Dry::Schema.build do
               required(:foo).filled(included_in?: [1, 3, 5])
             end
           end
@@ -230,7 +230,7 @@ RSpec.context 'Predicates: Included In' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Validation.Schema do
+            Dry::Schema.build do
               required(:foo).maybe(included_in?: [1, 3, 5])
             end
           end
@@ -288,7 +288,7 @@ RSpec.context 'Predicates: Included In' do
       context 'with optional' do
         context 'with value' do
           subject(:schema) do
-            Dry::Validation.Schema do
+            Dry::Schema.build do
               optional(:foo).value(included_in?: [1, 3, 5])
             end
           end
@@ -344,7 +344,7 @@ RSpec.context 'Predicates: Included In' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Validation.Schema do
+            Dry::Schema.build do
               optional(:foo).filled(included_in?: [1, 3, 5])
             end
           end
@@ -400,7 +400,7 @@ RSpec.context 'Predicates: Included In' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Validation.Schema do
+            Dry::Schema.build do
               optional(:foo).maybe(included_in?: [1, 3, 5])
             end
           end

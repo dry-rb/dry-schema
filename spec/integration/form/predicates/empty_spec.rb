@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Empty' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { empty? }
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Empty' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { empty? }
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe 'Predicates: Empty' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(:empty?)
           end
         end
@@ -171,17 +171,17 @@ RSpec.describe 'Predicates: Empty' do
 
       context 'with filled' do
         it "should raise error" do
-          expect { Dry::Validation.Form do
+          expect { Dry::Schema.form do
             required(:foo).filled(:empty?)
-          end }.to raise_error InvalidSchemaError
+          end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with maybe' do
         it "should raise error" do
-          expect { Dry::Validation.Form do
+          expect { Dry::Schema.form do
             required(:foo).maybe(:empty?)
-          end }.to raise_error InvalidSchemaError
+          end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end
@@ -189,7 +189,7 @@ RSpec.describe 'Predicates: Empty' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(:empty?)
           end
         end
@@ -245,17 +245,17 @@ RSpec.describe 'Predicates: Empty' do
 
       context 'with filled' do
         it "should raise error" do
-          expect { Dry::Validation.Form do
+          expect { Dry::Schema.form do
             optional(:foo).filled(:empty?)
-          end }.to raise_error InvalidSchemaError
+          end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with maybe' do
         it "should raise error" do
-          expect { Dry::Validation.Form do
+          expect { Dry::Schema.form do
             optional(:foo).maybe(:empty?)
-          end }.to raise_error InvalidSchemaError
+          end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end

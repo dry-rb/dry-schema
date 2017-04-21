@@ -1,9 +1,9 @@
 RSpec.describe 'Schema with xor rules' do
   subject(:schema) do
-    Dry::Validation.Schema do
+    Dry::Schema.build do
       configure do
         def self.messages
-          Messages.default.merge(
+         Dry::Schema::Messages.default.merge(
             en: { errors: { be_reasonable: 'you cannot eat cake and have cake!' } }
           )
         end

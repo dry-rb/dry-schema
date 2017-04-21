@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Array' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { array? { each { int? } } }
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe 'Predicates: Array' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { array? { each { int? } } }
       end
     end
@@ -146,7 +146,7 @@ RSpec.describe 'Predicates: Array' do
   context 'as macro' do
     context 'with required' do
       subject(:schema) do
-        Dry::Validation.Form do
+        Dry::Schema.form do
           required(:foo).each(:int?)
         end
       end
@@ -194,7 +194,7 @@ RSpec.describe 'Predicates: Array' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Validation.Form do
+        Dry::Schema.form do
           optional(:foo).each(:int?)
         end
       end
@@ -242,7 +242,7 @@ RSpec.describe 'Predicates: Array' do
   end
 
   context 'with maybe macro' do
-    subject(:schema) { Dry::Validation.Form { required(:foo).maybe(:array?) } }
+    subject(:schema) { Dry::Schema.form { required(:foo).maybe(:array?) } }
 
     context 'with empty string' do
       let(:input) { { 'foo' => '' } }

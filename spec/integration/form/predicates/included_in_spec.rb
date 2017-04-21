@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Included In' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { included_in?(%w(1 3 5)) }
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Included In' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { included_in?(%w(1 3 5)) }
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe 'Predicates: Included In' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(included_in?: %w(1 3 5))
           end
         end
@@ -171,7 +171,7 @@ RSpec.describe 'Predicates: Included In' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).filled(included_in?: %w(1 3 5))
           end
         end
@@ -227,7 +227,7 @@ RSpec.describe 'Predicates: Included In' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).maybe(included_in?: %w(1 3 5))
           end
         end
@@ -285,7 +285,7 @@ RSpec.describe 'Predicates: Included In' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(included_in?: %w(1 3 5))
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Included In' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).filled(included_in?: %w(1 3 5))
           end
         end
@@ -397,7 +397,7 @@ RSpec.describe 'Predicates: Included In' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).maybe(included_in?: %w(1 3 5))
           end
         end

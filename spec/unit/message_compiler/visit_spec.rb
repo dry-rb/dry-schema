@@ -1,4 +1,4 @@
-RSpec.describe Dry::Validation::MessageCompiler, '#visit' do
+RSpec.describe Dry::Schema::MessageCompiler, '#visit' do
   include_context :message_compiler
 
   let(:visitor) { :visit }

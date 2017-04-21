@@ -1,10 +1,10 @@
-RSpec.describe Schema::Key do
+RSpec.describe Dry::Schema::DSL::Key do
   include_context 'predicate helper'
 
-  let(:registry) { PredicateRegistry.new(predicates) }
+  let(:registry) { Dry::Schema::PredicateRegistry.new(predicates) }
 
   describe '#str?' do
-    subject(:user) { Schema::Key[:user, registry: registry] }
+    subject(:user) { Dry::Schema::DSL::Key[:user, registry: registry] }
 
     it 'returns a key rule' do
       expect(user.str?.to_ast).to eql(

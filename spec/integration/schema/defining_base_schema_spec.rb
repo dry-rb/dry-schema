@@ -1,15 +1,15 @@
-require 'dry/validation/messages/i18n'
+require 'dry/schema/messages/i18n'
 require 'i18n'
 
 RSpec.describe 'Defining base schema class' do
   subject(:schema) do
-    Dry::Validation.Schema(BaseSchema) do
+    Dry::Schema.build(BaseSchema) do
       required(:email).filled(:email?)
     end
   end
 
   before do
-    class BaseSchema < Dry::Validation::Schema
+    class BaseSchema < Dry::Schema
       configure do |config|
         config.messages_file = SPEC_ROOT.join('fixtures/locales/en.yml')
         config.messages = :i18n

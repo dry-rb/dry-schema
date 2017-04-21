@@ -1,5 +1,5 @@
 RSpec.describe 'Building schemas' do
-  describe 'Dry::Validation.Schema' do
+  describe 'Dry::Schema.build' do
     it 'builds a schema class with custom predicate set' do
       predicates = Module.new do
         include Dry::Logic::Predicates
@@ -9,7 +9,7 @@ RSpec.describe 'Building schemas' do
         end
       end
 
-      schema = Dry::Validation.Schema(predicates: predicates, build: false)
+      schema = Dry::Schema.build(predicates: predicates, build: false)
 
       expect(schema.predicates[:key?]).to be_a(Method)
     end

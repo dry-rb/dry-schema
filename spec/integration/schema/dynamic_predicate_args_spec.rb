@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema, 'dynamic predicate args' do
+RSpec.describe Dry::Schema, 'dynamic predicate args' do
   context 'with base rules' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def data
             %w(a b c)
@@ -20,7 +20,7 @@ RSpec.describe Dry::Validation::Schema, 'dynamic predicate args' do
 
   context 'with high-level rules' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def data
             %w(a b c)

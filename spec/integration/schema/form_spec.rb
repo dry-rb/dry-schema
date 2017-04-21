@@ -1,6 +1,6 @@
-RSpec.describe Dry::Validation::Schema::Form, 'defining a schema' do
+RSpec.describe Dry::Schema::Form, 'defining a schema' do
   subject(:schema) do
-    Dry::Validation.Form do
+    Dry::Schema.form do
       configure do
         def email?(value)
           true
@@ -120,7 +120,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'defining a schema' do
 
   describe 'with an each and nested schema' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:items).each do
           schema do
             required(:title).filled(:str?)
@@ -142,7 +142,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'defining a schema' do
 
   describe 'symbolizing keys when coercion fails' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:email).value(size?: 8..60)
         required(:birthdate).value(:date?)
         required(:age).value(:int?, gt?: 23)
@@ -192,7 +192,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'defining a schema' do
 
   describe 'with nested schema in a high-level rule' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:address).maybe(:hash?)
 
         required(:delivery).filled(:bool?)
@@ -204,7 +204,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'defining a schema' do
     end
 
     before do
-      AddressSchema = Dry::Validation.Form do
+      AddressSchema = Dry::Schema.form do
         required(:city).filled
         required(:zipcode).filled(:int?)
       end

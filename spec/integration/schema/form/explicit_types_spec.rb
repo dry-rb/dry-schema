@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
+RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'single type spec without rules' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
         required(:age, :int)
       end
@@ -14,7 +14,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'single type spec with rules' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
         required(:age, :int).value(:int?, gt?: 18)
       end
@@ -28,7 +28,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'single type spec with an array' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
         required(:nums, [:int])
       end
@@ -41,7 +41,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'sum type spec without rules' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
         required(:age, [:nil, :int])
       end
@@ -55,7 +55,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'sum type spec with rules' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
         required(:age, [:nil, :int]).maybe(:int?, gt?: 18)
       end
@@ -70,7 +70,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'using a type object' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
         required(:age, Types::Form::Nil | Types::Form::Int)
       end
@@ -84,7 +84,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'nested schema' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
 
         required(:user).schema do
@@ -136,7 +136,7 @@ RSpec.describe Dry::Validation::Schema::Form, 'explicit types' do
 
   context 'nested schema with arrays' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
 
         required(:song).schema do

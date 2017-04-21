@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Format' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { str? & format?(/bar/) }
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Format' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { str? & format?(/bar/) }
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe 'Predicates: Format' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(:str?, format?: /bar/)
           end
         end
@@ -171,7 +171,7 @@ RSpec.describe 'Predicates: Format' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).filled(:str?, format?: /bar/)
           end
         end
@@ -227,7 +227,7 @@ RSpec.describe 'Predicates: Format' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).maybe(:str?, format?: /bar/)
           end
         end
@@ -284,7 +284,7 @@ RSpec.describe 'Predicates: Format' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(:str?, format?: /bar/)
           end
         end
@@ -340,7 +340,7 @@ RSpec.describe 'Predicates: Format' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).filled(:str?, format?: /bar/)
           end
         end
@@ -396,7 +396,7 @@ RSpec.describe 'Predicates: Format' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).maybe(:str?, format?: /bar/)
           end
         end

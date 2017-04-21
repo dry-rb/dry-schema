@@ -6,11 +6,11 @@ RSpec.describe 'Extending DSL' do
       end
     end
 
-    Dry::Validation::Schema.configure do |config|
+    Dry::Schema.configure do |config|
       config.dsl_extensions = dsl_ext
     end
 
-    schema = Dry::Validation.Schema do
+    schema = Dry::Schema.build do
       configure do
         config.input_processor = :form
         config.type_specs = true

@@ -1,6 +1,6 @@
-RSpec.describe Dry::Validation::Schema, 'setting input processor in schema' do
+RSpec.describe Dry::Schema, 'setting input processor in schema' do
   subject(:schema) do
-    Dry::Validation.Schema do
+    Dry::Schema.build do
       configure do
         config.input_processor = :sanitizer
       end

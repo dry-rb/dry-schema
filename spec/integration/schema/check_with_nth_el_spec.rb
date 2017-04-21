@@ -1,6 +1,6 @@
 RSpec.describe 'Check depending on nth element in an array' do
   subject(:schema) do
-    Dry::Validation.Schema do
+    Dry::Schema.build do
       required(:tags).each(:str?)
 
       rule(tags: [[:tags, 0]]) do |value|

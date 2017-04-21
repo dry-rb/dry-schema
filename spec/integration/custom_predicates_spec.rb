@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-RSpec.describe Dry::Validation do
+RSpec.describe Dry::Schema do
   shared_context 'uses custom predicates' do
     it 'uses provided custom predicates' do
       expect(schema.(email: 'jane@doe')).to be_success
@@ -15,9 +15,9 @@ RSpec.describe Dry::Validation do
   end
 
   let(:base_class) do
-    Class.new(Dry::Validation::Schema) do
+    Class.new(Dry::Schema) do
       def self.messages
-        Dry::Validation::Messages.default.merge(
+        Dry::Schema::Messages.default.merge(
           en: { errors: { email?: 'must be a valid email' } }
         )
       end
@@ -39,18 +39,18 @@ RSpec.describe Dry::Validation do
 
     context 'when configured globally' do
       subject(:schema) do
-        Dry::Validation.Schema(base_class) do
+        Dry::Schema.build(base_class) do
           required(:email) { filled? & email? }
         end
       end
 
       before do
-        Dry::Validation::Schema.predicates(Test::Predicates)
+        Dry::Schema.predicates(Test::Predicates)
       end
 
       after do
         # HACK: reset global predicates configuration
-        Dry::Validation::Schema.configure do |config|
+        Dry::Schema.configure do |config|
           config.predicates = Dry::Logic::Predicates
         end
       end
@@ -60,7 +60,7 @@ RSpec.describe Dry::Validation do
 
     context 'when configured locally' do
       subject(:schema) do
-        Dry::Validation.Schema(base_class) do
+        Dry::Schema.build(base_class) do
           configure do
             predicates(Test::Predicates)
           end
@@ -75,7 +75,7 @@ RSpec.describe Dry::Validation do
 
   describe 'defining schema with custom predicate methods' do
     subject(:schema) do
-      Dry::Validation.Schema(base_class) do
+      Dry::Schema.build(base_class) do
         configure do
           def email?(value)
             value.include?('@')
@@ -91,7 +91,7 @@ RSpec.describe Dry::Validation do
 
   describe 'custom predicate which requires an arbitrary dependency' do
     subject(:schema) do
-      Dry::Validation.Schema(base_class) do
+      Dry::Schema.build(base_class) do
         configure do
           option :email_check
 
@@ -114,7 +114,7 @@ RSpec.describe Dry::Validation do
   end
 
   it 'raises an error when message is missing' do
-    schema = Dry::Validation.Schema do
+    schema = Dry::Schema.build do
       configure do
         def email?(value)
           false
@@ -125,15 +125,15 @@ RSpec.describe Dry::Validation do
     end
 
     expect { schema.(email: 'foo').messages }.to raise_error(
-      Dry::Validation::MissingMessageError, /email/
+      Dry::Schema::MissingMessageError, /email/
     )
   end
 
   it 'should work with custom predicate args' do
-    schema = Dry::Validation.Schema do
+    schema = Dry::Schema.build do
       configure do
         def self.messages
-          Dry::Validation::Messages.default.merge(
+          Dry::Schema::Messages.default.merge(
             en: { errors: { fav_number?: 'must be %{expected}' } }
           )
         end
@@ -152,10 +152,10 @@ RSpec.describe Dry::Validation do
   end
 
   it 'works when no predicate args' do
-    schema = Dry::Validation.Schema do
+    schema = Dry::Schema.build do
       configure do
         def self.messages
-          Dry::Validation::Messages.default.merge(
+          Dry::Schema::Messages.default.merge(
             en: { errors: { with_no_args?: 'is always false' } }
           )
         end
@@ -174,7 +174,7 @@ RSpec.describe Dry::Validation do
   end
 
   it 'works with nested schemas' do
-    schema = Dry::Validation.Schema do
+    schema = Dry::Schema.build do
       configure do
         def ok?(_value)
           true
@@ -190,12 +190,12 @@ RSpec.describe Dry::Validation do
   end
 
   it 'works with interpolation of messages' do
-    schema = Dry::Validation.Schema do
+    schema = Dry::Schema.build do
       configure do
         option :categories, []
 
         def self.messages
-          Dry::Validation::Messages.default.merge(
+          Dry::Schema::Messages.default.merge(
             en: {
               errors: {
                 valid_category?: 'must be one of the categories: %{categories}'
