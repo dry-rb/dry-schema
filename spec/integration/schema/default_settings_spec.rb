@@ -1,6 +1,6 @@
-RSpec.describe Dry::Validation::Schema, 'default settings' do
+RSpec.describe Dry::Schema, 'default settings' do
   subject(:schema) do
-    Dry::Validation.Schema(build: false) do
+    Dry::Schema.build(build: false) do
       required(:name).filled
     end
   end

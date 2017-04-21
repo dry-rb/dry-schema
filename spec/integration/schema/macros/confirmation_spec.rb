@@ -1,12 +1,12 @@
 RSpec.describe 'Macros #confirmation' do
   describe 'with a maybe password with min-size specified' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           config.input_processor = :sanitizer
 
           def self.messages
-            Messages.default.merge(
+           Dry::Schema::Messages.default.merge(
               en: { errors: { password_confirmation: 'does not match' } }
             )
           end

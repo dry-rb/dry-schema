@@ -1,7 +1,7 @@
-RSpec.describe Schema, 'nested schemas' do
+RSpec.describe Dry::Schema, 'nested schemas' do
   context 'with multiple nested schemas' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:content).schema do
           required(:meta).schema do
             required(:version).filled
@@ -37,7 +37,7 @@ RSpec.describe Schema, 'nested schemas' do
 
   context 'with a 2-level deep schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:meta).schema do
           required(:info).schema do
             required(:details).filled
@@ -82,7 +82,7 @@ RSpec.describe Schema, 'nested schemas' do
 
   context 'when duplicated key names are used in 2 subsequent levels' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:meta).schema do
           required(:meta).filled
         end
@@ -110,7 +110,7 @@ RSpec.describe Schema, 'nested schemas' do
 
   context 'when duplicated key names are used in 2 subsequent levels as schemas' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:meta).schema do
           required(:meta).schema do
             required(:data).filled
@@ -152,7 +152,7 @@ RSpec.describe Schema, 'nested schemas' do
 
   context 'with `each` + schema inside another schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:meta).schema do
           required(:data).each do
             schema do
@@ -206,7 +206,7 @@ RSpec.describe Schema, 'nested schemas' do
 
   context 'with 2-level `each` + schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:data).each do
           schema do
             required(:tags).each do

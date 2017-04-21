@@ -1,6 +1,6 @@
 require 'dry-validation'
 
-schema = Dry::Validation.Schema do
+schema = Dry::Schema.build do
   required(:email).filled
 
   required(:age).filled(:int?, gt?: 18)

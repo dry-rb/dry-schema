@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Size' do
   context 'Fixed (integer)' do
     context 'with required' do
       subject(:schema) do
-        Dry::Validation.Form do
+        Dry::Schema.form do
           required(:foo) { size?(3) }
         end
       end
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Size' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Validation.Form do
+        Dry::Schema.form do
           optional(:foo) { size?(3) }
         end
       end
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Size' do
       context 'with required' do
         context 'with value' do
           subject(:schema) do
-            Dry::Validation.Form do
+            Dry::Schema.form do
               required(:foo).value(size?: 3)
             end
           end
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Validation.Form do
+            Dry::Schema.form do
               required(:foo).filled(size?: 3)
             end
           end
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Validation.Form do
+            Dry::Schema.form do
               required(:foo).maybe(size?: 3)
             end
           end
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Size' do
       context 'with optional' do
         context 'with value' do
           subject(:schema) do
-            Dry::Validation.Form do
+            Dry::Schema.form do
               optional(:foo).value(size?: 3)
             end
           end
@@ -294,7 +294,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Validation.Form do
+            Dry::Schema.form do
               optional(:foo).filled(size?: 3)
             end
           end
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Validation.Form do
+            Dry::Schema.form do
               optional(:foo).maybe(size?: 3)
             end
           end

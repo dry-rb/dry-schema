@@ -1,6 +1,7 @@
-require 'dry/validation/messages/i18n'
+# coding: utf-8
+require 'dry/schema/messages/i18n'
 
-RSpec.describe Dry::Validation, 'with localized messages' do
+RSpec.describe Dry::Schema, 'with localized messages' do
   before do
     I18n.config.available_locales_set << :pl
     I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
@@ -10,7 +11,7 @@ RSpec.describe Dry::Validation, 'with localized messages' do
   describe 'defining schema' do
     context 'without a namespace' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           configure do
             config.messages = :i18n
           end
@@ -30,7 +31,7 @@ RSpec.describe Dry::Validation, 'with localized messages' do
 
     context 'with a namespace' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           configure do
             configure do |config|
               config.messages = :i18n

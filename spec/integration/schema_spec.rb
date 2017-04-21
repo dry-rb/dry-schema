@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema, 'defining key-based schema' do
+RSpec.describe Dry::Schema, 'defining key-based schema' do
   describe 'with a flat structure' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           config.input_processor = :form
           config.type_specs = true
@@ -50,14 +50,14 @@ RSpec.describe Dry::Validation::Schema, 'defining key-based schema' do
     subject(:schema) do
       class CountrySchema
         def self.schema
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:name).filled
             required(:code).filled
           end
         end
       end
 
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:email).filled
 
         required(:age).maybe(:int?, gt?: 18)
@@ -166,7 +166,7 @@ RSpec.describe Dry::Validation::Schema, 'defining key-based schema' do
   context 'nested keys' do
     it 'raises error when defining nested keys without `schema` block`' do
       expect {
-        Dry::Validation.Schema { required(:foo).value { required(:bar).value(:str?) } }
+        Dry::Schema.build { required(:foo).value { required(:bar).value(:str?) } }
       }.to raise_error(ArgumentError, /required/)
     end
   end

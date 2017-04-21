@@ -1,10 +1,10 @@
-RSpec.describe Schema, 'using high-level rules' do
+RSpec.describe Dry::Schema, 'using high-level rules' do
   context 'composing rules' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def self.messages
-            Messages.default.merge(
+           Dry::Schema::Messages.default.merge(
               en: { errors: { destiny: 'you must select either red or blue' } }
             )
           end
@@ -36,10 +36,10 @@ RSpec.describe Schema, 'using high-level rules' do
 
   context 'composing specific predicates' do
     let(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def self.messages
-            Messages.default.merge(
+           Dry::Schema::Messages.default.merge(
               en: {
                 errors: {
                   email_presence: 'must be present when login is set to true',
@@ -82,7 +82,7 @@ RSpec.describe Schema, 'using high-level rules' do
 
   describe 'with nested schemas' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:command).filled(:str?, included_in?: %w(First Second))
 
         required(:args).filled(:hash?)

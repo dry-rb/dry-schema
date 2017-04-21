@@ -3,7 +3,7 @@ RSpec.describe 'Macros / rule' do
     subject(:schema) { schema_class.new }
 
     let(:schema_class) do
-      Dry::Validation.Schema(build: false) do
+      Dry::Schema.build(build: false) do
         required(:user).schema do
           required(:password).filled
           required(:password_confirmation).filled
@@ -48,7 +48,7 @@ RSpec.describe 'Macros / rule' do
 
   context 'with two rules relying on the same value' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:x).filled(:int?)
 
         rule(a: [:x]) do |x|

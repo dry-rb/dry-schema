@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Array' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { array? { each { int? } } }
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe 'Predicates: Array' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         optional(:foo) { array? { each { int? } } }
       end
     end
@@ -146,7 +146,7 @@ RSpec.describe 'Predicates: Array' do
   context 'as macro' do
     context 'with required' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:foo).each(:int?)
         end
       end
@@ -193,7 +193,7 @@ RSpec.describe 'Predicates: Array' do
 
       context "when using an input_processor" do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             configure do
               config.input_processor = :sanitizer
             end
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Array' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           optional(:foo).each(:int?)
         end
       end

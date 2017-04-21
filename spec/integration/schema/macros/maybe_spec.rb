@@ -1,7 +1,7 @@
 RSpec.describe 'Macros #maybe' do
   describe 'with no args' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:email).maybe
       end
     end
@@ -14,7 +14,7 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with a predicate with args' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:name).maybe(min_size?: 3)
       end
     end
@@ -32,7 +32,7 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with a block' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:name).maybe { str? & min_size?(3) }
       end
     end
@@ -50,7 +50,7 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with an optional key and a block with schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         optional(:employee).maybe do
           schema do
             required(:id).filled(:str?)
@@ -80,7 +80,7 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with a predicate and a block' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:name).maybe(:str?) { min_size?(3) }
       end
     end

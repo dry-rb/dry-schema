@@ -1,4 +1,4 @@
-require 'dry/validation/messages/i18n'
+require 'dry/schema/messages/i18n'
 
 RSpec.describe 'Validation hints' do
   shared_context '#messages' do
@@ -17,7 +17,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with yaml messages' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:age).maybe(:int?, gt?: 18)
       end
     end
@@ -27,7 +27,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with i18n messages' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure { configure { |c| c.messages = :i18n } }
 
         required(:age).maybe(:int?, gt?: 18)
@@ -39,7 +39,7 @@ RSpec.describe 'Validation hints' do
 
   context 'when type expectation is specified' do
     subject(:schema)  do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:email).filled
         required(:name).filled(:str?, size?: 5..25)
       end
@@ -54,7 +54,7 @@ RSpec.describe 'Validation hints' do
 
   context 'when predicate failed and there is a corresponding hint generated' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:age).value(lt?: 23)
       end
     end
@@ -67,7 +67,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with a nested schema with same rule names' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:code).filled(:str?, eql?: 'foo')
 
         required(:nested).schema do
@@ -101,7 +101,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with an each rule' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:nums).each(:int?, gt?: 0)
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with a format? predicate' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:name).value(size?: 2, format?: /xy/)
       end
     end
@@ -131,10 +131,10 @@ RSpec.describe 'Validation hints' do
 
   context 'when the message uses input value' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def self.messages
-            Messages.default.merge(
+           Dry::Schema::Messages.default.merge(
               en: {
                 errors: {
                   blue?: {

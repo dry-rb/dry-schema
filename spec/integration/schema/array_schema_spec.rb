@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema, 'for an array' do
+RSpec.describe Dry::Schema, 'for an array' do
   context 'without type specs' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         each do
           schema do
             required(:prefix).filled
@@ -27,7 +27,7 @@ RSpec.describe Dry::Validation::Schema, 'for an array' do
 
   context 'with type specs' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         configure { config.type_specs = true }
 
         each do

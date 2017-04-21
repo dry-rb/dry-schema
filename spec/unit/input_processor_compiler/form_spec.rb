@@ -1,5 +1,5 @@
-RSpec.describe Dry::Validation::InputProcessorCompiler::Form, '#call' do
-  subject(:compiler) { Dry::Validation::InputProcessorCompiler::Form.new }
+RSpec.describe Dry::Schema::InputProcessorCompiler::Form, '#call' do
+  subject(:compiler) { Dry::Schema::InputProcessorCompiler::Form.new }
 
   include_context 'predicate helper'
 

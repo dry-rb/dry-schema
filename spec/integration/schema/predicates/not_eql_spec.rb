@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Not Eql' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { not_eql?(23) }
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe 'Predicates: Not Eql' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         optional(:foo) { not_eql?(23) }
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe 'Predicates: Not Eql' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).value(not_eql?: 23)
           end
         end
@@ -147,7 +147,7 @@ RSpec.describe 'Predicates: Not Eql' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).filled(not_eql?: 23)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Not Eql' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).maybe(not_eql?: 23)
           end
         end
@@ -245,7 +245,7 @@ RSpec.describe 'Predicates: Not Eql' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).value(not_eql?: 23)
           end
         end
@@ -293,7 +293,7 @@ RSpec.describe 'Predicates: Not Eql' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).filled(not_eql?: 23)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Not Eql' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).maybe(not_eql?: 23)
           end
         end

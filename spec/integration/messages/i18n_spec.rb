@@ -1,7 +1,8 @@
-require 'dry/validation/messages/i18n'
+# coding: utf-8
+require 'dry/schema/messages/i18n'
 
-RSpec.describe Messages::I18n do
-  subject(:messages) { Messages::I18n.new }
+RSpec.describe Dry::Schema::Messages::I18n do
+  subject(:messages) { Dry::Schema::Messages::I18n.new }
 
   before do
     I18n.config.available_locales_set << :pl

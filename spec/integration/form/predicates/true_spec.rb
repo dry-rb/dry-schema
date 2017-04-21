@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: True' do
   context 'with key' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { true? }
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: True' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { true? }
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe 'Predicates: True' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(:true?)
           end
         end
@@ -171,7 +171,7 @@ RSpec.describe 'Predicates: True' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).filled(:true?)
           end
         end
@@ -227,7 +227,7 @@ RSpec.describe 'Predicates: True' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).maybe(:true?)
           end
         end
@@ -285,7 +285,7 @@ RSpec.describe 'Predicates: True' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(:true?)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: True' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).filled(:true?)
           end
         end
@@ -397,7 +397,7 @@ RSpec.describe 'Predicates: True' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).maybe(:true?)
           end
         end

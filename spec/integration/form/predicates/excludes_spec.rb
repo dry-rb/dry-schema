@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Excludes' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { array? { each { int? } & excludes?(1) } }
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe 'Predicates: Excludes' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { array? { each { int? } & excludes?(1) } }
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe 'Predicates: Excludes' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(excludes?: "foo")
           end
         end
@@ -147,7 +147,7 @@ RSpec.describe 'Predicates: Excludes' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).filled(excludes?: 'foo')
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Excludes' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).maybe(excludes?: 'foo')
           end
         end
@@ -245,7 +245,7 @@ RSpec.describe 'Predicates: Excludes' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(excludes?: '1')
           end
         end
@@ -293,7 +293,7 @@ RSpec.describe 'Predicates: Excludes' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).filled(excludes?: 'foo')
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Excludes' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).maybe(excludes?: 'foo')
           end
         end

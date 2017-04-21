@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Odd' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { int? & odd? }
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Odd' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { int? & odd? }
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe 'Predicates: Odd' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(:int?, :odd?)
           end
         end
@@ -171,7 +171,7 @@ RSpec.describe 'Predicates: Odd' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).filled(:int?, :odd?)
           end
         end
@@ -227,7 +227,7 @@ RSpec.describe 'Predicates: Odd' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).maybe(:int?, :odd?)
           end
         end
@@ -285,7 +285,7 @@ RSpec.describe 'Predicates: Odd' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(:int?, :odd?)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Odd' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).filled(:int?, :odd?)
           end
         end
@@ -397,7 +397,7 @@ RSpec.describe 'Predicates: Odd' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).maybe(:int?, :odd?)
           end
         end

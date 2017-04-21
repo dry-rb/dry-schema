@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Type' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo) { type?(Integer) }
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe 'Predicates: Type' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         optional(:foo) { type?(Integer) }
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe 'Predicates: Type' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).value(type?: Integer)
           end
         end
@@ -147,7 +147,7 @@ RSpec.describe 'Predicates: Type' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).filled(type?: Integer)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Type' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             required(:foo).maybe(type?: Integer)
           end
         end
@@ -245,7 +245,7 @@ RSpec.describe 'Predicates: Type' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).value(type?: Integer)
           end
         end
@@ -293,7 +293,7 @@ RSpec.describe 'Predicates: Type' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).filled(type?: Integer)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Type' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Schema do
+          Dry::Schema.build do
             optional(:foo).maybe(type?: Integer)
           end
         end
@@ -391,7 +391,7 @@ RSpec.describe 'Predicates: Type' do
 
   context 'with a custom class' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo).value(type?: CustomClass)
       end
     end

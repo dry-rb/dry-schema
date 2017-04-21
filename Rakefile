@@ -13,7 +13,7 @@ task :run_specs do
   RSpec.clear_examples
   Dir[SPEC_ROOT.join('shared/**/*.rb')].each(&method(:load))
 
-  Dry::Validation.load_extensions(:monads, :struct)
+  Dry::Schema.load_extensions(:monads, :struct)
   RSpec::Core::Runner.run(['spec'])
 end
 

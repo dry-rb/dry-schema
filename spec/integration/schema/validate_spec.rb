@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Schema, 'arbitrary validation blocks' do
+RSpec.describe Dry::Schema, 'arbitrary validation blocks' do
   context 'with a single value' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           option :email_regex, /@/
 
@@ -39,7 +39,7 @@ RSpec.describe Dry::Validation::Schema, 'arbitrary validation blocks' do
 
   context 'with more than one value' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def self.messages
             super.merge(en: { errors: { email_required: 'provide email' }})

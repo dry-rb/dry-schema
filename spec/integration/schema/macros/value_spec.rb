@@ -1,7 +1,7 @@
 RSpec.describe 'Macros #value' do
   describe 'with no args' do
     it 'raises an exception' do
-      expect { Dry::Validation.Schema { required(:email).value } }.to raise_error(
+      expect { Dry::Schema.build { required(:email).value } }.to raise_error(
         ArgumentError, "wrong number of arguments (given 0, expected at least 1)"
       )
     end
@@ -9,7 +9,7 @@ RSpec.describe 'Macros #value' do
 
   describe 'with a type specification' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:age).value(:int?)
       end
     end
@@ -24,7 +24,7 @@ RSpec.describe 'Macros #value' do
   describe 'with a predicate with args' do
     context 'with a flat arg' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:age).value(:int?, gt?: 18)
         end
       end
@@ -38,7 +38,7 @@ RSpec.describe 'Macros #value' do
 
     context 'with a second predicate with args' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:name).value(:str?, min_size?: 3, max_size?: 6)
         end
       end
@@ -52,7 +52,7 @@ RSpec.describe 'Macros #value' do
 
     context 'with a range arg' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:age).value(:int?, size?: 18..24)
         end
       end
@@ -66,7 +66,7 @@ RSpec.describe 'Macros #value' do
 
     context 'with a block' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:age).value { int? & size?(18..24) }
         end
       end
@@ -80,7 +80,7 @@ RSpec.describe 'Macros #value' do
 
     context 'with a predicate and a block' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:age).value(:int?) { size?(18..24) }
         end
       end
@@ -94,13 +94,13 @@ RSpec.describe 'Macros #value' do
 
     context 'with a schema' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:data).value(DataSchema)
         end
       end
 
       before do
-        DataSchema = Dry::Validation.Schema do
+        DataSchema = Dry::Schema.build do
           required(:foo).filled(size?: 2..10)
         end
       end

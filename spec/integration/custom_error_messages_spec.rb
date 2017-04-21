@@ -1,6 +1,6 @@
-require 'dry/validation/messages/i18n'
+require 'dry/schema/messages/i18n'
 
-RSpec.describe Dry::Validation do
+RSpec.describe Dry::Schema do
   shared_context 'schema with customized messages' do
     describe '#messages' do
       it 'returns compiled error messages' do
@@ -13,7 +13,7 @@ RSpec.describe Dry::Validation do
 
   context 'yaml' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           config.messages_file = SPEC_ROOT.join('fixtures/locales/en.yml')
         end
@@ -33,7 +33,7 @@ RSpec.describe Dry::Validation do
       end
 
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           configure do
             config.messages = :i18n
           end

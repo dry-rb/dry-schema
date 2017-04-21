@@ -1,11 +1,11 @@
-RSpec.describe Schema::Rule do
+RSpec.describe Dry::Schema::DSL::Rule do
   include_context 'predicate helper'
 
   let(:filled) { p(:filled?) }
   let(:format) { p(:format?, /regex/) }
 
-  let(:left) { Schema::Rule.new(filled, name: :email, target: target) }
-  let(:right) { Schema::Rule.new(format, name: :email, target: target) }
+  let(:left) { Dry::Schema::DSL::Rule.new(filled, name: :email, target: target) }
+  let(:right) { Dry::Schema::DSL::Rule.new(format, name: :email, target: target) }
   let(:target) { double(:target, id: :user) }
 
   describe '#and' do

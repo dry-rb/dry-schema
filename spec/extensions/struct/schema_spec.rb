@@ -1,10 +1,10 @@
-RSpec.describe Dry::Validation::Schema, 'defining schema using dry struct' do
+RSpec.describe Dry::Schema, 'defining schema using dry struct' do
   before do
-    Dry::Validation.load_extensions(:struct)
+    Dry::Schema.load_extensions(:struct)
   end
 
   subject(:schema) do
-    Dry::Validation.Schema do
+    Dry::Schema.build do
       required(:person).filled(Test::Person)
     end
   end

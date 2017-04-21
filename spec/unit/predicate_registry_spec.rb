@@ -1,9 +1,9 @@
-require 'dry/validation/predicate_registry'
+require 'dry/schema/predicate_registry'
 
-RSpec.describe PredicateRegistry do
+RSpec.describe Dry::Schema::PredicateRegistry do
   subject!(:predicate_registry) { schema_class.registry }
 
-  let(:schema_class) { Class.new(Schema) }
+  let(:schema_class) { Class.new(Dry::Schema) }
   let(:schema) { schema_class.new }
 
   before do

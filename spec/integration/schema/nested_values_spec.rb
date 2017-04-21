@@ -1,6 +1,6 @@
-RSpec.describe Schema, 'using nested values' do
+RSpec.describe Dry::Schema, 'using nested values' do
   let(:schema) do
-    Dry::Validation.Schema do
+    Dry::Schema.build do
       required(:email).maybe
 
       required(:settings).schema do

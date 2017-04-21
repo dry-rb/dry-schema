@@ -1,7 +1,7 @@
 RSpec.describe 'Macros #input' do
   context 'with a flat schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         input :hash?
 
         required(:foo).filled
@@ -23,7 +23,7 @@ RSpec.describe 'Macros #input' do
 
   context 'with a nested schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         input(:hash?)
 
         required(:foo).schema do
@@ -55,7 +55,7 @@ RSpec.describe 'Macros #input' do
 
   context 'when 2 nested schemas are under the same key' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         input :hash?
 
         required(:meta).schema do
@@ -93,7 +93,7 @@ RSpec.describe 'Macros #input' do
 
   context 'using more than one predicate' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         input :hash?, size?: 2
 
         required(:foo).filled
@@ -113,7 +113,7 @@ RSpec.describe 'Macros #input' do
 
   context 'using a custom predicate' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def valid_keys?(input)
             input.size == 2 || input.size == 1

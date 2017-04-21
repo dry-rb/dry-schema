@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Result do
+RSpec.describe Dry::Schema::Result do
   subject(:result) { schema.(input) }
 
-  let(:schema) { Dry::Validation.Schema { required(:name).filled(:str?, size?: 2..4) } }
+  let(:schema) { Dry::Schema.build { required(:name).filled(:str?, size?: 2..4) } }
 
   context 'with valid input' do
     let(:input) { { name: 'Jane' } }

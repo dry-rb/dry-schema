@@ -1,7 +1,7 @@
 RSpec.describe 'Macros #each' do
   context "predicate without options" do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo).each(:filled?, :str?)
       end
     end
@@ -33,7 +33,7 @@ RSpec.describe 'Macros #each' do
 
   context "predicate with options" do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo).each(size?: 3)
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe 'Macros #each' do
 
   context 'with filled macro' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo).filled(size?: 2) { each(:str?) }
       end
     end
@@ -97,7 +97,7 @@ RSpec.describe 'Macros #each' do
 
   context 'with maybe macro' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo).maybe { each(:str?) }
       end
     end
@@ -129,13 +129,13 @@ RSpec.describe 'Macros #each' do
 
   context 'with external schema macro' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:foo).each(FooSchema)
       end
     end
 
     before do
-      FooSchema = Dry::Validation.Schema do
+      FooSchema = Dry::Schema.build do
         required(:bar).filled(:str?)
       end
     end
@@ -165,7 +165,7 @@ RSpec.describe 'Macros #each' do
   context 'with a block' do
     context 'with a nested schema' do
       subject(:schema) do
-        Dry::Validation.Schema do
+        Dry::Schema.build do
           required(:songs).each do
             schema do
               required(:title).filled
@@ -210,7 +210,7 @@ RSpec.describe 'Macros #each' do
   context 'with inferred predicates and a form schema' do
     context "predicate w/o options" do
       subject(:schema) do
-        Dry::Validation.Form do
+        Dry::Schema.form do
           required(:songs).each(:str?)
         end
       end
@@ -240,7 +240,7 @@ RSpec.describe 'Macros #each' do
 
   context 'with a custom predicate' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure do
           def self.messages
             super.merge(en: { errors: { valid_content?: 'must have type key' }})

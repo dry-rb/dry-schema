@@ -1,11 +1,11 @@
-RSpec.describe Schema::Value do
+RSpec.describe Dry::Schema::DSL::Value do
   include_context 'rule compiler'
   include_context 'predicate helper'
 
-  let(:registry) { PredicateRegistry.new(predicates) }
+  let(:registry) { Dry::Schema::PredicateRegistry.new(predicates) }
 
   describe '#required' do
-    subject(:value) { Schema::Value.new(registry: registry) }
+    subject(:value) { Dry::Schema::DSL::Value.new(registry: registry) }
 
     let(:expected_ast) do
       [:rule, [:address, [:and, [
@@ -26,7 +26,7 @@ RSpec.describe Schema::Value do
   end
 
   describe '#each' do
-    subject(:value) { Schema::Value.new(registry: registry) }
+    subject(:value) { Dry::Schema::DSL::Value.new(registry: registry) }
 
     it 'creates an each rule with another rule returned from the block' do
       rule = value.each { key?(:method) }
@@ -64,7 +64,7 @@ RSpec.describe Schema::Value do
   end
 
   describe '#hash? with block' do
-    subject(:user) { Schema::Value.new(registry: registry) }
+    subject(:user) { Dry::Schema::DSL::Value.new(registry: registry) }
 
     it 'builds hash? & rule created within the block' do
       rule = user.hash? { required(:email).filled }
@@ -115,7 +115,7 @@ RSpec.describe Schema::Value do
   end
 
   describe '#not' do
-    subject(:user) { Schema::Value.new(registry: registry) }
+    subject(:user) { Dry::Schema::DSL::Value.new(registry: registry) }
 
     it 'builds a negated rule' do
       not_email = user.required(:email) { str?.not }

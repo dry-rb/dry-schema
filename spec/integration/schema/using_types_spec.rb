@@ -1,6 +1,6 @@
-RSpec.describe Dry::Validation::Schema, 'defining schema using dry types' do
+RSpec.describe Dry::Schema, 'defining schema using dry types' do
   subject(:schema) do
-    Dry::Validation.Schema do
+    Dry::Schema.build do
       required(:email).filled(Email)
       required(:age).maybe(Age)
       required(:country).filled(Country)
@@ -50,7 +50,7 @@ RSpec.describe Dry::Validation::Schema, 'defining schema using dry types' do
 
   context 'custom coercions' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         configure { config.input_processor = :sanitizer }
 
         required(:email).filled(Dry::Types['strict.string'].constructor(&:strip))
@@ -67,7 +67,7 @@ RSpec.describe Dry::Validation::Schema, 'defining schema using dry types' do
 
   context 'custom types' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:quantity).filled(Dry::Types['strict.int'].constrained(gt: 1))
         required(:percentage).filled(Dry::Types['strict.decimal'].constrained(gt: 0, lt: 1))
         required(:switch).filled(Dry::Types['strict.bool'])
@@ -84,7 +84,7 @@ RSpec.describe Dry::Validation::Schema, 'defining schema using dry types' do
 
   context 'with a nested schema' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:address).schema do
           zip = Dry::Types['strict.string'].constrained(format: /\A[0-9]{5}(-[0-9]{4})?\z/)
 
@@ -120,7 +120,7 @@ RSpec.describe Dry::Validation::Schema, 'defining schema using dry types' do
 
   context 'with each' do
     subject(:schema) do
-      Dry::Validation.Schema do
+      Dry::Schema.build do
         required(:countries).each(Country)
       end
     end

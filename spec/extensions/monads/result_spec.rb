@@ -1,7 +1,7 @@
-RSpec.describe Dry::Validation::Result do
-  before { Dry::Validation.load_extensions(:monads) }
+RSpec.describe Dry::Schema::Result do
+  before { Dry::Schema.load_extensions(:monads) }
 
-  let(:schema) { Dry::Validation.Schema { required(:name).filled(:str?, size?: 2..4) } }
+  let(:schema) { Dry::Schema.build { required(:name).filled(:str?, size?: 2..4) } }
 
   context 'with valid input' do
     let(:input) { { name: 'Jane' } }

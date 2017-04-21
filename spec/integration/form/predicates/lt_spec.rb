@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Lt' do
   context 'with required' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         required(:foo) { int? & lt?(23) }
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe 'Predicates: Lt' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Validation.Form do
+      Dry::Schema.form do
         optional(:foo) { int? & lt?(23) }
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe 'Predicates: Lt' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).value(:int?, lt?: 23)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Lt' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).filled(:int?, lt?: 23)
           end
         end
@@ -259,7 +259,7 @@ RSpec.describe 'Predicates: Lt' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             required(:foo).maybe(:int?, lt?: 23)
           end
         end
@@ -325,7 +325,7 @@ RSpec.describe 'Predicates: Lt' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).value(:int?, lt?: 23)
           end
         end
@@ -389,7 +389,7 @@ RSpec.describe 'Predicates: Lt' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).filled(:int?, lt?: 23)
           end
         end
@@ -453,7 +453,7 @@ RSpec.describe 'Predicates: Lt' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Validation.Form do
+          Dry::Schema.form do
             optional(:foo).maybe(:int?, lt?: 23)
           end
         end
