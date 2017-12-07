@@ -2,7 +2,7 @@ require 'logger'
 require 'dry/configurable'
 
 module Dry
-  class Schema
+  module Schema
     module Deprecations
       extend Dry::Configurable
 

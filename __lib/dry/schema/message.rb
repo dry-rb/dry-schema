@@ -1,7 +1,7 @@
 require 'dry/equalizer'
 
 module Dry
-  class Schema
+  module Schema
     class Message
       include Dry::Equalizer(:predicate, :path, :text, :options)
 

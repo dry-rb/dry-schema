@@ -5,7 +5,7 @@ require 'dry/equalizer'
 require 'dry/schema/messages/abstract'
 
 module Dry
-  class Schema
+  module Schema
     class Messages::YAML < Messages::Abstract
       include Dry::Equalizer(:data)
 

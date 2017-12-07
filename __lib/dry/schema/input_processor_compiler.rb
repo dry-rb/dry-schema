@@ -2,7 +2,7 @@ require 'dry/types'
 require 'dry/types/compiler'
 
 module Dry
-  class Schema
+  module Schema
     class InputProcessorCompiler
       attr_reader :type_compiler
 

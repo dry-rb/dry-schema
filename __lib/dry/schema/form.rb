@@ -1,9 +1,9 @@
 module Dry
-  class Schema::JSON < Schema
+  module Schema::Form < Schema
     def self.configure(klass = nil, &block)
       if klass
         klass.configure do |config|
-          config.input_processor = :json
+          config.input_processor = :form
           config.hash_type = :symbolized
         end
         klass

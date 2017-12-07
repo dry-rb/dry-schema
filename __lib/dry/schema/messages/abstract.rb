@@ -4,7 +4,7 @@ require 'dry/equalizer'
 require 'dry/configurable'
 
 module Dry
-  class Schema
+  module Schema
     module Messages
       class Abstract
         extend Dry::Configurable

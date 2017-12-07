@@ -1,5 +1,5 @@
 module Dry
-  class Schema
+  module Schema
     class MessageSet
       include Enumerable
 

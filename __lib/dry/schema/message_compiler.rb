@@ -4,7 +4,7 @@ require 'dry/schema/message_set'
 require 'dry/schema/message_compiler/visitor_opts'
 
 module Dry
-  class Schema
+  module Schema
     class MessageCompiler
       include Core::Constants
 

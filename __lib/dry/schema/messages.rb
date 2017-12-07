@@ -1,5 +1,5 @@
 module Dry
-  class Schema
+  module Schema
     module Messages
       def self.default
         Messages::YAML.load
