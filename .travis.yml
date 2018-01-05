@@ -1,6 +1,7 @@
 language: ruby
 cache: bundler
 bundler_args: --without benchmarks tools
+before_install: gem update --system
 after_success:
   - '[ -d coverage ] && bundle exec codeclimate-test-reporter'
 script:
