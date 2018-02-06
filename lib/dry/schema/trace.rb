@@ -15,6 +15,11 @@ module Dry
         @nodes = []
       end
 
+      def <<(node)
+        nodes << node
+        self
+      end
+
       def to_rule(name = nil)
         return if nodes.empty?
 

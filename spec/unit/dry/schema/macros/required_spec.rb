@@ -41,4 +41,13 @@ RSpec.describe Dry::Schema::Macros::Required do
       expect(rule.(email: 312)).to be_failure
     end
   end
+
+  describe '#each' do
+    it 'builds a rule with predicates applied to array elements' do
+      rule = macro.each(:str?).to_rule
+
+      expect(rule.(email: ["foo", "bar"])).to be_success
+      expect(rule.(email: [1, "bar"])).to be_failure
+    end
+  end
 end
