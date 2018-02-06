@@ -68,4 +68,13 @@ RSpec.describe Dry::Schema::Macros::Required do
       expect(rule.(email: [1, "bar"])).to be_failure
     end
   end
+
+  describe 'chaining macros' do
+    it 'merges rules from chain-method calls' do
+      rule = macro.filled(:str?).value(size?: 2..4).to_rule
+
+      expect(rule.(email: "jane")).to be_success
+      expect(rule.(email: "jeremy")).to be_failure
+    end
+  end
 end
