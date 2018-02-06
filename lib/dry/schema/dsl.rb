@@ -32,6 +32,13 @@ module Dry
         macros << macro
         macro
       end
+
+      def optional(name, &block)
+        macro = Macros::Optional.new(name, compiler: compiler)
+        macro.value(&block) if block
+        macros << macro
+        macro
+      end
     end
   end
 end

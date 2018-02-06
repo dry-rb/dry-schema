@@ -22,8 +22,9 @@ module Dry
 
       def call(input)
         results = rules.reduce([]) { |a, (name, rule)|
-          result =  rule.(input)
+          result = rule.(input)
           a << result unless result.success?
+          a
         }
 
         Result.new(input, results || [])
