@@ -35,11 +35,19 @@ module Dry
           self
         end
 
+        def filled(*args, **opts)
+          value(:filled?, *args, **opts)
+        end
+
         def to_rule
-          [compiler.visit(to_ast), trace.to_rule(name)].compact.reduce(:and)
+          [compiler.visit(to_ast), trace.to_rule(name)].compact.reduce(operation)
         end
 
         def to_ast
+          raise NotImplementedError
+        end
+
+        def operation
           raise NotImplementedError
         end
 

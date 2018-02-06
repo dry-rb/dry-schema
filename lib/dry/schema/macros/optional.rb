@@ -4,13 +4,13 @@ require 'dry/schema/macros/core'
 module Dry
   module Schema
     module Macros
-      class Required < Core
+      class Optional < Core
         def to_ast
           [:predicate, [:key?, [[:name, name], [:input, Undefined]]]]
         end
 
         def operation
-          :and
+          :then
         end
       end
     end
