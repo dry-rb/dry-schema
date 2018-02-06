@@ -7,8 +7,8 @@ module Dry
     module Macros
       class Required < Core
         def each(*args, &block)
-          macro = args.each_with_object(Each.new(nil)) { |a, e| e.public_send(*a) }
-          macro.value(&block) if block
+          macro = Each.new(nil)
+          macro.value(*args, &block)
           trace << macro
           self
         end
