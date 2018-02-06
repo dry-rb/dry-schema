@@ -46,4 +46,21 @@ RSpec.describe Dry::Schema, '.define' do
 
     include_context 'valid schema'
   end
+
+  context 'each macro' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:tags).each(:str?) { size?(2..4) }
+      end
+    end
+
+    it 'passes when input is valid' do
+      expect(schema.(tags: ['red', 'blue'])).to be_success
+    end
+
+    it 'fails when input is not valid' do
+      expect(schema.(tags: ['red', nil])).to be_failure
+      expect(schema.(tags: ['red', 'black'])).to be_failure
+    end
+  end
 end
