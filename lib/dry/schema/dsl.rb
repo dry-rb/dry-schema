@@ -26,8 +26,9 @@ module Dry
         macros.map { |m| [m.name, m.to_rule] }.to_h
       end
 
-      def required(name)
+      def required(name, &block)
         macro = Macros::Required.new(name, compiler: compiler)
+        macro.value(&block) if block
         macros << macro
         macro
       end
