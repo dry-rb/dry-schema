@@ -35,4 +35,15 @@ RSpec.describe Dry::Schema, '.define' do
 
     include_context 'valid schema'
   end
+
+  context 'chaining calls' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:email).value(:str?).filled
+        optional(:age).value(:int?)
+      end
+    end
+
+    include_context 'valid schema'
+  end
 end
