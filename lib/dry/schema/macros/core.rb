@@ -23,7 +23,7 @@ module Dry
           @options = options
         end
 
-        def value(*predicates, **opts)
+        def value(*predicates, **opts, &block)
           predicates.each do |predicate|
             public_send(predicate)
           end
@@ -32,11 +32,15 @@ module Dry
             public_send(predicate, *args)
           end
 
+          if block
+            trace.evaluate(&block)
+          end
+
           self
         end
 
-        def filled(*args, **opts)
-          value(:filled?, *args, **opts)
+        def filled(*args, **opts, &block)
+          value(:filled?, *args, **opts, &block)
         end
 
         def to_rule

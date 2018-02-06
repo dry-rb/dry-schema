@@ -22,6 +22,16 @@ RSpec.describe Dry::Schema::Macros::Required do
       expect(rule.(email: "j")).to be_failure
       expect(rule.(email: "jane@doe.org"*2)).to be_failure
     end
+
+    it 'builds a valid rule with predicates defined in a block' do
+      rule = macro.value { str? & size?(2..20) }.to_rule
+
+      expect(rule.(email: "jane@doe.org")).to be_success
+
+      expect(rule.(imejl: "jane@doe.org")).to be_failure
+      expect(rule.(email: "j")).to be_failure
+      expect(rule.(email: "jane@doe.org"*2)).to be_failure
+    end
   end
 
   describe '#filled' do
@@ -38,6 +48,14 @@ RSpec.describe Dry::Schema::Macros::Required do
 
       expect(rule.(email: "jane@doe.org")).to be_success
       expect(rule.(email: "")).to be_failure
+      expect(rule.(email: 312)).to be_failure
+    end
+
+    it 'builds a valid rule with additional predicates defined in a block' do
+      rule = macro.filled(:str?) { size?(4) }.to_rule
+
+      expect(rule.(email: "jane")).to be_success
+      expect(rule.(email: "joe")).to be_failure
       expect(rule.(email: 312)).to be_failure
     end
   end

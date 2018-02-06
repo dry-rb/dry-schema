@@ -3,6 +3,26 @@ require 'dry/schema/predicate'
 
 module Dry
   module Schema
+    class Evaluator < BasicObject
+      attr_reader :trace
+
+      def initialize(trace, &block)
+        @trace = trace
+        instance_exec(&block)
+      end
+
+      def to_rule
+        trace.to_rule
+      end
+
+      private
+
+      def method_missing(meth, *args)
+        result = trace.__send__(meth, *args)
+        result.last.to_rule
+      end
+    end
+
     class Trace < BasicObject
       include ::Dry::Equalizer(:compiler, :nodes)
 
@@ -15,10 +35,19 @@ module Dry
         @nodes = []
       end
 
-      def <<(node)
+      def new
+        self.class.new(compiler)
+      end
+
+      def last
+        nodes.last
+      end
+
+      def append(node)
         nodes << node
         self
       end
+      alias_method :<<, :append
 
       def to_rule(name = nil)
         return if nodes.empty?
@@ -38,6 +67,10 @@ module Dry
 
       def class
         ::Dry::Schema::Trace
+      end
+
+      def evaluate(&block)
+        append(Evaluator.new(new, &block))
       end
 
       private
