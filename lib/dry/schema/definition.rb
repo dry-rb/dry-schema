@@ -1,9 +1,15 @@
+require 'dry/initializer'
+
 require 'dry/schema/dsl'
 require 'dry/schema/result'
 
 module Dry
   module Schema
     class Definition
+      extend Dry::Initializer
+
+      param :rules
+
       # Define a new schema definition
       #
       # @return [Definition]
@@ -12,12 +18,6 @@ module Dry
       def self.new(compiler, &block)
         dsl = DSL.new(compiler, &block)
         super(dsl.call)
-      end
-
-      attr_reader :rules
-
-      def initialize(rules)
-        @rules = rules
       end
 
       def call(input)
