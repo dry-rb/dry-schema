@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'concurrent-ruby', '~> 1.0'
   spec.add_runtime_dependency 'dry-configurable', '~> 0.1', '>= 0.1.3'
   spec.add_runtime_dependency 'dry-equalizer', '~> 0.2'
+  spec.add_runtime_dependency 'dry-initializer', '~> 2.4'
   spec.add_runtime_dependency 'dry-logic', '~> 0.4', '>= 0.4.0'
   spec.add_runtime_dependency 'dry-types', '~> 0.9', '>= 0.9.0'
   spec.add_runtime_dependency 'dry-core', '~> 0.2', '>= 0.2.1'
