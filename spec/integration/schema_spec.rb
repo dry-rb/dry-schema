@@ -12,6 +12,12 @@ RSpec.describe Dry::Schema, '.define' do
       expect(schema.(email: nil, age: 21)).to be_failure
       expect(schema.(email: nil, age: '21')).to be_failure
     end
+
+    it 'produces error messages' do
+      result = schema.(email: '')
+
+      expect(result.errors[:email]).to include('must be filled')
+    end
   end
 
   context 'using macros' do

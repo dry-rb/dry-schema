@@ -2,6 +2,8 @@ require 'dry/initializer'
 
 require 'dry/schema/dsl'
 require 'dry/schema/result'
+require 'dry/schema/messages'
+require 'dry/schema/message_compiler'
 
 module Dry
   module Schema
@@ -9,6 +11,8 @@ module Dry
       extend Dry::Initializer
 
       param :rules
+
+      option :message_compiler, default: proc { MessageCompiler.new(Messages.default) }
 
       # Define a new schema definition
       #
@@ -25,9 +29,9 @@ module Dry
           result = rule.(input)
           a << result unless result.success?
           a
-        }
+        } || EMPTY_ARRAY
 
-        Result.new(input, results || [])
+        Result.new(input, results, message_compiler: message_compiler)
       end
 
       def to_ast
