@@ -2,7 +2,7 @@
 
 require 'optparse'
 require 'bundler/setup'
-require 'dry-validation'
+require 'dry/schema'
 
 if ARGV.include?('--pry')
   require 'pry'
