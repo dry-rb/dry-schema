@@ -2,11 +2,11 @@
 require File.expand_path('../lib/dry/schema/version', __FILE__)
 
 Gem::Specification.new do |spec|
-  spec.name          = 'dry-validation'
+  spec.name          = 'dry-schema'
   spec.version       = Dry::Schema::VERSION
-  spec.authors       = ['Andy Holland', 'Piotr Solnica']
-  spec.email         = ['andyholland1991@aol.com', 'piotr.solnica@gmail.com']
-  spec.summary       = 'A simple validation library'
+  spec.authors       = ['Piotr Solnica']
+  spec.email         = ['piotr.solnica+oss@gmail.com']
+  spec.summary       = 'Schema definition DSL'
   spec.homepage      = 'https://github.com/dryrb/dry-validation'
   spec.license       = 'MIT'
 
