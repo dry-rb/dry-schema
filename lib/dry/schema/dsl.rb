@@ -3,7 +3,7 @@ require 'dry/schema/macros'
 module Dry
   module Schema
     class DSL < BasicObject
-      include ::Dry::Equalizer(:compiler, :traces)
+      include ::Dry::Equalizer(:compiler, :options)
 
       attr_reader :compiler
 
