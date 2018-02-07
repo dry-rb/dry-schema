@@ -29,6 +29,14 @@ module Dry
 
         Result.new(input, results || [])
       end
+
+      def to_ast
+        [:set, rules.values.map(&:to_ast)]
+      end
+
+      def to_rule
+        self
+      end
     end
   end
 end

@@ -1,3 +1,4 @@
+require 'dry/schema/definition'
 require 'dry/schema/compiler'
 require 'dry/schema/trace'
 
@@ -41,6 +42,10 @@ module Dry
 
         def filled(*args, **opts, &block)
           value(:filled?, *args, **opts, &block)
+        end
+
+        def schema(&block)
+          trace << ::Dry::Schema::Definition.new(compiler, &block)
         end
 
         def to_rule
