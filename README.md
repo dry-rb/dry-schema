@@ -14,7 +14,7 @@
 [![Test Coverage](https://codeclimate.com/github/dry-rb/dry-schema/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-schema.svg?branch=master)][inchpages]
 
-# WIP: dry-schema extraction from dry-validation ([more info here](https://discuss.dry-rb.org/t/plans-for-dry-validation-dry-schema-a-new-gem/215))
+# WIP: dry-schema extraction from dry-validation ([more info here](https://discourse.dry-rb.org/t/plans-for-dry-validation-dry-schema-a-new-gem/215))
 
 ## Links
 
