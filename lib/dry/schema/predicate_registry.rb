@@ -1,3 +1,5 @@
+require 'dry/logic/predicates'
+
 module Dry
   module Schema
     class PredicateRegistry
