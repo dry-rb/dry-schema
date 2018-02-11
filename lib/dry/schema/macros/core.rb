@@ -42,6 +42,13 @@ module Dry
           trace << ::Dry::Schema::Definition.new(compiler, &block)
         end
 
+        def each(*args, &block)
+          macro = Each.new(nil)
+          macro.value(*args, &block)
+          trace << macro
+          self
+        end
+
         def to_rule
           [compiler.visit(to_ast), trace.to_rule(name)].compact.reduce(operation)
         end

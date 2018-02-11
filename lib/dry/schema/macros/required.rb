@@ -5,13 +5,6 @@ module Dry
   module Schema
     module Macros
       class Required < Key
-        def each(*args, &block)
-          macro = Each.new(nil)
-          macro.value(*args, &block)
-          trace << macro
-          self
-        end
-
         def operation
           :and
         end
