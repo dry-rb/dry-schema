@@ -1,5 +1,4 @@
 require 'dry/schema/macros/key'
-require 'dry/schema/macros/each'
 
 module Dry
   module Schema
