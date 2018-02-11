@@ -39,7 +39,8 @@ module Dry
         end
 
         def schema(&block)
-          trace << ::Dry::Schema::Definition.new(compiler, &block)
+          dsl = ::Dry::Schema::DSL.new(compiler, &block)
+          trace << ::Dry::Schema::Definition.new(dsl.call)
         end
 
         def each(*args, &block)

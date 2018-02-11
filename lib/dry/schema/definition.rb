@@ -1,6 +1,5 @@
 require 'dry/initializer'
 
-require 'dry/schema/dsl'
 require 'dry/schema/result'
 require 'dry/schema/messages'
 require 'dry/schema/message_compiler'
@@ -13,16 +12,6 @@ module Dry
       param :rules
 
       option :message_compiler, default: proc { MessageCompiler.new(Messages.default) }
-
-      # Define a new schema definition
-      #
-      # @return [Definition]
-      #
-      # @api public
-      def self.new(compiler, &block)
-        dsl = DSL.new(compiler, &block)
-        super(dsl.call)
-      end
 
       def call(input)
         results = rules.reduce([]) { |a, (name, rule)|
