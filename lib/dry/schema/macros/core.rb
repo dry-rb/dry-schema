@@ -41,13 +41,6 @@ module Dry
           trace << ::Dry::Schema::Definition.new(dsl.call)
         end
 
-        def each(*args, &block)
-          macro = Each.new(nil)
-          macro.value(*args, &block)
-          trace << macro
-          self
-        end
-
         def to_rule
           compiler.visit(to_ast)
         end
