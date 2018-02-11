@@ -54,19 +54,43 @@ RSpec.describe Dry::Schema, '.define' do
   end
 
   context 'each macro' do
-    subject(:schema) do
-      Dry::Schema.define do
-        required(:tags).each(:str?) { size?(2..4) }
+    context 'with simple predicates' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:tags).each(:str?) { size?(2..4) }
+        end
+      end
+
+      it 'passes when input is valid' do
+        expect(schema.(tags: ['red', 'blue'])).to be_success
+      end
+
+      it 'fails when input is not valid' do
+        expect(schema.(tags: ['red', nil])).to be_failure
+        expect(schema.(tags: ['red', 'black'])).to be_failure
       end
     end
 
-    it 'passes when input is valid' do
-      expect(schema.(tags: ['red', 'blue'])).to be_success
-    end
+    context 'with a nested schema' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:tags).each do
+            schema do
+              required(:name).filled
+            end
+          end
+        end
+      end
 
-    it 'fails when input is not valid' do
-      expect(schema.(tags: ['red', nil])).to be_failure
-      expect(schema.(tags: ['red', 'black'])).to be_failure
+      it 'passes when input is valid' do
+        pending 'TODO: schema inside each block is not implemented yet'
+        expect(schema.(tags: [{ name: 'red' }, { name: 'blue' }])).to be_success
+      end
+
+      it 'fails when input is not valid' do
+        pending 'TODO: schema inside each block is not implemented yet'
+        expect(schema.(tags: [{ name: 'red' }, { title: 'blue' }])).to be_failure
+      end
     end
   end
 
