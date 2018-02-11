@@ -1,3 +1,5 @@
+require 'dry/initializer'
+
 require 'dry/schema/definition'
 require 'dry/schema/compiler'
 require 'dry/schema/trace'
@@ -6,23 +8,15 @@ module Dry
   module Schema
     module Macros
       class Core
-        attr_reader :name
+        extend Dry::Initializer
 
-        attr_reader :compiler
+        param :name
 
-        attr_reader :trace
+        option :compiler, default: proc { Compiler.new }
 
-        attr_reader :block
+        option :trace, default: proc { Trace.new }
 
-        attr_reader :options
-
-        def initialize(name, options = {})
-          @name = name
-          @compiler = options.fetch(:composer) { Compiler.new }
-          @trace = options.fetch(:trace) { Trace.new(compiler) }
-          @block = options.fetch(:block, &Proc.new {})
-          @options = options
-        end
+        option :block, optional: true
 
         def value(*predicates, **opts, &block)
           predicates.each do |predicate|
