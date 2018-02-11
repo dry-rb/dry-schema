@@ -2,7 +2,7 @@ require 'dry/schema/macros/required'
 
 RSpec.describe Dry::Schema::Macros::Required do
   subject(:macro) do
-    Dry::Schema::Macros::Required.new(:email)
+    Dry::Schema::Macros::Required.new(name: :email)
   end
 
   describe '#to_rule' do

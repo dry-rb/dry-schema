@@ -27,14 +27,14 @@ module Dry
       end
 
       def required(name, &block)
-        macro = Macros::Required.new(name, compiler: compiler)
+        macro = Macros::Required.new(name: name, compiler: compiler)
         macro.value(&block) if block
         macros << macro
         macro
       end
 
       def optional(name, &block)
-        macro = Macros::Optional.new(name, compiler: compiler)
+        macro = Macros::Optional.new(name: name, compiler: compiler)
         macro.value(&block) if block
         macros << macro
         macro

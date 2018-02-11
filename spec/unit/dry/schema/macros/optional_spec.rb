@@ -2,7 +2,7 @@ require 'dry/schema/macros/optional'
 
 RSpec.describe Dry::Schema::Macros::Optional do
   subject(:macro) do
-    Dry::Schema::Macros::Optional.new(:email)
+    Dry::Schema::Macros::Optional.new(name: :email)
   end
 
   describe '#to_rule' do

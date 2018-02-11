@@ -10,13 +10,13 @@ module Dry
       class Core
         extend Dry::Initializer
 
-        param :name
-
         option :compiler, default: proc { Compiler.new }
 
         option :trace, default: proc { Trace.new }
 
         option :block, optional: true
+
+        option :name, optional: true
 
         def value(*predicates, **opts, &block)
           predicates.each do |predicate|
