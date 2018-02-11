@@ -16,8 +16,6 @@ module Dry
 
         option :block, optional: true
 
-        option :name, optional: true
-
         def value(*predicates, **opts, &block)
           predicates.each do |predicate|
             public_send(predicate)
@@ -51,7 +49,7 @@ module Dry
         end
 
         def to_rule
-          [compiler.visit(to_ast), trace.to_rule(name)].compact.reduce(operation)
+          compiler.visit(to_ast)
         end
 
         def to_ast
