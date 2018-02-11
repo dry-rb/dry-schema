@@ -1,14 +1,9 @@
-require 'dry/schema/constants'
-require 'dry/schema/macros/core'
+require 'dry/schema/macros/key'
 
 module Dry
   module Schema
     module Macros
-      class Optional < Core
-        def to_ast
-          [:predicate, [:key?, [[:name, name], [:input, Undefined]]]]
-        end
-
+      class Optional < Key
         def operation
           :then
         end
