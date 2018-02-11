@@ -69,4 +69,31 @@ RSpec.describe Dry::Schema, '.define' do
       expect(schema.(tags: ['red', 'black'])).to be_failure
     end
   end
+
+  context 'nested schema' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:user).schema do
+          required(:name).filled
+          required(:age).filled(:int?)
+        end
+      end
+    end
+
+    it 'passes when input is valid' do
+      expect(schema.(user: { name: 'Jane', age: 35 })).to be_success
+    end
+
+    it 'fails when input is not valid' do
+      result = schema.(user: { age: 35 })
+
+      expect(result).to be_failure
+      expect(result.errors[:user]).to eql(name: ['is missing'])
+
+      result = schema.(user: { name: 'Jane', age: '35' })
+
+      expect(result).to be_failure
+      expect(result.errors[:user]).to eql(age: ['must be an integer'])
+    end
+  end
 end

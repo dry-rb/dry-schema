@@ -125,7 +125,7 @@ module Dry
           predicate, path, text,
           args: arg_vals,
           input: input,
-          rule: rule,
+          rule: rule || msg_opts[:name],
           check: base_opts[:check]
         ]
       end
