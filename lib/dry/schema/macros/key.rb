@@ -7,7 +7,11 @@ module Dry
         option :name
 
         def to_rule
-          [super, trace.to_rule(name)].compact.reduce(operation)
+          if trace.empty?
+            super
+          else
+            [super, trace.to_rule(name)].reduce(operation)
+          end
         end
 
         def to_ast
