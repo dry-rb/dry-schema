@@ -15,6 +15,11 @@ module Dry
         trace.to_rule
       end
 
+      def schema(&block)
+        dsl = ::Dry::Schema::DSL.new(trace.compiler, &block)
+        trace << ::Dry::Schema::Definition.new(dsl.call)
+      end
+
       private
 
       def method_missing(meth, *args)

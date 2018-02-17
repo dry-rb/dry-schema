@@ -83,12 +83,10 @@ RSpec.describe Dry::Schema, '.define' do
       end
 
       it 'passes when input is valid' do
-        pending 'TODO: schema inside each block is not implemented yet'
         expect(schema.(tags: [{ name: 'red' }, { name: 'blue' }])).to be_success
       end
 
       it 'fails when input is not valid' do
-        pending 'TODO: schema inside each block is not implemented yet'
         expect(schema.(tags: [{ name: 'red' }, { title: 'blue' }])).to be_failure
       end
     end
