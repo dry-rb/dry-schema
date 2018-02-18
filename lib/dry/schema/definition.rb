@@ -7,20 +7,26 @@ require 'dry/schema/message_compiler'
 module Dry
   module Schema
     class Definition
+      DEFAULT_HASH_SCHEMA = -> h { h }
+
       extend Dry::Initializer
 
       param :rules
 
       option :message_compiler, default: proc { MessageCompiler.new(Messages.default) }
 
+      option :type_schema, default: proc { DEFAULT_HASH_SCHEMA }
+
       def call(input)
+        processed = type_schema[input]
+
         results = rules.reduce([]) { |a, (name, rule)|
-          result = rule.(input)
+          result = rule.(processed)
           a << result unless result.success?
           a
         } || EMPTY_ARRAY
 
-        Result.new(input, results, message_compiler: message_compiler)
+        Result.new(processed, results, message_compiler: message_compiler)
       end
 
       def to_ast

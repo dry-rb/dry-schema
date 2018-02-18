@@ -118,4 +118,30 @@ RSpec.describe Dry::Schema, '.define' do
       expect(result.errors[:user]).to eql(age: ['must be an integer'])
     end
   end
+
+  context 'with coercible type specs' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:birthday, Types::Form::Date).value(:date?)
+        optional(:age, Types::Form::Int).value(:int?)
+      end
+    end
+
+    it 'passes when input is valid' do
+      expect(schema.(birthday: '1990-01-02')).to be_success
+      expect(schema.(birthday: '1990-01-02', age: '21')).to be_success
+    end
+
+    it 'fails when input is not valid' do
+      expect(schema.(birthday: 'dooh', age: '21')).to be_failure
+      expect(schema.(birthday: 'dooh', age: nil)).to be_failure
+      expect(schema.(birthday: '1990-01-02', age: 'oops')).to be_failure
+    end
+
+    it 'produces error messages' do
+      result = schema.(birthday: '1990-01-02', age: 'oops')
+
+      expect(result.errors[:age]).to include('must be an integer')
+    end
+  end
 end

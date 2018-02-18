@@ -13,7 +13,7 @@ module Dry
       compiler = Compiler.new
       dsl = DSL.new(compiler, &block)
 
-      Definition.new(dsl.call)
+      Definition.new(dsl.call, type_schema: dsl.type_schema)
     end
   end
 end
