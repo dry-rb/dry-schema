@@ -37,16 +37,16 @@ module Dry
       end
 
       def required(name, type = Types::Any, &block)
-        types[name] = type
-        macro = Macros::Required.new(name: name, compiler: compiler)
-        macro.value(&block) if block
-        macros << macro
-        macro
+        key(name, type: type, macro: Macros::Required, &block)
       end
 
       def optional(name, type = Types::Any, &block)
+        key(name, type: type, macro: Macros::Optional, &block)
+      end
+
+      def key(name, type:, macro:, &block)
         types[name] = type
-        macro = Macros::Optional.new(name: name, compiler: compiler)
+        macro = macro.new(name: name, compiler: compiler)
         macro.value(&block) if block
         macros << macro
         macro
