@@ -14,6 +14,7 @@ SPEC_ROOT = Pathname(__dir__)
 Dir[SPEC_ROOT.join('shared/**/*.rb')].each(&method(:require))
 Dir[SPEC_ROOT.join('support/**/*.rb')].each(&method(:require))
 
+require "dry/schema"
 require "dry/types"
 
 module Types
