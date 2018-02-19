@@ -48,10 +48,6 @@ module Dry
         nodes.last
       end
 
-      def empty?
-        nodes.empty?
-      end
-
       def append(node)
         nodes << node
         self
