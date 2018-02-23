@@ -18,11 +18,11 @@ module Dry
 
         def value(*predicates, **opts, &block)
           predicates.each do |predicate|
-            public_send(predicate)
+            trace.__send__(predicate)
           end
 
           opts.each do |predicate, *args|
-            public_send(predicate, *args)
+            trace.__send__(predicate, *args)
           end
 
           if block

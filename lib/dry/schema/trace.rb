@@ -31,6 +31,8 @@ module Dry
     class Trace < BasicObject
       include ::Dry::Equalizer(:compiler, :nodes)
 
+      undef eql?
+
       attr_reader :compiler
 
       attr_reader :nodes
