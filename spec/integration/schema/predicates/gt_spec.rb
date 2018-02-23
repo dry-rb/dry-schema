@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Gt' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:foo) { gt?(23) }
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe 'Predicates: Gt' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         optional(:foo) { gt?(23) }
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe 'Predicates: Gt' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).value(gt?: 23)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Gt' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).filled(gt?: 23)
           end
         end
@@ -259,7 +259,7 @@ RSpec.describe 'Predicates: Gt' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).maybe(gt?: 23)
           end
         end
@@ -325,7 +325,7 @@ RSpec.describe 'Predicates: Gt' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).value(gt?: 23)
           end
         end
@@ -389,7 +389,7 @@ RSpec.describe 'Predicates: Gt' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).filled(gt?: 23)
           end
         end
@@ -453,7 +453,7 @@ RSpec.describe 'Predicates: Gt' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).maybe(gt?: 23)
           end
         end

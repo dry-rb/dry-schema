@@ -32,8 +32,8 @@ module Dry
           self
         end
 
-        def filled(*args, **opts, &block)
-          value(:filled?, *args, **opts, &block)
+        def filled(*args, &block)
+          value(:filled?, *args, &block)
         end
 
         def schema(&block)

@@ -1,5 +1,6 @@
 require 'dry/schema/macros/core'
 require 'dry/schema/macros/each'
+require 'dry/schema/macros/maybe'
 
 module Dry
   module Schema
@@ -10,6 +11,13 @@ module Dry
         def each(*args, &block)
           macro = Each.new
           macro.value(*args, &block)
+          trace << macro
+          self
+        end
+
+        def maybe(*args, **opts, &block)
+          macro = Maybe.new
+          macro.value(*args, **opts, &block)
           trace << macro
           self
         end
