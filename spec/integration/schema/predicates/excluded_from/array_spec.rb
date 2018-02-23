@@ -1,16 +1,16 @@
-RSpec.context 'Predicates: Included In' do
+RSpec.describe 'Predicates: Excluded From' do
 
   context "Array" do
 
     context 'with required' do
       subject(:schema) do
-        Dry::Schema.build do
-          required(:foo) { included_in?([1, 3, 5]) }
+        Dry::Schema.define do
+          required(:foo) { excluded_from?([1, 3, 5]) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { foo: 3 } }
+        let(:input) { { foo: 2 } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -21,52 +21,52 @@ RSpec.context 'Predicates: Included In' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
+          expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
         end
       end
 
       context 'with nil input' do
         let(:input) { { foo: nil } }
 
-        it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        it 'is successful' do
+          expect(result).to be_successful
         end
       end
 
       context 'with blank input' do
         let(:input) { { foo: '' } }
 
-        it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        it 'is successful' do
+          expect(result).to be_successful
         end
       end
 
       context 'with invalid type' do
         let(:input) { { foo: { a: 1 } } }
 
-        it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        it 'is successful' do
+          expect(result).to be_successful
         end
       end
 
       context 'with invalid input' do
-        let(:input) { { foo: 4 } }
+        let(:input) { { foo: 5 } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+          expect(result).to be_failing ['must not be one of: 1, 3, 5']
         end
       end
     end
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Schema.build do
-          optional(:foo) { included_in?([1, 3, 5]) }
+        Dry::Schema.define do
+          optional(:foo) { excluded_from?([1, 3, 5]) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { foo: 3 } }
+        let(:input) { { foo: 2 } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -84,32 +84,32 @@ RSpec.context 'Predicates: Included In' do
       context 'with nil input' do
         let(:input) { { foo: nil } }
 
-        it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        it 'is successful' do
+          expect(result).to be_successful
         end
       end
 
       context 'with blank input' do
         let(:input) { { foo: '' } }
 
-        it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        it 'is successful' do
+          expect(result).to be_successful
         end
       end
 
       context 'with invalid type' do
         let(:input) { { foo: { a: 1 } } }
 
-        it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        it 'is successful' do
+          expect(result).to be_successful
         end
       end
 
       context 'with invalid input' do
-        let(:input) { { foo: 4 } }
+        let(:input) { { foo: 5 } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['must be one of: 1, 3, 5']
+          expect(result).to be_failing ['must not be one of: 1, 3, 5']
         end
       end
     end
@@ -118,13 +118,13 @@ RSpec.context 'Predicates: Included In' do
       context 'with required' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.build do
-              required(:foo).value(included_in?: [1, 3, 5])
+            Dry::Schema.define do
+              required(:foo).value(excluded_from?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: 3 } }
+            let(:input) { { foo: 2 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -135,52 +135,52 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
             end
           end
 
           context 'with nil input' do
             let(:input) { { foo: nil } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid type' do
             let(:input) { { foo: { a: 1 } } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: 4 } }
+            let(:input) { { foo: 5 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must not be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.build do
-              required(:foo).filled(included_in?: [1, 3, 5])
+            Dry::Schema.define do
+              required(:foo).filled(excluded_from?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: 3 } }
+            let(:input) { { foo: 2 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -191,7 +191,7 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
             end
           end
 
@@ -199,7 +199,7 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { { foo: nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
             end
           end
 
@@ -207,36 +207,36 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid type' do
             let(:input) { { foo: { a: 1 } } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: 4 } }
+            let(:input) { { foo: 5 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must not be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.build do
-              required(:foo).maybe(included_in?: [1, 3, 5])
+            Dry::Schema.define do
+              required(:foo).maybe(excluded_from?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: 3 } }
+            let(:input) { { foo: 2 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -247,7 +247,7 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
             end
           end
 
@@ -262,24 +262,24 @@ RSpec.context 'Predicates: Included In' do
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid type' do
             let(:input) { { foo: { a: 1 } } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: 4 } }
+            let(:input) { { foo: 5 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must not be one of: 1, 3, 5']
             end
           end
         end
@@ -288,13 +288,13 @@ RSpec.context 'Predicates: Included In' do
       context 'with optional' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.build do
-              optional(:foo).value(included_in?: [1, 3, 5])
+            Dry::Schema.define do
+              optional(:foo).value(excluded_from?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: 3 } }
+            let(:input) { { foo: 2 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -312,45 +312,45 @@ RSpec.context 'Predicates: Included In' do
           context 'with nil input' do
             let(:input) { { foo: nil } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid type' do
             let(:input) { { foo: { a: 1 } } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: 4 } }
+            let(:input) { { foo: 5 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must not be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.build do
-              optional(:foo).filled(included_in?: [1, 3, 5])
+            Dry::Schema.define do
+              optional(:foo).filled(excluded_from?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: 3 } }
+            let(:input) { { foo: 2 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -369,7 +369,7 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { { foo: nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
             end
           end
 
@@ -377,36 +377,36 @@ RSpec.context 'Predicates: Included In' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid type' do
             let(:input) { { foo: { a: 1 } } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: 4 } }
+            let(:input) { { foo: 5 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must not be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.build do
-              optional(:foo).maybe(included_in?: [1, 3, 5])
+            Dry::Schema.define do
+              optional(:foo).maybe(excluded_from?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: 3 } }
+            let(:input) { { foo: 2 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -432,24 +432,24 @@ RSpec.context 'Predicates: Included In' do
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid type' do
             let(:input) { { foo: { a: 1 } } }
 
-            it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            it 'is successful' do
+              expect(result).to be_successful
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: 4 } }
+            let(:input) { { foo: 5 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be one of: 1, 3, 5']
+              expect(result).to be_failing ['must not be one of: 1, 3, 5']
             end
           end
         end

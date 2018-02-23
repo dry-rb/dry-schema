@@ -1,14 +1,16 @@
-RSpec.describe 'Predicates: Size' do
-  context 'Fixed (integer)' do
+RSpec.context 'Predicates: Included In' do
+
+  context "Array" do
+
     context 'with required' do
       subject(:schema) do
-        Dry::Schema.build do
-          required(:foo) { size?(3) }
+        Dry::Schema.define do
+          required(:foo) { included_in?([1, 3, 5]) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { foo: [1, 2, 3] } }
+        let(:input) { { foo: 3 } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -19,15 +21,15 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect(result).to be_failing ['is missing', 'size must be 3']
+          expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
         end
       end
 
       context 'with nil input' do
         let(:input) { { foo: nil } }
 
-        it 'is raises error' do
-          expect { result }.to raise_error(NoMethodError)
+        it 'is not successful' do
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
         end
       end
 
@@ -35,28 +37,36 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { { foo: '' } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['length must be 3']
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        end
+      end
+
+      context 'with invalid type' do
+        let(:input) { { foo: { a: 1 } } }
+
+        it 'is not successful' do
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
         end
       end
 
       context 'with invalid input' do
-        let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+        let(:input) { { foo: 4 } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be 3']
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
         end
       end
     end
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Schema.build do
-          optional(:foo) { size?(3) }
+        Dry::Schema.define do
+          optional(:foo) { included_in?([1, 3, 5]) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { foo: [1, 2, 3] } }
+        let(:input) { { foo: 3 } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -74,25 +84,32 @@ RSpec.describe 'Predicates: Size' do
       context 'with nil input' do
         let(:input) { { foo: nil } }
 
-        it 'is raises error' do
-          expect { result }.to raise_error(NoMethodError)
+        it 'is not successful' do
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
         end
       end
 
       context 'with blank input' do
         let(:input) { { foo: '' } }
 
-        #see: https://github.com/dry-rb/dry-validation/issues/121
         it 'is not successful' do
-          expect(result).to be_failing ['length must be 3']
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
+        end
+      end
+
+      context 'with invalid type' do
+        let(:input) { { foo: { a: 1 } } }
+
+        it 'is not successful' do
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
         end
       end
 
       context 'with invalid input' do
-        let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+        let(:input) { { foo: 4 } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be 3']
+          expect(result).to be_failing ['must be one of: 1, 3, 5']
         end
       end
     end
@@ -101,13 +118,13 @@ RSpec.describe 'Predicates: Size' do
       context 'with required' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.build do
-              required(:foo).value(size?: 3)
+            Dry::Schema.define do
+              required(:foo).value(included_in?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: [1, 2, 3] } }
+            let(:input) { { foo: 3 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -118,45 +135,52 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
             end
           end
 
           context 'with nil input' do
             let(:input) { { foo: nil } }
 
-            it 'is raises error' do
-              expect { result }.to raise_error(NoMethodError)
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            #see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
-              expect(result).to be_failing ['length must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            end
+          end
+
+          context 'with invalid type' do
+            let(:input) { { foo: { a: 1 } } }
+
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+            let(:input) { { foo: 4 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.build do
-              required(:foo).filled(size?: 3)
+            Dry::Schema.define do
+              required(:foo).filled(included_in?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: [1, 2, 3] } }
+            let(:input) { { foo: 3 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -167,7 +191,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
             end
           end
 
@@ -175,7 +199,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { foo: nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
             end
           end
 
@@ -183,28 +207,36 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be 3']
+              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
+            end
+          end
+
+          context 'with invalid type' do
+            let(:input) { { foo: { a: 1 } } }
+
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+            let(:input) { { foo: 4 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.build do
-              required(:foo).maybe(size?: 3)
+            Dry::Schema.define do
+              required(:foo).maybe(included_in?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: [1, 2, 3] } }
+            let(:input) { { foo: 3 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -215,7 +247,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
             end
           end
 
@@ -230,17 +262,24 @@ RSpec.describe 'Predicates: Size' do
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            #see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
-              expect(result).to be_failing ['length must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            end
+          end
+
+          context 'with invalid type' do
+            let(:input) { { foo: { a: 1 } } }
+
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+            let(:input) { { foo: 4 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
         end
@@ -249,13 +288,13 @@ RSpec.describe 'Predicates: Size' do
       context 'with optional' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.build do
-              optional(:foo).value(size?: 3)
+            Dry::Schema.define do
+              optional(:foo).value(included_in?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: [1, 2, 3] } }
+            let(:input) { { foo: 3 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -273,38 +312,45 @@ RSpec.describe 'Predicates: Size' do
           context 'with nil input' do
             let(:input) { { foo: nil } }
 
-            it 'is raises error' do
-              expect { result }.to raise_error(NoMethodError)
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            #see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
-              expect(result).to be_failing ['length must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            end
+          end
+
+          context 'with invalid type' do
+            let(:input) { { foo: { a: 1 } } }
+
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+            let(:input) { { foo: 4 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.build do
-              optional(:foo).filled(size?: 3)
+            Dry::Schema.define do
+              optional(:foo).filled(included_in?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: [1, 2, 3] } }
+            let(:input) { { foo: 3 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -323,7 +369,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { foo: nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
             end
           end
 
@@ -331,28 +377,36 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be 3']
+              expect(result).to be_failing ['must be filled', 'must be one of: 1, 3, 5']
+            end
+          end
+
+          context 'with invalid type' do
+            let(:input) { { foo: { a: 1 } } }
+
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+            let(:input) { { foo: 4 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
         end
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.build do
-              optional(:foo).maybe(size?: 3)
+            Dry::Schema.define do
+              optional(:foo).maybe(included_in?: [1, 3, 5])
             end
           end
 
           context 'with valid input' do
-            let(:input) { { foo: [1, 2, 3] } }
+            let(:input) { { foo: 3 } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -378,17 +432,24 @@ RSpec.describe 'Predicates: Size' do
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            #see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
-              expect(result).to be_failing ['length must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
+            end
+          end
+
+          context 'with invalid type' do
+            let(:input) { { foo: { a: 1 } } }
+
+            it 'is not successful' do
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
+            let(:input) { { foo: 4 } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be one of: 1, 3, 5']
             end
           end
         end

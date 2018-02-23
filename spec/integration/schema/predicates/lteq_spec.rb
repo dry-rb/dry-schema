@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Gteq' do
+RSpec.describe 'Predicates: Lteq' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo) { gteq?(23) }
+      Dry::Schema.define do
+        required(:foo) { lteq?(23) }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { foo: 33 } }
+      let(:input) { { foo: 1 } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Gteq' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+        expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
       end
     end
 
@@ -54,24 +54,24 @@ RSpec.describe 'Predicates: Gteq' do
       end
     end
 
-    context 'with less than input' do
-      let(:input) { { foo: 0 } }
+    context 'with greater than input' do
+      let(:input) { { foo: 99 } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be greater than or equal to 23']
+        expect(result).to be_failing ['must be less than or equal to 23']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
-        optional(:foo) { gteq?(23) }
+      Dry::Schema.define do
+        optional(:foo) { lteq?(23) }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { foo: 33 } }
+      let(:input) { { foo: 1 } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -118,11 +118,11 @@ RSpec.describe 'Predicates: Gteq' do
       end
     end
 
-    context 'with less than input' do
-      let(:input) { { foo: 0 } }
+    context 'with greater than input' do
+      let(:input) { { foo: 99 } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be greater than or equal to 23']
+        expect(result).to be_failing ['must be less than or equal to 23']
       end
     end
   end
@@ -131,13 +131,13 @@ RSpec.describe 'Predicates: Gteq' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).value(gteq?: 23)
+          Dry::Schema.define do
+            required(:foo).value(lteq?: 23)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 33 } }
+          let(:input) { { foo: 1 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
           end
         end
 
@@ -184,24 +184,24 @@ RSpec.describe 'Predicates: Gteq' do
           end
         end
 
-        context 'with less than input' do
-          let(:input) { { foo: 0 } }
+        context 'with greater than input' do
+          let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than or equal to 23']
+            expect(result).to be_failing ['must be less than or equal to 23']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).filled(gteq?: 23)
+          Dry::Schema.define do
+            required(:foo).filled(lteq?: 23)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 33 } }
+          let(:input) { { foo: 1 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
           end
         end
 
@@ -220,7 +220,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
           end
         end
 
@@ -236,7 +236,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
           end
         end
 
@@ -248,24 +248,24 @@ RSpec.describe 'Predicates: Gteq' do
           end
         end
 
-        context 'with less than input' do
-          let(:input) { { foo: 0 } }
+        context 'with greater than input' do
+          let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than or equal to 23']
+            expect(result).to be_failing ['must be less than or equal to 23']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).maybe(gteq?: 23)
+          Dry::Schema.define do
+            required(:foo).maybe(lteq?: 23)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 33 } }
+          let(:input) { { foo: 1 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -276,7 +276,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
           end
         end
 
@@ -312,11 +312,11 @@ RSpec.describe 'Predicates: Gteq' do
           end
         end
 
-        context 'with less than input' do
-          let(:input) { { foo: 0 } }
+        context 'with greater than input' do
+          let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than or equal to 23']
+            expect(result).to be_failing ['must be less than or equal to 23']
           end
         end
       end
@@ -325,13 +325,13 @@ RSpec.describe 'Predicates: Gteq' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).value(gteq?: 23)
+          Dry::Schema.define do
+            optional(:foo).value(lteq?: 23)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 33 } }
+          let(:input) { { foo: 1 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -349,7 +349,7 @@ RSpec.describe 'Predicates: Gteq' do
         context 'with nil input' do
           let(:input) { { foo: nil } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(NoMethodError)
           end
         end
@@ -357,7 +357,7 @@ RSpec.describe 'Predicates: Gteq' do
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
           end
         end
@@ -365,7 +365,7 @@ RSpec.describe 'Predicates: Gteq' do
         context 'with invalid input type' do
           let(:input) { { foo: [] } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(NoMethodError)
           end
         end
@@ -378,24 +378,24 @@ RSpec.describe 'Predicates: Gteq' do
           end
         end
 
-        context 'with less than input' do
-          let(:input) { { foo: 0 } }
+        context 'with greater than input' do
+          let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than or equal to 23']
+            expect(result).to be_failing ['must be less than or equal to 23']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).filled(gteq?: 23)
+          Dry::Schema.define do
+            optional(:foo).filled(lteq?: 23)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 33 } }
+          let(:input) { { foo: 1 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -414,7 +414,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
           end
         end
 
@@ -422,7 +422,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
           end
         end
 
@@ -430,7 +430,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
           end
         end
 
@@ -442,24 +442,24 @@ RSpec.describe 'Predicates: Gteq' do
           end
         end
 
-        context 'with less than input' do
-          let(:input) { { foo: 0 } }
+        context 'with greater than input' do
+          let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than or equal to 23']
+            expect(result).to be_failing ['must be less than or equal to 23']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).maybe(gteq?: 23)
+          Dry::Schema.define do
+            optional(:foo).maybe(lteq?: 23)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 33 } }
+          let(:input) { { foo: 1 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -506,11 +506,11 @@ RSpec.describe 'Predicates: Gteq' do
           end
         end
 
-        context 'with less than input' do
-          let(:input) { { foo: 0 } }
+        context 'with greater than input' do
+          let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than or equal to 23']
+            expect(result).to be_failing ['must be less than or equal to 23']
           end
         end
       end

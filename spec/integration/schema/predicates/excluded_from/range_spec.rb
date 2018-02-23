@@ -4,7 +4,7 @@ RSpec.describe 'Predicates: Excluded From' do
 
     context 'with required' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           required(:foo) { excluded_from?(1..5) }
         end
       end
@@ -60,7 +60,7 @@ RSpec.describe 'Predicates: Excluded From' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           optional(:foo) { excluded_from?(1..5) }
         end
       end
@@ -118,7 +118,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with required' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.build do
+            Dry::Schema.define do
               required(:foo).value(excluded_from?: 1..5)
             end
           end
@@ -174,7 +174,7 @@ RSpec.describe 'Predicates: Excluded From' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.build do
+            Dry::Schema.define do
               required(:foo).filled(excluded_from?: 1..5)
             end
           end
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Excluded From' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.build do
+            Dry::Schema.define do
               required(:foo).maybe(excluded_from?: 1..5)
             end
           end
@@ -288,7 +288,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with optional' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.build do
+            Dry::Schema.define do
               optional(:foo).value(excluded_from?: 1..5)
             end
           end
@@ -344,7 +344,7 @@ RSpec.describe 'Predicates: Excluded From' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.build do
+            Dry::Schema.define do
               optional(:foo).filled(excluded_from?: 1..5)
             end
           end
@@ -400,7 +400,7 @@ RSpec.describe 'Predicates: Excluded From' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.build do
+            Dry::Schema.define do
               optional(:foo).maybe(excluded_from?: 1..5)
             end
           end

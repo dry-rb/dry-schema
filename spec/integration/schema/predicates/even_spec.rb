@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Lteq' do
+RSpec.describe 'Predicates: Even' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo) { lteq?(23) }
+      Dry::Schema.define do
+        required(:foo) { even? }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { foo: 1 } }
+    context 'with even input' do
+      let(:input) { { foo: 2 } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,14 +18,14 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
+        expect(result).to be_failing ['is missing', 'must be even']
       end
     end
 
     context 'with nil input' do
       let(:input) { { foo: nil } }
 
-      it 'is raises error' do
+      it 'raises error' do
         expect { result }.to raise_error(NoMethodError)
       end
     end
@@ -33,45 +33,37 @@ RSpec.describe 'Predicates: Lteq' do
     context 'with blank input' do
       let(:input) { { foo: '' } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
+      it 'raises error' do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
 
     context 'with invalid input type' do
       let(:input) { { foo: [] } }
 
-      it 'is raises error' do
+      it 'raises error' do
         expect { result }.to raise_error(NoMethodError)
       end
     end
 
-    context 'with equal input' do
-      let(:input) { { foo: 23 } }
-
-      it 'is successful' do
-        expect(result).to be_successful
-      end
-    end
-
-    context 'with greater than input' do
-      let(:input) { { foo: 99 } }
+    context 'with odd input' do
+      let(:input) { { foo: 1 } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be less than or equal to 23']
+        expect(result).to be_failing ['must be even']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
-        optional(:foo) { lteq?(23) }
+      Dry::Schema.define do
+        optional(:foo) { even? }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { foo: 1 } }
+    context 'with even input' do
+      let(:input) { { foo: 2 } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -89,7 +81,7 @@ RSpec.describe 'Predicates: Lteq' do
     context 'with nil input' do
       let(:input) { { foo: nil } }
 
-      it 'is raises error' do
+      it 'raises error' do
         expect { result }.to raise_error(NoMethodError)
       end
     end
@@ -97,32 +89,24 @@ RSpec.describe 'Predicates: Lteq' do
     context 'with blank input' do
       let(:input) { { foo: '' } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
+      it 'raises error' do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
 
     context 'with invalid input type' do
       let(:input) { { foo: [] } }
 
-      it 'is raises error' do
+      it 'raises error' do
         expect { result }.to raise_error(NoMethodError)
       end
     end
 
-    context 'with equal input' do
-      let(:input) { { foo: 23 } }
-
-      it 'is successful' do
-        expect(result).to be_successful
-      end
-    end
-
-    context 'with greater than input' do
-      let(:input) { { foo: 99 } }
+    context 'with odd input' do
+      let(:input) { { foo: 1 } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be less than or equal to 23']
+        expect(result).to be_failing ['must be even']
       end
     end
   end
@@ -131,13 +115,13 @@ RSpec.describe 'Predicates: Lteq' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).value(lteq?: 23)
+          Dry::Schema.define do
+            required(:foo).value(:even?)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 1 } }
+          let(:input) { { foo: 2 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -148,14 +132,14 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be even']
           end
         end
 
         context 'with nil input' do
           let(:input) { { foo: nil } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(NoMethodError)
           end
         end
@@ -163,45 +147,37 @@ RSpec.describe 'Predicates: Lteq' do
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
+          it 'raises error' do
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with invalid input type' do
           let(:input) { { foo: [] } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(NoMethodError)
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { foo: 23 } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with greater than input' do
-          let(:input) { { foo: 99 } }
+        context 'with odd input' do
+          let(:input) { { foo: 1 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be less than or equal to 23']
+            expect(result).to be_failing ['must be even']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).filled(lteq?: 23)
+          Dry::Schema.define do
+            required(:foo).filled(:even?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 1 } }
+        context 'with even input' do
+          let(:input) { { foo: 2 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -212,7 +188,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be even']
           end
         end
 
@@ -220,7 +196,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be even']
           end
         end
 
@@ -228,7 +204,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be even']
           end
         end
 
@@ -236,36 +212,28 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be even']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { foo: 23 } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with greater than input' do
-          let(:input) { { foo: 99 } }
+        context 'with odd input' do
+          let(:input) { { foo: 1 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be less than or equal to 23']
+            expect(result).to be_failing ['must be even']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).maybe(lteq?: 23)
+          Dry::Schema.define do
+            required(:foo).maybe(:even?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 1 } }
+        context 'with even input' do
+          let(:input) { { foo: 2 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -276,7 +244,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be less than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be even']
           end
         end
 
@@ -291,32 +259,24 @@ RSpec.describe 'Predicates: Lteq' do
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
+          it 'is successful' do
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with invalid input type' do
           let(:input) { { foo: [] } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(NoMethodError)
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { foo: 23 } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with greater than input' do
-          let(:input) { { foo: 99 } }
+        context 'with odd input' do
+          let(:input) { { foo: 1 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be less than or equal to 23']
+            expect(result).to be_failing ['must be even']
           end
         end
       end
@@ -325,13 +285,13 @@ RSpec.describe 'Predicates: Lteq' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).value(lteq?: 23)
+          Dry::Schema.define do
+            optional(:foo).value(:even?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 1 } }
+        context 'with even input' do
+          let(:input) { { foo: 2 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -358,7 +318,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: '' } }
 
           it 'raises error' do
-            expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
@@ -370,32 +330,24 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { foo: 23 } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with greater than input' do
-          let(:input) { { foo: 99 } }
+        context 'with odd input' do
+          let(:input) { { foo: 1 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be less than or equal to 23']
+            expect(result).to be_failing ['must be even']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).filled(lteq?: 23)
+          Dry::Schema.define do
+            optional(:foo).filled(:even?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 1 } }
+        context 'with even input' do
+          let(:input) { { foo: 2 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -414,7 +366,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be even']
           end
         end
 
@@ -422,7 +374,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be even']
           end
         end
 
@@ -430,36 +382,28 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be less than or equal to 23']
+            expect(result).to be_failing ['must be filled', 'must be even']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { foo: 23 } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with greater than input' do
-          let(:input) { { foo: 99 } }
+        context 'with odd input' do
+          let(:input) { { foo: 1 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be less than or equal to 23']
+            expect(result).to be_failing ['must be even']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).maybe(lteq?: 23)
+          Dry::Schema.define do
+            optional(:foo).maybe(:even?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 1 } }
+        context 'with even input' do
+          let(:input) { { foo: 2 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -485,32 +429,24 @@ RSpec.describe 'Predicates: Lteq' do
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(ArgumentError, 'comparison of String with 23 failed')
+          it 'is successful' do
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with invalid input type' do
           let(:input) { { foo: [] } }
 
-          it 'is raises error' do
+          it 'raises error' do
             expect { result }.to raise_error(NoMethodError)
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { foo: 23 } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with greater than input' do
-          let(:input) { { foo: 99 } }
+        context 'with odd input' do
+          let(:input) { { foo: 1 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be less than or equal to 23']
+            expect(result).to be_failing ['must be even']
           end
         end
       end

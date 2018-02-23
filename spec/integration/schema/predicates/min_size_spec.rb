@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Min Size' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:foo) { min_size?(3) }
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe 'Predicates: Min Size' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         optional(:foo) { min_size?(3) }
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe 'Predicates: Min Size' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).value(min_size?: 3)
           end
         end
@@ -147,7 +147,7 @@ RSpec.describe 'Predicates: Min Size' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).filled(min_size?: 3)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Min Size' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).maybe(min_size?: 3)
           end
         end
@@ -245,7 +245,7 @@ RSpec.describe 'Predicates: Min Size' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).value(min_size?: 3)
           end
         end
@@ -293,7 +293,7 @@ RSpec.describe 'Predicates: Min Size' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).filled(min_size?: 3)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Min Size' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).maybe(min_size?: 3)
           end
         end

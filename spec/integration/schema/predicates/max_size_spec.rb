@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Type' do
+RSpec.describe 'Predicates: Max Size' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo) { type?(Integer) }
+      Dry::Schema.define do
+        required(:foo) { max_size?(3) }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { foo: 23 } }
+      let(:input) { { foo: [1, 2, 3] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,44 +18,44 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be Integer']
+        expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
       end
     end
 
     context 'with nil input' do
       let(:input) { { foo: nil } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it 'is raises error' do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
 
     context 'with blank input' do
       let(:input) { { foo: '' } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
-    context 'with invalid type' do
-      let(:input) { { foo: [:x] } }
+    context 'with invalid input' do
+      let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['size cannot be greater than 3']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
-        optional(:foo) { type?(Integer) }
+      Dry::Schema.define do
+        optional(:foo) { max_size?(3) }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { foo: 23 } }
+      let(:input) { { foo: [1, 2, 3] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -73,24 +73,24 @@ RSpec.describe 'Predicates: Type' do
     context 'with nil input' do
       let(:input) { { foo: nil } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it 'is raises error' do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
 
     context 'with blank input' do
       let(:input) { { foo: '' } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
-    context 'with invalid type' do
-      let(:input) { { foo: [:x] } }
+    context 'with invalid input' do
+      let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['size cannot be greater than 3']
       end
     end
   end
@@ -99,13 +99,13 @@ RSpec.describe 'Predicates: Type' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).value(type?: Integer)
+          Dry::Schema.define do
+            required(:foo).value(max_size?: 3)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { foo: [1, 2, 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
           end
         end
 
@@ -124,36 +124,36 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context 'with invalid input' do
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).filled(type?: Integer)
+          Dry::Schema.define do
+            required(:foo).filled(max_size?: 3)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { foo: [1, 2, 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -164,7 +164,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
@@ -180,28 +180,28 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context 'with invalid input' do
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).maybe(type?: Integer)
+          Dry::Schema.define do
+            required(:foo).maybe(max_size?: 3)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { foo: [1, 2, 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
           end
         end
 
@@ -227,16 +227,16 @@ RSpec.describe 'Predicates: Type' do
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context 'with invalid input' do
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
@@ -245,13 +245,13 @@ RSpec.describe 'Predicates: Type' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).value(type?: Integer)
+          Dry::Schema.define do
+            optional(:foo).value(max_size?: 3)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { foo: [1, 2, 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -269,37 +269,37 @@ RSpec.describe 'Predicates: Type' do
         context 'with nil input' do
           let(:input) { { foo: nil } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it 'is raises error' do
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context 'with invalid input' do
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).filled(type?: Integer)
+          Dry::Schema.define do
+            optional(:foo).filled(max_size?: 3)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { foo: [1, 2, 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -318,7 +318,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
@@ -326,28 +326,28 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context 'with invalid input' do
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).maybe(type?: Integer)
+          Dry::Schema.define do
+            optional(:foo).maybe(max_size?: 3)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { foo: [1, 2, 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -373,41 +373,19 @@ RSpec.describe 'Predicates: Type' do
         context 'with blank input' do
           let(:input) { { foo: '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context 'with invalid input' do
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
-    end
-  end
-
-  context 'with a custom class' do
-    subject(:schema) do
-      Dry::Schema.build do
-        required(:foo).value(type?: CustomClass)
-      end
-    end
-
-    around do |example|
-      CustomClass = Class.new
-      example.run
-      Object.send(:remove_const, :CustomClass)
-    end
-
-    it 'it succeeds with valid input' do
-      expect(schema.(foo: CustomClass.new)).to be_success
-    end
-
-    it 'it fails with invalid input' do
-      expect(schema.(foo: 'oops')).to be_failing ["must be #{CustomClass}"]
     end
   end
 end

@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Format' do
+RSpec.describe 'Predicates: Type' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo) { format?(/bar/) }
+      Dry::Schema.define do
+        required(:foo) { type?(Integer) }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { foo: 'bar baz' } }
+      let(:input) { { foo: 23 } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing']
+        expect(result).to be_failing ['is missing', 'must be Integer']
       end
     end
 
@@ -26,7 +26,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is in invalid format']
+        expect(result).to be_failing ['must be Integer']
       end
     end
 
@@ -34,36 +34,28 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is in invalid format']
+        expect(result).to be_failing ['must be Integer']
       end
     end
 
     context 'with invalid type' do
-      let(:input) { { foo: { a: 1 } } }
-
-      it 'raises error' do
-        expect { result }.to raise_error TypeError
-      end
-    end
-
-    context 'with invalid input' do
-      let(:input) { { foo: 'wat' } }
+      let(:input) { { foo: [:x] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is in invalid format']
+        expect(result).to be_failing ['must be Integer']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
-        optional(:foo) { format?(/bar/) }
+      Dry::Schema.define do
+        optional(:foo) { type?(Integer) }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { foo: 'bar baz' } }
+      let(:input) { { foo: 23 } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -82,7 +74,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is in invalid format']
+        expect(result).to be_failing ['must be Integer']
       end
     end
 
@@ -90,23 +82,15 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is in invalid format']
+        expect(result).to be_failing ['must be Integer']
       end
     end
 
     context 'with invalid type' do
-      let(:input) { { foo: { a: 1 } } }
-
-      it 'raises error' do
-        expect { result }.to raise_error TypeError
-      end
-    end
-
-    context 'with invalid input' do
-      let(:input) { { foo: 'wat' } }
+      let(:input) { { foo: [:x] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is in invalid format']
+        expect(result).to be_failing ['must be Integer']
       end
     end
   end
@@ -115,13 +99,13 @@ RSpec.describe 'Predicates: Format' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).value(format?: /bar/)
+          Dry::Schema.define do
+            required(:foo).value(type?: Integer)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 'bar baz' } }
+          let(:input) { { foo: 23 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -132,7 +116,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be Integer']
           end
         end
 
@@ -140,7 +124,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
 
@@ -148,36 +132,28 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
 
         context 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
-
-          it 'raises error' do
-            expect { result }.to raise_error TypeError
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { foo: 'wat' } }
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).filled(format?: /bar/)
+          Dry::Schema.define do
+            required(:foo).filled(type?: Integer)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 'bar baz' } }
+          let(:input) { { foo: 23 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -188,7 +164,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be Integer']
           end
         end
 
@@ -196,7 +172,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be Integer']
           end
         end
 
@@ -204,36 +180,28 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be Integer']
           end
         end
 
         context 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
-
-          it 'raises error' do
-            expect { result }.to raise_error TypeError
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { foo: 'wat' } }
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            required(:foo).maybe(format?: /bar/)
+          Dry::Schema.define do
+            required(:foo).maybe(type?: Integer)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 'bar baz' } }
+          let(:input) { { foo: 23 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -244,7 +212,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be Integer']
           end
         end
 
@@ -260,23 +228,15 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
 
         context 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
-
-          it 'raises error' do
-            expect { result }.to raise_error TypeError
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { foo: 'wat' } }
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
       end
@@ -285,13 +245,13 @@ RSpec.describe 'Predicates: Format' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).value(format?: /bar/)
+          Dry::Schema.define do
+            optional(:foo).value(type?: Integer)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 'bar baz' } }
+          let(:input) { { foo: 23 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -310,7 +270,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
 
@@ -318,36 +278,28 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
 
         context 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
-
-          it 'raises error' do
-            expect { result }.to raise_error TypeError
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { foo: 'wat' } }
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).filled(format?: /bar/)
+          Dry::Schema.define do
+            optional(:foo).filled(type?: Integer)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 'bar baz' } }
+          let(:input) { { foo: 23 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -366,7 +318,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be Integer']
           end
         end
 
@@ -374,36 +326,28 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be Integer']
           end
         end
 
         context 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
-
-          it 'raises error' do
-            expect { result }.to raise_error TypeError
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { foo: 'wat' } }
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
-            optional(:foo).maybe(format?: /bar/)
+          Dry::Schema.define do
+            optional(:foo).maybe(type?: Integer)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { foo: 'bar baz' } }
+          let(:input) { { foo: 23 } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -430,26 +374,40 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
 
         context 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
-
-          it 'raises error' do
-            expect { result }.to raise_error TypeError
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { foo: 'wat' } }
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is in invalid format']
+            expect(result).to be_failing ['must be Integer']
           end
         end
       end
+    end
+  end
+
+  context 'with a custom class' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:foo).value(type?: CustomClass)
+      end
+    end
+
+    around do |example|
+      CustomClass = Class.new
+      example.run
+      Object.send(:remove_const, :CustomClass)
+    end
+
+    it 'it succeeds with valid input' do
+      expect(schema.(foo: CustomClass.new)).to be_success
+    end
+
+    it 'it fails with invalid input' do
+      expect(schema.(foo: 'oops')).to be_failing ["must be #{CustomClass}"]
     end
   end
 end
