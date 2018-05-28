@@ -1,6 +1,5 @@
 [gem]: https://rubygems.org/gems/dry-schema
 [travis]: https://travis-ci.org/dry-rb/dry-schema
-[gemnasium]: https://gemnasium.com/dry-rb/dry-schema
 [codeclimate]: https://codeclimate.com/github/dry-rb/dry-schema
 [coveralls]: https://coveralls.io/r/dry-rb/dry-schema
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-schema
@@ -9,7 +8,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/dry-schema.svg)][gem]
 [![Build Status](https://travis-ci.org/dry-rb/dry-schema.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/dry-rb/dry-schema.svg)][gemnasium]
 [![Code Climate](https://codeclimate.com/github/dry-rb/dry-schema/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/dry-rb/dry-schema/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-schema.svg?branch=master)][inchpages]
