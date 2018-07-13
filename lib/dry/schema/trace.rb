@@ -29,6 +29,8 @@ module Dry
     end
 
     class Trace < BasicObject
+      INVALID_PREDICATES = %i[key?].freeze
+
       include ::Dry::Equalizer(:compiler, :nodes)
 
       undef eql?
@@ -83,6 +85,10 @@ module Dry
       private
 
       def register(meth, *args, block)
+        if ::Dry::Schema::Trace::INVALID_PREDICATES.include?(meth)
+          ::Kernel.raise InvalidSchemaError, "#{meth} predicate cannot be used in this context"
+        end
+
         nodes << Predicate.new(compiler, meth, args, block)
         self
       end

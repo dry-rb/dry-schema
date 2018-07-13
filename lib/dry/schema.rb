@@ -4,6 +4,8 @@ require 'dry/schema/definition'
 
 module Dry
   module Schema
+    InvalidSchemaError = Class.new(StandardError)
+
     # Define a schema
     #
     # @return [Definition]
