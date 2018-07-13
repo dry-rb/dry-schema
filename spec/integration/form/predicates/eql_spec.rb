@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Eql' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { eql?('23') }
+        required(:foo, :string) { eql?('23') }
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe 'Predicates: Eql' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { eql?('23') }
+        optional(:foo, :string) { eql?('23') }
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: Eql' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(eql?: '23')
+            required(:foo, :string).value(eql?: '23')
           end
         end
 
@@ -124,7 +124,7 @@ RSpec.describe 'Predicates: Eql' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).filled(eql?: '23')
+            required(:foo, :string).filled(eql?: '23')
           end
         end
 
@@ -164,7 +164,7 @@ RSpec.describe 'Predicates: Eql' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(eql?: '23')
+            required(:foo, [:nil, :string]).maybe(eql?: '23')
           end
         end
 
@@ -206,7 +206,7 @@ RSpec.describe 'Predicates: Eql' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(eql?: '23')
+            optional(:foo, :string).value(eql?: '23')
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Eql' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).filled(eql?: '23')
+            optional(:foo, :string).filled(eql?: '23')
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: Eql' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(eql?: '23')
+            optional(:foo, [:nil, :string]).maybe(eql?: '23')
           end
         end
 

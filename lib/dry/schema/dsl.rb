@@ -14,6 +14,10 @@ module Dry
 
       attr_reader :types
 
+      attr_reader :type_registry
+
+      attr_reader :hash_type
+
       attr_reader :options
 
       def initialize(compiler, options = {}, &block)
@@ -21,6 +25,8 @@ module Dry
         @options = options
         @macros = []
         @types = {}
+        @hash_type = options.fetch(:hash_type, :schema)
+        @type_registry = options.fetch(:type_registry, -> name { ::Dry::Types[name] })
         instance_eval(&block) if block
       end
 
@@ -33,7 +39,7 @@ module Dry
       end
 
       def type_schema
-        Types::Hash.schema(types)
+        type_registry["hash"].public_send(hash_type, types)
       end
 
       def required(name, type = Types::Any, &block)
@@ -45,11 +51,27 @@ module Dry
       end
 
       def key(name, type:, macro:, &block)
-        types[name] = type
+        set_type(name, type)
+
         macro = macro.new(name: name, compiler: compiler)
         macro.value(&block) if block
         macros << macro
         macro
+      end
+
+      private
+
+      def set_type(name, spec)
+        types[name] = resolve_type(spec)
+      end
+
+      def resolve_type(spec)
+        case spec
+        when ::Dry::Types::Type then spec
+        when ::Array then spec.map { |s| resolve_type(s) }.reduce(:|)
+        else
+          type_registry[spec]
+        end
       end
     end
   end
