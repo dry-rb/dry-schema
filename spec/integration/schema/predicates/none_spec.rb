@@ -164,7 +164,6 @@ RSpec.describe 'Predicates: None' do
       #makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
-          pending "Detect senseless rules"
           expect { Dry::Schema.define do
             required(:foo).maybe(:none?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
@@ -256,7 +255,6 @@ RSpec.describe 'Predicates: None' do
       #makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
-          pending "Detect senseless rules"
           expect { Dry::Schema.define do
             optional(:foo).maybe(:none?)
           end }.to raise_error Dry::Schema::InvalidSchemaError

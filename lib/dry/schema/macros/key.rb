@@ -20,6 +20,10 @@ module Dry
             raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"
           end
 
+          if args.include?(:none?)
+            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with none? predicate is redundant"
+          end
+
           macro = Maybe.new
           macro.value(*args, **opts, &block)
           trace << macro
