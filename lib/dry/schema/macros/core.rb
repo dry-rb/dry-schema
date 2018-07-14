@@ -33,6 +33,10 @@ module Dry
         end
 
         def filled(*args, &block)
+          if args.include?(:empty?)
+            raise ::Dry::Schema::InvalidSchemaError, "Using filled with empty? predicate is invalid"
+          end
+
           value(:filled?, *args, &block)
         end
 

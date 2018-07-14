@@ -16,6 +16,10 @@ module Dry
         end
 
         def maybe(*args, **opts, &block)
+          if args.include?(:empty?)
+            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"
+          end
+
           macro = Maybe.new
           macro.value(*args, **opts, &block)
           trace << macro
