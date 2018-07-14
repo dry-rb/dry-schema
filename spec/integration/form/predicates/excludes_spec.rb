@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Excludes' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { array? { each { int? } & excludes?(1) } }
+        required(:foo, Types::Form::Array.of(Types::Form::Int)).value(:array?).each(:int?).value(excludes?: 1)
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Excludes' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { array? { each { int? } & excludes?(1) } }
+        optional(:foo, Types::Form::Array.of(Types::Form::Int)).value(:array?).each(:int?).value(excludes?: 1)
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(excludes?: "foo")
+            required(:foo, Types::Form::Array.of(Types::Form::Int)).value(excludes?: "foo")
           end
         end
 
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).filled(excludes?: 'foo')
+            required(:foo, Types::Form::Array.of(Types::Form::Int)).filled(excludes?: 'foo')
           end
         end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(excludes?: 'foo')
+            required(:foo, [:nil, Types::Form::Array.of(Types::Form::Int)]).maybe(excludes?: 'foo')
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(excludes?: '1')
+            optional(:foo, Types::Form::Array.of(Types::Form::Int)).value(excludes?: 1)
           end
         end
 
@@ -294,7 +294,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).filled(excludes?: 'foo')
+            optional(:foo, Types::Form::Array.of(Types::Form::Int)).filled(excludes?: 'foo')
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(excludes?: 'foo')
+            optional(:foo, [:nil, Types::Form::Array.of(Types::Form::Int)]).maybe(excludes?: 'foo')
           end
         end
 
