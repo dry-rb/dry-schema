@@ -1,9 +1,9 @@
 RSpec.describe 'Predicates: Size' do
-  context 'Fixed (integer)' do
+  context 'Range' do
     context 'with required' do
       subject(:schema) do
         Dry::Schema.form do
-          required(:foo) { size?(3) }
+          required(:foo) { size?(2..3) }
         end
       end
 
@@ -19,7 +19,7 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect(result).to be_failing ['is missing', 'size must be 3']
+          expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
         end
       end
 
@@ -34,8 +34,9 @@ RSpec.describe 'Predicates: Size' do
       context 'with blank input' do
         let(:input) { { 'foo' => '' } }
 
+        #see: https://github.com/dry-rb/dry-validation/issues/121
         it 'is not successful' do
-          expect(result).to be_failing ['length must be 3']
+          expect(result).to be_failing ['length must be within 2 - 3']
         end
       end
 
@@ -43,7 +44,7 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be 3']
+          expect(result).to be_failing ['size must be within 2 - 3']
         end
       end
     end
@@ -51,7 +52,7 @@ RSpec.describe 'Predicates: Size' do
     context 'with optional' do
       subject(:schema) do
         Dry::Schema.form do
-          optional(:foo) { size?(3) }
+          optional(:foo) { size?(2..3) }
         end
       end
 
@@ -82,8 +83,9 @@ RSpec.describe 'Predicates: Size' do
       context 'with blank input' do
         let(:input) { { 'foo' => '' } }
 
+        #see: https://github.com/dry-rb/dry-validation/issues/121
         it 'is not successful' do
-          expect(result).to be_failing ['length must be 3']
+          expect(result).to be_failing ['length must be within 2 - 3']
         end
       end
 
@@ -91,7 +93,7 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be 3']
+          expect(result).to be_failing ['size must be within 2 - 3']
         end
       end
     end
@@ -101,7 +103,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo).value(size?: 3)
+              required(:foo).value(size?: 2..3)
             end
           end
 
@@ -117,7 +119,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
             end
           end
 
@@ -133,7 +135,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['length must be 3']
+              expect(result).to be_failing ['length must be within 2 - 3']
             end
           end
 
@@ -141,7 +143,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['size must be within 2 - 3']
             end
           end
         end
@@ -149,7 +151,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo).filled(size?: 3)
+              required(:foo).filled(size?: 2..3)
             end
           end
 
@@ -165,7 +167,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
             end
           end
 
@@ -173,7 +175,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled', 'size must be within 2 - 3']
             end
           end
 
@@ -181,7 +183,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be 3']
+              expect(result).to be_failing ['must be filled', 'length must be within 2 - 3']
             end
           end
 
@@ -189,7 +191,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['size must be within 2 - 3']
             end
           end
         end
@@ -197,7 +199,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo).maybe(size?: 3)
+              required(:foo, [:nil, :string]).maybe(size?: 2..3)
             end
           end
 
@@ -213,7 +215,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
             end
           end
 
@@ -237,7 +239,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['size must be within 2 - 3']
             end
           end
         end
@@ -247,7 +249,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo).value(size?: 3)
+              optional(:foo).value(size?: 2..3)
             end
           end
 
@@ -278,8 +280,9 @@ RSpec.describe 'Predicates: Size' do
           context 'with blank input' do
             let(:input) { { 'foo' => '' } }
 
+            #see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
-              expect(result).to be_failing ['length must be 3']
+              expect(result).to be_failing ['length must be within 2 - 3']
             end
           end
 
@@ -287,7 +290,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['size must be within 2 - 3']
             end
           end
         end
@@ -295,7 +298,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo).filled(size?: 3)
+              optional(:foo).filled(size?: 2..3)
             end
           end
 
@@ -319,7 +322,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled', 'size must be within 2 - 3']
             end
           end
 
@@ -327,7 +330,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be 3']
+              expect(result).to be_failing ['must be filled', 'length must be within 2 - 3']
             end
           end
 
@@ -335,7 +338,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['size must be within 2 - 3']
             end
           end
         end
@@ -343,7 +346,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo).maybe(size?: 3)
+              optional(:foo, [:nil, :string]).maybe(size?: 2..3)
             end
           end
 
@@ -383,7 +386,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['size must be within 2 - 3']
             end
           end
         end
