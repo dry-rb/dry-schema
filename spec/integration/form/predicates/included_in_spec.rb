@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(included_in?: %w(1 3 5))
+            required(:foo, [:nil, :string]).maybe(included_in?: %w(1 3 5))
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(included_in?: %w(1 3 5))
+            optional(:foo, [:nil, :string]).maybe(included_in?: %w(1 3 5))
           end
         end
 
