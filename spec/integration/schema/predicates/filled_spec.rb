@@ -171,7 +171,6 @@ RSpec.describe 'Predicates: Filled' do
 
       context 'with filled' do
         it "should raise error" do
-          pending "Detect senseless rules"
           expect { Dry::Schema.define do
             required(:foo).filled(:filled?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
@@ -348,7 +347,6 @@ RSpec.describe 'Predicates: Filled' do
 
       context 'with filled' do
         it "should raise error" do
-          pending "Detect senseless rules"
           expect { Dry::Schema.define do
             optional(:foo).filled(:filled?)
           end }.to raise_error Dry::Schema::InvalidSchemaError

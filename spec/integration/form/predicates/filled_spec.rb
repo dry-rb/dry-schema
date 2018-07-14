@@ -234,7 +234,7 @@ RSpec.describe 'Predicates: Filled' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(:filled?)
+            required(:foo, [:nil, :string]).maybe(:filled?)
           end
         end
 
@@ -410,7 +410,7 @@ RSpec.describe 'Predicates: Filled' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(:filled?)
+            optional(:foo, [:nil, :string]).maybe(:filled?)
           end
         end
 

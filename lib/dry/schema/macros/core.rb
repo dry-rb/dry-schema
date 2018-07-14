@@ -37,6 +37,10 @@ module Dry
             raise ::Dry::Schema::InvalidSchemaError, "Using filled with empty? predicate is invalid"
           end
 
+          if args.include?(:filled?)
+            raise ::Dry::Schema::InvalidSchemaError, "Using filled with filled? is redundant"
+          end
+
           value(:filled?, *args, &block)
         end
 
