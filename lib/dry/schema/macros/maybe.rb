@@ -8,7 +8,7 @@ module Dry
           [:implication,
            [
              [:not, [:predicate, [:none?, [[:input, Undefined]]]]],
-             *trace.to_ast
+             trace.to_rule.to_ast
            ]
           ]
         end
