@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Excluded From' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { excluded_from?(%w(1 3 5)) }
+        required(:foo, :string) { excluded_from?(%w(1 3 5)) }
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Predicates: Excluded From' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { excluded_from?(%w(1 3 5)) }
+        optional(:foo, :string) { excluded_from?(%w(1 3 5)) }
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(excluded_from?: %w(1 3 5))
+            required(:foo, :string).value(excluded_from?: %w(1 3 5))
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).filled(excluded_from?: %w(1 3 5))
+            required(:foo, :string).filled(excluded_from?: %w(1 3 5))
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(excluded_from?: %w(1 3 5))
+            required(:foo, [:nil, :string]).maybe(excluded_from?: %w(1 3 5))
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(excluded_from?: %w(1 3 5))
+            optional(:foo, :string).value(excluded_from?: %w(1 3 5))
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).filled(excluded_from?: %w(1 3 5))
+            optional(:foo, :string).filled(excluded_from?: %w(1 3 5))
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Excluded From' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(excluded_from?: %w(1 3 5))
+            optional(:foo, [:nil, :string]).maybe(excluded_from?: %w(1 3 5))
           end
         end
 
