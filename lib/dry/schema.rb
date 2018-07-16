@@ -16,7 +16,7 @@ module Dry
       compiler = Compiler.new
       dsl = DSL.new(compiler, options, &block)
 
-      Definition.new(dsl.call, type_schema: dsl.type_schema)
+      Definition.new(dsl.call, { type_schema: dsl.type_schema }.merge(options))
     end
 
     # Define a form schema

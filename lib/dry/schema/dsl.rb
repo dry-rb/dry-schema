@@ -35,11 +35,11 @@ module Dry
       end
 
       def call
-        macros.map { |m| [m.name, m.to_rule] }.to_h
+        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
       end
 
       def type_schema
-        type_registry["hash"].public_send(hash_type, types)
+        type_registry["hash"].public_send(hash_type, types.merge(parent_types))
       end
 
       def required(name, type = Types::Any, &block)
@@ -72,6 +72,15 @@ module Dry
         else
           type_registry[spec]
         end
+      end
+
+      def parent_rules
+        options[:parent]&.rules || {}
+      end
+
+      def parent_types
+        # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
+        options[:parent]&.type_schema&.member_types || {}
       end
     end
   end
