@@ -1,8 +1,7 @@
-RSpec.describe Dry::Schema::Form, 'explicit types' do
+RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec without rules' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
         required(:age, :int)
       end
     end
@@ -15,7 +14,6 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'single type spec with rules' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
         required(:age, :int).value(:int?, gt?: 18)
       end
     end
@@ -29,8 +27,7 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'single type spec with an array' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
-        required(:nums, [:int])
+        required(:nums, array[:int])
       end
     end
 
@@ -42,7 +39,6 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'sum type spec without rules' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
         required(:age, [:nil, :int])
       end
     end
@@ -56,7 +52,6 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'sum type spec with rules' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
         required(:age, [:nil, :int]).maybe(:int?, gt?: 18)
       end
     end
@@ -71,7 +66,6 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'using a type object' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
         required(:age, Types::Form::Nil | Types::Form::Int)
       end
     end
@@ -85,18 +79,16 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'nested schema' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
-
-        required(:user).schema do
+        required(:user, :hash).schema do
           required(:email, :string)
           required(:age, :int)
 
-          required(:address).schema do
+          required(:address, :hash).schema do
             required(:street, :string)
             required(:city, :string)
             required(:zipcode, :string)
 
-            required(:location).schema do
+            required(:location, :hash).schema do
               required(:lat, :float)
               required(:lng, :float)
             end
@@ -137,14 +129,12 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
   context 'nested schema with arrays' do
     subject(:schema) do
       Dry::Schema.form do
-        configure { config.type_specs = true }
-
-        required(:song).schema do
+        required(:song, :hash).value(:hash?).schema do
           required(:title, :string)
 
-          required(:tags).each do
+          required(:tags, :array).value(:array?).each do
             schema do
-              required(:name, :string)
+              required(:name, :string).value(:str?)
             end
           end
         end
@@ -159,7 +149,7 @@ RSpec.describe Dry::Schema::Form, 'explicit types' do
 
       result = schema.(song: { tags: nil })
 
-      expect(result.messages).to eql(song: { tags: ['must be an array'] })
+      expect(result.messages).to eql(song: { title: ['is missing'], tags: ['must be an array'] })
       expect(result.to_h).to eql(song: { tags: nil })
     end
 

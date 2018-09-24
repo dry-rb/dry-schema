@@ -6,15 +6,6 @@ module Dry
   module Schema
     module Macros
       class Key < Core
-        option :name
-
-        def each(*args, &block)
-          macro = Each.new
-          macro.value(*args, &block)
-          trace << macro
-          self
-        end
-
         def maybe(*args, **opts, &block)
           if args.include?(:empty?)
             raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"

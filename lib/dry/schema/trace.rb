@@ -3,31 +3,6 @@ require 'dry/schema/predicate'
 
 module Dry
   module Schema
-    class Evaluator < BasicObject
-      attr_reader :trace
-
-      def initialize(trace, &block)
-        @trace = trace
-        instance_exec(&block)
-      end
-
-      def to_rule
-        trace.to_rule
-      end
-
-      def schema(&block)
-        dsl = ::Dry::Schema::DSL.new(trace.compiler, &block)
-        trace << ::Dry::Schema::Definition.new(dsl.call)
-      end
-
-      private
-
-      def method_missing(meth, *args)
-        result = trace.__send__(meth, *args)
-        result.last.to_rule
-      end
-    end
-
     class Trace < BasicObject
       INVALID_PREDICATES = %i[key?].freeze
 
@@ -78,10 +53,6 @@ module Dry
         ::Dry::Schema::Trace
       end
 
-      def evaluate(&block)
-        append(Evaluator.new(new, &block))
-      end
-
       private
 
       def register(meth, *args, block)
@@ -94,7 +65,7 @@ module Dry
       end
 
       def method_missing(meth, *args, &block)
-        register(meth, *args, block)
+        register(meth, *args, block).last.to_rule
       end
     end
   end

@@ -57,7 +57,7 @@ RSpec.describe Dry::Schema, '.define' do
     context 'with simple predicates' do
       subject(:schema) do
         Dry::Schema.define do
-          required(:tags).each(:str?) { size?(2..4) }
+          required(:tags, :array).value(:array?).each(:str?) { size?(2..4) }
         end
       end
 
@@ -74,9 +74,9 @@ RSpec.describe Dry::Schema, '.define' do
     context 'with a nested schema' do
       subject(:schema) do
         Dry::Schema.define do
-          required(:tags).each do
+          required(:tags, :array).value(:array?).each do
             schema do
-              required(:name).filled
+              required(:name, :string).filled
             end
           end
         end

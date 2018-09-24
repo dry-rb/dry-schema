@@ -26,8 +26,12 @@ module Dry
         @macros = []
         @types = {}
         @hash_type = options.fetch(:hash_type, :schema)
-        @type_registry = options.fetch(:type_registry, -> name { ::Dry::Types[name] })
+        @type_registry = options.fetch(:type_registry, -> name { ::Dry::Types[name.to_s] })
         instance_eval(&block) if block
+      end
+
+      def array
+        -> member_type { Types::Array.of(resolve_type(member_type)) }
       end
 
       def class
@@ -53,10 +57,14 @@ module Dry
       def key(name, type:, macro:, &block)
         set_type(name, type)
 
-        macro = macro.new(name: name, compiler: compiler)
+        macro = macro.new(name: name, compiler: compiler, schema_dsl: self)
         macro.value(&block) if block
         macros << macro
         macro
+      end
+
+      def new(&block)
+        self.class.new(compiler, options, &block)
       end
 
       private

@@ -10,9 +10,15 @@ module Dry
       class Core
         extend Dry::Initializer
 
+        undef :eql?
+
+        option :name, default: proc { nil }, optional: true
+
         option :compiler, default: proc { Compiler.new }
 
         option :trace, default: proc { Trace.new }
+
+        option :schema_dsl, optional: true
 
         option :block, optional: true
 
@@ -26,7 +32,7 @@ module Dry
           end
 
           if block
-            trace.evaluate(&block)
+            instance_exec(&block)
           end
 
           self
@@ -45,8 +51,25 @@ module Dry
         end
 
         def schema(&block)
-          dsl = ::Dry::Schema::DSL.new(compiler, &block)
-          trace << ::Dry::Schema::Definition.new(dsl.call)
+          definition = schema_dsl.new(&block)
+
+          # TODO: this special-casing is not nice
+          if schema_dsl.types[name].primitive.equal?(::Array)
+            schema_dsl.types[name] = schema_dsl.types[name].of(definition.type_schema)
+          else
+            schema_dsl.types[name] = definition.type_schema
+          end
+
+          trace << ::Dry::Schema::Definition.new(definition.call)
+
+          self
+        end
+
+        def each(*args, &block)
+          macro = Each.new(schema_dsl: schema_dsl, name: name)
+          macro.value(*args, &block)
+          trace << macro
+          self
         end
 
         def to_rule

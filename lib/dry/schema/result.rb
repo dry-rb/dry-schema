@@ -9,6 +9,7 @@ module Dry
       extend Dry::Initializer
 
       param :output
+      alias_method :to_h, :output
 
       param :results
 
