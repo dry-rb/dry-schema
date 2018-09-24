@@ -28,7 +28,16 @@ module Dry
       define(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:form), &block)
     end
 
-    # @api privage
+    # Return configured paths to message files
+    #
+    # @return [Array<String>]
+    #
+    # @api public
+    def self.messages_paths
+      Messages::Abstract.config.paths
+    end
+
+    # @api private
     def self.resolve_type(ns, name)
       key = "#{ns}.#{name}"
       types.registered?(key) ? types[key] : types[name.to_s]
