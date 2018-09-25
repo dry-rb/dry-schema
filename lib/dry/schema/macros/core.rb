@@ -30,15 +30,10 @@ module Dry
         end
 
         def filled(*args, &block)
-          if args.include?(:empty?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using filled with empty? predicate is invalid"
-          end
-
-          if args.include?(:filled?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using filled with filled? is redundant"
-          end
-
-          value(:filled?, *args, &block)
+          macro = Filled.new(schema_dsl: schema_dsl, name: name)
+          macro.call(*args, &block)
+          trace << macro
+          self
         end
 
         def schema(&block)
