@@ -36,17 +36,15 @@ module Dry
       def to_rule(name = nil)
         return if nodes.empty?
 
-        rule = nodes.map(&:to_rule).reduce(:and)
-
         if name
-          compiler.visit([:key, [name, rule.to_ast]])
+          compiler.visit([:key, [name, to_ast]])
         else
-          rule
+          reduced_rule
         end
       end
 
       def to_ast
-        nodes.map(&:to_ast)
+        reduced_rule.to_ast
       end
 
       def class
@@ -54,6 +52,10 @@ module Dry
       end
 
       private
+
+      def reduced_rule
+        nodes.map(&:to_rule).reduce(:and)
+      end
 
       def register(meth, *args, block)
         if ::Dry::Schema::Trace::INVALID_PREDICATES.include?(meth)

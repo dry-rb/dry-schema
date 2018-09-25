@@ -1,4 +1,5 @@
 require 'dry/schema/macros/core'
+require 'dry/schema/macros/value'
 require 'dry/schema/macros/each'
 require 'dry/schema/macros/maybe'
 

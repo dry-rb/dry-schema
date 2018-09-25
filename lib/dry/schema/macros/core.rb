@@ -23,18 +23,9 @@ module Dry
         option :block, optional: true
 
         def value(*predicates, **opts, &block)
-          predicates.each do |predicate|
-            trace.__send__(predicate)
-          end
-
-          opts.each do |predicate, *args|
-            trace.__send__(predicate, *args)
-          end
-
-          if block
-            instance_exec(&block)
-          end
-
+          macro = Value.new(schema_dsl: schema_dsl, name: name)
+          macro.call(*predicates, **opts, &block)
+          trace << macro
           self
         end
 
