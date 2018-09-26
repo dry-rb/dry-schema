@@ -9,16 +9,8 @@ module Dry
     module Macros
       class Key < Core
         def maybe(*args, **opts, &block)
-          if args.include?(:empty?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"
-          end
-
-          if args.include?(:none?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with none? predicate is redundant"
-          end
-
-          macro = Maybe.new
-          macro.value(*args, **opts, &block)
+          macro = Maybe.new(schema_dsl: schema_dsl, name: name)
+          macro.call(*args, **opts, &block)
           trace << macro
           self
         end

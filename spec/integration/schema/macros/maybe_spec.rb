@@ -1,20 +1,19 @@
 RSpec.describe 'Macros #maybe' do
   describe 'with no args' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:email).maybe
       end
     end
 
     it 'generates none? | filled? rule' do
-      expect(schema.(email: nil).messages).to be_empty
-      expect(schema.(email: 'jane@doe').messages).to be_empty
+      expect { schema }.to raise_error(ArgumentError)
     end
   end
 
   describe 'with a predicate with args' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:name).maybe(min_size?: 3)
       end
     end
@@ -32,7 +31,7 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with a block' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:name).maybe { str? & min_size?(3) }
       end
     end
@@ -50,10 +49,10 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with an optional key and a block with schema' do
     subject(:schema) do
-      Dry::Schema.build do
-        optional(:employee).maybe do
+      Dry::Schema.define do
+        optional(:employee, [:nil, :hash]).maybe(:hash?) do
           schema do
-            required(:id).filled(:str?)
+            required(:id, :string).filled(:str?)
           end
         end
       end
@@ -80,7 +79,7 @@ RSpec.describe 'Macros #maybe' do
 
   describe 'with a predicate and a block' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:name).maybe(:str?) { min_size?(3) }
       end
     end

@@ -5,6 +5,36 @@ require 'dry/schema/compiler'
 require 'dry/schema/trace'
 
 module Dry
+  # <TODO>: figure out what to do with these helpers
+  class Types::Sum
+    def maybe?
+      left.primitive == NilClass
+    end
+
+    def hash?
+      right.primitive == Hash
+    end
+
+    def array?
+      right.primitive == Array
+    end
+  end
+
+  class Types::Definition
+    def maybe?
+      false
+    end
+
+    def hash?
+      primitive == Hash
+    end
+
+    def array?
+      primitive == Array
+    end
+  end
+  # </TODO>
+
   module Schema
     module Macros
       class Core
@@ -39,12 +69,11 @@ module Dry
         def schema(&block)
           definition = schema_dsl.new(&block)
 
-          # TODO: this special-casing is not nice
-          if schema_dsl.types[name].primitive.equal?(::Array)
-            schema_dsl.types[name] = schema_dsl.types[name].of(definition.type_schema).safe
-          else
-            schema_dsl.types[name] = definition.type_schema
-          end
+          parent_type = schema_dsl.types[name]
+          definition_schema = definition.type_schema
+
+          schema_type = parent_type.array? ? parent_type.of(definition_schema).safe : definition_schema
+          schema_dsl.types[name] = parent_type.maybe? ? schema_type.optional : schema_type
 
           trace << ::Dry::Schema::Definition.new(definition.call)
 
