@@ -41,7 +41,7 @@ module Dry
 
           # TODO: this special-casing is not nice
           if schema_dsl.types[name].primitive.equal?(::Array)
-            schema_dsl.types[name] = schema_dsl.types[name].of(definition.type_schema)
+            schema_dsl.types[name] = schema_dsl.types[name].of(definition.type_schema).safe
           else
             schema_dsl.types[name] = definition.type_schema
           end
