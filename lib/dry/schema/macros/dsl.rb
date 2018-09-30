@@ -7,34 +7,37 @@ module Dry
         undef :eql?
 
         def value(*predicates, **opts, &block)
-          macro = Macros::Value.new(schema_dsl: schema_dsl, name: name)
-          macro.call(*predicates, **opts, &block)
-          trace << macro
-          self
+          append_macro(Macros::Value) do |macro|
+            macro.call(*predicates, **opts, &block)
+          end
         end
 
         def filled(*args, &block)
-          macro = Macros::Filled.new(schema_dsl: schema_dsl, name: name)
-          macro.call(*args, &block)
-          trace << macro
-          self
+          append_macro(Macros::Filled) do |macro|
+            macro.call(*args, &block)
+          end
         end
 
         def schema(&block)
-          macro = Macros::Hash.new(schema_dsl: schema_dsl, name: name)
-          macro.call(&block)
-          trace << macro
-          self
+          append_macro(Macros::Hash) do |macro|
+            macro.call(&block)
+          end
         end
 
         def each(*args, &block)
-          macro = Macros::Each.new(schema_dsl: schema_dsl, name: name)
-          macro.value(*args, &block)
-          trace << macro
-          self
+          append_macro(Macros::Each) do |macro|
+            macro.value(*args, &block)
+          end
         end
 
         private
+
+        def append_macro(macro_type, &block)
+          macro = macro_type.new(schema_dsl: schema_dsl, name: name)
+          yield(macro)
+          trace << macro
+          self
+        end
 
         def method_missing(meth, *args, &block)
           trace.__send__(meth, *args, &block)

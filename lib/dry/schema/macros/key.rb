@@ -5,10 +5,9 @@ module Dry
     module Macros
       class Key < DSL
         def maybe(*args, **opts, &block)
-          macro = Maybe.new(schema_dsl: schema_dsl, name: name)
-          macro.call(*args, **opts, &block)
-          trace << macro
-          self
+          append_macro(Macros::Maybe) do |macro|
+            macro.call(*args, **opts, &block)
+          end
         end
 
         def to_rule
