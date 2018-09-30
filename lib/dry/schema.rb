@@ -46,7 +46,8 @@ module Dry
     # @api private
     def self.resolve_type(ns, name)
       key = "#{ns}.#{name}"
-      types.registered?(key) ? types[key] : types[name.to_s]
+      type = types.registered?(key) ? types[key] : types[name.to_s]
+      type.safe
     end
 
     # @api private

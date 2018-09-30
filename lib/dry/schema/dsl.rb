@@ -63,7 +63,7 @@ module Dry
       end
 
       def type_schema
-        type_registry["hash"].public_send(hash_type, types.merge(parent_types))
+        type_registry["hash"].public_send(hash_type, types.merge(parent_types)).safe
       end
 
       def new(&block)
@@ -73,7 +73,7 @@ module Dry
       private
 
       def set_type(name, spec)
-        types[name] = resolve_type(spec)
+        types[name] = resolve_type(spec).meta(omittable: true)
       end
 
       def resolve_type(spec)

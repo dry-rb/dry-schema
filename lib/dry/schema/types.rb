@@ -1,4 +1,5 @@
 require 'dry/types'
+require 'dry/types/compat'
 
 module Dry
   # <TODO>: figure out what to do with these helpers
