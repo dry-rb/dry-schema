@@ -12,7 +12,7 @@ RSpec.describe Dry::Schema::DSL do
         required(:name).filled
       end
 
-      rules = dsl.call
+      rules = dsl.call.rules
 
       expect(rules[:user].(user: { name: 'Jane' })).to be_success
 

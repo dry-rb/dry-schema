@@ -13,7 +13,7 @@ module Dry
           schema_type = parent_type.array? ? parent_type.of(definition_schema).safe : definition_schema
           schema_dsl.types[name] = parent_type.maybe? ? schema_type.optional : schema_type
 
-          trace << ::Dry::Schema::Definition.new(definition.call)
+          trace << definition
 
           self
         end

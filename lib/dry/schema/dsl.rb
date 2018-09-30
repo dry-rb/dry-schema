@@ -2,6 +2,7 @@ require 'dry/initializer'
 
 require 'dry/schema/constants'
 require 'dry/schema/compiler'
+require 'dry/schema/definition'
 require 'dry/schema/types'
 require 'dry/schema/macros'
 
@@ -50,7 +51,11 @@ module Dry
       end
 
       def call
-        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
+        Definition.new(rules, type_schema: type_schema)
+      end
+
+      def to_rule
+        call.to_rule
       end
 
       def array
@@ -78,6 +83,10 @@ module Dry
         else
           type_registry[spec]
         end
+      end
+
+      def rules
+        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
       end
 
       def parent_rules

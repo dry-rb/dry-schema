@@ -13,8 +13,7 @@ module Dry
     #
     # @api public
     def self.define(options = EMPTY_HASH, &block)
-      dsl = DSL.new(options, &block)
-      Definition.new(dsl.call, { type_schema: dsl.type_schema }.merge(options))
+      DSL.new(options, &block).call
     end
 
     # Define a form schema
