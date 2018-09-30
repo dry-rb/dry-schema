@@ -1,5 +1,6 @@
 require 'dry/initializer'
 
+require 'dry/schema/constants'
 require 'dry/schema/compiler'
 require 'dry/schema/types'
 require 'dry/schema/macros'
@@ -15,9 +16,9 @@ module Dry
 
       option :compiler, default: -> { Compiler.new }
 
-      option :macros, default: -> { [] }
+      option :macros, default: -> { EMPTY_ARRAY.dup }
 
-      option :types, default: -> { {} }
+      option :types, default: -> { EMPTY_HASH.dup }
 
       option :type_registry, default: -> { -> name { ::Dry::Types[name.to_s] } }
 
@@ -25,7 +26,7 @@ module Dry
 
       option :parent, optional: true
 
-      def self.new(options = {}, &block)
+      def self.new(options = EMPTY_HASH, &block)
         dsl = super
         dsl.instance_eval(&block) if block
         dsl
@@ -80,12 +81,12 @@ module Dry
       end
 
       def parent_rules
-        parent&.rules || {}
+        parent&.rules || EMPTY_HASH
       end
 
       def parent_types
         # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
-        parent&.type_schema&.member_types || {}
+        parent&.type_schema&.member_types || EMPTY_HASH
       end
     end
   end

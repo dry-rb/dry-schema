@@ -1,3 +1,4 @@
+require 'dry/schema/constants'
 require 'dry/schema/dsl'
 require 'dry/schema/definition'
 require 'dry/schema/types'
@@ -11,7 +12,7 @@ module Dry
     # @return [Definition]
     #
     # @api public
-    def self.define(options = {}, &block)
+    def self.define(options = EMPTY_HASH, &block)
       dsl = DSL.new(options, &block)
       Definition.new(dsl.call, { type_schema: dsl.type_schema }.merge(options))
     end
@@ -21,7 +22,7 @@ module Dry
     # @return [Definition]
     #
     # @api public
-    def self.form(options = {}, &block)
+    def self.form(options = EMPTY_HASH, &block)
       define(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:form), &block)
     end
 
