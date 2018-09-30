@@ -1,14 +1,9 @@
-require 'dry/schema/macros/core'
-require 'dry/schema/macros/value'
-require 'dry/schema/macros/filled'
-require 'dry/schema/macros/each'
-require 'dry/schema/macros/maybe'
-require 'dry/schema/macros/hash'
+require 'dry/schema/macros/dsl'
 
 module Dry
   module Schema
     module Macros
-      class Key < Core
+      class Key < DSL
         def maybe(*args, **opts, &block)
           macro = Maybe.new(schema_dsl: schema_dsl, name: name)
           macro.call(*args, **opts, &block)

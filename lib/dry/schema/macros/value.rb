@@ -1,9 +1,9 @@
-require 'dry/schema/macros/core'
+require 'dry/schema/macros/dsl'
 
 module Dry
   module Schema
     module Macros
-      class Value < Core
+      class Value < DSL
         def call(*predicates, **opts, &block)
           predicates.each do |predicate|
             if predicate.respond_to?(:to_ast)

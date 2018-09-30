@@ -1,9 +1,9 @@
-require 'dry/schema/macros/key'
+require 'dry/schema/macros/dsl'
 
 module Dry
   module Schema
     module Macros
-      class Maybe < Core
+      class Maybe < DSL
         def call(*args, **opts, &block)
           if args.include?(:empty?)
             raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"

@@ -1,9 +1,9 @@
-require 'dry/schema/macros/core'
+require 'dry/schema/macros/dsl'
 
 module Dry
   module Schema
     module Macros
-      class Each < Core
+      class Each < DSL
         def to_ast
           [:each, trace.to_ast]
         end
