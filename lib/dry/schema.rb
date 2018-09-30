@@ -25,6 +25,15 @@ module Dry
       define(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:form), &block)
     end
 
+    # Define a JSON schema
+    #
+    # @return [Definition]
+    #
+    # @api public
+    def self.json(options = EMPTY_HASH, &block)
+      define(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:json), &block)
+    end
+
     # Return configured paths to message files
     #
     # @return [Array<String>]

@@ -1,31 +1,21 @@
-RSpec.describe Dry::Schema::JSON, 'defining a schema' do
+RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
   subject(:schema) do
     Dry::Schema.json do
-      configure do
-        def email?(value)
-          true
+      required(:email, :string).filled
+
+      required(:age, [:nil, :int]).maybe(:int?, gt?: 18)
+
+      required(:address, :hash).schema do
+        required(:city, :string).filled
+        required(:street, :string).filled
+
+        required(:loc, :hash).schema do
+          required(:lat, :float).filled(:float?)
+          required(:lng, :float).filled(:float?)
         end
       end
-
-      required(:email).filled
-
-      required(:age).maybe(:int?, gt?: 18)
-
-      required(:address).schema do
-        required(:city).filled
-        required(:street).filled
-
-        required(:loc).schema do
-          required(:lat).filled(:float?)
-          required(:lng).filled(:float?)
-        end
-      end
-
-      optional(:password).maybe.confirmation
 
       optional(:phone_number).maybe(:int?, gt?: 0)
-
-      rule(:email_valid) { value(:email).email? }
     end
   end
 
@@ -114,49 +104,6 @@ RSpec.describe Dry::Schema::JSON, 'defining a schema' do
           city: 'NYC', street: 'Street 1/2',
           loc: { lat: 123.456, lng: 456.123 }
         }
-      )
-    end
-  end
-
-  describe 'with nested schema in a high-level rule' do
-    subject(:schema) do
-      Dry::Schema.json do
-        required(:address).maybe(:hash?)
-
-        required(:delivery).filled(:bool?)
-
-        rule(address: [:delivery, :address]) do |delivery, address|
-          delivery.true?.then(address.schema(AddressSchema))
-        end
-      end
-    end
-
-    before do
-      AddressSchema = Dry::Schema.json do
-        required(:city).filled
-        required(:zipcode).filled(:int?)
-      end
-    end
-
-    after do
-      Object.send(:remove_const, :AddressSchema)
-    end
-
-    it 'succeeds when nested form schema succeeds' do
-      result = schema.(delivery: true, address: { city: 'NYC', zipcode: 123 })
-      expect(result).to be_success
-    end
-
-    it 'does not apply schema when there is no match' do
-      result = schema.(delivery: false, address: nil)
-      expect(result).to be_success
-    end
-
-    it 'fails when nested schema fails' do
-      result = schema.(delivery: true, address: { city: 'NYC', zipcode: 'foo' })
-
-      expect(result.messages).to eql(
-        address: { zipcode: ['must be an integer'] }
       )
     end
   end
