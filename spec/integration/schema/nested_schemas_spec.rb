@@ -1,14 +1,14 @@
 RSpec.describe Dry::Schema, 'nested schemas' do
   context 'with multiple nested schemas' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:content).schema do
-          required(:meta).schema do
-            required(:version).filled
+      Dry::Schema.define do
+        required(:content, :hash).schema do
+          required(:meta, :hash).schema do
+            required(:version, :string).filled
           end
 
-          required(:data).schema do
-            required(:city).filled
+          required(:data, :hash).schema do
+            required(:city, :string).filled
           end
         end
       end
@@ -31,17 +31,20 @@ RSpec.describe Dry::Schema, 'nested schemas' do
 
     it 'fails when the deeply nested keys are invalid' do
       input = {content: {meta: {version: ""}, data: {city: ""}}}
-      expect(schema.(input).messages).to eql(content: {meta: {version: ["must be filled"]}, data: {city: ["must be filled"]}})
+
+      expect(schema.(input).messages).to eql(
+        content: {meta: {version: ["must be filled"]}, data: {city: ["must be filled"]}}
+      )
     end
   end
 
   context 'with a 2-level deep schema' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:meta).schema do
-          required(:info).schema do
-            required(:details).filled
-            required(:meta).filled
+      Dry::Schema.define do
+        required(:meta, :hash).schema do
+          required(:info, :hash).schema do
+            required(:details, :string).filled
+            required(:meta, :string).filled
           end
         end
       end
@@ -82,9 +85,9 @@ RSpec.describe Dry::Schema, 'nested schemas' do
 
   context 'when duplicated key names are used in 2 subsequent levels' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:meta).schema do
-          required(:meta).filled
+      Dry::Schema.define do
+        required(:meta, :hash).schema do
+          required(:meta, :string).filled
         end
       end
     end
@@ -110,10 +113,10 @@ RSpec.describe Dry::Schema, 'nested schemas' do
 
   context 'when duplicated key names are used in 2 subsequent levels as schemas' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:meta).schema do
-          required(:meta).schema do
-            required(:data).filled
+      Dry::Schema.define do
+        required(:meta, :hash).schema do
+          required(:meta, :hash).schema do
+            required(:data, :string).filled
           end
         end
       end
@@ -152,12 +155,12 @@ RSpec.describe Dry::Schema, 'nested schemas' do
 
   context 'with `each` + schema inside another schema' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:meta).schema do
-          required(:data).each do
+      Dry::Schema.define do
+        required(:meta, :hash).schema do
+          required(:data, :array).value(:array?).each do
             schema do
-              required(:info).schema do
-                required(:name).filled
+              required(:info, :hash).schema do
+                required(:name, :string).filled
               end
             end
           end
@@ -206,11 +209,13 @@ RSpec.describe Dry::Schema, 'nested schemas' do
 
   context 'with 2-level `each` + schema' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:data).each do
+      Dry::Schema.define do
+        required(:data, :array).value(:array?).each do
           schema do
-            required(:tags).each do
-              required(:name).filled
+            required(:tags, :array).value(:array?).each do
+              schema do
+                required(:name, :string).filled
+              end
             end
           end
         end
