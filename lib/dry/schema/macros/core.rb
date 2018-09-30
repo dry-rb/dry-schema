@@ -37,16 +37,9 @@ module Dry
         end
 
         def schema(&block)
-          definition = schema_dsl.new(&block)
-
-          parent_type = schema_dsl.types[name]
-          definition_schema = definition.type_schema
-
-          schema_type = parent_type.array? ? parent_type.of(definition_schema).safe : definition_schema
-          schema_dsl.types[name] = parent_type.maybe? ? schema_type.optional : schema_type
-
-          trace << ::Dry::Schema::Definition.new(definition.call)
-
+          macro = Macros::Hash.new(schema_dsl: schema_dsl, name: name)
+          macro.call(&block)
+          trace << macro
           self
         end
 

@@ -3,6 +3,7 @@ require 'dry/schema/macros/value'
 require 'dry/schema/macros/filled'
 require 'dry/schema/macros/each'
 require 'dry/schema/macros/maybe'
+require 'dry/schema/macros/hash'
 
 module Dry
   module Schema
