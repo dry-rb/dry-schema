@@ -31,18 +31,6 @@ module Dry
         dsl
       end
 
-      def array
-        -> member_type { Types::Array.of(resolve_type(member_type)) }
-      end
-
-      def call
-        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
-      end
-
-      def type_schema
-        type_registry["hash"].public_send(hash_type, types.merge(parent_types))
-      end
-
       def required(name, type = Types::Any, &block)
         key(name, type: type, macro: Macros::Required, &block)
       end
@@ -58,6 +46,18 @@ module Dry
         macro.value(&block) if block
         macros << macro
         macro
+      end
+
+      def call
+        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
+      end
+
+      def array
+        -> member_type { Types::Array.of(resolve_type(member_type)) }
+      end
+
+      def type_schema
+        type_registry["hash"].public_send(hash_type, types.merge(parent_types))
       end
 
       def new(&block)
