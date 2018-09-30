@@ -1,41 +1,38 @@
+require 'dry/initializer'
+
+require 'dry/schema/compiler'
 require 'dry/schema/types'
 require 'dry/schema/macros'
 
 module Dry
   module Schema
-    class DSL < BasicObject
-      Types = ::Dry::Schema::Types
+    class DSL
+      Types = Schema::Types
 
-      include ::Dry::Equalizer(:compiler, :options)
+      extend Dry::Initializer
 
-      attr_reader :compiler
+      include ::Dry::Equalizer(:options)
 
-      attr_reader :macros
+      option :compiler, default: -> { Compiler.new }
 
-      attr_reader :types
+      option :macros, default: -> { [] }
 
-      attr_reader :type_registry
+      option :types, default: -> { {} }
 
-      attr_reader :hash_type
+      option :type_registry, default: -> { -> name { ::Dry::Types[name.to_s] } }
 
-      attr_reader :options
+      option :hash_type, default: -> { :schema }
 
-      def initialize(compiler, options = {}, &block)
-        @compiler = compiler
-        @options = options
-        @macros = []
-        @types = {}
-        @hash_type = options.fetch(:hash_type, :schema)
-        @type_registry = options.fetch(:type_registry, -> name { ::Dry::Types[name.to_s] })
-        instance_eval(&block) if block
+      option :parent, optional: true
+
+      def self.new(options = {}, &block)
+        dsl = super
+        dsl.instance_eval(&block) if block
+        dsl
       end
 
       def array
         -> member_type { Types::Array.of(resolve_type(member_type)) }
-      end
-
-      def class
-        ::Dry::Schema::DSL
       end
 
       def call
@@ -64,7 +61,7 @@ module Dry
       end
 
       def new(&block)
-        self.class.new(compiler, options, &block)
+        self.class.new(type_registry: type_registry, hash_type: hash_type, &block)
       end
 
       private
@@ -83,12 +80,12 @@ module Dry
       end
 
       def parent_rules
-        options[:parent]&.rules || {}
+        parent&.rules || {}
       end
 
       def parent_types
         # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
-        options[:parent]&.type_schema&.member_types || {}
+        parent&.type_schema&.member_types || {}
       end
     end
   end

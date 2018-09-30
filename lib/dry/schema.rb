@@ -1,4 +1,3 @@
-require 'dry/schema/compiler'
 require 'dry/schema/dsl'
 require 'dry/schema/definition'
 require 'dry/schema/types'
@@ -13,9 +12,7 @@ module Dry
     #
     # @api public
     def self.define(options = {}, &block)
-      compiler = Compiler.new
-      dsl = DSL.new(compiler, options, &block)
-
+      dsl = DSL.new(options, &block)
       Definition.new(dsl.call, { type_schema: dsl.type_schema }.merge(options))
     end
 
