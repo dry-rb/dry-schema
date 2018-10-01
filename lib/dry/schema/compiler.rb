@@ -7,6 +7,10 @@ module Dry
       def self.new(predicates = PredicateRegistry.new)
         super
       end
+
+      def supports?(predicate)
+        predicates.key?(predicate)
+      end
     end
   end
 end

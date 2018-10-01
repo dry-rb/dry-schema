@@ -13,6 +13,10 @@ module Dry
         predicates[name]
       end
 
+      def key?(name)
+        predicates.respond_to?(name)
+      end
+
       def arg_list(name, *values)
         predicate = self[name]
 

@@ -22,6 +22,12 @@ module Dry
         @block = block
       end
 
+      def ensure_valid
+        if compiler.predicates[name].arity - 1 != args.size
+          raise ArgumentError, "#{name} predicate arity is invalid"
+        end
+      end
+
       def to_rule
         compiler.visit(to_ast)
       end

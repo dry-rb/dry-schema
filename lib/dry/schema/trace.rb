@@ -88,7 +88,13 @@ module Dry
             ::Kernel.raise InvalidSchemaError, "#{meth} predicate cannot be used in this context"
           end
 
-          Predicate.new(compiler, meth, args, block)
+          unless compiler.supports?(meth)
+            ::Kernel.raise ::ArgumentError, "#{meth} predicate is not defined"
+          end
+
+          predicate = Predicate.new(compiler, meth, args, block)
+          predicate.ensure_valid
+          predicate
         else
           super
         end
