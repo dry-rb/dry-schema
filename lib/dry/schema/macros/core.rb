@@ -1,5 +1,6 @@
 require 'dry/initializer'
 
+require 'dry/schema/constants'
 require 'dry/schema/compiler'
 require 'dry/schema/trace'
 
@@ -17,15 +18,18 @@ module Dry
 
         option :schema_dsl, optional: true
 
-        option :block, optional: true
+        def new(options = EMPTY_HASH)
+          self.class.new({ name: name, compiler: compiler, schema_dsl: schema_dsl }.merge(options))
+        end
 
         def to_rule
           compiler.visit(to_ast)
         end
 
-        def to_ast
-          raise NotImplementedError
+        def to_ast(*)
+          trace.to_ast
         end
+        alias_method :ast, :to_ast
 
         def operation
           raise NotImplementedError

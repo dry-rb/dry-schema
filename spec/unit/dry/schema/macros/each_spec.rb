@@ -7,7 +7,7 @@ RSpec.describe Dry::Schema::Macros::Each do
 
   describe '#to_rule' do
     it 'builds a valid rule with additional predicates' do
-      macro.str? & macro.size?(2..20)
+      macro.value(:str?, size?: 2..20)
 
       rule = macro.to_rule
 

@@ -5,7 +5,7 @@ module Dry
     module Macros
       class Hash < Value
         def call(&block)
-          hash?
+          trace << hash?
 
           definition = schema_dsl.new(&block)
 
@@ -15,7 +15,7 @@ module Dry
           schema_type = parent_type.array? ? parent_type.of(definition_schema) : definition_schema
           schema_dsl.types[name] = (parent_type.maybe? ? schema_type.optional : schema_type).safe
 
-          trace << definition
+          trace << definition.to_rule
 
           self
         end

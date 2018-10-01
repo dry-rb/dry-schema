@@ -5,31 +5,29 @@ module Dry
     module Macros
       class Value < DSL
         def call(*predicates, **opts, &block)
-          predicates.each do |predicate|
-            if predicate.respond_to?(:to_ast)
-              trace << predicate
-            else
-              trace.__send__(predicate)
-            end
-          end
+          trace.evaluate(*predicates, **opts, &block)
 
-          opts.each do |predicate, *args|
-            trace.__send__(predicate, *args)
-          end
+          trace.append(new(chain: false).instance_exec(&block)) if block
 
-          if block
-            instance_exec(&block)
-          end
-
-          if trace.nodes.empty?
+          if trace.captures.empty?
             raise ArgumentError, 'wrong number of arguments (given 0, expected at least 1)'
           end
 
           self
         end
 
-        def to_ast
-          trace.to_ast
+        def respond_to_missing?(meth, include_private = false)
+          super || meth.to_s.end_with?(QUESTION_MARK)
+        end
+
+        private
+
+        def method_missing(meth, *args, &block)
+          if meth.to_s.end_with?(QUESTION_MARK)
+            trace.__send__(meth, *args, &block)
+          else
+            super
+          end
         end
       end
     end

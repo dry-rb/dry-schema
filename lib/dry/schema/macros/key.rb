@@ -11,7 +11,7 @@ module Dry
         end
 
         def to_rule
-          if trace.nodes.empty?
+          if trace.captures.empty?
             super
           else
             [super, trace.to_rule(name)].reduce(operation)

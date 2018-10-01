@@ -1,10 +1,16 @@
+require 'dry/logic/operators'
+
 require 'dry/schema/macros/core'
 
 module Dry
   module Schema
     module Macros
       class DSL < Core
+        include Dry::Logic::Operators
+
         undef :eql?
+
+        option :chain, default: -> { true }
 
         def value(*predicates, **opts, &block)
           append_macro(Macros::Value) do |macro|
@@ -34,13 +40,15 @@ module Dry
 
         def append_macro(macro_type, &block)
           macro = macro_type.new(schema_dsl: schema_dsl, name: name)
-          yield(macro)
-          trace << macro
-          self
-        end
 
-        def method_missing(meth, *args, &block)
-          trace.__send__(meth, *args, &block)
+          yield(macro)
+
+          if chain
+            trace << macro
+            self
+          else
+            macro
+          end
         end
       end
     end

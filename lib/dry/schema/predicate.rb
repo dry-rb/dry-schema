@@ -1,8 +1,10 @@
 require 'dry/equalizer'
+require 'dry/logic/operators'
 
 module Dry
   module Schema
     class Predicate
+      include Dry::Logic::Operators
       include Dry::Equalizer(:name, :args, :block)
 
       attr_reader :compiler
@@ -24,9 +26,10 @@ module Dry
         compiler.visit(to_ast)
       end
 
-      def to_ast
+      def to_ast(*)
         [:predicate, [name, compiler.predicates.arg_list(name, *args)]]
       end
+      alias_method :ast, :to_ast
     end
   end
 end
