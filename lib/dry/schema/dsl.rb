@@ -1,6 +1,7 @@
 require 'dry/initializer'
 
 require 'dry/schema/constants'
+require 'dry/schema/config'
 require 'dry/schema/compiler'
 require 'dry/schema/definition'
 require 'dry/schema/types'
@@ -27,10 +28,17 @@ module Dry
 
       option :parent, optional: true
 
+      option :config, optional: true, default: -> { Config.new }
+
       def self.new(options = EMPTY_HASH, &block)
         dsl = super
         dsl.instance_eval(&block) if block
         dsl
+      end
+
+      def configure(&block)
+        config.configure(&block)
+        self
       end
 
       def required(name, type = Types::Any, &block)
@@ -51,7 +59,7 @@ module Dry
       end
 
       def call
-        Definition.new(rules, type_schema: type_schema)
+        Definition.new(rules, type_schema: type_schema, config: config)
       end
 
       def to_rule

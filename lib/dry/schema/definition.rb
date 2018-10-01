@@ -1,5 +1,6 @@
 require 'dry/initializer'
 
+require 'dry/schema/config'
 require 'dry/schema/result'
 require 'dry/schema/messages'
 require 'dry/schema/message_compiler'
@@ -13,7 +14,9 @@ module Dry
 
       param :rules
 
-      option :message_compiler, default: proc { MessageCompiler.new(Messages.default) }
+      option :config, default: proc { Config.new }
+
+      option :message_compiler, default: proc { MessageCompiler.new(Messages.setup(config)) }
 
       option :type_schema, default: proc { DEFAULT_HASH_SCHEMA }
 
