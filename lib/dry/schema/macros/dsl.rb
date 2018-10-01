@@ -24,9 +24,9 @@ module Dry
           end
         end
 
-        def schema(&block)
+        def schema(*args, &block)
           append_macro(Macros::Hash) do |macro|
-            macro.call(&block)
+            macro.call(*args, &block)
           end
         end
 
