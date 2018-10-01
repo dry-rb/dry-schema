@@ -10,6 +10,7 @@ module Dry
 
       param :output
       alias_method :to_h, :output
+      alias_method :to_hash, :output
 
       param :results
 
@@ -29,6 +30,10 @@ module Dry
 
       def messages(options = EMPTY_HASH)
         message_set(options.merge(hints: true)).dump
+      end
+
+      def hints(options = EMPTY_HASH)
+        message_set(options.merge(failures: false)).dump
       end
 
       def message_set(options = EMPTY_HASH)
