@@ -14,9 +14,9 @@
 
 # WIP: dry-schema extraction from dry-validation ([more info here](https://discourse.dry-rb.org/t/plans-for-dry-validation-dry-schema-a-new-gem/215))
 
-## Links
+<!-- ## Links
 
-* [Documentation](http://dry-rb.org/gems/dry-schema)
+* [Documentation](http://dry-rb.org/gems/dry-schema) -->
 
 ## License
 
