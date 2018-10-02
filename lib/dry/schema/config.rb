@@ -19,7 +19,7 @@ module Dry
       end
 
       def self.struct
-        Struct.new(*settings)
+        ::Struct.new(*settings)
       end
 
       def configure(&block)
