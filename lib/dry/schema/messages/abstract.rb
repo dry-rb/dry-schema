@@ -3,6 +3,8 @@ require 'concurrent/map'
 require 'dry/equalizer'
 require 'dry/configurable'
 
+require 'dry/schema/constants'
+
 module Dry
   module Schema
     module Messages
@@ -14,14 +16,14 @@ module Dry
 
         setting :paths, [DEFAULT_PATH]
         setting :root, 'errors'.freeze
-        setting :lookup_options, [:root, :predicate, :rule, :val_type, :arg_type].freeze
+        setting :lookup_options, [:root, :predicate, :path, :val_type, :arg_type].freeze
 
         setting :lookup_paths, %w(
-          %{root}.rules.%{rule}.%{predicate}.arg.%{arg_type}
-          %{root}.rules.%{rule}.%{predicate}
+          %{root}.rules.%{path}.%{predicate}.arg.%{arg_type}
+          %{root}.rules.%{path}.%{predicate}
           %{root}.%{predicate}.%{message_type}
-          %{root}.%{predicate}.value.%{rule}.arg.%{arg_type}
-          %{root}.%{predicate}.value.%{rule}
+          %{root}.%{predicate}.value.%{path}.arg.%{arg_type}
+          %{root}.%{predicate}.value.%{path}
           %{root}.%{predicate}.value.%{val_type}.arg.%{arg_type}
           %{root}.%{predicate}.value.%{val_type}
           %{root}.%{predicate}.arg.%{arg_type}
@@ -76,7 +78,7 @@ module Dry
             message_type: options[:message_type] || :failure
           )
 
-          tokens[:rule] = predicate unless tokens.key?(:rule)
+          tokens[:path] = options[:rule] || Array(options[:path]).join(DOT)
 
           opts = options.reject { |k, _| config.lookup_options.include?(k) }
 

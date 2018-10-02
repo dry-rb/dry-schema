@@ -5,5 +5,6 @@ module Dry
     include Core::Constants
 
     QUESTION_MARK = '?'.freeze
+    DOT = '.'.freeze
   end
 end
