@@ -22,7 +22,7 @@ module Dry
     #
     # @api public
     def self.form(options = EMPTY_HASH, &block)
-      define(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:form), &block)
+      define(options.merge(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:form)), &block)
     end
 
     # Define a JSON schema
