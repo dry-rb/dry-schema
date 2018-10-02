@@ -1,41 +1,17 @@
-require 'dry/schema/messages/i18n'
-require 'i18n'
-
 RSpec.describe 'Defining base schema class' do
   subject(:schema) do
-    Dry::Schema.build(BaseSchema) do
-      required(:email).filled(:email?)
+    Dry::Schema.define(parent: parent) do
+      required(:email).filled
     end
   end
 
-  before do
-    class BaseSchema < Dry::Schema
-      configure do |config|
-        config.messages_file = SPEC_ROOT.join('fixtures/locales/en.yml')
-        config.messages = :i18n
-      end
-
-      def email?(value)
-        true
-      end
-
-      define! do
-        required(:name).filled
-      end
+  let(:parent) do
+    Dry::Schema.define do
+      required(:name).filled
     end
-  end
-
-  after do
-    Object.send(:remove_const, :BaseSchema)
-  end
-
-  it 'inherits predicates' do
-    expect(schema).to respond_to(:email?)
   end
 
   it 'inherits rules' do
-    expect(schema.(name: nil).messages).to eql(
-      name: ['must be filled'], email: ['is missing', 'must be an email']
-    )
+    expect(schema.(name: '').errors).to eql(name: ['must be filled'], email: ['is missing'])
   end
 end

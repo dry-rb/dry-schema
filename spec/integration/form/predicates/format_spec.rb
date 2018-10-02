@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Format' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(:str?, format?: /bar/)
+            required(:foo, [:nil, :string]).maybe(:str?, format?: /bar/)
           end
         end
 
@@ -258,6 +258,7 @@ RSpec.describe 'Predicates: Format' do
 
         context 'with blank input' do
           let(:input) { { 'foo' => '' } }
+
           it 'is not successful' do
             expect(result).to be_success
           end
@@ -397,7 +398,7 @@ RSpec.describe 'Predicates: Format' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(:str?, format?: /bar/)
+            optional(:foo, [:nil, :string]).maybe(:str?, format?: /bar/)
           end
         end
 

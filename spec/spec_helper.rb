@@ -9,24 +9,19 @@ begin
   require 'byebug'
 rescue LoadError; end
 
-require 'dry-schema'
-require 'dry/core/constants'
-require 'ostruct'
-
 SPEC_ROOT = Pathname(__dir__)
 
 Dir[SPEC_ROOT.join('shared/**/*.rb')].each(&method(:require))
 Dir[SPEC_ROOT.join('support/**/*.rb')].each(&method(:require))
+
+require "dry/schema"
+require "dry/types"
 
 module Types
   include Dry::Types.module
 end
 
 Undefined = Dry::Core::Constants::Undefined
-
-Dry::Schema::Deprecations.configure do |config|
-  config.logger = Logger.new(SPEC_ROOT.join('../log/deprecations.log'))
-end
 
 RSpec.configure do |config|
   config.disable_monkey_patching!

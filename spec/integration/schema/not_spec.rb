@@ -1,34 +1,21 @@
 RSpec.describe 'Schema with negated rules' do
   subject(:schema) do
-    Dry::Schema.build do
-      configure do
-        def self.messages
-         Dry::Schema::Messages.default.merge(
-            en: { errors: { be_reasonable: 'you cannot eat cake and have cake!' } }
-          )
-        end
-      end
-
-      optional(:eat_cake).filled
-      optional(:have_cake).filled
-
-      rule(:be_reasonable) do
-        value(:eat_cake).eql?('yes!') & value(:have_cake).eql?('yes!').not
-      end
+    Dry::Schema.define do
+      required(:tags) { !empty? }
     end
   end
 
   describe '#messages' do
-    it 'passes when only one option is selected' do
-      messages = schema.(eat_cake: 'yes!', have_cake: 'no!').messages[:be_reasonable]
-
-      expect(messages).to be(nil)
+    before do
+      pending "negation is not supported yet"
     end
 
-    it 'fails when both options are selected' do
-      messages = schema.(eat_cake: 'yes!', have_cake: 'yes!').messages[:be_reasonable]
+    it 'passes with valid input' do
+      expect(schema.(tags: %w(a b c))).to be_success
+    end
 
-      expect(messages).to eql(['you cannot eat cake and have cake!'])
+    it 'fails with invalid input' do
+      expect(schema.(tags: []).errors).to eql(tags: ['cannot be empty'])
     end
   end
 end

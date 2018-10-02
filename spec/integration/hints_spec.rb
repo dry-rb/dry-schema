@@ -17,7 +17,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with yaml messages' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:age).maybe(:int?, gt?: 18)
       end
     end
@@ -27,8 +27,8 @@ RSpec.describe 'Validation hints' do
 
   context 'with i18n messages' do
     subject(:schema) do
-      Dry::Schema.build do
-        configure { configure { |c| c.messages = :i18n } }
+      Dry::Schema.define do
+        configure { |c| c.messages = :i18n }
 
         required(:age).maybe(:int?, gt?: 18)
       end
@@ -39,7 +39,7 @@ RSpec.describe 'Validation hints' do
 
   context 'when type expectation is specified' do
     subject(:schema)  do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:email).filled
         required(:name).filled(:str?, size?: 5..25)
       end
@@ -54,7 +54,7 @@ RSpec.describe 'Validation hints' do
 
   context 'when predicate failed and there is a corresponding hint generated' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:age).value(lt?: 23)
       end
     end
@@ -67,7 +67,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with a nested schema with same rule names' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:code).filled(:str?, eql?: 'foo')
 
         required(:nested).schema do
@@ -101,7 +101,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with an each rule' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:nums).each(:int?, gt?: 0)
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe 'Validation hints' do
 
   context 'with a format? predicate' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:name).value(size?: 2, format?: /xy/)
       end
     end
@@ -131,27 +131,10 @@ RSpec.describe 'Validation hints' do
 
   context 'when the message uses input value' do
     subject(:schema) do
-      Dry::Schema.build do
-        configure do
-          def self.messages
-           Dry::Schema::Messages.default.merge(
-              en: {
-                errors: {
-                  blue?: {
-                    failure: '%{value} is not equal to blue',
-                    hint: 'must be equal to blue'
-                  }
-                }
-              }
-            )
-          end
+      Dry::Schema.define do
+        configure { |c| c.messages_file = SPEC_ROOT.join('fixtures/messages.yml') }
 
-          def blue?(value)
-            value == 'blue'
-          end
-        end
-
-        required(:pill).filled(:blue?)
+        required(:pill).filled(eql?: 'blue')
       end
     end
 

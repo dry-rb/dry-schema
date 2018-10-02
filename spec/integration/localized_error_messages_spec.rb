@@ -1,4 +1,3 @@
-# coding: utf-8
 require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema, 'with localized messages' do
@@ -11,12 +10,12 @@ RSpec.describe Dry::Schema, 'with localized messages' do
   describe 'defining schema' do
     context 'without a namespace' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           configure do
             config.messages = :i18n
           end
 
-          required(:email) { |email| email.filled? }
+          required(:email).value(:filled?)
         end
       end
 
@@ -31,7 +30,7 @@ RSpec.describe Dry::Schema, 'with localized messages' do
 
     context 'with a namespace' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           configure do
             configure do |config|
               config.messages = :i18n
@@ -39,7 +38,7 @@ RSpec.describe Dry::Schema, 'with localized messages' do
             end
           end
 
-          required(:email) { |email| email.filled? }
+          required(:email).value(:filled?)
         end
       end
 

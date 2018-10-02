@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Includes' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:foo) { includes?(1) }
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe 'Predicates: Includes' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         optional(:foo) { includes?(1) }
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe 'Predicates: Includes' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).value(includes?: 1)
           end
         end
@@ -147,7 +147,7 @@ RSpec.describe 'Predicates: Includes' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).filled(includes?: 1)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Includes' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).maybe(includes?: 1)
           end
         end
@@ -245,7 +245,7 @@ RSpec.describe 'Predicates: Includes' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).value(includes?: 1)
           end
         end
@@ -293,7 +293,7 @@ RSpec.describe 'Predicates: Includes' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).filled(includes?: 1)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: Includes' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).maybe(includes?: 1)
           end
         end

@@ -1,12 +1,12 @@
 RSpec.describe Dry::Schema do
   describe 'defining schema with optional keys' do
     subject(:schema) do
-      Dry::Schema.build do
-        optional(:email) { |email| email.filled? }
+      Dry::Schema.define do
+        optional(:email).value(:filled?)
 
         required(:address).schema do
-          required(:city, &:filled?)
-          required(:street, &:filled?)
+          required(:city).value(:filled?)
+          required(:street).value(:filled?)
 
           optional(:phone_number) do
             none? | str?

@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: None' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { none? }
+        required(:foo, :nil) { none? }
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe 'Predicates: None' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { none? }
+        optional(:foo, :nil) { none? }
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: None' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(:none?)
+            required(:foo, :nil).value(:none?)
           end
         end
 
@@ -175,7 +175,7 @@ RSpec.describe 'Predicates: None' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(:none?)
+            optional(:foo, :nil).value(:none?)
           end
         end
 

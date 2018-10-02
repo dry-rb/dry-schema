@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: True' do
   context 'with key' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { true? }
+        required(:foo, :true) { true? }
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Predicates: True' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { true? }
+        optional(:foo, :true) { true? }
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: True' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(:true?)
+            required(:foo, :true).value(:true?)
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: True' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).filled(:true?)
+            required(:foo, :true).filled(:true?)
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: True' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(:true?)
+            required(:foo, [:nil, :true]).maybe(:true?)
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: True' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(:true?)
+            optional(:foo, :true).value(:true?)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: True' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).filled(:true?)
+            optional(:foo, :true).filled(:true?)
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: True' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(:true?)
+            optional(:foo, [:nil, :true]).maybe(:true?)
           end
         end
 

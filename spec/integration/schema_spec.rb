@@ -1,173 +1,147 @@
-RSpec.describe Dry::Schema, 'defining key-based schema' do
-  describe 'with a flat structure' do
-    subject(:schema) do
-      Dry::Schema.build do
-        configure do
-          config.input_processor = :form
-          config.type_specs = true
-        end
+require 'dry/schema'
 
-        required(:email, :string).filled
-        required(:age, [:nil, :int]) { none? | (int? & gt?(18)) }
-      end
-    end
-
+RSpec.describe Dry::Schema, '.define' do
+  shared_context 'valid schema' do
     it 'passes when input is valid' do
-      expect(schema.(email: 'jane@doe', age: 19)).to be_success
-      expect(schema.(email: 'jane@doe', age: nil)).to be_success
+      expect(schema.(email: 'jane@doe')).to be_success
+      expect(schema.(email: 'jane@doe', age: 21)).to be_success
     end
 
     it 'fails when input is not valid' do
-      expect(schema.(email: 'jane@doe', age: 17)).to_not be_success
+      expect(schema.(email: nil)).to be_failure
+      expect(schema.(email: nil, age: 21)).to be_failure
+      expect(schema.(email: nil, age: '21')).to be_failure
     end
 
-    it 'returns result which quacks like hash' do
-      input = { email: 'jane@doe', age: 19 }
-      result = schema.(input)
+    it 'produces error messages' do
+      result = schema.(email: '')
 
-      expect(result[:email]).to eql('jane@doe')
-      expect(Hash[result]).to eql(input)
-
-      expect(result.to_a).to eql([[:email, 'jane@doe'], [:age, 19]])
-    end
-
-    describe '#type_map' do
-      it 'returns key=>type map' do
-        expect(schema.type_map).to eql(
-          email: Types::String, age: Types::Form::Nil | Types::Form::Int
-        )
-      end
-
-      it 'uses type_map for input processor when it is not empty' do
-        expect(schema.(email: 'jane@doe.org', age: '18').to_h).to eql(
-          email: 'jane@doe.org', age: 18
-        )
-      end
+      expect(result.errors[:email]).to include('must be filled')
     end
   end
 
-  describe 'with nested structures' do
+  context 'using macros' do
     subject(:schema) do
-      class CountrySchema
-        def self.schema
-          Dry::Schema.build do
-            required(:name).filled
-            required(:code).filled
+      Dry::Schema.define do
+        required(:email).filled(:str?)
+        optional(:age).value(:int?)
+      end
+    end
+
+    include_context 'valid schema'
+  end
+
+  context 'using a block' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:email) { filled? & str? }
+        optional(:age) { int? }
+      end
+    end
+
+    include_context 'valid schema'
+  end
+
+  context 'chaining calls' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:email).value(:str?).filled
+        optional(:age).value(:int?)
+      end
+    end
+
+    include_context 'valid schema'
+  end
+
+  context 'each macro' do
+    context 'with simple predicates' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:tags, :array).value(:array?).each(:str?) { size?(2..4) }
+        end
+      end
+
+      it 'passes when input is valid' do
+        expect(schema.(tags: ['red', 'blue'])).to be_success
+      end
+
+      it 'fails when input is not valid' do
+        expect(schema.(tags: ['red', nil])).to be_failure
+        expect(schema.(tags: ['red', 'black'])).to be_failure
+      end
+    end
+
+    context 'with a nested schema' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:tags, :array).value(:array?).each do
+            schema do
+              required(:name, :string).filled
+            end
           end
         end
       end
 
-      Dry::Schema.build do
-        required(:email).filled
-
-        required(:age).maybe(:int?, gt?: 18)
-
-        required(:address).schema do
-          required(:city).filled(min_size?: 3)
-
-          required(:street).filled
-
-          required(:country).schema(CountrySchema)
-        end
-
-        required(:phone_numbers).each(:str?)
-      end
-    end
-
-    let(:input) do
-      {
-        email: 'jane@doe.org',
-        age: 19,
-        address: { city: 'NYC', street: 'Street 1/2', country: { code: 'US', name: 'USA' } },
-        phone_numbers: [
-          '123456', '234567'
-        ]
-      }.freeze
-    end
-
-    describe '#messages' do
-      it 'returns compiled error messages' do
-        expect(schema.(input.merge(email: '')).messages).to eql(
-          email: ['must be filled']
-        )
-      end
-    end
-
-    describe '#call' do
-      it 'passes when attributes are valid' do
-        expect(schema.(input)).to be_success
+      it 'passes when input is valid' do
+        expect(schema.(tags: [{ name: 'red' }, { name: 'blue' }])).to be_success
       end
 
-      it 'validates presence of an email and min age value' do
-        expect(schema.(input.merge(email: '', age: 18)).messages).to eql(
-          email: ['must be filled'], age: ['must be greater than 18']
-        )
-      end
-
-      it 'validates presence of the email key and type of age value' do
-        attrs = {
-          name: 'Jane',
-          age: '18',
-          address: input[:address], phone_numbers: input[:phone_numbers]
-        }
-
-        expect(schema.(attrs).messages).to eql(
-          email: ['is missing'],
-          age: ['must be an integer', 'must be greater than 18']
-        )
-      end
-
-      it 'validates presence of the address and phone_number keys' do
-        attrs = { email: 'jane@doe.org', age: 19 }
-
-        expect(schema.(attrs).messages).to eql(
-          address: ['is missing'], phone_numbers: ['is missing']
-        )
-      end
-
-      it 'validates presence of keys under address and min size of the city value' do
-        attrs = input.merge(address: { city: 'NY' })
-
-        expect(schema.(attrs).messages).to eql(
-          address: {
-            street: ['is missing'],
-            country: ['is missing'],
-            city: ['size cannot be less than 3']
-          }
-        )
-      end
-
-      it 'validates address type' do
-        expect(schema.(input.merge(address: 'totally not a hash')).messages).to eql(
-          address: ['must be a hash']
-        )
-      end
-
-      it 'validates address code and name values' do
-        attrs = input.merge(
-          address: input[:address].merge(country: { code: 'US', name: '' })
-        )
-
-        expect(schema.(attrs).messages).to eql(
-          address: { country: { name: ['must be filled'] } }
-        )
-      end
-
-      it 'validates each phone number' do
-        attrs = input.merge(phone_numbers: ['123', 312])
-
-        expect(schema.(attrs).messages).to eql(
-          phone_numbers: { 1 => ['must be a string'] }
-        )
+      it 'fails when input is not valid' do
+        expect(schema.(tags: [{ name: 'red' }, { title: 'blue' }])).to be_failure
       end
     end
   end
 
-  context 'nested keys' do
-    it 'raises error when defining nested keys without `schema` block`' do
-      expect {
-        Dry::Schema.build { required(:foo).value { required(:bar).value(:str?) } }
-      }.to raise_error(ArgumentError, /required/)
+  context 'nested schema' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:user).schema do
+          required(:name).filled
+          required(:age).filled(:int?)
+        end
+      end
+    end
+
+    it 'passes when input is valid' do
+      expect(schema.(user: { name: 'Jane', age: 35 })).to be_success
+    end
+
+    it 'fails when input is not valid' do
+      result = schema.(user: { age: 35 })
+
+      expect(result).to be_failure
+      expect(result.errors[:user]).to eql(name: ['is missing'])
+
+      result = schema.(user: { name: 'Jane', age: '35' })
+
+      expect(result).to be_failure
+      expect(result.errors[:user]).to eql(age: ['must be an integer'])
+    end
+  end
+
+  context 'with coercible type specs' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:birthday, Types::Form::Date).value(:date?)
+        optional(:age, Types::Form::Int).value(:int?)
+      end
+    end
+
+    it 'passes when input is valid' do
+      expect(schema.(birthday: '1990-01-02')).to be_success
+      expect(schema.(birthday: '1990-01-02', age: '21')).to be_success
+    end
+
+    it 'fails when input is not valid' do
+      expect(schema.(birthday: 'dooh', age: '21')).to be_failure
+      expect(schema.(birthday: 'dooh', age: nil)).to be_failure
+      expect(schema.(birthday: '1990-01-02', age: 'oops')).to be_failure
+    end
+
+    it 'produces error messages' do
+      result = schema.(birthday: '1990-01-02', age: 'oops')
+
+      expect(result.errors[:age]).to include('must be an integer')
     end
   end
 end

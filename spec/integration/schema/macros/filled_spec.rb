@@ -1,7 +1,7 @@
 RSpec.describe 'Macros #filled' do
   describe 'with no args' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:email).filled
       end
     end
@@ -15,7 +15,7 @@ RSpec.describe 'Macros #filled' do
 
   describe 'with a type specification' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:age).filled(:int?)
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe 'Macros #filled' do
   describe 'with a predicate with args' do
     context 'with a flat arg' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           required(:age).filled(:int?, gt?: 18)
         end
       end
@@ -44,7 +44,7 @@ RSpec.describe 'Macros #filled' do
 
     context 'with a range arg' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           required(:age).filled(:int?, size?: 18..24)
         end
       end
@@ -58,7 +58,7 @@ RSpec.describe 'Macros #filled' do
 
     context 'with a block' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           required(:age).filled { int? & size?(18..24) }
         end
       end
@@ -72,7 +72,7 @@ RSpec.describe 'Macros #filled' do
 
     context 'with a predicate and a block' do
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           required(:age).filled(:int?) { size?(18..24) }
         end
       end

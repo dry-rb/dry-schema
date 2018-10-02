@@ -35,7 +35,7 @@ RSpec.describe 'Predicates: hash?' do
 
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:foo) { hash? }
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe 'Predicates: hash?' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         optional(:foo) { hash? }
       end
     end

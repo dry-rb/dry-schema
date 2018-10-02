@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Type' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { type?(Integer) }
+        required(:foo, :int) { type?(Integer) }
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Type' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { type?(Integer) }
+        optional(:foo, :int) { type?(Integer) }
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(type?: Integer)
+            required(:foo, :int).value(type?: Integer)
           end
         end
 
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).filled(type?: Integer)
+            required(:foo, :int).filled(type?: Integer)
           end
         end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(type?: Integer)
+            required(:foo, [:nil, :int]).maybe(type?: Integer)
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(type?: Integer)
+            optional(:foo, :int).value(type?: Integer)
           end
         end
 
@@ -294,7 +294,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).filled(type?: Integer)
+            optional(:foo, :int).filled(type?: Integer)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(type?: Integer)
+            optional(:foo, [:nil, :int]).maybe(type?: Integer)
           end
         end
 

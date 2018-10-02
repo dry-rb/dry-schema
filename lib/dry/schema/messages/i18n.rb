@@ -2,7 +2,7 @@ require 'i18n'
 require 'dry/schema/messages/abstract'
 
 module Dry
-  class Schema
+  module Schema
     class Messages::I18n < Messages::Abstract
       attr_reader :t
 

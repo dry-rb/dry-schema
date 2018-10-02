@@ -1,13 +1,11 @@
-require 'dry/core/constants'
+require 'dry/schema/constants'
 require 'dry/schema/message'
 require 'dry/schema/message_set'
 require 'dry/schema/message_compiler/visitor_opts'
 
 module Dry
-  class Schema
+  module Schema
     class MessageCompiler
-      include Core::Constants
-
       attr_reader :messages, :options, :locale, :default_lookup_options
 
       EMPTY_OPTS = VisitorOpts.new
@@ -43,41 +41,41 @@ module Dry
         __send__(:"visit_#{node[0]}", node[1], *args)
       end
 
-      def visit_failure(node, opts = EMPTY_OPTS)
+      def visit_failure(node, opts = EMPTY_OPTS.dup)
         rule, other = node
         visit(other, opts.(rule: rule))
       end
 
-      def visit_hint(node, opts = EMPTY_OPTS)
+      def visit_hint(node, opts = EMPTY_OPTS.dup)
         if hints?
           visit(node, opts.(message_type: :hint))
         end
       end
 
-      def visit_each(node, opts = EMPTY_OPTS)
+      def visit_each(node, opts = EMPTY_OPTS.dup)
         # TODO: we can still generate a hint for elements here!
         []
       end
 
-      def visit_not(node, opts = EMPTY_OPTS)
+      def visit_not(node, opts = EMPTY_OPTS.dup)
         visit(node, opts.(not: true))
       end
 
-      def visit_check(node, opts = EMPTY_OPTS)
+      def visit_check(node, opts = EMPTY_OPTS.dup)
         keys, other = node
         visit(other, opts.(path: keys.last, check: true))
       end
 
-      def visit_rule(node, opts = EMPTY_OPTS)
+      def visit_rule(node, opts = EMPTY_OPTS.dup)
         name, other = node
         visit(other, opts.(rule: name))
       end
 
-      def visit_schema(node, opts = EMPTY_OPTS)
+      def visit_schema(node, opts = EMPTY_OPTS.dup)
         node.rule_ast.map { |rule| visit(rule, opts) }
       end
 
-      def visit_and(node, opts = EMPTY_OPTS)
+      def visit_and(node, opts = EMPTY_OPTS.dup)
         left, right = node.map { |n| visit(n, opts) }
 
         if right
@@ -87,7 +85,7 @@ module Dry
         end
       end
 
-      def visit_or(node, opts = EMPTY_OPTS)
+      def visit_or(node, opts = EMPTY_OPTS.dup)
         left, right = node.map { |n| visit(n, opts) }
 
         if [left, right].flatten.map(&:path).uniq.size == 1
@@ -99,7 +97,7 @@ module Dry
         end
       end
 
-      def visit_predicate(node, base_opts = EMPTY_OPTS)
+      def visit_predicate(node, base_opts = EMPTY_OPTS.dup)
         predicate, args = node
 
         *arg_vals, val = args.map(&:last)
@@ -127,17 +125,17 @@ module Dry
           predicate, path, text,
           args: arg_vals,
           input: input,
-          rule: rule,
+          rule: rule || msg_opts[:name],
           check: base_opts[:check]
         ]
       end
 
-      def visit_key(node, opts = EMPTY_OPTS)
+      def visit_key(node, opts = EMPTY_OPTS.dup)
         name, other = node
         visit(other, opts.(path: name))
       end
 
-      def visit_set(node, opts = EMPTY_OPTS)
+      def visit_set(node, opts = EMPTY_OPTS.dup)
         node.map { |el| visit(el, opts) }
       end
 
@@ -146,12 +144,12 @@ module Dry
         visit(right, *args)
       end
 
-      def visit_xor(node, opts = EMPTY_OPTS)
+      def visit_xor(node, opts = EMPTY_OPTS.dup)
         left, right = node
         [visit(left, opts), visit(right, opts)].uniq
       end
 
-      def visit_type(node, opts = EMPTY_OPTS)
+      def visit_type(node, opts = EMPTY_OPTS.dup)
         visit(node.rule.to_ast, opts)
       end
 
@@ -166,7 +164,7 @@ module Dry
         text = template % tokens
 
         if full?
-          rule_name = messages.rule(rule, opts) || rule
+          rule_name = rule ? (messages.rule(rule, opts) || rule) : (opts[:name] || opts[:path].last)
           "#{rule_name} #{text}"
         else
           text

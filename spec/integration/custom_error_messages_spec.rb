@@ -13,12 +13,12 @@ RSpec.describe Dry::Schema do
 
   context 'yaml' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         configure do
           config.messages_file = SPEC_ROOT.join('fixtures/locales/en.yml')
         end
 
-        required(:email, &:filled?)
+        required(:email).value(:filled?)
       end
     end
 
@@ -33,12 +33,12 @@ RSpec.describe Dry::Schema do
       end
 
       subject(:schema) do
-        Dry::Schema.build do
+        Dry::Schema.define do
           configure do
             config.messages = :i18n
           end
 
-          required(:email, &:filled?)
+          required(:email).value(:filled?)
         end
       end
 

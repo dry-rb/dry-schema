@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Eql' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:foo) { eql?(23) }
       end
     end
@@ -41,7 +41,7 @@ RSpec.describe 'Predicates: Eql' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         optional(:foo) { eql?(23) }
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe 'Predicates: Eql' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).value(eql?: 23)
           end
         end
@@ -123,7 +123,7 @@ RSpec.describe 'Predicates: Eql' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).filled(eql?: 23)
           end
         end
@@ -163,7 +163,7 @@ RSpec.describe 'Predicates: Eql' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).maybe(eql?: 23)
           end
         end
@@ -205,7 +205,7 @@ RSpec.describe 'Predicates: Eql' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).value(eql?: 23)
           end
         end
@@ -245,7 +245,7 @@ RSpec.describe 'Predicates: Eql' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).filled(eql?: 23)
           end
         end
@@ -285,7 +285,7 @@ RSpec.describe 'Predicates: Eql' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).maybe(eql?: 23)
           end
         end

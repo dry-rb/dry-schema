@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Lt' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo) { int? & lt?(23) }
+        required(:foo, :int) { int? & lt?(23) }
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe 'Predicates: Lt' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo) { int? & lt?(23) }
+        optional(:foo, :int) { int? & lt?(23) }
       end
     end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Predicates: Lt' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).value(:int?, lt?: 23)
+            required(:foo, :int).value(:int?, lt?: 23)
           end
         end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Lt' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).filled(:int?, lt?: 23)
+            required(:foo, :int).filled(:int?, lt?: 23)
           end
         end
 
@@ -260,7 +260,7 @@ RSpec.describe 'Predicates: Lt' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo).maybe(:int?, lt?: 23)
+            required(:foo, [:nil, :int]).maybe(:int?, lt?: 23)
           end
         end
 
@@ -326,7 +326,7 @@ RSpec.describe 'Predicates: Lt' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).value(:int?, lt?: 23)
+            optional(:foo, :int).value(:int?, lt?: 23)
           end
         end
 
@@ -390,7 +390,7 @@ RSpec.describe 'Predicates: Lt' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).filled(:int?, lt?: 23)
+            optional(:foo, :int).filled(:int?, lt?: 23)
           end
         end
 
@@ -454,7 +454,7 @@ RSpec.describe 'Predicates: Lt' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo).maybe(:int?, lt?: 23)
+            optional(:foo, [:nil, :int]).maybe(:int?, lt?: 23)
           end
         end
 

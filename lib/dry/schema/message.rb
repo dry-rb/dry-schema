@@ -1,7 +1,7 @@
 require 'dry/equalizer'
 
 module Dry
-  class Schema
+  module Schema
     class Message
       include Dry::Equalizer(:predicate, :path, :text, :options)
 
@@ -53,7 +53,7 @@ module Dry
 
       def initialize(predicate, path, text, options)
         @predicate = predicate
-        @path = path
+        @path = path.dup
         @text = text
         @options = options
         @rule = options[:rule]

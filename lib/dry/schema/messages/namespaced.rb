@@ -1,5 +1,5 @@
 module Dry
-  class Schema
+  module Schema
     module Messages
       class Namespaced <Dry::Schema::Messages::Abstract
         attr_reader :namespace, :messages, :root

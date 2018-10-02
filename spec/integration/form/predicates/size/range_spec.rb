@@ -199,7 +199,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo).maybe(size?: 2..3)
+              required(:foo, [:nil, :string]).maybe(size?: 2..3)
             end
           end
 
@@ -346,7 +346,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo).maybe(size?: 2..3)
+              optional(:foo, [:nil, :string]).maybe(size?: 2..3)
             end
           end
 

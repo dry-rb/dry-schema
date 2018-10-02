@@ -1,8 +1,8 @@
 RSpec.describe 'Macros #each' do
   context "predicate without options" do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo).each(:filled?, :str?)
+      Dry::Schema.define do
+        required(:foo, :array).value(:array?).each(:filled?, :str?)
       end
     end
 
@@ -33,8 +33,8 @@ RSpec.describe 'Macros #each' do
 
   context "predicate with options" do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo).each(size?: 3)
+      Dry::Schema.define do
+        required(:foo, :array).value(:array?).each(size?: 3)
       end
     end
 
@@ -65,8 +65,8 @@ RSpec.describe 'Macros #each' do
 
   context 'with filled macro' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo).filled(size?: 2) { each(:str?) }
+      Dry::Schema.define do
+        required(:foo, :array).value(:array?).filled(size?: 2) { each(:str?) }
       end
     end
 
@@ -97,8 +97,8 @@ RSpec.describe 'Macros #each' do
 
   context 'with maybe macro' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo).maybe { each(:str?) }
+      Dry::Schema.define do
+        required(:foo, [:nil, :array]).maybe(:array?) { each(:str?) }
       end
     end
 
@@ -129,13 +129,13 @@ RSpec.describe 'Macros #each' do
 
   context 'with external schema macro' do
     subject(:schema) do
-      Dry::Schema.build do
-        required(:foo).each(FooSchema)
+      Dry::Schema.define do
+        required(:foo, :array).value(:array?).each(FooSchema)
       end
     end
 
     before do
-      FooSchema = Dry::Schema.build do
+      FooSchema = Dry::Schema.define do
         required(:bar).filled(:str?)
       end
     end
@@ -165,8 +165,8 @@ RSpec.describe 'Macros #each' do
   context 'with a block' do
     context 'with a nested schema' do
       subject(:schema) do
-        Dry::Schema.build do
-          required(:songs).each do
+        Dry::Schema.define do
+          required(:songs, :array).value(:array?).each(:hash?) do
             schema do
               required(:title).filled
               required(:author).filled
@@ -211,7 +211,7 @@ RSpec.describe 'Macros #each' do
     context "predicate w/o options" do
       subject(:schema) do
         Dry::Schema.form do
-          required(:songs).each(:str?)
+          required(:songs).value(:array?).each(:str?)
         end
       end
 
@@ -235,34 +235,6 @@ RSpec.describe 'Macros #each' do
           }
         )
       end
-    end
-  end
-
-  context 'with a custom predicate' do
-    subject(:schema) do
-      Dry::Schema.build do
-        configure do
-          def self.messages
-            super.merge(en: { errors: { valid_content?: 'must have type key' }})
-          end
-
-          def valid_content?(content)
-            content.key?(:type)
-          end
-        end
-
-        required(:contents).each(:valid_content?)
-      end
-    end
-
-    it 'passes when all elements are valid' do
-      expect(schema.(contents: [{ type: 'foo' }, { type: 'bar' }]))
-    end
-
-    it 'fails when some elements are not valid' do
-      expect(schema.(contents: [{ type: 'foo' }, { oops: 'bar' }]).errors).to eql(
-        contents: { 1 => ['must have type key']}
-      )
     end
   end
 end

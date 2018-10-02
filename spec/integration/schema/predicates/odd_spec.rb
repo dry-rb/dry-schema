@@ -1,7 +1,7 @@
-RSpec.describe 'Predicates: even' do
+RSpec.describe 'Predicates: odd' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         required(:foo) { odd? }
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: even' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.build do
+      Dry::Schema.define do
         optional(:foo) { odd? }
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe 'Predicates: even' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).value(:odd?)
           end
         end
@@ -171,7 +171,7 @@ RSpec.describe 'Predicates: even' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).filled(:odd?)
           end
         end
@@ -227,7 +227,7 @@ RSpec.describe 'Predicates: even' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             required(:foo).maybe(:odd?)
           end
         end
@@ -285,7 +285,7 @@ RSpec.describe 'Predicates: even' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).value(:odd?)
           end
         end
@@ -341,7 +341,7 @@ RSpec.describe 'Predicates: even' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).filled(:odd?)
           end
         end
@@ -397,7 +397,7 @@ RSpec.describe 'Predicates: even' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.build do
+          Dry::Schema.define do
             optional(:foo).maybe(:odd?)
           end
         end

@@ -1,6 +1,6 @@
 RSpec.describe Dry::Schema do
   subject(:schema) do
-    Dry::Schema.build do
+    Dry::Schema.define do
       required(:age).filled(:number?, :int?)
     end
   end
