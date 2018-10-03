@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Includes' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:foo, Types::Form::Array.of(Types::Form::Int)).value(:array?).each(:int?).value(includes?: 1)
+        required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(includes?: 1)
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Includes' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.form do
-        optional(:foo, Types::Form::Array.of(Types::Form::Int)).value(:array?).each(:int?).value(includes?: 1)
+        optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(includes?: 1)
       end
     end
 

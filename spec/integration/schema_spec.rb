@@ -122,8 +122,8 @@ RSpec.describe Dry::Schema, '.define' do
   context 'with coercible type specs' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:birthday, Types::Form::Date).value(:date?)
-        optional(:age, Types::Form::Int).value(:int?)
+        required(:birthday, Types::Params::Date).value(:date?)
+        optional(:age, Types::Params::Integer).value(:int?)
       end
     end
 
