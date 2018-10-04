@@ -66,7 +66,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'using a type object' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age, Types::Form::Nil | Types::Form::Int)
+        required(:age, Types::Params::Nil | Types::Params::Integer)
       end
     end
 
