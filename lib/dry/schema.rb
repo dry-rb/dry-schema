@@ -3,8 +3,12 @@ require 'dry/schema/dsl'
 require 'dry/schema/definition'
 require 'dry/schema/types'
 
+require 'dry/core/extensions'
+
 module Dry
   module Schema
+    extend Dry::Core::Extensions
+
     InvalidSchemaError = Class.new(StandardError)
 
     # Define a schema
@@ -56,3 +60,5 @@ module Dry
     end
   end
 end
+
+require 'dry/schema/extensions'
