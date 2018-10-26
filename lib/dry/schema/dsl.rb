@@ -97,11 +97,11 @@ module Dry
         self.class.new(type_registry: type_registry, &block)
       end
 
-      private
-
       def set_type(name, spec)
         types[name] = resolve_type(spec).meta(omittable: true)
       end
+
+      private
 
       def key_map(types = self.types)
         keys = types.keys.each_with_object([]) { |key_name, arr|

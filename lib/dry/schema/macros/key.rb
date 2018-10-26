@@ -4,6 +4,11 @@ module Dry
   module Schema
     module Macros
       class Key < DSL
+        def type(*args)
+          schema_dsl.set_type(name, args)
+          self
+        end
+
         def maybe(*args, **opts, &block)
           append_macro(Macros::Maybe) do |macro|
             macro.call(*args, **opts, &block)
