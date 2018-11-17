@@ -57,10 +57,20 @@ module Dry
       def key(name, type:, macro:, &block)
         set_type(name, type)
 
-        macro = macro.new(name: name, compiler: compiler, schema_dsl: self)
+        macro = macro.new(
+          name: name,
+          compiler: compiler,
+          schema_dsl: self,
+          input_schema: input_schema
+        )
+
         macro.value(&block) if block
         macros << macro
         macro
+      end
+
+      def input_schema
+        @__input_schema__ ||= new
       end
 
       def call
@@ -101,6 +111,12 @@ module Dry
         types[name] = resolve_type(spec).meta(omittable: true)
       end
 
+      protected
+
+      def rules
+        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
+      end
+
       private
 
       def key_map(types = self.types)
@@ -135,10 +151,6 @@ module Dry
         else
           type_registry[spec]
         end
-      end
-
-      def rules
-        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
       end
 
       def parent_rules

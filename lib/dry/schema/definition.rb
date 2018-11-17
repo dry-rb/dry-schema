@@ -12,6 +12,8 @@ module Dry
 
       param :rules
 
+      option :input_rules, optional: true, default: proc { nil }
+
       option :config, default: proc { Config.new }
 
       option :message_compiler, default: proc { MessageCompiler.new(Messages.setup(config)) }
