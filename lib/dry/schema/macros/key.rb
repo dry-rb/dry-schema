@@ -7,9 +7,19 @@ module Dry
       class Key < DSL
         option :input_schema, optional: true, default: proc { schema_dsl&.new }
 
-        def input(*args, &block)
+        def filter(*args, &block)
           input_schema.required(name).value(*args, &block)
           self
+        end
+
+        def value(*args, **opts, &block)
+          type_spec = args[0].is_a?(Symbol) && !args[0].to_s.end_with?(QUESTION_MARK) && args[0]
+
+          if type_spec
+            type(type_spec).value(*args[1..-1], **opts, &block)
+          else
+            super(*args, **opts, &block)
+          end
         end
 
         def type(*args)

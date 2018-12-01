@@ -1,7 +1,7 @@
 RSpec.describe Dry::Schema, 'pre-coercion input rules' do
   subject(:schema) do
     Dry::Schema.define do
-      required(:age).type(:int).input(format?: /\d+/).value(:int?, gt?: 18)
+      required(:age).filter(format?: /\d+/).value(:int, gt?: 18)
     end
   end
 
