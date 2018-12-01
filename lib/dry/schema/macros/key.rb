@@ -5,7 +5,7 @@ module Dry
   module Schema
     module Macros
       class Key < DSL
-        option :input_schema, default: proc { schema_dsl.new }
+        option :input_schema, optional: true, default: proc { schema_dsl&.new }
 
         def input(*args, &block)
           input_schema.required(name).value(*args, &block)
