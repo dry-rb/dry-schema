@@ -8,7 +8,7 @@ module Dry
         option :input_schema, optional: true, default: proc { schema_dsl&.new }
 
         def filter(*args, &block)
-          input_schema.required(name).value(*args, &block)
+          input_schema.optional(name).value(*args, &block)
           self
         end
 
