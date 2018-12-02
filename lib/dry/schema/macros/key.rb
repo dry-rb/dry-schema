@@ -13,24 +13,28 @@ module Dry
         end
 
         def value(*args, **opts, &block)
-          type_spec = args[0].is_a?(Symbol) && !args[0].to_s.end_with?(QUESTION_MARK) && args[0]
-
-          if type_spec
-            type(type_spec).value(*args[1..-1], **opts, &block)
-          else
-            super(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates|
+            super(*predicates, **opts, &block)
           end
         end
 
-        def type(*args)
-          schema_dsl.set_type(name, args)
-          self
+        def filled(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates|
+            super(*predicates, **opts, &block)
+          end
         end
 
         def maybe(*args, **opts, &block)
-          append_macro(Macros::Maybe) do |macro|
-            macro.call(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates|
+            append_macro(Macros::Maybe) do |macro|
+              macro.call(*predicates, **opts, &block)
+            end
           end
+        end
+
+        def type(args)
+          schema_dsl.set_type(name, args)
+          self
         end
 
         def to_rule
@@ -43,6 +47,15 @@ module Dry
 
         def to_ast
           [:predicate, [:key?, [[:name, name], [:input, Undefined]]]]
+        end
+
+        private
+
+        def extract_type_spec(*args)
+          type_spec = args[0].is_a?(Symbol) && !args[0].to_s.end_with?(QUESTION_MARK) && args[0]
+          predicates = type_spec ? args[1, -1] : args
+          type(type_spec) if type_spec
+          yield(*predicates)
         end
       end
     end
