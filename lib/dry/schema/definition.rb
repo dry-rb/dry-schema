@@ -20,12 +20,14 @@ module Dry
 
       def call(input)
         results = rules.reduce([]) { |a, (name, rule)|
-          result = rule.(input)
-          a << result unless result.success?
+          unless input.error?(name)
+            result = rule.(input)
+            a << result unless result.success?
+          end
           a
         } || EMPTY_ARRAY
 
-        Result.new(input, results, message_compiler: message_compiler)
+        input.concat(results)
       end
 
       def to_ast

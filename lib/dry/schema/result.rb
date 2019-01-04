@@ -12,9 +12,35 @@ module Dry
       alias_method :to_h, :output
       alias_method :to_hash, :output
 
-      param :results
+      param :results, default: -> { EMPTY_ARRAY.dup }
 
       option :message_compiler
+
+      def set(hash)
+        @output = hash
+        self
+      end
+
+      def [](name)
+        output[name]
+      end
+
+      def fetch(name, &block)
+        output.fetch(name, &block)
+      end
+
+      def key?(name)
+        output.key?(name)
+      end
+
+      def error?(name)
+        errors.key?(name)
+      end
+
+      def concat(other)
+        results.concat(other)
+        self
+      end
 
       def success?
         results.empty?
@@ -43,7 +69,7 @@ module Dry
       private
 
       def result_ast
-        @result_ast ||= results.map(&:to_ast)
+        results.map(&:to_ast)
       end
     end
   end

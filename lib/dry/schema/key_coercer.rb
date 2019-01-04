@@ -22,7 +22,7 @@ module Dry
       end
       
       def call(source)
-        key_map.write(source)
+        key_map.write(Hash(source))
       end
       alias_method :[], :call
     end

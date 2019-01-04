@@ -74,9 +74,11 @@ module Dry
       end
 
       def call
-        Processor.new { |processor| 
-          processor << key_coercer << value_coercer << definition
-        }
+        steps = [key_coercer]
+        steps << input_schema.definition unless input_schema.macros.empty?
+        steps << value_coercer << definition
+
+        Processor.new { |processor| steps.each { |step| processor << step } }
       end
 
       def key_coercer

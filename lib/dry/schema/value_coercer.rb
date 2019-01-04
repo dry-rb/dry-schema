@@ -8,7 +8,7 @@ module Dry
       param :type_schema
 
       def call(input)
-        type_schema[input]
+        type_schema[Hash(input)]
       end
     end
   end
