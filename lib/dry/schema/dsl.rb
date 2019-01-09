@@ -3,9 +3,12 @@ require 'dry/initializer'
 require 'dry/schema/constants'
 require 'dry/schema/config'
 require 'dry/schema/compiler'
-require 'dry/schema/definition'
 require 'dry/schema/types'
 require 'dry/schema/macros'
+
+require 'dry/schema/processor'
+require 'dry/schema/value_coercer'
+require 'dry/schema/definition'
 
 module Dry
   module Schema
@@ -59,7 +62,9 @@ module Dry
       end
 
       def call
-        Definition.new(rules, type_schema: type_schema, config: config)
+        Processor.new { |processor| 
+          processor << ValueCoercer.new(type_schema) << Definition.new(rules, config: config)
+        }
       end
 
       def to_rule
