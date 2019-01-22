@@ -16,6 +16,7 @@ end
 
 group :tools do
   gem 'byebug', platform: :mri
+  gem 'pry'
 end
 
 group :benchmarks do
