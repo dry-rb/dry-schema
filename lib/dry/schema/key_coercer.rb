@@ -1,5 +1,4 @@
 require 'dry/core/cache'
-require 'dry/schema/constants'
 
 module Dry
   module Schema
