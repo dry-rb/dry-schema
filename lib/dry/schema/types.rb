@@ -9,11 +9,23 @@ module Dry
     end
 
     def hash?
-      right.primitive == Hash
+      right.hash?
     end
 
     def array?
-      right.primitive == Array
+      right.array?
+    end
+
+    def member_array?
+      right.member_array?
+    end
+
+    def member
+      right.member
+    end
+
+    def member_types
+      right.member_types
     end
   end
 
@@ -28,6 +40,10 @@ module Dry
 
     def array?
       primitive == Array
+    end
+
+    def member_array?
+      array? && respond_to?(:member)
     end
   end
   # </TODO>

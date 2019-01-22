@@ -7,6 +7,8 @@ require 'dry/schema/types'
 require 'dry/schema/macros'
 
 require 'dry/schema/processor'
+require 'dry/schema/key_map'
+require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
 require 'dry/schema/definition'
 
@@ -63,7 +65,7 @@ module Dry
 
       def call
         Processor.new { |processor| 
-          processor << ValueCoercer.new(type_schema) << Definition.new(rules, config: config)
+          processor << key_coercer << ValueCoercer.new(type_schema) << Definition.new(rules, config: config)
         }
       end
 
@@ -75,12 +77,40 @@ module Dry
         -> member_type { Types::Array.of(resolve_type(member_type)) }
       end
 
+      def key_coercer
+        KeyCoercer.new(key_map + parent_key_map, &:to_sym)
+      end
+
+      def key_map(types = self.types)
+        keys = types.keys.each_with_object([]) { |a, e|
+          e << key_value(a, types[a])
+        }
+        km = KeyMap.new(keys)
+
+        if hash_type === :symbolized
+          km.stringified
+        else
+          km
+        end
+      end
+
+      def key_value(name, type)
+        if type.hash?
+          { name => key_map(type.member_types) }
+        elsif type.member_array?
+          kv = key_value(name, type.member)
+          kv === name ? name : kv.flatten(1)
+        else
+          name
+        end
+      end
+
       def type_schema
-        type_registry["hash"].public_send(hash_type, types.merge(parent_types)).safe
+        type_registry["hash"].schema(types.merge(parent_types)).safe
       end
 
       def new(&block)
-        self.class.new(type_registry: type_registry, hash_type: hash_type, &block)
+        self.class.new(type_registry: type_registry, &block)
       end
 
       private
@@ -109,6 +139,10 @@ module Dry
       def parent_types
         # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
         parent&.type_schema&.member_types || EMPTY_HASH
+      end
+
+      def parent_key_map
+        parent&.key_map || EMPTY_ARRAY
       end
     end
   end
