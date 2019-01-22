@@ -36,11 +36,15 @@ module Dry
       end
 
       def coercible(&coercer)
-        self.class.new(id, name: name, coercer: coercer)
+        new(coercer: coercer)
       end
 
       def stringified
-        self.class.new(id, name: name.to_s)
+        new(name: name.to_s)
+      end
+
+      def new(new_opts = EMPTY_HASH)
+        self.class.new(id, { name: name, coercer: coercer }.merge(new_opts))
       end
 
       private
@@ -71,11 +75,11 @@ module Dry
       end
 
       def coercible(&coercer)
-        self.class.new(id, name: name, coercer: coercer, members: members.coercible(&coercer))
+        new(coercer: coercer, members: members.coercible(&coercer))
       end
 
       def stringified
-        self.class.new(id, name: name.to_s, members: members.stringified)
+        new(name: name.to_s, members: members.stringified)
       end
     end
 
@@ -96,11 +100,11 @@ module Dry
       end
 
       def coercible(&coercer)
-        self.class.new(id, name: name, coercer: coercer, member: member.coercible(&coercer))
+        new(coercer: coercer, member: member.coercible(&coercer))
       end
 
       def stringified
-        self.class.new(id, name: name.to_s, member: member.stringified)
+        new(name: name.to_s, member: member.stringified)
       end
     end
   end
