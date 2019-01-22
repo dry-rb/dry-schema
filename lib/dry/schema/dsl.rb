@@ -70,7 +70,7 @@ module Dry
       end
 
       def key_coercer
-        KeyCoercer.new(key_map + parent_key_map, &:to_sym)
+        KeyCoercer.symbolized(key_map + parent_key_map)
       end
 
       def value_coercer
