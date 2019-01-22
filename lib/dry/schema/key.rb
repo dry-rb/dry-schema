@@ -46,7 +46,7 @@ module Dry
       private
 
       def coerced_name
-        coercer[name]
+        @__coerced_name__ ||= coercer[name]
       end
     end
 
