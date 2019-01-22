@@ -1,11 +1,18 @@
+require 'dry/core/cache'
 require 'dry/schema/constants'
 
 module Dry
   module Schema
     class KeyCoercer
+      extend Dry::Core::Cache
+
       TO_SYM = -> v { v.to_sym }.freeze
 
       attr_reader :key_map, :coercer
+
+      def self.new(*args, &coercer)
+        fetch_or_store(*args, coercer) { super(*args, &coercer) }
+      end
 
       def self.symbolized(*args)
         new(*args, &TO_SYM)

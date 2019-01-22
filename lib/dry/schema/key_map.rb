@@ -1,9 +1,12 @@
 require 'dry/equalizer'
+require 'dry/core/cache'
 require 'dry/schema/constants'
 
 module Dry
   module Schema
     class Key
+      extend Dry::Core::Cache
+
       DEFAULT_COERCER = -> v { v }
 
       include Dry.Equalizer(:name, :coercer)
@@ -12,6 +15,10 @@ module Dry
 
       def self.[](name, **opts)
         new(name, **opts)
+      end
+
+      def self.new(*args)
+        fetch_or_store(*args) { super }
       end
 
       def initialize(id, name: id, coercer: DEFAULT_COERCER)
@@ -102,6 +109,8 @@ module Dry
     end
 
     class KeyMap
+      extend Dry::Core::Cache
+
       include Dry.Equalizer(:keys)
       include Enumerable
 
@@ -109,6 +118,10 @@ module Dry
 
       def self.[](*keys)
         new(keys)
+      end
+
+      def self.new(*args)
+        fetch_or_store(*args) { super }
       end
 
       def initialize(keys)
