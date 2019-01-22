@@ -65,8 +65,20 @@ module Dry
 
       def call
         Processor.new { |processor| 
-          processor << key_coercer << ValueCoercer.new(type_schema) << Definition.new(rules, config: config)
+          processor << key_coercer << value_coercer << definition
         }
+      end
+
+      def key_coercer
+        KeyCoercer.new(key_map + parent_key_map, &:to_sym)
+      end
+
+      def value_coercer
+        ValueCoercer.new(type_schema)
+      end
+
+      def definition
+        Definition.new(rules, config: config)
       end
 
       def to_rule
@@ -77,8 +89,18 @@ module Dry
         -> member_type { Types::Array.of(resolve_type(member_type)) }
       end
 
-      def key_coercer
-        KeyCoercer.new(key_map + parent_key_map, &:to_sym)
+      def type_schema
+        type_registry["hash"].schema(types.merge(parent_types)).safe
+      end
+
+      def new(&block)
+        self.class.new(type_registry: type_registry, &block)
+      end
+
+      private
+
+      def set_type(name, spec)
+        types[name] = resolve_type(spec).meta(omittable: true)
       end
 
       def key_map(types = self.types)
@@ -103,20 +125,6 @@ module Dry
         else
           name
         end
-      end
-
-      def type_schema
-        type_registry["hash"].schema(types.merge(parent_types)).safe
-      end
-
-      def new(&block)
-        self.class.new(type_registry: type_registry, &block)
-      end
-
-      private
-
-      def set_type(name, spec)
-        types[name] = resolve_type(spec).meta(omittable: true)
       end
 
       def resolve_type(spec)
