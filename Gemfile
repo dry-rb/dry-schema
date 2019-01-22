@@ -8,7 +8,6 @@ gem 'dry-types', git: 'https://github.com/dry-rb/dry-types.git', branch: 'master
 group :test do
   gem 'i18n', require: false
   platform :mri do
-    gem 'codeclimate-test-reporter', require: false
     gem 'simplecov', require: false
   end
   gem 'dry-monads', require: false
