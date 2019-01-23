@@ -1,4 +1,17 @@
 RSpec.describe Dry::Schema, 'pre-coercion input rules' do
+  context 'coercion' do
+    subject(:schema) do
+      Dry::Schema.form do
+        required(:date).filter(format?: /\d{4}-\d{2}-\d{2}/).filled(:date, :date?, gt?: Date.new(2019, 1, 23))
+        required(:other).value(:int, gt?: 18)
+      end
+    end
+
+    it 'skips coercion when filter rules failed' do
+      expect(schema.(date: '2010-1-23', other: '19').to_h).to eql(date: '2010-1-23', other: 19)
+    end
+  end
+
   context 'with required key and filled' do
     subject(:schema) do
       Dry::Schema.define do
