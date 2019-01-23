@@ -3,9 +3,14 @@ require 'dry/initializer'
 require 'dry/schema/constants'
 require 'dry/schema/config'
 require 'dry/schema/compiler'
-require 'dry/schema/definition'
 require 'dry/schema/types'
 require 'dry/schema/macros'
+
+require 'dry/schema/processor'
+require 'dry/schema/key_map'
+require 'dry/schema/key_coercer'
+require 'dry/schema/value_coercer'
+require 'dry/schema/definition'
 
 module Dry
   module Schema
@@ -59,7 +64,21 @@ module Dry
       end
 
       def call
-        Definition.new(rules, type_schema: type_schema, config: config)
+        Processor.new { |processor| 
+          processor << key_coercer << value_coercer << definition
+        }
+      end
+
+      def key_coercer
+        KeyCoercer.symbolized(key_map + parent_key_map)
+      end
+
+      def value_coercer
+        ValueCoercer.new(type_schema)
+      end
+
+      def definition
+        Definition.new(rules, config: config)
       end
 
       def to_rule
@@ -71,17 +90,42 @@ module Dry
       end
 
       def type_schema
-        type_registry["hash"].public_send(hash_type, types.merge(parent_types)).safe
+        type_registry["hash"].schema(types.merge(parent_types)).safe
       end
 
       def new(&block)
-        self.class.new(type_registry: type_registry, hash_type: hash_type, &block)
+        self.class.new(type_registry: type_registry, &block)
       end
 
       private
 
       def set_type(name, spec)
         types[name] = resolve_type(spec).meta(omittable: true)
+      end
+
+      def key_map(types = self.types)
+        keys = types.keys.each_with_object([]) { |key_name, arr|
+          arr << key_value(key_name, types[key_name])
+        }
+        km = KeyMap.new(keys)
+
+        # TODO: rename this to `key_type`
+        if hash_type.equal?(:symbolized)
+          km.stringified
+        else
+          km
+        end
+      end
+
+      def key_value(name, type)
+        if type.hash?
+          { name => key_map(type.member_types) }
+        elsif type.member_array?
+          kv = key_value(name, type.member)
+          kv === name ? name : kv.flatten(1)
+        else
+          name
+        end
       end
 
       def resolve_type(spec)
@@ -104,6 +148,10 @@ module Dry
       def parent_types
         # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
         parent&.type_schema&.member_types || EMPTY_HASH
+      end
+
+      def parent_key_map
+        parent&.key_map || EMPTY_ARRAY
       end
     end
   end

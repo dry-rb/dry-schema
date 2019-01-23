@@ -8,8 +8,6 @@ require 'dry/schema/message_compiler'
 module Dry
   module Schema
     class Definition
-      DEFAULT_HASH_SCHEMA = -> h { h }
-
       extend Dry::Initializer
 
       param :rules
@@ -18,18 +16,14 @@ module Dry
 
       option :message_compiler, default: proc { MessageCompiler.new(Messages.setup(config)) }
 
-      option :type_schema, default: proc { DEFAULT_HASH_SCHEMA }
-
       def call(input)
-        processed = type_schema[input]
-
         results = rules.reduce([]) { |a, (name, rule)|
-          result = rule.(processed)
+          result = rule.(input)
           a << result unless result.success?
           a
         } || EMPTY_ARRAY
 
-        Result.new(processed, results, message_compiler: message_compiler)
+        Result.new(input, results, message_compiler: message_compiler)
       end
 
       def to_ast
