@@ -31,10 +31,6 @@ module Dry
         output[name]
       end
 
-      def fetch(name, &block)
-        output.fetch(name, &block)
-      end
-
       def key?(name)
         output.key?(name)
       end
