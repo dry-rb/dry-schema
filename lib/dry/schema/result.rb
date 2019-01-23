@@ -16,6 +16,12 @@ module Dry
 
       option :message_compiler
 
+      def self.new(*args)
+        result = super
+        yield(result)
+        result.freeze
+      end
+
       def set(hash)
         @output = hash
         self
@@ -66,10 +72,15 @@ module Dry
         message_compiler.with(options).(result_ast)
       end
 
+      def freeze
+        instance_variable_set('@__result_ast__', result_ast)
+        super
+      end
+
       private
 
       def result_ast
-        results.map(&:to_ast)
+        @__result_ast__ || results.map(&:to_ast)
       end
     end
   end

@@ -21,14 +21,12 @@ module Dry
       end
 
       def call(input)
-        result = Result.new(input, message_compiler: message_compiler)
-
-        steps.each { |step|
-          output = step.(result)
-          result.set(output) if output.is_a?(::Hash)
-        }
-
-        result
+        Result.new(input, message_compiler: message_compiler) do |result|
+          steps.each { |step|
+            output = step.(result)
+            result.set(output) if output.is_a?(::Hash)
+          }
+        end
       end
 
       def to_ast

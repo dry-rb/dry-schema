@@ -18,6 +18,10 @@ RSpec.describe Dry::Schema, '.define' do
 
       expect(result.errors[:email]).to include('must be filled')
     end
+
+    it 'returns a frozen result' do
+      expect(schema.(email: '')).to be_frozen
+    end
   end
 
   context 'using macros' do
