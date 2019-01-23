@@ -22,10 +22,10 @@ module Dry
 
       def call(input)
         Result.new(input, message_compiler: message_compiler) do |result|
-          steps.each { |step|
+          steps.each do |step|
             output = step.(result)
             result.set(output) if output.is_a?(::Hash)
-          }
+          end
         end
       end
 
