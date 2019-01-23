@@ -10,7 +10,7 @@ RSpec.describe Dry::Schema::KeyMap do
       it 'yields each key' do
         result = []
 
-        key_map.each {|key| result << key }
+        key_map.each { |key| result << key }
 
         expect(result).to eql(
           [Dry::Schema::Key[:id], Dry::Schema::Key[:name], Dry::Schema::Key[:email]]
@@ -23,7 +23,7 @@ RSpec.describe Dry::Schema::KeyMap do
         result = []
         hash = {'id' => 1, 'name' => 'Jane', 'email' => 'jade@doe.org'}
 
-        key_map.stringified.each {|key| key.read(hash) {|value| result << value } }
+        key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
         expect(result).to eql([1, 'Jane', 'jade@doe.org'])
       end
@@ -46,7 +46,7 @@ RSpec.describe Dry::Schema::KeyMap do
       it 'yields each key and nested key map' do
         result = []
 
-        key_map.each {|key| result << key }
+        key_map.each { |key| result << key }
 
         expect(result).to eql(
           [Dry::Schema::Key[:id],
@@ -66,7 +66,7 @@ RSpec.describe Dry::Schema::KeyMap do
           'contact' => {'email' => 'jade@doe.org', 'phone' => 123}
         }
 
-        key_map.stringified.each {|key| key.read(hash) {|value| result << value } }
+        key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
         expect(result).to eql([1, 'Jane', {'email' => 'jade@doe.org', 'phone' => 123}])
       end
@@ -80,7 +80,7 @@ RSpec.describe Dry::Schema::KeyMap do
       it 'yields each key and nested key map' do
         result = []
 
-        key_map.each {|key| result << key }
+        key_map.each { |key| result << key }
 
         expect(result).to eql(
           [Dry::Schema::Key[:title], Dry::Schema::Key::Array[:tags, member: Dry::Schema::KeyMap[:name]]]
@@ -97,7 +97,7 @@ RSpec.describe Dry::Schema::KeyMap do
           'tags'  => [{'name' => 'queen'}, {'name' => 'classic'}]
         }
 
-        key_map.stringified.each {|key| key.read(hash) {|value| result << value } }
+        key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
         expect(result).to eql(['Bohemian Rhapsody', [{'name' => 'queen'}, {'name' => 'classic'}]])
       end

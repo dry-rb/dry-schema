@@ -5,7 +5,7 @@ module Dry
     class KeyCoercer
       extend Dry::Core::Cache
 
-      TO_SYM = -> v { v.to_sym }.freeze
+      TO_SYM = :to_sym.to_proc.freeze
 
       attr_reader :key_map, :coercer
 

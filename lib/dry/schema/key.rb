@@ -3,7 +3,7 @@ module Dry
     class Key
       extend Dry::Core::Cache
 
-      DEFAULT_COERCER = -> v { v }
+      DEFAULT_COERCER = :itself.to_proc.freeze
 
       include Dry.Equalizer(:name, :coercer)
 

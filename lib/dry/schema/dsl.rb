@@ -104,12 +104,13 @@ module Dry
       end
 
       def key_map(types = self.types)
-        keys = types.keys.each_with_object([]) { |a, e|
-          e << key_value(a, types[a])
+        keys = types.keys.each_with_object([]) { |key_name, arr|
+          arr << key_value(key_name, types[key_name])
         }
         km = KeyMap.new(keys)
 
-        if hash_type === :symbolized
+        # TODO: rename this to `key_type`
+        if hash_type.equal?(:symbolized)
           km.stringified
         else
           km
