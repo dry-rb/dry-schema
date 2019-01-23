@@ -1,6 +1,7 @@
 require 'dry/initializer'
 
 require 'dry/schema/definition'
+require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
 
 module Dry
