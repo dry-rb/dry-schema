@@ -2,6 +2,16 @@ version: "2"
 plugins:
   rubocop:
     enabled: true
-ratings:
-  paths:
-    - lib/**
+      checks:
+        Rubocop/Metrics/ClassLength:
+          Max: 150
+        Rubocop/Metrics/LineLength:
+          Max: 100
+        Rubocop/Metrics/MethodLength:
+          Max: 20
+exclude_patterns:
+  - "benchmarks/"
+  - "bin/"
+  - "config/"
+  - "examples/"
+  - "spec/"
