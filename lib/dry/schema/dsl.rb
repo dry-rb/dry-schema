@@ -69,10 +69,6 @@ module Dry
         macro
       end
 
-      def input_schema
-        @__input_schema__ ||= new
-      end
-
       def call
         steps = [key_coercer]
         steps << input_schema.definition unless input_schema.macros.empty?
@@ -120,6 +116,10 @@ module Dry
       end
 
       private
+
+      def input_schema
+        @__input_schema__ ||= new
+      end
 
       def key_map(types = self.types)
         keys = types.keys.each_with_object([]) { |key_name, arr|
