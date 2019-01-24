@@ -1,3 +1,4 @@
+require 'dry/schema/processor'
 require 'dry/schema/macros/dsl'
 require 'dry/schema/constants'
 
@@ -52,9 +53,16 @@ module Dry
         private
 
         def extract_type_spec(*args)
-          type_spec = args[0].is_a?(Symbol) && !args[0].to_s.end_with?(QUESTION_MARK) && args[0]
+          type_spec = args[0]
+
+          if type_spec.kind_of?(Schema::Processor) || type_spec.is_a?(Symbol) && type_spec.to_s.end_with?(QUESTION_MARK)
+            type_spec = nil
+          end
+
           predicates = type_spec ? args[1, -1] : args
+
           type(type_spec) if type_spec
+
           yield(*predicates)
         end
       end
