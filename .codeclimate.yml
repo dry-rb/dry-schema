@@ -3,6 +3,8 @@ plugins:
   rubocop:
     enabled: true
     checks:
+      Rubocop/AllCops:
+        TargetRubyVersion: 2.4
       Rubocop/Metrics/ClassLength:
         Max: 150
       Rubocop/Metrics/LineLength:
