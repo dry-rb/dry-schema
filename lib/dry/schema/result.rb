@@ -24,7 +24,7 @@ module Dry
         result.freeze
       end
 
-      def set(hash)
+      def replace(hash)
         @output = hash
         self
       end
