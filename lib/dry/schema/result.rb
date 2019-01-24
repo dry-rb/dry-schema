@@ -4,6 +4,8 @@ require 'dry/equalizer'
 module Dry
   module Schema
     class Result
+      RESULT_AST_IVAR = '@__result_ast__'.freeze
+
       include Dry::Equalizer(:output, :errors)
 
       extend Dry::Initializer
@@ -69,14 +71,14 @@ module Dry
       end
 
       def freeze
-        instance_variable_set('@__result_ast__', result_ast)
+        instance_variable_set(RESULT_AST_IVAR, result_ast)
         super
       end
 
       private
 
       def result_ast
-        @__result_ast__ || results.map(&:to_ast)
+        instance_variable_get(RESULT_AST_IVAR) || results.map(&:to_ast)
       end
     end
   end
