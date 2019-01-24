@@ -57,16 +57,28 @@ module Dry
       def key(name, type:, macro:, &block)
         set_type(name, type)
 
-        macro = macro.new(name: name, compiler: compiler, schema_dsl: self)
+        macro = macro.new(
+          name: name,
+          compiler: compiler,
+          schema_dsl: self,
+          input_schema: input_schema
+        )
+
         macro.value(&block) if block
         macros << macro
         macro
       end
 
+      def input_schema
+        @__input_schema__ ||= new
+      end
+
       def call
-        Processor.new { |processor| 
-          processor << key_coercer << value_coercer << definition
-        }
+        steps = [key_coercer]
+        steps << input_schema.definition unless input_schema.macros.empty?
+        steps << value_coercer << definition
+
+        Processor.new { |processor| steps.each { |step| processor << step } }
       end
 
       def key_coercer
@@ -97,11 +109,17 @@ module Dry
         self.class.new(type_registry: type_registry, &block)
       end
 
-      private
-
       def set_type(name, spec)
         types[name] = resolve_type(spec).meta(omittable: true)
       end
+
+      protected
+
+      def rules
+        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
+      end
+
+      private
 
       def key_map(types = self.types)
         keys = types.keys.each_with_object([]) { |key_name, arr|
@@ -135,10 +153,6 @@ module Dry
         else
           type_registry[spec]
         end
-      end
-
-      def rules
-        macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
       end
 
       def parent_rules

@@ -21,7 +21,12 @@ module Dry
       end
 
       def call(input)
-        steps.reduce(input) { |a, e| e.(a) }
+        Result.new(input, message_compiler: message_compiler) do |result|
+          steps.each do |step|
+            output = step.(result)
+            result.replace(output) if output.is_a?(::Hash)
+          end
+        end
       end
 
       def to_ast
@@ -50,7 +55,8 @@ module Dry
       end
 
       def definition
-        @__definition__ ||= steps.detect { |s| s.is_a?(Definition) }
+        # TODO: make this more explicit through class types
+        @__definition__ ||= steps.last
       end
       alias_method :to_rule, :definition
     end

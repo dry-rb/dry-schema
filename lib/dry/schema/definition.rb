@@ -1,5 +1,6 @@
 require 'dry/initializer'
 
+require 'dry/schema/constants'
 require 'dry/schema/config'
 require 'dry/schema/result'
 require 'dry/schema/messages'
@@ -17,13 +18,15 @@ module Dry
       option :message_compiler, default: proc { MessageCompiler.new(Messages.setup(config)) }
 
       def call(input)
-        results = rules.reduce([]) { |a, (name, rule)|
-          result = rule.(input)
-          a << result unless result.success?
-          a
-        } || EMPTY_ARRAY
+        results = EMPTY_ARRAY.dup
 
-        Result.new(input, results, message_compiler: message_compiler)
+        rules.each do |name, rule|
+          next if input.error?(name)
+          result = rule.(input)
+          results << result if result.failure?
+        end
+
+        input.concat(results)
       end
 
       def to_ast

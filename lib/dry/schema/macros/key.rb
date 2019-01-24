@@ -1,13 +1,41 @@
+require 'dry/schema/processor'
 require 'dry/schema/macros/dsl'
+require 'dry/schema/constants'
 
 module Dry
   module Schema
     module Macros
       class Key < DSL
-        def maybe(*args, **opts, &block)
-          append_macro(Macros::Maybe) do |macro|
-            macro.call(*args, **opts, &block)
+        option :input_schema, optional: true, default: proc { schema_dsl&.new }
+
+        def filter(*args, &block)
+          input_schema.optional(name).value(*args, &block)
+          self
+        end
+
+        def value(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates|
+            super(*predicates, **opts, &block)
           end
+        end
+
+        def filled(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates|
+            super(*predicates, **opts, &block)
+          end
+        end
+
+        def maybe(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates|
+            append_macro(Macros::Maybe) do |macro|
+              macro.call(*predicates, **opts, &block)
+            end
+          end
+        end
+
+        def type(args)
+          schema_dsl.set_type(name, args)
+          self
         end
 
         def to_rule
@@ -20,6 +48,22 @@ module Dry
 
         def to_ast
           [:predicate, [:key?, [[:name, name], [:input, Undefined]]]]
+        end
+
+        private
+
+        def extract_type_spec(*args)
+          type_spec = args[0]
+
+          if type_spec.kind_of?(Schema::Processor) || type_spec.is_a?(Symbol) && type_spec.to_s.end_with?(QUESTION_MARK)
+            type_spec = nil
+          end
+
+          predicates = type_spec ? args[1, -1] : args
+
+          type(type_spec) if type_spec
+
+          yield(*predicates)
         end
       end
     end

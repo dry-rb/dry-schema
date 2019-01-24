@@ -2,7 +2,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec without rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age, :int)
+        required(:age).type(:int)
       end
     end
 
@@ -14,7 +14,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec with rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age, :int).value(:int?, gt?: 18)
+        required(:age).type(:int).value(:int?, gt?: 18)
       end
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'sum type spec without rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age, [:nil, :int])
+        required(:age).type([:nil, :int])
       end
     end
 
@@ -52,7 +52,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'sum type spec with rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age, [:nil, :int]).maybe(:int?, gt?: 18)
+        required(:age).type([:nil, :int]).maybe(:int?, gt?: 18)
       end
     end
 
@@ -79,18 +79,18 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'nested schema' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:user, :hash).schema do
-          required(:email, :string)
-          required(:age, :int)
+        required(:user).type(:hash).schema do
+          required(:email).type(:string)
+          required(:age).type(:int)
 
-          required(:address, :hash).schema do
-            required(:street, :string)
-            required(:city, :string)
-            required(:zipcode, :string)
+          required(:address).type(:hash).schema do
+            required(:street).type(:string)
+            required(:city).type(:string)
+            required(:zipcode).type(:string)
 
-            required(:location, :hash).schema do
-              required(:lat, :float)
-              required(:lng, :float)
+            required(:location).type(:hash).schema do
+              required(:lat).type(:float)
+              required(:lng).type(:float)
             end
           end
         end
@@ -129,12 +129,12 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'nested schema with arrays' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:song, :hash).value(:hash?).schema do
-          required(:title, :string)
+        required(:song).type(:hash).value(:hash?).schema do
+          required(:title).type(:string)
 
-          required(:tags, :array).value(:array?).each do
+          required(:tags).type(:array).value(:array?).each do
             schema do
-              required(:name, :string).value(:str?)
+              required(:name).type(:string).value(:str?)
             end
           end
         end

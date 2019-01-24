@@ -4,6 +4,8 @@ require 'dry/equalizer'
 module Dry
   module Schema
     class Result
+      RESULT_AST_IVAR = '@__result_ast__'.freeze
+
       include Dry::Equalizer(:output, :errors)
 
       extend Dry::Initializer
@@ -12,9 +14,37 @@ module Dry
       alias_method :to_h, :output
       alias_method :to_hash, :output
 
-      param :results
+      param :results, default: -> { EMPTY_ARRAY.dup }
 
       option :message_compiler
+
+      def self.new(*args)
+        result = super
+        yield(result)
+        result.freeze
+      end
+
+      def replace(hash)
+        @output = hash
+        self
+      end
+
+      def [](name)
+        output[name]
+      end
+
+      def key?(name)
+        output.key?(name)
+      end
+
+      def error?(name)
+        errors.key?(name)
+      end
+
+      def concat(other)
+        results.concat(other)
+        self
+      end
 
       def success?
         results.empty?
@@ -40,10 +70,15 @@ module Dry
         message_compiler.with(options).(result_ast)
       end
 
+      def freeze
+        instance_variable_set(RESULT_AST_IVAR, result_ast)
+        super
+      end
+
       private
 
       def result_ast
-        @result_ast ||= results.map(&:to_ast)
+        instance_variable_get(RESULT_AST_IVAR) || results.map(&:to_ast)
       end
     end
   end
