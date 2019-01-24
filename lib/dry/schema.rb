@@ -1,9 +1,9 @@
+require 'dry/core/extensions'
+
 require 'dry/schema/constants'
 require 'dry/schema/dsl'
 require 'dry/schema/definition'
-require 'dry/schema/types'
-
-require 'dry/core/extensions'
+require 'dry/schema/type_registry'
 
 module Dry
   module Schema
@@ -26,7 +26,10 @@ module Dry
     #
     # @api public
     def self.params(options = EMPTY_HASH, &block)
-      define(options.merge(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:params)), &block)
+      dsl_opts = options.merge(
+        hash_type: :symbolized, type_registry: type_registry.namespaced(:params)
+      )
+      define(dsl_opts, &block)
     end
     singleton_class.send(:alias_method, :form, :params)
 
@@ -36,7 +39,10 @@ module Dry
     #
     # @api public
     def self.json(options = EMPTY_HASH, &block)
-      define(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:json), &block)
+      dsl_opts = options.merge(
+        hash_type: :symbolized, type_registry: type_registry.namespaced(:json)
+      )
+      define(dsl_opts, &block)
     end
 
     # Return configured paths to message files
@@ -48,16 +54,8 @@ module Dry
       Messages::Abstract.config.paths
     end
 
-    # @api private
-    def self.resolve_type(ns, name)
-      key = "#{ns}.#{name}"
-      type = types.registered?(key) ? types[key] : types[name.to_s]
-      type.safe
-    end
-
-    # @api private
-    def self.types
-      Dry::Types
+    def self.type_registry
+      @__type_registry__ ||= TypeRegistry.new
     end
   end
 end
