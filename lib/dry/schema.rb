@@ -27,7 +27,7 @@ module Dry
     # @api public
     def self.params(options = EMPTY_HASH, &block)
       dsl_opts = options.merge(
-        hash_type: :symbolized, type_registry: type_registry.namespaced(:params)
+        key_map_type: :stringified, type_registry: type_registry.namespaced(:params)
       )
       define(dsl_opts, &block)
     end
@@ -40,7 +40,7 @@ module Dry
     # @api public
     def self.json(options = EMPTY_HASH, &block)
       dsl_opts = options.merge(
-        hash_type: :symbolized, type_registry: type_registry.namespaced(:json)
+        key_map_type: :stringified, type_registry: type_registry.namespaced(:json)
       )
       define(dsl_opts, &block)
     end

@@ -29,7 +29,7 @@ module Dry
 
       option :type_registry, default: -> { -> name { ::Dry::Types[name.to_s] } }
 
-      option :hash_type, default: -> { :schema }
+      option :key_map_type, optional: true, default: -> { nil }
 
       option :parent, optional: true
 
@@ -127,9 +127,8 @@ module Dry
         }
         km = KeyMap.new(keys)
 
-        # TODO: rename this to `key_type`
-        if hash_type.equal?(:symbolized)
-          km.stringified
+        if key_map_type
+          km.public_send(key_map_type)
         else
           km
         end
