@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Min Size' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            required(:foo, [:nil, :int]).maybe(min_size?: 3)
+            required(:foo, [:nil, :integer]).maybe(min_size?: 3)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Min Size' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.form do
-            optional(:foo, [:nil, :int]).maybe(min_size?: 3)
+            optional(:foo, [:nil, :integer]).maybe(min_size?: 3)
           end
         end
 

@@ -3,7 +3,7 @@ RSpec.describe 'Predicates: Size' do
     context 'with required' do
       subject(:schema) do
         Dry::Schema.form do
-          required(:foo, [:int, :string]) { size?(3) }
+          required(:foo, [:integer, :string]) { size?(3) }
         end
       end
 
@@ -51,7 +51,7 @@ RSpec.describe 'Predicates: Size' do
     context 'with optional' do
       subject(:schema) do
         Dry::Schema.form do
-          optional(:foo, [:int, :string]) { size?(3) }
+          optional(:foo, [:integer, :string]) { size?(3) }
         end
       end
 
@@ -101,7 +101,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo, [:int, :string]).value(size?: 3)
+              required(:foo, [:integer, :string]).value(size?: 3)
             end
           end
 
@@ -149,7 +149,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo, [:int, :string]).filled(size?: 3)
+              required(:foo, [:integer, :string]).filled(size?: 3)
             end
           end
 
@@ -197,7 +197,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.form do
-              required(:foo, [:nil, [:int, :string]]).maybe(size?: 3)
+              required(:foo, [:nil, [:integer, :string]]).maybe(size?: 3)
             end
           end
 
@@ -247,7 +247,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo, [:int, :string]).value(size?: 3)
+              optional(:foo, [:integer, :string]).value(size?: 3)
             end
           end
 
@@ -295,7 +295,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo, [:int, :string]).filled(size?: 3)
+              optional(:foo, [:integer, :string]).filled(size?: 3)
             end
           end
 
@@ -343,7 +343,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.form do
-              optional(:foo, [:nil, [:int, :string]]).maybe(size?: 3)
+              optional(:foo, [:nil, [:integer, :string]]).maybe(size?: 3)
             end
           end
 

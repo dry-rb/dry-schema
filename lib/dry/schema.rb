@@ -20,14 +20,15 @@ module Dry
       DSL.new(options, &block).call
     end
 
-    # Define a form schema
+    # Define a param schema
     #
     # @return [Definition]
     #
     # @api public
-    def self.form(options = EMPTY_HASH, &block)
-      define(options.merge(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:form)), &block)
+    def self.params(options = EMPTY_HASH, &block)
+      define(options.merge(hash_type: :symbolized, type_registry: method(:resolve_type).to_proc.curry.(:params)), &block)
     end
+    singleton_class.send(:alias_method, :form, :params)
 
     # Define a JSON schema
     #

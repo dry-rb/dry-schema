@@ -2,7 +2,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec without rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age).type(:int)
+        required(:age).type(:integer)
       end
     end
 
@@ -14,7 +14,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec with rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age).type(:int).value(:int?, gt?: 18)
+        required(:age).type(:integer).value(:int?, gt?: 18)
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec with an array' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:nums, array[:int])
+        required(:nums, array[:integer])
       end
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'sum type spec without rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age).type([:nil, :int])
+        required(:age).type([:nil, :integer])
       end
     end
 
@@ -52,7 +52,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'sum type spec with rules' do
     subject(:schema) do
       Dry::Schema.form do
-        required(:age).type([:nil, :int]).maybe(:int?, gt?: 18)
+        required(:age).type([:nil, :integer]).maybe(:int?, gt?: 18)
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Dry::Schema, 'types specs' do
       Dry::Schema.form do
         required(:user).type(:hash).schema do
           required(:email).type(:string)
-          required(:age).type(:int)
+          required(:age).type(:integer)
 
           required(:address).type(:hash).schema do
             required(:street).type(:string)

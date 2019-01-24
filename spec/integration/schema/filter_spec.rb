@@ -3,7 +3,7 @@ RSpec.describe Dry::Schema, 'pre-coercion input rules' do
     subject(:schema) do
       Dry::Schema.form do
         required(:date).filter(format?: /\d{4}-\d{2}-\d{2}/).filled(:date, :date?, gt?: Date.new(2019, 1, 23))
-        required(:other).value(:int, gt?: 18)
+        required(:other).value(:integer, gt?: 18)
       end
     end
 
@@ -15,7 +15,7 @@ RSpec.describe Dry::Schema, 'pre-coercion input rules' do
   context 'with required key and filled' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).filter(format?: /\d+/).filled(:int, gt?: 18)
+        required(:age).filter(format?: /\d+/).filled(:integer, gt?: 18)
         required(:login).maybe(size?: 2..12)
       end
     end
@@ -34,7 +34,7 @@ RSpec.describe Dry::Schema, 'pre-coercion input rules' do
   context 'with required key and maybe' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).filter(format?: /\d+/).maybe(:int, gt?: 18)
+        required(:age).filter(format?: /\d+/).maybe(:integer, gt?: 18)
       end
     end
 
@@ -46,7 +46,7 @@ RSpec.describe Dry::Schema, 'pre-coercion input rules' do
   context 'with optional keys' do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:age).filter(format?: /\d+/).filled(:int, gt?: 18)
+        optional(:age).filter(format?: /\d+/).filled(:integer, gt?: 18)
       end
     end
 
