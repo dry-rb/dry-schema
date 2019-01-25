@@ -27,6 +27,12 @@ module Dry
         self
       end
 
+      def concat(other)
+        results.concat(other)
+        result_ast.concat(other.map(&:to_ast))
+        self
+      end
+
       def [](name)
         output[name]
       end
@@ -37,12 +43,6 @@ module Dry
 
       def error?(name)
         errors.key?(name)
-      end
-
-      def concat(other)
-        results.concat(other)
-        result_ast.concat(other.map(&:to_ast))
-        self
       end
 
       def success?
