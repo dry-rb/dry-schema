@@ -7,14 +7,28 @@ RSpec.describe 'Macros #value' do
     end
   end
 
-  describe 'with a type specification' do
+  describe 'with a type check predicate' do
     subject(:schema) do
       Dry::Schema.define do
         required(:age).value(:int?)
       end
     end
 
-    it 'generates int? rule' do
+    it 'applies provided int? rule' do
+      expect(schema.(age: nil).messages).to eql(
+        age: ['must be an integer']
+      )
+    end
+  end
+
+  describe 'with a type spec and no predicate' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value(:integer)
+      end
+    end
+
+    it 'infers int? rule and applies it' do
       expect(schema.(age: nil).messages).to eql(
         age: ['must be an integer']
       )

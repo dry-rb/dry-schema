@@ -6,6 +6,16 @@ module Dry
   module Schema
     module Macros
       class Key < DSL
+        TYPE_TO_PREDICATE = ::Hash.new { |hash, type|
+          primitive = type.maybe? ? type.right.primitive : type.primitive
+
+          if hash.key?(primitive)
+            hash[primitive]
+          else
+            :"#{primitive.name.downcase}?"
+          end
+        }.update(Integer => :int?, String => :str?).freeze
+
         option :input_schema, optional: true, default: proc { schema_dsl&.new }
 
         def filter(*args, &block)
@@ -26,7 +36,7 @@ module Dry
         end
 
         def maybe(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates|
+          extract_type_spec(*args, nullable: true) do |*predicates|
             append_macro(Macros::Maybe) do |macro|
               macro.call(*predicates, **opts, &block)
             end
@@ -52,18 +62,26 @@ module Dry
 
         private
 
-        def extract_type_spec(*args)
+        def extract_type_spec(*args, nullable: false)
           type_spec = args[0]
 
           if type_spec.kind_of?(Schema::Processor) || type_spec.is_a?(Symbol) && type_spec.to_s.end_with?(QUESTION_MARK)
             type_spec = nil
           end
 
-          predicates = type_spec ? args[1, -1] : args
+          predicates = Array(type_spec ? args[1, -1] : args)
 
-          type(type_spec) if type_spec
+          if type_spec
+            type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec)
+            type_predicate = infer_type_predicate
+            predicates << type_predicate unless predicates.include?(type_predicate)
+          end
 
           yield(*predicates)
+        end
+
+        def infer_type_predicate
+          TYPE_TO_PREDICATE[schema_dsl.types[name]]
         end
       end
     end

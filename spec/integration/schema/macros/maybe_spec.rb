@@ -11,6 +11,20 @@ RSpec.describe 'Macros #maybe' do
     end
   end
 
+  describe 'with a type spec' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:email).maybe(:string, format?: /@/)
+      end
+    end
+
+    it 'generates none? | str? rule' do
+      expect(schema.(email: nil)).to be_success
+      expect(schema.(email: 'jane@doe.org')).to be_success
+      expect(schema.(email: 'jane').errors).to eql(email: ['is in invalid format'])
+    end
+  end
+
   describe 'with a predicate with args' do
     subject(:schema) do
       Dry::Schema.define do
