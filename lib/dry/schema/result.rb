@@ -4,8 +4,6 @@ require 'dry/equalizer'
 module Dry
   module Schema
     class Result
-      RESULT_AST_IVAR = '@__result_ast__'.freeze
-
       include Dry::Equalizer(:output, :errors)
 
       extend Dry::Initializer
@@ -43,6 +41,7 @@ module Dry
 
       def concat(other)
         results.concat(other)
+        result_ast.concat(other.map(&:to_ast))
         self
       end
 
@@ -70,15 +69,10 @@ module Dry
         message_compiler.with(options).(result_ast)
       end
 
-      def freeze
-        instance_variable_set(RESULT_AST_IVAR, result_ast)
-        super
-      end
-
       private
 
       def result_ast
-        instance_variable_get(RESULT_AST_IVAR) || results.map(&:to_ast)
+        @__result__ast ||= results.map(&:to_ast)
       end
     end
   end
