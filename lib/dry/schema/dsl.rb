@@ -23,13 +23,11 @@ module Dry
 
       option :compiler, default: -> { Compiler.new }
 
+      option :processor_type, default: -> { Processor }
+
       option :macros, default: -> { EMPTY_ARRAY.dup }
 
       option :types, default: -> { EMPTY_HASH.dup }
-
-      option :type_registry, default: -> { -> name { ::Dry::Types[name.to_s] } }
-
-      option :key_map_type, optional: true, default: -> { nil }
 
       option :parent, optional: true
 
@@ -74,7 +72,7 @@ module Dry
         steps << input_schema.definition unless input_schema.macros.empty?
         steps << value_coercer << definition
 
-        Processor.new { |processor| steps.each { |step| processor << step } }
+        processor_type.new { |processor| steps.each { |step| processor << step } }
       end
 
       def key_coercer
@@ -102,7 +100,7 @@ module Dry
       end
 
       def new(&block)
-        self.class.new(type_registry: type_registry, &block)
+        self.class.new(processor_type: processor_type, &block)
       end
 
       def set_type(name, spec)
@@ -116,6 +114,14 @@ module Dry
       end
 
       private
+
+      def type_registry
+        processor_type.config.type_registry
+      end
+
+      def key_map_type
+        processor_type.config.key_map_type
+      end
 
       def input_schema
         @__input_schema__ ||= new

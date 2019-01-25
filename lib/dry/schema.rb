@@ -2,8 +2,8 @@ require 'dry/core/extensions'
 
 require 'dry/schema/constants'
 require 'dry/schema/dsl'
-require 'dry/schema/definition'
-require 'dry/schema/type_registry'
+require 'dry/schema/params'
+require 'dry/schema/json'
 
 module Dry
   module Schema
@@ -25,11 +25,8 @@ module Dry
     # @return [Definition]
     #
     # @api public
-    def self.params(options = EMPTY_HASH, &block)
-      dsl_opts = options.merge(
-        key_map_type: :stringified, type_registry: type_registry.namespaced(:params)
-      )
-      define(dsl_opts, &block)
+    def self.params(**options, &block)
+      define(**options, processor_type: Params, &block)
     end
     singleton_class.send(:alias_method, :form, :params)
 
@@ -38,11 +35,8 @@ module Dry
     # @return [Definition]
     #
     # @api public
-    def self.json(options = EMPTY_HASH, &block)
-      dsl_opts = options.merge(
-        key_map_type: :stringified, type_registry: type_registry.namespaced(:json)
-      )
-      define(dsl_opts, &block)
+    def self.json(**options, &block)
+      define(**options, processor_type: JSON, &block)
     end
 
     # Return configured paths to message files
@@ -52,10 +46,6 @@ module Dry
     # @api public
     def self.messages_paths
       Messages::Abstract.config.paths
-    end
-
-    def self.type_registry
-      @__type_registry__ ||= TypeRegistry.new
     end
   end
 end

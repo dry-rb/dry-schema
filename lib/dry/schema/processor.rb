@@ -1,5 +1,7 @@
+require 'dry/configurable'
 require 'dry/initializer'
 
+require 'dry/schema/type_registry'
 require 'dry/schema/definition'
 require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
@@ -8,6 +10,10 @@ module Dry
   module Schema
     class Processor
       extend Dry::Initializer
+      extend Dry::Configurable
+
+      setting :key_map_type
+      setting :type_registry, TypeRegistry.new
 
       param :steps, default: -> { EMPTY_ARRAY.dup }
 
