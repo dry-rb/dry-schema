@@ -10,7 +10,7 @@ require 'dry/schema/processor'
 require 'dry/schema/key_map'
 require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
-require 'dry/schema/definition'
+require 'dry/schema/rule_applier'
 
 module Dry
   module Schema
@@ -69,8 +69,8 @@ module Dry
 
       def call
         steps = [key_coercer]
-        steps << input_schema.definition unless input_schema.macros.empty?
-        steps << value_coercer << definition
+        steps << input_schema.rule_applier unless input_schema.macros.empty?
+        steps << value_coercer << rule_applier
 
         processor_type.new { |processor| steps.each { |step| processor << step } }
       end
@@ -83,8 +83,8 @@ module Dry
         ValueCoercer.new(type_schema)
       end
 
-      def definition
-        Definition.new(rules, config: config)
+      def rule_applier
+        RuleApplier.new(rules, config: config)
       end
 
       def to_rule

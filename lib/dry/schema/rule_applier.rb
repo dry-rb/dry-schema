@@ -8,7 +8,7 @@ require 'dry/schema/message_compiler'
 
 module Dry
   module Schema
-    class Definition
+    class RuleApplier
       extend Dry::Initializer
 
       param :rules
