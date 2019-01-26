@@ -6,10 +6,6 @@ RSpec.describe 'Schema with negated rules' do
   end
 
   describe '#messages' do
-    before do
-      pending "negation is not supported yet"
-    end
-
     it 'passes with valid input' do
       expect(schema.(tags: %w(a b c))).to be_success
     end

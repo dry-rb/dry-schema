@@ -71,7 +71,7 @@ module Dry
 
         def lookup(predicate, options = {})
           tokens = options.merge(
-            root: root,
+            root: options[:not] ? "#{root}.not" : root,
             predicate: predicate,
             arg_type: config.arg_types[options[:arg_type]],
             val_type: config.val_types[options[:val_type]],

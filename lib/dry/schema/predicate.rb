@@ -4,6 +4,19 @@ require 'dry/logic/operators'
 module Dry
   module Schema
     class Predicate
+      class Negation
+        attr_reader :predicate
+
+        def initialize(predicate)
+          @predicate = predicate
+        end
+
+        def to_ast(*args)
+          [:not, predicate.to_ast(*args)]
+        end
+        alias_method :ast, :to_ast
+      end
+
       include Dry::Logic::Operators
       include Dry::Equalizer(:name, :args, :block)
 
@@ -20,6 +33,10 @@ module Dry
         @name = name
         @args = args
         @block = block
+      end
+
+      def !
+        Negation.new(self)
       end
 
       def ensure_valid

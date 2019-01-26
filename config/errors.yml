@@ -87,3 +87,5 @@ en:
           arg:
             default: "length must be %{size}"
             range: "length must be within %{size_left} - %{size_right}"
+    not:
+      empty?: "cannot be empty"
