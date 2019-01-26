@@ -60,10 +60,6 @@ module Dry
         ::Dry::Schema::Trace
       end
 
-      def respond_to_missing?(meth, include_private = false)
-        super || meth.to_s.end_with?(QUESTION_MARK)
-      end
-
       private
 
       def reduced_rule

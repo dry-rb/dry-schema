@@ -24,5 +24,9 @@ RSpec.describe Dry::Schema::Trace do
       expect(predicate.name).to be(:eql?)
       expect(predicate.args).to eql(['foo'])
     end
+
+    it 'raises NoMethodError when appriopriate' do
+      expect { trace.not_here }.to raise_error(NoMethodError, /not_here/)
+    end
   end
 end
