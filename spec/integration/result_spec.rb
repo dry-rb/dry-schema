@@ -18,6 +18,14 @@ RSpec.describe Dry::Schema::Result do
       expect(Hash(result)).to eql(name: 'Jane')
     end
 
+    describe '#inspect' do
+      it 'returns a string representation' do
+        expect(result.inspect).to eql(<<-STR.strip)
+          #<Dry::Schema::Result{:name=>"Jane"} errors={}>
+        STR
+      end
+    end
+
     describe '#messages' do
       it 'returns an empty hash' do
         expect(result.messages).to be_empty
@@ -38,6 +46,14 @@ RSpec.describe Dry::Schema::Result do
 
     it 'coerces to validated hash' do
       expect(Hash(result)).to eql(name: '')
+    end
+
+    describe '#inspect' do
+      it 'returns a string representation' do
+        expect(result.inspect).to eql(<<-STR.strip)
+          #<Dry::Schema::Result{:name=>""} errors={:name=>["must be filled"]}>
+        STR
+      end
     end
 
     describe '#messages' do

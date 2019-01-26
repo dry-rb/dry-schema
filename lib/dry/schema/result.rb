@@ -69,6 +69,10 @@ module Dry
         message_compiler.with(options).(result_ast)
       end
 
+      def inspect
+        "#<#{self.class}#{to_h.inspect} errors=#{errors.inspect}>"
+      end
+
       private
 
       def result_ast
