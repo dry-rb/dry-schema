@@ -37,6 +37,16 @@ RSpec.describe Dry::Schema::KeyMap do
         expect((key_map + other).map(&:id)).to eql(%i[id name age address])
       end
     end
+
+    describe '#inspect' do
+      let(:keys) { %i[id name] }
+
+      it 'returns a string representation' do
+        expect(key_map.inspect).to eql(<<-STR.strip)
+          #<Dry::Schema::KeyMap[:id, :name]>
+        STR
+      end
+    end
   end
 
   context 'with a nested hash' do
@@ -71,6 +81,14 @@ RSpec.describe Dry::Schema::KeyMap do
         expect(result).to eql([1, 'Jane', {'email' => 'jade@doe.org', 'phone' => 123}])
       end
     end
+
+    describe '#inspect' do
+      it 'returns a string representation' do
+        expect(key_map.inspect).to eql(<<-STR.strip)
+          #<Dry::Schema::KeyMap[:id, :name, {:contact=>[:email, :phone]}]>
+        STR
+      end
+    end
   end
 
   context 'with a nested array' do
@@ -100,6 +118,14 @@ RSpec.describe Dry::Schema::KeyMap do
         key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
         expect(result).to eql(['Bohemian Rhapsody', [{'name' => 'queen'}, {'name' => 'classic'}]])
+      end
+    end
+
+    describe '#inspect' do
+      it 'returns a string representation' do
+        expect(key_map.inspect).to eql(<<-STR.strip)
+          #<Dry::Schema::KeyMap[:title, [:tags, [:name]]]>
+        STR
       end
     end
   end

@@ -47,6 +47,10 @@ module Dry
         self.class.new(id, { name: name, coercer: coercer }.merge(new_opts))
       end
 
+      def dump
+        name
+      end
+
       private
 
       def coerced_name
@@ -81,6 +85,10 @@ module Dry
       def stringified
         new(name: name.to_s, members: members.stringified)
       end
+
+      def dump
+        { name => members.map(&:dump) }
+      end
     end
 
     class Key::Array < Key
@@ -105,6 +113,10 @@ module Dry
 
       def stringified
         new(name: name.to_s, member: member.stringified)
+      end
+
+      def dump
+        [name, member.dump]
       end
     end
   end

@@ -58,6 +58,14 @@ module Dry
       def +(other)
         self.class.new(keys + other.to_a)
       end
+
+      def inspect
+        "#<#{self.class}[#{keys.map(&:dump).map(&:inspect).join(", ")}]>"
+      end
+
+      def dump
+        keys.map(&:dump)
+      end
     end
   end
 end
