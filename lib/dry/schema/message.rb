@@ -27,10 +27,6 @@ module Dry
           false
         end
 
-        def root?
-          path.empty?
-        end
-
         def to_s
           [left, right].uniq.join(" #{messages[:or]} ")
         end
