@@ -5,7 +5,7 @@ module Dry
     class PredicateInferrer
       extend Dry::Core::Cache
 
-      TYPE_TO_PREDICATE = ::Hash.new { |hash, type|
+      TYPE_TO_PREDICATE = Hash.new do |hash, type|
         primitive = type.maybe? ? type.right.primitive : type.primitive
 
         if hash.key?(primitive)
@@ -13,7 +13,13 @@ module Dry
         else
           :"#{primitive.name.downcase}?"
         end
-      }.update(NilClass => :none?, Integer => :int?, String => :str?).freeze
+      end
+
+      TYPE_TO_PREDICATE.update(
+        Integer => :int?,
+        NilClass => :none?,
+        String => :str?
+      ).freeze
 
       def self.[](type)
         fetch_or_store(type.hash) { TYPE_TO_PREDICATE[type] }
