@@ -69,12 +69,12 @@ module Dry
             type_spec = nil
           end
 
-          predicates = Array(type_spec ? args[1, -1] : args)
+          predicates = Array(type_spec ? args[1..-1] : args)
 
           if type_spec
             type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec)
             type_predicate = infer_type_predicate
-            predicates << type_predicate unless predicates.include?(type_predicate)
+            predicates.unshift(type_predicate) unless predicates.include?(type_predicate)
           end
 
           yield(*predicates)

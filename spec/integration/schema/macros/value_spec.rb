@@ -35,6 +35,20 @@ RSpec.describe 'Macros #value' do
     end
   end
 
+  describe 'with a type spec and other predicates' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value(:integer, :even?, gt?: 18)
+      end
+    end
+
+    it 'infers int? rule and applies it before other rules' do
+      expect(schema.(age: nil).errors).to eql( age: ['must be an integer'])
+      expect(schema.(age: 19).errors).to eql( age: ['must be even'])
+      expect(schema.(age: 18).errors).to eql( age: ['must be greater than 18'])
+    end
+  end
+
   describe 'with a predicate with args' do
     context 'with a flat arg' do
       subject(:schema) do
