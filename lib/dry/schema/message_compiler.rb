@@ -61,11 +61,6 @@ module Dry
         visit(node, opts.(not: true))
       end
 
-      def visit_check(node, opts = EMPTY_OPTS.dup)
-        keys, other = node
-        visit(other, opts.(path: keys.last, check: true))
-      end
-
       def visit_rule(node, opts = EMPTY_OPTS.dup)
         name, other = node
         visit(other, opts.(rule: name))
@@ -125,8 +120,7 @@ module Dry
           predicate, path, text,
           args: arg_vals,
           input: input,
-          rule: rule || msg_opts[:name],
-          check: base_opts[:check]
+          rule: rule || msg_opts[:name]
         ]
       end
 
