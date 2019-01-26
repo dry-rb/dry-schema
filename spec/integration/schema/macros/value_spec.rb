@@ -49,6 +49,28 @@ RSpec.describe 'Macros #value' do
     end
   end
 
+  describe 'with an invalid type spec' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value(:custom, :even?, gt?: 18)
+      end
+    end
+
+    before do
+      Dry::Types.register('custom', Dry::Types::Definition.new(Dry::Schema::Macros::Value))
+    end
+
+    after do
+      Dry::Types.container._container.delete('custom')
+    end
+
+    it 'raises an ArgumentError' do
+      expect { schema }.to raise_error(ArgumentError, <<-STR.strip)
+        Cannot infer type-check predicate from +:custom+ type spec
+      STR
+    end
+  end
+
   describe 'with a predicate with args' do
     context 'with a flat arg' do
       subject(:schema) do

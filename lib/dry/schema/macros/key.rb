@@ -1,3 +1,4 @@
+require 'dry/schema/predicate_inferrer'
 require 'dry/schema/processor'
 require 'dry/schema/macros/dsl'
 require 'dry/schema/constants'
@@ -6,16 +7,6 @@ module Dry
   module Schema
     module Macros
       class Key < DSL
-        TYPE_TO_PREDICATE = ::Hash.new { |hash, type|
-          primitive = type.maybe? ? type.right.primitive : type.primitive
-
-          if hash.key?(primitive)
-            hash[primitive]
-          else
-            :"#{primitive.name.downcase}?"
-          end
-        }.update(Integer => :int?, String => :str?).freeze
-
         option :input_schema, optional: true, default: proc { schema_dsl&.new }
 
         def filter(*args, &block)
@@ -73,15 +64,18 @@ module Dry
 
           if type_spec
             type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec)
-            type_predicate = infer_type_predicate
-            predicates.unshift(type_predicate) unless predicates.include?(type_predicate)
+            type_predicate = PredicateInferrer[schema_dsl.types[name]]
+
+            unless predicates.include?(type_predicate)
+              if compiler.supports?(type_predicate)
+                predicates.unshift(type_predicate)
+              else
+                raise ArgumentError, "Cannot infer type-check predicate from +#{type_spec.inspect}+ type spec"
+              end
+            end
           end
 
           yield(*predicates)
-        end
-
-        def infer_type_predicate
-          TYPE_TO_PREDICATE[schema_dsl.types[name]]
         end
       end
     end
