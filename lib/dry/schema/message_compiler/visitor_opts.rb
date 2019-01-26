@@ -10,22 +10,8 @@ module Dry
           opts
         end
 
-        def path?
-          ! path.empty?
-        end
-
         def path
           self[:path]
-        end
-
-        def rule
-          self[:rule]
-        end
-
-        def with_rule(new_rule, **other)
-          opts = dup
-          opts[:rule] = new_rule unless opts.rule
-          opts.(other)
         end
 
         def call(other)

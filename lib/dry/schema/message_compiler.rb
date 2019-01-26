@@ -61,15 +61,6 @@ module Dry
         visit(node, opts.(not: true))
       end
 
-      def visit_rule(node, opts = EMPTY_OPTS.dup)
-        name, other = node
-        visit(other, opts.(rule: name))
-      end
-
-      def visit_schema(node, opts = EMPTY_OPTS.dup)
-        node.rule_ast.map { |rule| visit(rule, opts) }
-      end
-
       def visit_and(node, opts = EMPTY_OPTS.dup)
         left, right = node.map { |n| visit(n, opts) }
 

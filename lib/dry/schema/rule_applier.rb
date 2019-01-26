@@ -32,15 +32,6 @@ module Dry
       def to_ast
         [:set, rules.values.map(&:to_ast)]
       end
-
-      # required by Dry::Logic::Rule interface
-      def ast(input)
-        to_ast
-      end
-
-      def to_rule
-        self
-      end
     end
   end
 end

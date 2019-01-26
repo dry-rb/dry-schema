@@ -20,14 +20,6 @@ module Dry
         @captures = []
       end
 
-      def new
-        self.class.new(compiler)
-      end
-
-      def last
-        captures.last
-      end
-
       def evaluate(*predicates, **opts, &block)
         predicates.each do |predicate|
           if predicate.respond_to?(:call)
@@ -49,10 +41,6 @@ module Dry
         self
       end
       alias_method :<<, :append
-
-      def has_rules?
-        captures.size.zero?
-      end
 
       def to_rule(name = nil)
         return if captures.empty?

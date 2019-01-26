@@ -39,11 +39,6 @@ module Dry
         definition.to_ast
       end
 
-      # required by Dry::Logic::Rule interface
-      def ast(input)
-        definition.to_ast
-      end
-
       def key_map
         @__key_map__ ||= steps.detect { |s| s.is_a?(KeyCoercer) }.key_map
       end

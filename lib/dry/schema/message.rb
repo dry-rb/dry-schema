@@ -57,16 +57,8 @@ module Dry
         text
       end
 
-      def signature
-        @signature ||= [predicate, args, path].hash
-      end
-
       def hint?
         false
-      end
-
-      def root?
-        path.empty?
       end
 
       def eql?(other)

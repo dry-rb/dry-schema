@@ -28,7 +28,7 @@ module Dry
       end
 
       def dump
-        root? ? to_a : to_h
+        to_h
       end
 
       def failures?
@@ -39,27 +39,15 @@ module Dry
         messages.empty?
       end
 
-      def root?
-        !empty? && failures.all?(&:root?)
-      end
-
       def each(&block)
         return to_enum unless block
         messages.each(&block)
       end
 
       def to_h
-        if root?
-          { nil => failures.map(&:to_s) }
-        else
-          failures? ? messages_map : hints_map
-        end
+        failures? ? messages_map : hints_map
       end
       alias_method :to_hash, :to_h
-
-      def to_a
-        to_h.values.flatten
-      end
 
       private
 
