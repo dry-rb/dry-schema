@@ -13,7 +13,7 @@ module Dry
         else
           :"#{primitive.name.downcase}?"
         end
-      }.update(Integer => :int?, String => :str?).freeze
+      }.update(NilClass => :none?, Integer => :int?, String => :str?).freeze
 
       def self.[](type)
         fetch_or_store(type.hash) { TYPE_TO_PREDICATE[type] }

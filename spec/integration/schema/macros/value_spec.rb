@@ -25,12 +25,19 @@ RSpec.describe 'Macros #value' do
     subject(:schema) do
       Dry::Schema.define do
         required(:age).value(:integer)
+        optional(:logged_in).value(:nil)
       end
     end
 
     it 'infers int? rule and applies it' do
       expect(schema.(age: nil).messages).to eql(
         age: ['must be an integer']
+      )
+    end
+
+    it 'infers none? rule and applies it' do
+      expect(schema.(age: 18, logged_in: 'foo').errors).to eql(
+        logged_in: ['cannot be defined']
       )
     end
   end
