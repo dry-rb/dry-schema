@@ -33,6 +33,8 @@ module Dry
           super.tap(&block)
         elsif definition
           definition.call
+        else
+          raise ArgumentError, 'Cannot create a schema without a definition'
         end
       end
 

@@ -16,6 +16,11 @@ RSpec.describe Dry::Schema::Params do
 
       expect(schema.('name' => 'Jane', 'age' => '').errors).to eql(age: ['must be filled'])
     end
+
+    it 'raises exception when definition is missing' do
+      expect { Class.new(Dry::Schema::Params).new }.
+        to raise_error(ArgumentError, 'Cannot create a schema without a definition')
+    end
   end
 
   describe 'inheritance' do
