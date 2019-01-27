@@ -17,8 +17,25 @@ module Dry
 
       param :steps, default: -> { EMPTY_ARRAY.dup }
 
+      def self.define(&block)
+        @__definition__ ||= DSL.new(
+          processor_type: self, parent: superclass.definition, **config, &block
+        )
+        self
+      end
+
+      def self.definition
+        @__definition__
+      end
+
       def self.new(&block)
-        super.tap(&block)
+        if block
+          super.tap(&block)
+        elsif definition
+          definition.call
+        else
+          raise ArgumentError, 'Cannot create a schema without a definition'
+        end
       end
 
       def <<(step)

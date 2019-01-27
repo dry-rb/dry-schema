@@ -113,6 +113,19 @@ module Dry
         macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
       end
 
+      def key_map(types = self.types)
+        keys = types.keys.each_with_object([]) { |key_name, arr|
+          arr << key_value(key_name, types[key_name])
+        }
+        km = KeyMap.new(keys)
+
+        if key_map_type
+          km.public_send(key_map_type)
+        else
+          km
+        end
+      end
+
       private
 
       def type_registry
@@ -125,19 +138,6 @@ module Dry
 
       def input_schema
         @__input_schema__ ||= new
-      end
-
-      def key_map(types = self.types)
-        keys = types.keys.each_with_object([]) { |key_name, arr|
-          arr << key_value(key_name, types[key_name])
-        }
-        km = KeyMap.new(keys)
-
-        if key_map_type
-          km.public_send(key_map_type)
-        else
-          km
-        end
       end
 
       def key_value(name, type)
