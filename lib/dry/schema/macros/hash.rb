@@ -3,7 +3,11 @@ require 'dry/schema/macros/value'
 module Dry
   module Schema
     module Macros
+      # Macro used to specify a nested schema
+      #
+      # @api public
       class Hash < Value
+        # @api private
         def call(*args, &block)
           trace << hash?
 

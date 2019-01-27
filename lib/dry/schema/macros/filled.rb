@@ -3,6 +3,9 @@ require 'dry/schema/macros/value'
 module Dry
   module Schema
     module Macros
+      # Macro used to prepend `:filled?` predicate
+      #
+      # @api public
       class Filled < Value
         def call(*args, &block)
           if args.include?(:empty?)
