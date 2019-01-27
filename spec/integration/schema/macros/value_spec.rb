@@ -7,17 +7,74 @@ RSpec.describe 'Macros #value' do
     end
   end
 
-  describe 'with a type specification' do
+  describe 'with a type check predicate' do
     subject(:schema) do
       Dry::Schema.define do
         required(:age).value(:int?)
       end
     end
 
-    it 'generates int? rule' do
+    it 'applies provided int? rule' do
       expect(schema.(age: nil).messages).to eql(
         age: ['must be an integer']
       )
+    end
+  end
+
+  describe 'with a type spec and no predicate' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value(:integer)
+        optional(:logged_in).value(:nil)
+      end
+    end
+
+    it 'infers int? rule and applies it' do
+      expect(schema.(age: nil).messages).to eql(
+        age: ['must be an integer']
+      )
+    end
+
+    it 'infers none? rule and applies it' do
+      expect(schema.(age: 18, logged_in: 'foo').errors).to eql(
+        logged_in: ['cannot be defined']
+      )
+    end
+  end
+
+  describe 'with a type spec and other predicates' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value(:integer, :even?, gt?: 18)
+      end
+    end
+
+    it 'infers int? rule and applies it before other rules' do
+      expect(schema.(age: nil).errors).to eql( age: ['must be an integer'])
+      expect(schema.(age: 19).errors).to eql( age: ['must be even'])
+      expect(schema.(age: 18).errors).to eql( age: ['must be greater than 18'])
+    end
+  end
+
+  describe 'with an invalid type spec' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value(:custom, :even?, gt?: 18)
+      end
+    end
+
+    before do
+      Dry::Types.register('custom', Dry::Types::Definition.new(Dry::Schema::Macros::Value))
+    end
+
+    after do
+      Dry::Types.container._container.delete('custom')
+    end
+
+    it 'raises an ArgumentError' do
+      expect { schema }.to raise_error(ArgumentError, <<-STR.strip)
+        Cannot infer type-check predicate from +:custom+ type spec
+      STR
     end
   end
 
