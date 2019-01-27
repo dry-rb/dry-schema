@@ -17,6 +17,7 @@ end
 group :tools do
   gem 'byebug', platform: :mri
   gem 'pry'
+  gem 'redcarpet'
 end
 
 group :benchmarks do
