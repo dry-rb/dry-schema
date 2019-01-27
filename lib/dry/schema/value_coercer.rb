@@ -2,11 +2,16 @@ require 'dry/initializer'
 
 module Dry
   module Schema
+    # Used by the processors to coerce values in the input hash
+    #
+    # @api private
     class ValueCoercer
       extend Dry::Initializer
 
+      # @api private
       param :type_schema
 
+      # @api private
       def call(input)
         if input.success?
           type_schema[Hash(input)]

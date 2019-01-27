@@ -2,6 +2,10 @@ require 'dry/core/cache'
 
 module Dry
   module Schema
+    # PredicateInferrer is used internally by `Macros::Value`
+    # for inferring type-check predicates from type specs.
+    #
+    # @api private
     class PredicateInferrer
       extend Dry::Core::Cache
 
@@ -21,6 +25,11 @@ module Dry
         String => :str?
       ).freeze
 
+      # Infer predicate identifier from the provided type
+      #
+      # @return [Symbol]
+      #
+      # @api private
       def self.[](type)
         fetch_or_store(type.hash) { TYPE_TO_PREDICATE[type] }
       end

@@ -5,12 +5,16 @@ require 'dry/schema/message_compiler/visitor_opts'
 
 module Dry
   module Schema
+    # Compiles rule results AST into human-readable format
+    #
+    # @api private
     class MessageCompiler
       attr_reader :messages, :options, :locale, :default_lookup_options
 
       EMPTY_OPTS = VisitorOpts.new
       LIST_SEPARATOR = ', '.freeze
 
+      # @api private
       def initialize(messages, options = {})
         @messages = messages
         @options = options
@@ -20,47 +24,57 @@ module Dry
         @default_lookup_options = { locale: locale }
       end
 
+      # @api private
       def full?
         @full
       end
 
+      # @api private
       def hints?
         @hints
       end
 
+      # @api private
       def with(new_options)
         return self if new_options.empty?
         self.class.new(messages, options.merge(new_options))
       end
 
+      # @api private
       def call(ast)
         MessageSet[ast.map { |node| visit(node) }, failures: options.fetch(:failures, true)]
       end
 
+      # @api private
       def visit(node, *args)
         __send__(:"visit_#{node[0]}", node[1], *args)
       end
 
+      # @api private
       def visit_failure(node, opts = EMPTY_OPTS.dup)
         rule, other = node
         visit(other, opts.(rule: rule))
       end
 
+      # @api private
       def visit_hint(node, opts = EMPTY_OPTS.dup)
         if hints?
           visit(node, opts.(message_type: :hint))
         end
       end
 
+      # @api private
       def visit_each(node, opts = EMPTY_OPTS.dup)
         # TODO: we can still generate a hint for elements here!
         []
       end
 
+      # @api private
       def visit_not(node, opts = EMPTY_OPTS.dup)
         visit(node, opts.(not: true))
       end
 
+      # @api private
       def visit_and(node, opts = EMPTY_OPTS.dup)
         left, right = node.map { |n| visit(n, opts) }
 
@@ -71,6 +85,7 @@ module Dry
         end
       end
 
+      # @api private
       def visit_or(node, opts = EMPTY_OPTS.dup)
         left, right = node.map { |n| visit(n, opts) }
 
@@ -83,6 +98,7 @@ module Dry
         end
       end
 
+      # @api private
       def visit_predicate(node, base_opts = EMPTY_OPTS.dup)
         predicate, args = node
 
@@ -115,25 +131,30 @@ module Dry
         ]
       end
 
+      # @api private
       def visit_key(node, opts = EMPTY_OPTS.dup)
         name, other = node
         visit(other, opts.(path: name))
       end
 
+      # @api private
       def visit_set(node, opts = EMPTY_OPTS.dup)
         node.map { |el| visit(el, opts) }
       end
 
+      # @api private
       def visit_implication(node, *args)
         _, right = node
         visit(right, *args)
       end
 
+      # @api private
       def visit_xor(node, opts = EMPTY_OPTS.dup)
         left, right = node
         [visit(left, opts), visit(right, opts)].uniq
       end
 
+      # @api private
       def lookup_options(arg_vals: [], input: nil)
         default_lookup_options.merge(
           arg_type: arg_vals.size == 1 && arg_vals[0].class,
@@ -141,6 +162,7 @@ module Dry
         )
       end
 
+      # @api private
       def message_text(rule, template, tokens, opts)
         text = template % tokens
 
@@ -152,6 +174,7 @@ module Dry
         end
       end
 
+      # @api private
       def message_tokens(args)
         args.each_with_object({}) { |arg, hash|
           case arg[1]

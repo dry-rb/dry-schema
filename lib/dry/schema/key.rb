@@ -1,5 +1,8 @@
 module Dry
   module Schema
+    # Key objects used by key maps
+    #
+    # @api public
     class Key
       extend Dry::Core::Cache
 
@@ -7,22 +10,39 @@ module Dry
 
       include Dry.Equalizer(:name, :coercer)
 
-      attr_reader :id, :name, :coercer
+      # @!attribute[r] id
+      #   @return [Symbol] The key identifier
+      #   @api public
+      attr_reader :id
 
+      # @!attribute[r] name
+      #   @return [Symbol, String, Object] The actual key name expected in an input hash
+      #   @api public
+      attr_reader :name
+
+      # @!attribute[r] id
+      #   @return [Proc, #call] A key name coercer function
+      #   @api public
+      attr_reader :coercer
+
+      # @api private
       def self.[](name, **opts)
         new(name, **opts)
       end
 
+      # @api private
       def self.new(*args)
         fetch_or_store(*args) { super }
       end
 
+      # @api private
       def initialize(id, name: id, coercer: DEFAULT_COERCER)
         @id = id
         @name = name
         @coercer = coercer
       end
 
+      # @api private
       def read(source)
         if source.key?(name)
           yield(source[name])
@@ -31,43 +51,55 @@ module Dry
         end
       end
 
+      # @api private
       def write(source, target)
         read(source) { |value| target[coerced_name] = value }
       end
 
+      # @api private
       def coercible(&coercer)
         new(coercer: coercer)
       end
 
+      # @api private
       def stringified
         new(name: name.to_s)
       end
 
+      # @api private
       def new(new_opts = EMPTY_HASH)
         self.class.new(id, { name: name, coercer: coercer }.merge(new_opts))
       end
 
+      # @api private
       def dump
         name
       end
 
       private
 
+      # @api private
       def coerced_name
         @__coerced_name__ ||= coercer[name]
       end
     end
 
+    # A specialized key type which handles nested hashes
+    #
+    # @api private
     class Key::Hash < Key
       include Dry.Equalizer(:name, :members, :coercer)
 
+      # @api private
       attr_reader :members
 
+      # @api private
       def initialize(id, members:, **opts)
         super(id, **opts)
         @members = members
       end
 
+      # @api private
       def read(source)
         super if source.is_a?(::Hash)
       end
@@ -78,43 +110,54 @@ module Dry
         }
       end
 
+      # @api private
       def coercible(&coercer)
         new(coercer: coercer, members: members.coercible(&coercer))
       end
 
+      # @api private
       def stringified
         new(name: name.to_s, members: members.stringified)
       end
 
+      # @api private
       def dump
         { name => members.map(&:dump) }
       end
     end
 
+    # A specialized key type which handles nested arrays
+    #
+    # @api private
     class Key::Array < Key
       include Dry.Equalizer(:name, :member, :coercer)
 
       attr_reader :member
 
+      # @api private
       def initialize(id, member:, **opts)
         super(id, **opts)
         @member = member
       end
 
+      # @api private
       def write(source, target)
         read(source) { |value|
           target[coerced_name] = value.is_a?(::Array) ? value.map { |el| member.write(el) } : value
         }
       end
 
+      # @api private
       def coercible(&coercer)
         new(coercer: coercer, member: member.coercible(&coercer))
       end
 
+      # @api private
       def stringified
         new(name: name.to_s, member: member.stringified)
       end
 
+      # @api private
       def dump
         [name, member.dump]
       end

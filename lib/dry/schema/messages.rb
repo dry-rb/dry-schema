@@ -1,5 +1,8 @@
 module Dry
   module Schema
+    # An API for configuring message backends
+    #
+    # @api private
     module Messages
       def self.setup(config)
         messages = build(config)
@@ -15,6 +18,7 @@ module Dry
         end
       end
 
+      # @api private
       def self.build(config)
         case config.messages
         when :yaml then default
@@ -24,6 +28,7 @@ module Dry
         end
       end
 
+      # @api private
       def self.default
         Messages::YAML.load
       end

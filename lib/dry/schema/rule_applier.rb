@@ -8,15 +8,22 @@ require 'dry/schema/message_compiler'
 
 module Dry
   module Schema
+    # Applies rules defined within the DSL
+    #
+    # @api private
     class RuleApplier
       extend Dry::Initializer
 
+      # @api private
       param :rules
 
+      # @api private
       option :config, default: proc { Config.new }
 
+      # @api private
       option :message_compiler, default: proc { MessageCompiler.new(Messages.setup(config)) }
 
+      # @api private
       def call(input)
         results = EMPTY_ARRAY.dup
 
@@ -29,6 +36,7 @@ module Dry
         input.concat(results)
       end
 
+      # @api private
       def to_ast
         [:set, rules.values.map(&:to_ast)]
       end

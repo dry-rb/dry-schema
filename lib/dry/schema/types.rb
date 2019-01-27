@@ -48,6 +48,9 @@ module Dry
   # </TODO>
 
   module Schema
+    # Schema's own type registry
+    #
+    # @api public
     module Types
       include Dry::Types.module
     end
