@@ -181,7 +181,7 @@ module Dry
       # @api private
       def call
         steps = [key_coercer]
-        steps << input_schema.rule_applier unless input_schema.macros.empty?
+        steps << input_schema.rule_applier if filter_rules?
         steps << value_coercer << rule_applier
 
         processor_type.new { |processor| steps.each { |step| processor << step } }
@@ -273,6 +273,13 @@ module Dry
       end
 
       private
+
+      # Check if any filter rules where defined
+      #
+      # @api private
+      def filter_rules?
+        instance_variable_defined?('@__input_schema__') && !input_schema.macros.empty?
+      end
 
       # Build a key coercer
       #
