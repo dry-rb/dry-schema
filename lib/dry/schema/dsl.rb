@@ -261,7 +261,7 @@ module Dry
       # @api protected
       def key_map(types = self.types)
         keys = types.keys.each_with_object([]) { |key_name, arr|
-          arr << key_value(key_name, types[key_name])
+          arr << key_spec(key_name, types[key_name])
         }
         km = KeyMap.new(keys)
 
@@ -318,11 +318,11 @@ module Dry
       # Build a key spec needed by the key map
       #
       # @api private
-      def key_value(name, type)
+      def key_spec(name, type)
         if type.hash?
           { name => key_map(type.member_types) }
         elsif type.member_array?
-          kv = key_value(name, type.member)
+          kv = key_spec(name, type.member)
           kv === name ? name : kv.flatten(1)
         else
           name
