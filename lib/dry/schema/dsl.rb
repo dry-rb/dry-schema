@@ -274,7 +274,7 @@ module Dry
 
       private
 
-      # Check if any filter rules where defined
+      # Check if any filter rules were defined
       #
       # @api private
       def filter_rules?
