@@ -323,7 +323,7 @@ module Dry
           { name => key_map(type.member_types) }
         elsif type.member_array?
           kv = key_spec(name, type.member)
-          kv === name ? name : kv.flatten(1)
+          kv.equal?(name) ? name : kv.flatten(1)
         else
           name
         end
