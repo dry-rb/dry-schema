@@ -187,33 +187,6 @@ module Dry
         processor_type.new { |processor| steps.each { |step| processor << step } }
       end
 
-      # Build a key coercer
-      #
-      # @return [KeyCoercer]
-      #
-      # @api private
-      def key_coercer
-        KeyCoercer.symbolized(key_map + parent_key_map)
-      end
-
-      # Build a value coercer
-      #
-      # @return [ValueCoercer]
-      #
-      # @api private
-      def value_coercer
-        ValueCoercer.new(type_schema)
-      end
-
-      # Build a rule applier
-      #
-      # @return [RuleApplier]
-      #
-      # @api private
-      def rule_applier
-        RuleApplier.new(rules, config: config)
-      end
-
       # Cast this DSL into a rule object
       #
       # @return [RuleApplier]
@@ -265,18 +238,27 @@ module Dry
 
       protected
 
+      # Build a rule applier
+      #
+      # @return [RuleApplier]
+      #
+      # @api protected
+      def rule_applier
+        RuleApplier.new(rules, config: config)
+      end
+
       # Build rules from defined macros
       #
       # @see #rule_applier
       #
-      # @api private
+      # @api protected
       def rules
         macros.map { |m| [m.name, m.to_rule] }.to_h.merge(parent_rules)
       end
 
       # Build a key map from defined types
       #
-      # @api private
+      # @api protected
       def key_map(types = self.types)
         keys = types.keys.each_with_object([]) { |key_name, arr|
           arr << key_value(key_name, types[key_name])
@@ -291,6 +273,24 @@ module Dry
       end
 
       private
+
+      # Build a key coercer
+      #
+      # @return [KeyCoercer]
+      #
+      # @api private
+      def key_coercer
+        KeyCoercer.symbolized(key_map + parent_key_map)
+      end
+
+      # Build a value coercer
+      #
+      # @return [ValueCoercer]
+      #
+      # @api private
+      def value_coercer
+        ValueCoercer.new(type_schema)
+      end
 
       # Return type registry configured by the processor type
       #
