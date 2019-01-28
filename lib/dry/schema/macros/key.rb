@@ -12,7 +12,7 @@ module Dry
       #
       # @api public
       class Key < DSL
-        option :input_schema, optional: true, default: proc { schema_dsl&.new }
+        option :filter_schema, optional: true, default: proc { schema_dsl&.new }
 
         # Specify predicates that should be used to filter out values
         # before coercion is applied
@@ -23,7 +23,7 @@ module Dry
         #
         # @api public
         def filter(*args, &block)
-          input_schema.optional(name).value(*args, &block)
+          filter_schema.optional(name).value(*args, &block)
           self
         end
 

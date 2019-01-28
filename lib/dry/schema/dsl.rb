@@ -166,7 +166,7 @@ module Dry
           name: name,
           compiler: compiler,
           schema_dsl: self,
-          input_schema: input_schema
+          filter_schema: filter_schema
         )
 
         macro.value(&block) if block
@@ -181,7 +181,7 @@ module Dry
       # @api private
       def call
         steps = [key_coercer]
-        steps << input_schema.rule_applier if filter_rules?
+        steps << filter_schema.rule_applier if filter_rules?
         steps << value_coercer << rule_applier
 
         processor_type.new { |processor| steps.each { |step| processor << step } }
@@ -278,7 +278,16 @@ module Dry
       #
       # @api private
       def filter_rules?
-        instance_variable_defined?('@__input_schema__') && !input_schema.macros.empty?
+        instance_variable_defined?('@__filter_schema__') && !filter_schema.macros.empty?
+      end
+
+      # Build an input schema DSL used by `filter` API
+      #
+      # @see Macros::Value#filter
+      #
+      # @api private
+      def filter_schema
+        @__filter_schema__ ||= new
       end
 
       # Build a key coercer
@@ -311,15 +320,6 @@ module Dry
       # @api private
       def key_map_type
         processor_type.config.key_map_type
-      end
-
-      # Build an input schema DSL used by `filter` API
-      #
-      # @see Macros::Value#filter
-      #
-      # @api private
-      def input_schema
-        @__input_schema__ ||= new
       end
 
       # Build a key spec needed by the key map
