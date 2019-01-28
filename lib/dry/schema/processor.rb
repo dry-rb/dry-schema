@@ -95,11 +95,6 @@ module Dry
         end
       end
 
-      # @api private
-      def to_ast
-        definition.to_ast
-      end
-
       # Return the key map
       #
       # @return [KeyMap]
@@ -118,13 +113,20 @@ module Dry
         @__type_schema__ ||= steps.detect { |s| s.is_a?(ValueCoercer) }.type_schema
       end
 
+      # Return AST representation of the rules
+      #
+      # @api private
+      def to_ast
+        rule_applier.to_ast
+      end
+
       # Return the message compiler
       #
       # @return [MessageCompiler]
       #
       # @api private
       def message_compiler
-        definition.message_compiler
+        rule_applier.message_compiler
       end
 
       # Return the rules from rule applier
@@ -133,17 +135,17 @@ module Dry
       #
       # @api private
       def rules
-        definition.rules
+        rule_applier.rules
       end
 
       # Return the rule applier
       #
       # @api private
-      def definition
+      def rule_applier
         # TODO: make this more explicit through class types
-        @__definition__ ||= steps.last
+        @__rule_applier__ ||= steps.last
       end
-      alias_method :to_rule, :definition
+      alias_method :to_rule, :rule_applier
     end
   end
 end
