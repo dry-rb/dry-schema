@@ -1,6 +1,6 @@
 RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
   subject(:schema) do
-    Dry::Schema.json do
+    Dry::Schema.JSON do
       required(:email, :string).filled
 
       required(:age, [:nil, :integer]).maybe(:int?, gt?: 18)

@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Excluded From' do
+RSpec.describe 'Predicates: Includes' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
-        required(:foo, :string) { excluded_from?(%w(1 3 5)) }
+      Dry::Schema.Params do
+        required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(includes?: 1)
       end
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => '2' } }
+      let(:input) { { 'foo' => ['1', '2', '3'] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,52 +18,44 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
+        expect(result).to be_failing ['is missing', 'must include 1']
       end
     end
 
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is successful' do
-        expect(result).to be_successful
+      it 'is not successful' do
+        expect(result).to be_failing ["must be an array", "must include 1"]
       end
     end
 
     context 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is successful' do
-        expect(result).to be_successful
-      end
-    end
-
-    context 'with invalid type' do
-      let(:input) { { 'foo' => { 'a' => '1' } } }
-
-      it 'is successful' do
-        expect(result).to be_successful
+      it 'is not successful' do
+        expect(result).to be_failing ['must include 1']
       end
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => '5' } }
+      let(:input) { { 'foo' => ['2', '3', '4'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must not be one of: 1, 3, 5']
+        expect(result).to be_failing ['must include 1']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
-        optional(:foo, :string) { excluded_from?(%w(1 3 5)) }
+      Dry::Schema.Params do
+        optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(includes?: 1)
       end
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => '2' } }
+      let(:input) { { 'foo' => ['1', '2', '3'] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -81,32 +73,24 @@ RSpec.describe 'Predicates: Excluded From' do
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is successful' do
-        expect(result).to be_successful
+      it 'is not successful' do
+        expect(result).to be_failing ["must be an array", "must include 1"]
       end
     end
 
     context 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is successful' do
-        expect(result).to be_successful
-      end
-    end
-
-    context 'with invalid type' do
-      let(:input) { { 'foo' => { 'a' => '1' } } }
-
-      it 'is successful' do
-        expect(result).to be_successful
+      it 'is not successful' do
+        expect(result).to be_failing ['must include 1']
       end
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => '5' } }
+      let(:input) { { 'foo' => ['2', '3', '4'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must not be one of: 1, 3, 5']
+        expect(result).to be_failing ['must include 1']
       end
     end
   end
@@ -115,13 +99,13 @@ RSpec.describe 'Predicates: Excluded From' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, :string).value(excluded_from?: %w(1 3 5))
+          Dry::Schema.Params do
+            required(:foo).value(includes?: 'Hello')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -132,15 +116,15 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['is missing', 'must include Hello']
           end
         end
 
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is successful' do
-            expect(result).to be_successful
+          it 'is not successful' do
+            expect(result).to be_failing ['must include Hello']
           end
         end
 
@@ -148,36 +132,28 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
-
-          it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must include Hello']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must include Hello']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, :string).filled(excluded_from?: %w(1 3 5))
+          Dry::Schema.Params do
+            required(:foo).filled(includes?: 'Hello')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -188,7 +164,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['is missing', 'must include Hello']
           end
         end
 
@@ -196,7 +172,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must be filled', 'must include Hello']
           end
         end
 
@@ -204,36 +180,28 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
-          end
-        end
-
-        context 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
-
-          it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must be filled', 'must include Hello']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must include Hello']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, [:nil, :string]).maybe(excluded_from?: %w(1 3 5))
+          Dry::Schema.Params do
+            required(:foo, [:nil, :string]).maybe(:str?, includes?: 'Hello')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -244,7 +212,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['is missing', 'must include Hello']
           end
         end
 
@@ -252,7 +220,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_success
           end
         end
 
@@ -260,23 +228,15 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
-
-          it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_success
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must include Hello']
           end
         end
       end
@@ -285,13 +245,13 @@ RSpec.describe 'Predicates: Excluded From' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, :string).value(excluded_from?: %w(1 3 5))
+          Dry::Schema.Params do
+            optional(:foo).value(includes?: 'Hello')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -309,8 +269,8 @@ RSpec.describe 'Predicates: Excluded From' do
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is successful' do
-            expect(result).to be_successful
+          it 'is not successful' do
+            expect(result).to be_failing ['must include Hello']
           end
         end
 
@@ -318,36 +278,28 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
-
-          it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must include Hello']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must include Hello']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, :string).filled(excluded_from?: %w(1 3 5))
+          Dry::Schema.Params do
+            optional(:foo).filled(includes?: 'Hello')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -366,7 +318,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must be filled', 'must include Hello']
           end
         end
 
@@ -374,36 +326,28 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
-          end
-        end
-
-        context 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
-
-          it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must be filled', 'must include Hello']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must include Hello']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, [:nil, :string]).maybe(excluded_from?: %w(1 3 5))
+          Dry::Schema.Params do
+            optional(:foo, [:nil, :string]).maybe(includes?: 'Hello')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -434,19 +378,11 @@ RSpec.describe 'Predicates: Excluded From' do
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
         context 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must include Hello']
           end
         end
       end

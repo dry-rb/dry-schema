@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Gteq' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:foo, :integer) { int? & gteq?(23) }
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe 'Predicates: Gteq' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         optional(:foo, :integer) { int? & gteq?(23) }
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe 'Predicates: Gteq' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             required(:foo, :integer).value(:int?, gteq?: 23)
           end
         end
@@ -195,7 +195,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             required(:foo, :integer).filled(:int?, gteq?: 23)
           end
         end
@@ -259,7 +259,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             required(:foo, [:nil, :integer]).maybe(:int?, gteq?: 23)
           end
         end
@@ -325,7 +325,7 @@ RSpec.describe 'Predicates: Gteq' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             optional(:foo, :integer).value(:int?, gteq?: 23)
           end
         end
@@ -389,7 +389,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             optional(:foo, :integer).filled(:int?, gteq?: 23)
           end
         end
@@ -453,7 +453,7 @@ RSpec.describe 'Predicates: Gteq' do
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             optional(:foo, [:nil, :integer]).maybe(:int?, gteq?: 23)
           end
         end

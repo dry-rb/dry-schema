@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Size' do
   context 'Range' do
     context 'with required' do
       subject(:schema) do
-        Dry::Schema.form do
+        Dry::Schema.Params do
           required(:foo) { size?(2..3) }
         end
       end
@@ -51,7 +51,7 @@ RSpec.describe 'Predicates: Size' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Schema.form do
+        Dry::Schema.Params do
           optional(:foo) { size?(2..3) }
         end
       end
@@ -102,7 +102,7 @@ RSpec.describe 'Predicates: Size' do
       context 'with required' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.form do
+            Dry::Schema.Params do
               required(:foo).value(size?: 2..3)
             end
           end
@@ -150,7 +150,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.form do
+            Dry::Schema.Params do
               required(:foo).filled(size?: 2..3)
             end
           end
@@ -198,7 +198,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.form do
+            Dry::Schema.Params do
               required(:foo, [:nil, :string]).maybe(size?: 2..3)
             end
           end
@@ -248,7 +248,7 @@ RSpec.describe 'Predicates: Size' do
       context 'with optional' do
         context 'with value' do
           subject(:schema) do
-            Dry::Schema.form do
+            Dry::Schema.Params do
               optional(:foo).value(size?: 2..3)
             end
           end
@@ -297,7 +297,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with filled' do
           subject(:schema) do
-            Dry::Schema.form do
+            Dry::Schema.Params do
               optional(:foo).filled(size?: 2..3)
             end
           end
@@ -345,7 +345,7 @@ RSpec.describe 'Predicates: Size' do
 
         context 'with maybe' do
           subject(:schema) do
-            Dry::Schema.form do
+            Dry::Schema.Params do
               optional(:foo, [:nil, :string]).maybe(size?: 2..3)
             end
           end

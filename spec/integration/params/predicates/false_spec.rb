@@ -1,13 +1,21 @@
-RSpec.describe 'Predicates: Even' do
-  context 'with required' do
+RSpec.describe 'Predicates: False' do
+  context 'with key' do
     subject(:schema) do
-      Dry::Schema.form do
-        required(:foo, :integer) { int? & even? }
+      Dry::Schema.Params do
+        required(:foo, :false) { false? }
       end
     end
 
-    context 'with even input' do
-      let(:input) { { 'foo' => '2' } }
+    context 'with valid input (1)' do
+      let(:input) { { 'foo' => '0' } }
+
+      it 'is successful' do
+        expect(result).to be_successful
+      end
+    end
+
+    context 'with valid input (false)' do
+      let(:input) { { 'foo' => 'false' } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,7 +26,7 @@ RSpec.describe 'Predicates: Even' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be even']
+        expect(result).to be_failing ['is missing', 'must be false']
       end
     end
 
@@ -26,7 +34,7 @@ RSpec.describe 'Predicates: Even' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be even']
+        expect(result).to be_failing ['must be false']
       end
     end
 
@@ -34,36 +42,36 @@ RSpec.describe 'Predicates: Even' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be even']
+        expect(result).to be_failing ['must be false']
       end
     end
 
-    context 'with invalid input type' do
+    context 'with invalid input' do
       let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be even']
-      end
-    end
-
-    context 'with odd input' do
-      let(:input) { { 'foo' => '1' } }
-
-      it 'is not successful' do
-        expect(result).to be_failing ['must be even']
+        expect(result).to be_failing ['must be false']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
-        optional(:foo, :integer) { int? & even? }
+      Dry::Schema.Params do
+        optional(:foo, :false) { false? }
       end
     end
 
-    context 'with even input' do
-      let(:input) { { 'foo' => '2' } }
+    context 'with valid input (1)' do
+      let(:input) { { 'foo' => '0' } }
+
+      it 'is successful' do
+        expect(result).to be_successful
+      end
+    end
+
+    context 'with valid input (false)' do
+      let(:input) { { 'foo' => 'false' } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -82,7 +90,7 @@ RSpec.describe 'Predicates: Even' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be even']
+        expect(result).to be_failing ['must be false']
       end
     end
 
@@ -90,23 +98,15 @@ RSpec.describe 'Predicates: Even' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be even']
+        expect(result).to be_failing ['must be false']
       end
     end
 
-    context 'with invalid input type' do
+    context 'with invalid input' do
       let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be even']
-      end
-    end
-
-    context 'with odd input' do
-      let(:input) { { 'foo' => '1' } }
-
-      it 'is not successful' do
-        expect(result).to be_failing ['must be even']
+        expect(result).to be_failing ['must be false']
       end
     end
   end
@@ -115,13 +115,21 @@ RSpec.describe 'Predicates: Even' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, :integer).value(:int?, :even?)
+          Dry::Schema.Params do
+            required(:foo, :false).value(:false?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+        context 'with valid input (1)' do
+          let(:input) { { 'foo' => '0' } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (false)' do
+          let(:input) { { 'foo' => 'false' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -132,7 +140,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be even']
+            expect(result).to be_failing ['is missing', 'must be false']
           end
         end
 
@@ -140,7 +148,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
 
@@ -148,36 +156,36 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
 
-        context 'with invalid input type' do
+        context 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
-          end
-        end
-
-        context 'with odd input' do
-          let(:input) { { 'foo' => '1' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, :integer).filled(:int?, :even?)
+          Dry::Schema.Params do
+            required(:foo, :false).filled(:false?)
           end
         end
 
-        context 'with even input' do
-          let(:input) { { 'foo' => '2' } }
+        context 'with valid input (1)' do
+          let(:input) { { 'foo' => '0' } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (false)' do
+          let(:input) { { 'foo' => 'false' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -188,7 +196,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be even']
+            expect(result).to be_failing ['is missing', 'must be false']
           end
         end
 
@@ -196,7 +204,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be even']
+            expect(result).to be_failing ['must be filled', 'must be false']
           end
         end
 
@@ -204,36 +212,36 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be even']
+            expect(result).to be_failing ['must be filled', 'must be false']
           end
         end
 
-        context 'with invalid input type' do
+        context 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be even']
-          end
-        end
-
-        context 'with odd input' do
-          let(:input) { { 'foo' => '1' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be even']
+            expect(result).to be_failing ['must be filled', 'must be false']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, [:nil, :integer]).maybe(:int?, :even?)
+          Dry::Schema.Params do
+            required(:foo, [:nil, :false]).maybe(:false?)
           end
         end
 
-        context 'with even input' do
-          let(:input) { { 'foo' => '2' } }
+        context 'with valid input (1)' do
+          let(:input) { { 'foo' => '0' } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (false)' do
+          let(:input) { { 'foo' => 'false' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -244,7 +252,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be even']
+            expect(result).to be_failing ['is missing', 'must be false']
           end
         end
 
@@ -259,24 +267,16 @@ RSpec.describe 'Predicates: Even' do
         context 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is successful' do
-            expect(result).to be_successful
+          it 'is not successful' do
+            expect(result).to be_success
           end
         end
 
-        context 'with invalid input type' do
+        context 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
-          end
-        end
-
-        context 'with odd input' do
-          let(:input) { { 'foo' => '1' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
       end
@@ -285,13 +285,21 @@ RSpec.describe 'Predicates: Even' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, :integer).value(:int?, :even?)
+          Dry::Schema.Params do
+            optional(:foo, :false).value(:false?)
           end
         end
 
-        context 'with even input' do
-          let(:input) { { 'foo' => '2' } }
+        context 'with valid input (1)' do
+          let(:input) { { 'foo' => '0' } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (false)' do
+          let(:input) { { 'foo' => 'false' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -310,7 +318,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
 
@@ -318,36 +326,36 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
 
-        context 'with invalid input type' do
+        context 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be even']
-          end
-        end
-
-        context 'with odd input' do
-          let(:input) { { 'foo' => '1' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, :integer).filled(:int?, :even?)
+          Dry::Schema.Params do
+            optional(:foo, :false).filled(:false?)
           end
         end
 
-        context 'with even input' do
-          let(:input) { { 'foo' => '2' } }
+        context 'with valid input (1)' do
+          let(:input) { { 'foo' => '0' } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (false)' do
+          let(:input) { { 'foo' => 'false' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -366,7 +374,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be even']
+            expect(result).to be_failing ['must be filled', 'must be false']
           end
         end
 
@@ -374,36 +382,36 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be even']
+            expect(result).to be_failing ['must be filled', 'must be false']
           end
         end
 
-        context 'with invalid input type' do
+        context 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be even']
-          end
-        end
-
-        context 'with odd input' do
-          let(:input) { { 'foo' => '1' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be even']
+            expect(result).to be_failing ['must be filled', 'must be false']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, [:nil, :integer]).maybe(:int?, :even?)
+          Dry::Schema.Params do
+            optional(:foo, [:nil, :false]).maybe(:false?)
           end
         end
 
-        context 'with even input' do
-          let(:input) { { 'foo' => '2' } }
+        context 'with valid input (1)' do
+          let(:input) { { 'foo' => '0' } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (false)' do
+          let(:input) { { 'foo' => 'false' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -430,23 +438,15 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_success
           end
         end
 
-        context 'with invalid input type' do
+        context 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must be an integer", "must be even"]
-          end
-        end
-
-        context 'with odd input' do
-          let(:input) { { 'foo' => '1' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be even']
+            expect(result).to be_failing ['must be false']
           end
         end
       end

@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: Array' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?)
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe 'Predicates: Array' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?)
       end
     end
@@ -146,7 +146,7 @@ RSpec.describe 'Predicates: Array' do
   context 'as macro' do
     context 'with required' do
       subject(:schema) do
-        Dry::Schema.form do
+        Dry::Schema.Params do
           required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?)
         end
       end
@@ -194,7 +194,7 @@ RSpec.describe 'Predicates: Array' do
 
     context 'with optional' do
       subject(:schema) do
-        Dry::Schema.form do
+        Dry::Schema.Params do
           optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?)
         end
       end
@@ -243,7 +243,7 @@ RSpec.describe 'Predicates: Array' do
 
   context 'with maybe macro' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:foo, [:nil, Types::Params::Array.of(Types::Params::Integer)]).maybe(:array?)
       end
     end

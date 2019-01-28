@@ -1,7 +1,7 @@
 RSpec.describe 'Predicates: None' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:foo, :nil) { none? }
       end
     end
@@ -41,7 +41,7 @@ RSpec.describe 'Predicates: None' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         optional(:foo, :nil) { none? }
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe 'Predicates: None' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             required(:foo, :nil).value(:none?)
           end
         end
@@ -123,7 +123,7 @@ RSpec.describe 'Predicates: None' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             required(:foo).filled(:none?)
           end
         end
@@ -164,7 +164,7 @@ RSpec.describe 'Predicates: None' do
       #makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
-          expect { Dry::Schema.form do
+          expect { Dry::Schema.Params do
             required(:foo).maybe(:none?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
         end
@@ -174,7 +174,7 @@ RSpec.describe 'Predicates: None' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             optional(:foo, :nil).value(:none?)
           end
         end
@@ -214,7 +214,7 @@ RSpec.describe 'Predicates: None' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
+          Dry::Schema.Params do
             optional(:foo).filled(:none?)
           end
         end
@@ -255,7 +255,7 @@ RSpec.describe 'Predicates: None' do
       #makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
-          expect { Dry::Schema.form do
+          expect { Dry::Schema.Params do
             optional(:foo).maybe(:none?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
         end

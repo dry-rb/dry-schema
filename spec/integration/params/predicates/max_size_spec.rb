@@ -1,21 +1,13 @@
-RSpec.describe 'Predicates: Filled' do
-  context 'with key' do
+RSpec.describe 'Predicates: Max Size' do
+  context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
-        required(:foo) { filled? }
+      Dry::Schema.Params do
+        required(:foo) { max_size?(3) }
       end
     end
 
-    context 'with valid input (array)' do
-      let(:input) { { 'foo' => ['23'] } }
-
-      it 'is successful' do
-        expect(result).to be_successful
-      end
-    end
-
-    context 'with valid input (hash)' do
-      let(:input) { { 'foo' => { 'bar' => '23' } } }
+    context 'with valid input' do
+      let(:input) { { 'foo' => %w(1 2 3) } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -26,52 +18,44 @@ RSpec.describe 'Predicates: Filled' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing']
+        expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
       end
     end
 
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be filled']
+      it 'is raises error' do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
 
     context 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be filled']
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => [] } }
+      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be filled']
+        expect(result).to be_failing ['size cannot be greater than 3']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
-        optional(:foo) { filled? }
+      Dry::Schema.Params do
+        optional(:foo) { max_size?(3) }
       end
     end
 
-    context 'with valid input (array)' do
-      let(:input) { { 'foo' => ['23'] } }
-
-      it 'is successful' do
-        expect(result).to be_successful
-      end
-    end
-
-    context 'with valid input (hash)' do
-      let(:input) { { 'foo' => { 'bar' => '23' } } }
+    context 'with valid input' do
+      let(:input) { { 'foo' => %w(1 2 3) } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -89,24 +73,24 @@ RSpec.describe 'Predicates: Filled' do
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be filled']
+      it 'is raises error' do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
 
     context 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be filled']
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => [] } }
+      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be filled']
+        expect(result).to be_failing ['size cannot be greater than 3']
       end
     end
   end
@@ -115,21 +99,13 @@ RSpec.describe 'Predicates: Filled' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).value(:filled?)
+          Dry::Schema.Params do
+            required(:foo).value(max_size?: 3)
           end
         end
 
-        context 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        context 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -140,7 +116,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
           end
         end
 
@@ -148,50 +124,36 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with filled' do
-        it "should raise error" do
-          expect { Dry::Schema.form do
-            required(:foo).filled(:filled?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
-        end
-
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).filled
+          Dry::Schema.Params do
+            required(:foo).filled(max_size?: 3)
           end
         end
 
-        context 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        context 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -202,7 +164,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
           end
         end
 
@@ -210,7 +172,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
@@ -218,36 +180,28 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, [:nil, :string]).maybe(:filled?)
+          Dry::Schema.Params do
+            required(:foo).maybe(max_size?: 3)
           end
         end
 
-        context 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        context 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -258,7 +212,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
           end
         end
 
@@ -279,10 +233,10 @@ RSpec.describe 'Predicates: Filled' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
@@ -291,21 +245,13 @@ RSpec.describe 'Predicates: Filled' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).value(:filled?)
+          Dry::Schema.Params do
+            optional(:foo).value(max_size?: 3)
           end
         end
 
-        context 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        context 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -323,51 +269,37 @@ RSpec.describe 'Predicates: Filled' do
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+          it 'is raises error' do
+            expect { result }.to raise_error(NoMethodError)
           end
         end
 
         context 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with filled' do
-        it "should raise error" do
-          expect { Dry::Schema.form do
-            optional(:foo).filled(:filled?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
-        end
-
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).filled
+          Dry::Schema.Params do
+            optional(:foo).filled(max_size?: 3)
           end
         end
 
-        context 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        context 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -386,7 +318,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
@@ -394,36 +326,28 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, [:nil, :string]).maybe(:filled?)
+          Dry::Schema.Params do
+            optional(:foo).maybe(max_size?: 3)
           end
         end
 
-        context 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect(result).to be_successful
-          end
-        end
-
-        context 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        context 'with valid input' do
+          let(:input) { { 'foo' => %w([1 2 3) } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -455,10 +379,10 @@ RSpec.describe 'Predicates: Filled' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end

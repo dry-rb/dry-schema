@@ -1,7 +1,7 @@
 RSpec.describe Dry::Schema, 'pre-coercion input rules' do
   context 'coercion' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:date).filter(format?: /\d{4}-\d{2}-\d{2}/).filled(:date, :date?, gt?: Date.new(2019, 1, 23))
         required(:other).value(:integer, gt?: 18)
       end

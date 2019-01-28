@@ -25,17 +25,17 @@ module Dry
     # @return [Definition]
     #
     # @api public
-    def self.params(**options, &block)
+    def self.Params(**options, &block)
       define(**options, processor_type: Params, &block)
     end
-    singleton_class.send(:alias_method, :form, :params)
+    singleton_class.send(:alias_method, :Form, :Params)
 
     # Define a JSON schema
     #
     # @return [Definition]
     #
     # @api public
-    def self.json(**options, &block)
+    def self.JSON(**options, &block)
       define(**options, processor_type: JSON, &block)
     end
 

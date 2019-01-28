@@ -18,8 +18,8 @@ module Dry
     #
     # The DSL is exposed by:
     #   - `Schema.define`
-    #   - `Schema.params`
-    #   - `Schema.json`
+    #   - `Schema.Params`
+    #   - `Schema.JSON`
     #   - `Schema::Params.define` - use with sub-classes
     #   - `Schema::JSON.define` - use with sub-classes
     #
@@ -35,7 +35,7 @@ module Dry
     #   user_schema.(name: 'Jame', age: 21)
     #
     # @example instance-based definition shortcut
-    #   UserSchema = Dry::Schema.params do
+    #   UserSchema = Dry::Schema.Params do
     #     required(:name).filled
     #     required(:age).filled(:integer, gt: 18)
     #   end
@@ -83,8 +83,8 @@ module Dry
       # @option options [Config] :config A configuration object (optional)
       #
       # @see Schema.define
-      # @see Schema.params
-      # @see Schema.json
+      # @see Schema.Params
+      # @see Schema.JSON
       # @see Processor.define
       #
       # @return [DSL]

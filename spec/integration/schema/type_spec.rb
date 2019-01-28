@@ -1,7 +1,7 @@
 RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec without rules' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:age).type(:integer)
       end
     end
@@ -13,7 +13,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'single type spec with rules' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:age).type(:integer).value(:int?, gt?: 18)
       end
     end
@@ -26,7 +26,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'single type spec with an array' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:nums, array[:integer])
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'sum type spec without rules' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:age).type([:nil, :integer])
       end
     end
@@ -51,7 +51,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'sum type spec with rules' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:age).type([:nil, :integer]).maybe(:int?, gt?: 18)
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'using a type object' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:age, Types::Params::Nil | Types::Params::Integer)
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'nested schema' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:user).type(:hash).schema do
           required(:email).type(:string)
           required(:age).type(:integer)
@@ -128,7 +128,7 @@ RSpec.describe Dry::Schema, 'types specs' do
 
   context 'nested schema with arrays' do
     subject(:schema) do
-      Dry::Schema.form do
+      Dry::Schema.Params do
         required(:song).type(:hash).value(:hash?).schema do
           required(:title).type(:string)
 

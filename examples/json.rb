@@ -1,7 +1,7 @@
 require 'json'
 require 'dry-validation'
 
-schema = Dry::Schema.json do
+schema = Dry::Schema.JSON do
   required(:email).filled
 
   required(:age).filled(:int?, gt?: 18)

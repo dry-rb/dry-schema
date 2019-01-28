@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Gt' do
+RSpec.describe 'Predicates: Odd' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
-        required(:foo, :integer) { int? & gt?(23) }
+      Dry::Schema.Params do
+        required(:foo, :integer) { int? & odd? }
       end
     end
 
-    context 'with invalid input' do
-      let(:input) { { 'foo' => '33' } }
+    context 'with odd input' do
+      let(:input) { { 'foo' => '1' } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be greater than 23']
+        expect(result).to be_failing ['is missing', 'must be odd']
       end
     end
 
@@ -26,7 +26,7 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+        expect(result).to be_failing ['must be an integer', 'must be odd']
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+        expect(result).to be_failing ['must be an integer', 'must be odd']
       end
     end
 
@@ -42,36 +42,28 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+        expect(result).to be_failing ['must be an integer', 'must be odd']
       end
     end
 
-    context 'with equal input' do
-      let(:input) { { 'foo' => '23' } }
+    context 'with even input' do
+      let(:input) { { 'foo' => '2' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be greater than 23']
-      end
-    end
-
-    context 'with less than input' do
-      let(:input) { { 'foo' => '0' } }
-
-      it 'is not successful' do
-        expect(result).to be_failing ['must be greater than 23']
+        expect(result).to be_failing ['must be odd']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
-        optional(:foo, :integer) { int? & gt?(23) }
+      Dry::Schema.Params do
+        optional(:foo, :integer) { int? & odd? }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { 'foo' => '33' } }
+    context 'with odd input' do
+      let(:input) { { 'foo' => '1' } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -90,7 +82,7 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+        expect(result).to be_failing ['must be an integer', 'must be odd']
       end
     end
 
@@ -98,7 +90,7 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+        expect(result).to be_failing ['must be an integer', 'must be odd']
       end
     end
 
@@ -106,23 +98,15 @@ RSpec.describe 'Predicates: Gt' do
       let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+        expect(result).to be_failing ['must be an integer', 'must be odd']
       end
     end
 
-    context 'with equal input' do
-      let(:input) { { 'foo' => '23' } }
+    context 'with even input' do
+      let(:input) { { 'foo' => '2' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be greater than 23']
-      end
-    end
-
-    context 'with less than input' do
-      let(:input) { { 'foo' => '0' } }
-
-      it 'is not successful' do
-        expect(result).to be_failing ['must be greater than 23']
+        expect(result).to be_failing ['must be odd']
       end
     end
   end
@@ -131,13 +115,13 @@ RSpec.describe 'Predicates: Gt' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, :integer).value(:int?, gt?: 23)
+          Dry::Schema.Params do
+            required(:foo, :integer).value(:int?, :odd?)
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => '33' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -148,7 +132,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than 23']
+            expect(result).to be_failing ['is missing', 'must be odd']
           end
         end
 
@@ -156,7 +140,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
@@ -164,7 +148,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
@@ -172,36 +156,28 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { 'foo' => '23' } }
+        context 'with even input' do
+          let(:input) { { 'foo' => '2' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
-          end
-        end
-
-        context 'with less than input' do
-          let(:input) { { 'foo' => '0' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
+            expect(result).to be_failing ['must be odd']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, :integer).filled(:int?, gt?: 23)
+          Dry::Schema.Params do
+            required(:foo, :integer).filled(:int?, :odd?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => '33' } }
+        context 'with odd input' do
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -212,7 +188,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than 23']
+            expect(result).to be_failing ['is missing', 'must be odd']
           end
         end
 
@@ -220,7 +196,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled', 'must be odd']
           end
         end
 
@@ -228,7 +204,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled', 'must be odd']
           end
         end
 
@@ -236,36 +212,28 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled', 'must be odd']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { 'foo' => '23' } }
+        context 'with even input' do
+          let(:input) { { 'foo' => '2' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
-          end
-        end
-
-        context 'with less than input' do
-          let(:input) { { 'foo' => '0' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
+            expect(result).to be_failing ['must be odd']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, [:nil, :integer]).maybe(:int?, gt?: 23)
+          Dry::Schema.Params do
+            required(:foo, [:nil, :integer]).maybe(:int?, :odd?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => 33 } }
+        context 'with odd input' do
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -276,7 +244,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than 23']
+            expect(result).to be_failing ['is missing', 'must be odd']
           end
         end
 
@@ -300,23 +268,15 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { 'foo' => '23' } }
+        context 'with even input' do
+          let(:input) { { 'foo' => '2' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
-          end
-        end
-
-        context 'with less than input' do
-          let(:input) { { 'foo' => '0' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
+            expect(result).to be_failing ['must be odd']
           end
         end
       end
@@ -325,13 +285,13 @@ RSpec.describe 'Predicates: Gt' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, :integer).value(:int?, gt?: 23)
+          Dry::Schema.Params do
+            optional(:foo, :integer).value(:int?, :odd?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => '33' } }
+        context 'with odd input' do
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -350,7 +310,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
@@ -358,7 +318,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
@@ -366,36 +326,28 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be an integer', 'must be odd']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { 'foo' => '23' } }
+        context 'with even input' do
+          let(:input) { { 'foo' => '2' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
-          end
-        end
-
-        context 'with less than input' do
-          let(:input) { { 'foo' => '0' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
+            expect(result).to be_failing ['must be odd']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, :integer).filled(:int?, gt?: 23)
+          Dry::Schema.Params do
+            optional(:foo, :integer).filled(:int?, :odd?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => '33' } }
+        context 'with odd input' do
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -414,7 +366,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled', 'must be odd']
           end
         end
 
@@ -422,7 +374,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled', 'must be odd']
           end
         end
 
@@ -430,36 +382,28 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled', 'must be odd']
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { 'foo' => '23' } }
+        context 'with even input' do
+          let(:input) { { 'foo' => '2' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
-          end
-        end
-
-        context 'with less than input' do
-          let(:input) { { 'foo' => '0' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
+            expect(result).to be_failing ['must be odd']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, [:nil, :integer]).maybe(:int?, gt?: 23)
+          Dry::Schema.Params do
+            optional(:foo, [:nil, :integer]).maybe(:int?, :odd?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => '33' } }
+        context 'with odd input' do
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -494,23 +438,15 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must be an integer", "must be greater than 23"]
+            expect(result).to be_failing ["must be an integer", "must be odd"]
           end
         end
 
-        context 'with equal input' do
-          let(:input) { { 'foo' => '23' } }
+        context 'with even input' do
+          let(:input) { { 'foo' => '2' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
-          end
-        end
-
-        context 'with less than input' do
-          let(:input) { { 'foo' => '0' } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['must be greater than 23']
+            expect(result).to be_failing ['must be odd']
           end
         end
       end

@@ -1,13 +1,13 @@
-RSpec.describe 'Predicates: Max Size' do
+RSpec.describe 'Predicates: Not Eql' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.form do
-        required(:foo) { max_size?(3) }
+      Dry::Schema.Params do
+        required(:foo) { not_eql?('23') }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => %w(1 2 3) } }
+      let(:input) { { 'foo' => '13' } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,15 +18,15 @@ RSpec.describe 'Predicates: Max Size' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
+        expect(result).to be_failing ['is missing', 'must not be equal to 23']
       end
     end
 
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(NoMethodError)
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
@@ -35,27 +35,19 @@ RSpec.describe 'Predicates: Max Size' do
 
       it 'is successful' do
         expect(result).to be_successful
-      end
-    end
-
-    context 'with invalid input' do
-      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-      it 'is not successful' do
-        expect(result).to be_failing ['size cannot be greater than 3']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
-        optional(:foo) { max_size?(3) }
+      Dry::Schema.Params do
+        optional(:foo) { not_eql?('23') }
       end
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => %w(1 2 3) } }
+      let(:input) { { 'foo' => '13' } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -73,8 +65,8 @@ RSpec.describe 'Predicates: Max Size' do
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(NoMethodError)
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
@@ -83,14 +75,6 @@ RSpec.describe 'Predicates: Max Size' do
 
       it 'is successful' do
         expect(result).to be_successful
-      end
-    end
-
-    context 'with invalid input' do
-      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-      it 'is not successful' do
-        expect(result).to be_failing ['size cannot be greater than 3']
       end
     end
   end
@@ -99,13 +83,13 @@ RSpec.describe 'Predicates: Max Size' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).value(max_size?: 3)
+          Dry::Schema.Params do
+            required(:foo).value(not_eql?: '23')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => '13' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -116,15 +100,15 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
+            expect(result).to be_failing ['is missing', 'must not be equal to 23']
           end
         end
 
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            expect { result }.to raise_error(NoMethodError)
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
@@ -133,27 +117,19 @@ RSpec.describe 'Predicates: Max Size' do
 
           it 'is successful' do
             expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).filled(max_size?: 3)
+          Dry::Schema.Params do
+            required(:foo).filled(not_eql?: '23')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => '13' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -164,7 +140,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
+            expect(result).to be_failing ['is missing', 'must not be equal to 23']
           end
         end
 
@@ -172,7 +148,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
+            expect(result).to be_failing ['must be filled', 'must not be equal to 23']
           end
         end
 
@@ -180,28 +156,20 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['size cannot be greater than 3']
+            expect(result).to be_failing ['must be filled', 'must not be equal to 23']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).maybe(max_size?: 3)
+          Dry::Schema.Params do
+            required(:foo).maybe(not_eql?: '23')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => '13' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -212,7 +180,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be greater than 3']
+            expect(result).to be_failing ['is missing', 'must not be equal to 23']
           end
         end
 
@@ -229,14 +197,6 @@ RSpec.describe 'Predicates: Max Size' do
 
           it 'is successful' do
             expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
@@ -245,13 +205,13 @@ RSpec.describe 'Predicates: Max Size' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).value(max_size?: 3)
+          Dry::Schema.Params do
+            optional(:foo).value(not_eql?: '23')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => '13' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -269,8 +229,8 @@ RSpec.describe 'Predicates: Max Size' do
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(NoMethodError)
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
@@ -279,27 +239,19 @@ RSpec.describe 'Predicates: Max Size' do
 
           it 'is successful' do
             expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).filled(max_size?: 3)
+          Dry::Schema.Params do
+            optional(:foo).filled(not_eql?: '23')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => '13' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -318,7 +270,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
+            expect(result).to be_failing ['must be filled', 'must not be equal to 23']
           end
         end
 
@@ -326,28 +278,20 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be greater than 3']
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['size cannot be greater than 3']
+            expect(result).to be_failing ['must be filled', 'must not be equal to 23']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).maybe(max_size?: 3)
+          Dry::Schema.Params do
+            optional(:foo).maybe(not_eql?: '23')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w([1 2 3) } }
+          let(:input) { { 'foo' => '13' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -375,14 +319,6 @@ RSpec.describe 'Predicates: Max Size' do
 
           it 'is successful' do
             expect(result).to be_successful
-          end
-        end
-
-        context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
-
-          it 'is not successful' do
-            expect(result).to be_failing ['size cannot be greater than 3']
           end
         end
       end

@@ -1,13 +1,21 @@
-RSpec.describe 'Predicates: Min Size' do
-  context 'with required' do
+RSpec.describe 'Predicates: Filled' do
+  context 'with key' do
     subject(:schema) do
-      Dry::Schema.form do
-        required(:foo) { min_size?(3) }
+      Dry::Schema.Params do
+        required(:foo) { filled? }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { 'foo' => %w(1 2 3) } }
+    context 'with valid input (array)' do
+      let(:input) { { 'foo' => ['23'] } }
+
+      it 'is successful' do
+        expect(result).to be_successful
+      end
+    end
+
+    context 'with valid input (hash)' do
+      let(:input) { { 'foo' => { 'bar' => '23' } } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -18,15 +26,15 @@ RSpec.describe 'Predicates: Min Size' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'size cannot be less than 3']
+        expect(result).to be_failing ['is missing']
       end
     end
 
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(NoMethodError)
+      it 'is not successful' do
+        expect(result).to be_failing ['must be filled']
       end
     end
 
@@ -34,28 +42,36 @@ RSpec.describe 'Predicates: Min Size' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['size cannot be less than 3']
+        expect(result).to be_failing ['must be filled']
       end
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+      let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['size cannot be less than 3']
+        expect(result).to be_failing ['must be filled']
       end
     end
   end
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.form do
-        optional(:foo) { min_size?(3) }
+      Dry::Schema.Params do
+        optional(:foo) { filled? }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { 'foo' => %w(1 2 3) } }
+    context 'with valid input (array)' do
+      let(:input) { { 'foo' => ['23'] } }
+
+      it 'is successful' do
+        expect(result).to be_successful
+      end
+    end
+
+    context 'with valid input (hash)' do
+      let(:input) { { 'foo' => { 'bar' => '23' } } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -73,8 +89,8 @@ RSpec.describe 'Predicates: Min Size' do
     context 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(NoMethodError)
+      it 'is not successful' do
+        expect(result).to be_failing ['must be filled']
       end
     end
 
@@ -82,15 +98,15 @@ RSpec.describe 'Predicates: Min Size' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['size cannot be less than 3']
+        expect(result).to be_failing ['must be filled']
       end
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+      let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['size cannot be less than 3']
+        expect(result).to be_failing ['must be filled']
       end
     end
   end
@@ -99,13 +115,21 @@ RSpec.describe 'Predicates: Min Size' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).value(min_size?: 3)
+          Dry::Schema.Params do
+            required(:foo).value(:filled?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+        context 'with valid input (array)' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (hash)' do
+          let(:input) { { 'foo' => { 'bar' => '23' } } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -116,15 +140,15 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be less than 3']
+            expect(result).to be_failing ['is missing']
           end
         end
 
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(NoMethodError)
+          it 'is not successful' do
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -132,28 +156,42 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
       end
 
       context 'with filled' do
+        it "should raise error" do
+          expect { Dry::Schema.Params do
+            required(:foo).filled(:filled?)
+          end }.to raise_error Dry::Schema::InvalidSchemaError
+        end
+
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo).filled(min_size?: 3)
+          Dry::Schema.Params do
+            required(:foo).filled
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+        context 'with valid input (array)' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (hash)' do
+          let(:input) { { 'foo' => { 'bar' => '23' } } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -164,7 +202,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be less than 3']
+            expect(result).to be_failing ['is missing']
           end
         end
 
@@ -172,7 +210,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -180,28 +218,36 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            required(:foo, [:nil, :integer]).maybe(min_size?: 3)
+          Dry::Schema.Params do
+            required(:foo, [:nil, :string]).maybe(:filled?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+        context 'with valid input (array)' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (hash)' do
+          let(:input) { { 'foo' => { 'bar' => '23' } } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -212,7 +258,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be less than 3']
+            expect(result).to be_failing ['is missing']
           end
         end
 
@@ -233,10 +279,10 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
       end
@@ -245,13 +291,21 @@ RSpec.describe 'Predicates: Min Size' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).value(min_size?: 3)
+          Dry::Schema.Params do
+            optional(:foo).value(:filled?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+        context 'with valid input (array)' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (hash)' do
+          let(:input) { { 'foo' => { 'bar' => '23' } } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -269,8 +323,8 @@ RSpec.describe 'Predicates: Min Size' do
         context 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(NoMethodError)
+          it 'is not successful' do
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -278,28 +332,42 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
       end
 
       context 'with filled' do
+        it "should raise error" do
+          expect { Dry::Schema.Params do
+            optional(:foo).filled(:filled?)
+          end }.to raise_error Dry::Schema::InvalidSchemaError
+        end
+
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo).filled(min_size?: 3)
+          Dry::Schema.Params do
+            optional(:foo).filled
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+        context 'with valid input (array)' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (hash)' do
+          let(:input) { { 'foo' => { 'bar' => '23' } } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -318,7 +386,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -326,28 +394,36 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
       end
 
       context 'with maybe' do
         subject(:schema) do
-          Dry::Schema.form do
-            optional(:foo, [:nil, :integer]).maybe(min_size?: 3)
+          Dry::Schema.Params do
+            optional(:foo, [:nil, :string]).maybe(:filled?)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+        context 'with valid input (array)' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          it 'is successful' do
+            expect(result).to be_successful
+          end
+        end
+
+        context 'with valid input (hash)' do
+          let(:input) { { 'foo' => { 'bar' => '23' } } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -379,10 +455,10 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be filled']
           end
         end
       end
