@@ -129,6 +129,20 @@ RSpec.describe 'Validation hints' do
     end
   end
 
+  context 'with an OR rule' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:tags).value([:string, :array], size?: 3)
+      end
+    end
+
+    it 'provides correct hints and failures' do
+      expect(schema.({}).messages[:tags]).to eql(
+        ['is missing', 'must be a string or must be an array', 'size must be 3']
+      )
+    end
+  end
+
   context 'when the message uses input value' do
     subject(:schema) do
       Dry::Schema.define do

@@ -66,10 +66,10 @@ module Dry
 
           msgs.each do |msg|
             node << msg
-
-            msg_hints = hint_groups[msg.path]
-            node.concat(msg_hints) if msg_hints
           end
+
+          msg_hints = hint_groups[path]
+          node.concat(msg_hints) if msg_hints
 
           node.map!(&:to_s)
 
