@@ -29,10 +29,10 @@ RSpec::Matchers.define :be_failing do |messages|
   end
 
   failure_message do |actual|
-    "expected that #{actual.inspect} would be failing (#{messages.inspect})"
+    "expected that #{actual.messages[:foo].inspect} would be failing (#{messages.inspect})"
   end
 
   failure_message_when_negated do |actual|
-    "expected that #{actual.inspect} would NOT be failing"
+    "expected that #{actual.messages[:foo].inspect} would NOT be failing"
   end
 end
