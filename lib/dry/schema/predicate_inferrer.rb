@@ -20,9 +20,11 @@ module Dry
       end
 
       TYPE_TO_PREDICATE.update(
+        FalseClass => :false?,
         Integer => :int?,
         NilClass => :none?,
-        String => :str?
+        String => :str?,
+        TrueClass => :true?
       ).freeze
 
       # Infer predicate identifier from the provided type
