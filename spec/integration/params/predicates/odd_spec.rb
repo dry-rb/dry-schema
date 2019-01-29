@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Odd' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :integer) { int? & odd? }
+        required(:foo).value(:integer) { odd? }
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Predicates: Odd' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :integer) { int? & odd? }
+        optional(:foo).value(:integer) { odd? }
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Odd' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).value(:int?, :odd?)
+            required(:foo).value(:integer, :odd?)
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Odd' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).filled(:int?, :odd?)
+            required(:foo).filled(:integer, :odd?)
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Odd' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :integer]).maybe(:int?, :odd?)
+            required(:foo).maybe(:integer).maybe(:int?, :odd?)
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: Odd' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).value(:int?, :odd?)
+            optional(:foo).value(:integer, :odd?)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Odd' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).filled(:int?, :odd?)
+            optional(:foo).filled(:integer, :odd?)
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Odd' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :integer]).maybe(:int?, :odd?)
+            optional(:foo).maybe(:integer, :odd?)
           end
         end
 

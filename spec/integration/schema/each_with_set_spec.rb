@@ -1,7 +1,7 @@
 RSpec.describe 'Schema with each and set rules' do
   subject(:schema) do
     Dry::Schema.define do
-      required(:payments, :array).value(:array?).each do
+      required(:payments).value(:array).each do
         schema do
           required(:method).filled(:str?)
           required(:amount).filled(:float?)

@@ -131,8 +131,8 @@ module Dry
       # @return [Macros::Required]
       #
       # @api public
-      def required(name, type = Types::Any, &block)
-        key(name, type: type, macro: Macros::Required, &block)
+      def required(name, &block)
+        key(name, macro: Macros::Required, &block)
       end
 
       # Define an optional key
@@ -147,8 +147,8 @@ module Dry
       # @return [Macros::Optional]
       #
       # @api public
-      def optional(name, type = Types::Any, &block)
-        key(name, type: type, macro: Macros::Optional, &block)
+      def optional(name, &block)
+        key(name, macro: Macros::Optional, &block)
       end
 
       # A generic method for defining keys
@@ -159,8 +159,8 @@ module Dry
       # @return [Macros::Key]
       #
       # @api public
-      def key(name, type:, macro:, &block)
-        set_type(name, type)
+      def key(name, macro:, &block)
+        set_type(name, Types::Any)
 
         macro = macro.new(
           name: name,

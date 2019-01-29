@@ -27,7 +27,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec with an array' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:nums, array[:integer])
+        required(:nums).value(array[:integer])
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'using a type object' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:age, Types::Params::Nil | Types::Params::Integer)
+        required(:age).value(Types::Params::Nil | Types::Params::Integer)
       end
     end
 

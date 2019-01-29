@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Excludes' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(excludes?: 1)
+        required(:foo).value(array[:integer]).each(:int?).value(excludes?: 1)
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Excludes' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(excludes?: 1)
+        optional(:foo).value(array[:integer]).each(:int?).value(excludes?: 1)
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(excludes?: "foo")
+            required(:foo).value(:string, excludes?: "foo")
           end
         end
 
@@ -124,7 +124,7 @@ RSpec.describe 'Predicates: Excludes' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must be a string', 'must not include foo']
           end
         end
 
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, Types::Params::Array.of(Types::Params::Integer)).filled(excludes?: 'foo')
+            required(:foo).filled(:string, excludes?: 'foo')
           end
         end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, Types::Params::Array.of(Types::Params::Integer)]).maybe(excludes?: 'foo')
+            required(:foo).maybe(:string, excludes?: 'foo')
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(excludes?: 1)
+            optional(:foo).value(array[:integer], excludes?: 1)
           end
         end
 
@@ -270,7 +270,7 @@ RSpec.describe 'Predicates: Excludes' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must be an array', 'must not include 1']
           end
         end
 
@@ -294,7 +294,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, Types::Params::Array.of(Types::Params::Integer)).filled(excludes?: 'foo')
+            optional(:foo).filled(:string, excludes?: 'foo')
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, Types::Params::Array.of(Types::Params::Integer)]).maybe(excludes?: 'foo')
+            optional(:foo).maybe(:string, excludes?: 'foo')
           end
         end
 

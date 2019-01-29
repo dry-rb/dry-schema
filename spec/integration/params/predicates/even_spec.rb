@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Even' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :integer) { int? & even? }
+        required(:foo).value(:integer) { even? }
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Predicates: Even' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :integer) { int? & even? }
+        optional(:foo).value(:integer) { even? }
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Even' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).value(:int?, :even?)
+            required(:foo).value(:integer, :even?)
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Even' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).filled(:int?, :even?)
+            required(:foo).filled(:integer, :even?)
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Even' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :integer]).maybe(:int?, :even?)
+            required(:foo).maybe(:integer, :even?)
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: Even' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).value(:int?, :even?)
+            optional(:foo).value(:integer, :even?)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Even' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).filled(:int?, :even?)
+            optional(:foo).filled(:integer, :even?)
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Even' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :integer]).maybe(:int?, :even?)
+            optional(:foo).maybe(:integer, :even?)
           end
         end
 

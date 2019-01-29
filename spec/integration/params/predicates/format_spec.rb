@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Format' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :string]).maybe(:str?, format?: /bar/)
+            required(:foo).maybe(:string).maybe(:str?, format?: /bar/)
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Format' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :string]).maybe(:str?, format?: /bar/)
+            optional(:foo).maybe(:string).maybe(:str?, format?: /bar/)
           end
         end
 

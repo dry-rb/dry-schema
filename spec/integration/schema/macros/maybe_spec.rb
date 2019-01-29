@@ -64,9 +64,9 @@ RSpec.describe 'Macros #maybe' do
   describe 'with an optional key and a block with schema' do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:employee, [:nil, :hash]).maybe(:hash?) do
+        optional(:employee).maybe(:hash).maybe(:hash?) do
           schema do
-            required(:id, :string).filled(:str?)
+            required(:id).filled(:string)
           end
         end
       end
