@@ -12,6 +12,10 @@ RSpec.describe 'Predicates: Array' do
       it 'is successful' do
         expect(result).to be_successful
       end
+
+      it 'coerces member values' do
+        expect(result.to_h).to eql(foo: [3])
+      end
     end
 
     context 'with missing input' do
@@ -35,6 +39,10 @@ RSpec.describe 'Predicates: Array' do
 
       it 'is successful' do
         expect(result).to be_successful
+      end
+
+      it 'coerces to an empty array' do
+        expect(result.to_h).to eql(foo: [])
       end
     end
 

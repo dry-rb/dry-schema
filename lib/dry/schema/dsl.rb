@@ -203,7 +203,7 @@ module Dry
       #
       # @api public
       def array
-        -> member_type { Types::Array.of(resolve_type(member_type)) }
+        -> member_type { type_registry["array"].of(resolve_type(member_type)) }
       end
 
       # Return type schema used by the value coercer
