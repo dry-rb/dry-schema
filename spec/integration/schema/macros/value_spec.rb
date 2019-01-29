@@ -35,7 +35,7 @@ RSpec.describe 'Macros #value' do
       )
     end
 
-    it 'infers none? rule and applies it' do
+    it 'infers nil? rule and applies it' do
       expect(schema.(age: 18, logged_in: 'foo').errors).to eql(
         logged_in: ['cannot be defined']
       )

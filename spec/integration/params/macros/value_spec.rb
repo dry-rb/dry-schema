@@ -26,7 +26,7 @@ RSpec.describe 'Schema / Form / Macros / #value' do
   describe "with a type spec as an array" do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:age).value([:nil, :integer]) { none? | (int? & gt?(18)) }
+        required(:age).value([:nil, :integer]) { nil? | (int? & gt?(18)) }
       end
     end
 

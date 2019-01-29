@@ -9,7 +9,7 @@ RSpec.describe Dry::Schema do
           required(:street).value(:filled?)
 
           optional(:phone_number) do
-            none? | str?
+            nil? | str?
           end
         end
       end

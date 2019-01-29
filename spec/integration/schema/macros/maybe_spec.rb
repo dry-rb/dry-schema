@@ -6,7 +6,7 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'generates none? | filled? rule' do
+    it 'generates nil? | filled? rule' do
       expect { schema }.to raise_error(ArgumentError)
     end
   end
@@ -18,7 +18,7 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'generates none? | str? rule' do
+    it 'generates nil? | str? rule' do
       expect(schema.(email: nil)).to be_success
       expect(schema.(email: 'jane@doe.org')).to be_success
       expect(schema.(email: 'jane').errors).to eql(email: ['is in invalid format'])
@@ -32,7 +32,7 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'generates none? | (filled? & min_size?) rule' do
+    it 'generates nil? | (filled? & min_size?) rule' do
       expect(schema.(name: nil).messages).to be_empty
 
       expect(schema.(name: 'jane').messages).to be_empty
@@ -50,7 +50,7 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'generates none? | (str? & min_size?) rule' do
+    it 'generates nil? | (str? & min_size?) rule' do
       expect(schema.(name: nil).messages).to be_empty
 
       expect(schema.(name: 'jane').messages).to be_empty
@@ -98,7 +98,7 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'generates none? | (str? & min_size?) rule' do
+    it 'generates nil? | (str? & min_size?) rule' do
       expect(schema.(name: nil).messages).to be_empty
 
       expect(schema.(name: 'jane').messages).to be_empty

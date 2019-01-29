@@ -15,8 +15,8 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
     expect(inferrer[type(:integer)]).to eql([:int?])
   end
 
-  it 'returns none? for a nil type' do
-    expect(inferrer[type(:nil)]).to eql([:none?])
+  it 'returns nil? for a nil type' do
+    expect(inferrer[type(:nil)]).to eql([:nil?])
   end
 
   it 'returns false? for a false type' do

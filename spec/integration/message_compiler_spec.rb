@@ -268,10 +268,10 @@ RSpec.describe Dry::Schema::MessageCompiler do
       end
     end
 
-    describe ':none?' do
+    describe ':nil?' do
       it 'returns valid message' do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:none?, nil)]]]]
+          [:failure, [:num, [:key, [:num, p(:nil?, nil)]]]]
         )
 
         expect(msg).to eql('cannot be defined')
