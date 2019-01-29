@@ -233,7 +233,10 @@ module Dry
       #
       # @api private
       def set_type(name, spec)
-        types[name] = resolve_type(spec).meta(omittable: true)
+        type = resolve_type(spec)
+        meta = { omittable: true, maybe: maybe?(type) }
+
+        types[name] = type.meta(meta)
       end
 
       protected
@@ -326,9 +329,9 @@ module Dry
       #
       # @api private
       def key_spec(name, type)
-        if type.hash?
+        if type.respond_to?(:member_types)
           { name => key_map(type.member_types) }
-        elsif type.member_array?
+        elsif type.respond_to?(:member)
           kv = key_spec(name, type.member)
           kv.equal?(name) ? name : kv.flatten(1)
         else
@@ -350,6 +353,13 @@ module Dry
         else
           type_registry[spec]
         end
+      end
+
+      # Check if the given type is a maybe sum
+      #
+      # @api private
+      def maybe?(type)
+        type.is_a?(Dry::Types::Sum) && type.left.primitive.equal?(NilClass)
       end
 
       # @api private

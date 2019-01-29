@@ -19,8 +19,8 @@ module Dry
             parent_type = schema_dsl.types[name]
             definition_schema = definition.type_schema
 
-            schema_type = parent_type.array? ? parent_type.of(definition_schema) : definition_schema
-            schema_dsl.set_type(name, parent_type.maybe? ? schema_type.optional : schema_type)
+            schema_type = parent_type.respond_to?(:of) ? parent_type.of(definition_schema) : definition_schema
+            schema_dsl.set_type(name, parent_type.meta[:maybe].equal?(true) ? schema_type.optional : schema_type)
 
             trace << definition.to_rule
           end

@@ -10,7 +10,7 @@ module Dry
       extend Dry::Core::Cache
 
       TYPE_TO_PREDICATE = Hash.new do |hash, type|
-        primitive = type.maybe? ? type.right.primitive : type.primitive
+        primitive = type.meta[:maybe] ? type.right.primitive : type.primitive
 
         if hash.key?(primitive)
           hash[primitive]
@@ -33,7 +33,7 @@ module Dry
       def self.[](type)
         fetch_or_store(type.hash) {
           predicates =
-            if type.sum? && !type.maybe?
+            if type.is_a?(Dry::Types::Sum) && !type.meta[:maybe]
               [self[type.left], self[type.right]]
             else
               TYPE_TO_PREDICATE[type]
