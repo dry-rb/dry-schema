@@ -31,6 +31,8 @@ module Dry
         predicates.each do |predicate|
           if predicate.respond_to?(:call)
             append(predicate)
+          elsif predicate.is_a?(::Array)
+            append(predicate.map { |pred| __send__(pred) }.reduce(:|))
           else
             append(__send__(predicate))
           end

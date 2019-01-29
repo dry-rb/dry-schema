@@ -15,7 +15,7 @@ module Dry
         if hash.key?(primitive)
           hash[primitive]
         else
-          :"#{primitive.name.downcase}?"
+          :"#{primitive.name.split('::').last.downcase}?"
         end
       end
 
@@ -31,7 +31,16 @@ module Dry
       #
       # @api private
       def self.[](type)
-        fetch_or_store(type.hash) { TYPE_TO_PREDICATE[type] }
+        fetch_or_store(type.hash) {
+          predicates =
+            if type.sum? && !type.maybe?
+              [self[type.left], self[type.right]]
+            else
+              TYPE_TO_PREDICATE[type]
+            end
+
+          Array(predicates).flatten
+        }
       end
     end
   end

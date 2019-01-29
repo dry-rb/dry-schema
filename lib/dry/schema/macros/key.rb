@@ -112,13 +112,19 @@ module Dry
 
           if type_spec
             type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec)
-            type_predicate = PredicateInferrer[schema_dsl.types[name]]
+            type_predicates = PredicateInferrer[schema_dsl.types[name]]
 
-            unless predicates.include?(type_predicate)
-              if compiler.supports?(type_predicate)
-                predicates.unshift(type_predicate)
+            unless predicates.include?(type_predicates)
+              type_predicates.each do |pred|
+                unless compiler.supports?(pred)
+                  raise ArgumentError, "Predicate +#{pred.inspect}+ inferred from #{type_spec.inspect} type spec is not supported"
+                end
+              end
+
+              if type_predicates.size.equal?(1)
+                predicates.unshift(type_predicates[0])
               else
-                raise ArgumentError, "Cannot infer type-check predicate from +#{type_spec.inspect}+ type spec"
+                predicates.unshift(type_predicates)
               end
             end
           end

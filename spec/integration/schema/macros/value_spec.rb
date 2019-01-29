@@ -56,6 +56,20 @@ RSpec.describe 'Macros #value' do
     end
   end
 
+  describe 'with a sum type spec' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:age).value([:integer, :string], :filled?)
+      end
+    end
+
+    it 'infers type check predicates for defined types' do
+      expect(schema.(age: nil).errors).to eql( age: ['must be an integer or must be a string'])
+      expect(schema.(age: 19)).to be_success
+      expect(schema.(age: '19')).to be_success
+    end
+  end
+
   describe 'with an invalid type spec' do
     subject(:schema) do
       Dry::Schema.define do
@@ -73,7 +87,7 @@ RSpec.describe 'Macros #value' do
 
     it 'raises an ArgumentError' do
       expect { schema }.to raise_error(ArgumentError, <<-STR.strip)
-        Cannot infer type-check predicate from +:custom+ type spec
+        Predicate +:value?+ inferred from :custom type spec is not supported
       STR
     end
   end

@@ -3,6 +3,10 @@ require 'dry/types'
 module Dry
   # <TODO>: figure out what to do with these helpers
   class Types::Sum
+    def sum?
+      true
+    end
+
     def maybe?
       left.primitive == NilClass
     end
@@ -29,6 +33,10 @@ module Dry
   end
 
   class Types::Definition
+    def sum?
+      false
+    end
+
     def maybe?
       false
     end
