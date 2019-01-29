@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'dry-logic', git: 'https://github.com/dry-rb/dry-logic.git', branch: 'master'
-gem 'dry-types', git: 'https://github.com/dry-rb/dry-types.git', branch: 'master'
-
 group :test do
   gem 'i18n', require: false
   platform :mri do
