@@ -239,6 +239,13 @@ module Dry
         types[name] = type.meta(meta)
       end
 
+      # Check if the given type is a maybe sum
+      #
+      # @api private
+      def maybe?(type)
+        type.is_a?(Dry::Types::Sum) && type.left.primitive.equal?(NilClass)
+      end
+
       protected
 
       # Build a rule applier
@@ -353,13 +360,6 @@ module Dry
         else
           type_registry[spec]
         end
-      end
-
-      # Check if the given type is a maybe sum
-      #
-      # @api private
-      def maybe?(type)
-        type.is_a?(Dry::Types::Sum) && type.left.primitive.equal?(NilClass)
       end
 
       # @api private
