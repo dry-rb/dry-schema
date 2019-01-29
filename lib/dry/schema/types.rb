@@ -12,7 +12,7 @@ module Dry
     end
 
     def hash?
-      right.hash?
+      right.hash? && right.respond_to?(:member_types)
     end
 
     def array?
@@ -42,7 +42,7 @@ module Dry
     end
 
     def hash?
-      primitive == Hash
+      primitive == Hash && respond_to?(:member_types)
     end
 
     def array?
