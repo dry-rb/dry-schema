@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: True' do
   context 'with key' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :true) { true? }
+        required(:foo).value(:true)
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Predicates: True' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :true) { true? }
+        optional(:foo).value(:true)
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: True' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :true).value(:true?)
+            required(:foo).value(:true)
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: True' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :true).filled(:true?)
+            required(:foo).filled(:true)
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: True' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :true]).maybe(:true?)
+            required(:foo).maybe(:true)
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: True' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :true).value(:true?)
+            optional(:foo).value(:true)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: True' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :true).filled(:true?)
+            optional(:foo).filled(:true)
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: True' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :true]).maybe(:true?)
+            optional(:foo).maybe(:true)
           end
         end
 

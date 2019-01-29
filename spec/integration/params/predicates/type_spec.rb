@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Type' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :integer) { type?(Integer) }
+        required(:foo).value(:integer)
       end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be Integer']
+        expect(result).to be_failing ['is missing']
       end
     end
 
@@ -26,7 +26,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['must be an integer']
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['must be an integer']
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { { 'foo' => ['x'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['must be an integer']
       end
     end
   end
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Type' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :integer) { type?(Integer) }
+        optional(:foo).value(:integer)
       end
     end
 
@@ -74,7 +74,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['must be an integer']
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['must be an integer']
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { { 'foo' => ['x'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+        expect(result).to be_failing ['must be an integer']
       end
     end
   end
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).value(type?: Integer)
+            required(:foo).value(:integer)
           end
         end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+            expect(result).to be_failing ['is missing']
           end
         end
 
@@ -124,7 +124,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -140,7 +140,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => ['x'] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
       end
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).filled(type?: Integer)
+            required(:foo).filled(:integer)
           end
         end
 
@@ -164,7 +164,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+            expect(result).to be_failing ['is missing']
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -180,7 +180,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -188,7 +188,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => ['x'] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
       end
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :integer]).maybe(type?: Integer)
+            required(:foo).maybe(:integer)
           end
         end
 
@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+            expect(result).to be_failing ['is missing']
           end
         end
 
@@ -236,7 +236,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => ['x'] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
       end
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).value(type?: Integer)
+            optional(:foo).value(:integer)
           end
         end
 
@@ -270,7 +270,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -278,7 +278,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => ['x'] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
       end
@@ -294,7 +294,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).filled(type?: Integer)
+            optional(:foo).filled(:integer)
           end
         end
 
@@ -318,7 +318,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -326,7 +326,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -334,7 +334,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => ['x'] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
       end
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Type' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :integer]).maybe(type?: Integer)
+            optional(:foo).maybe(:integer)
           end
         end
 
@@ -382,7 +382,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => ['x'] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+            expect(result).to be_failing ['must be an integer']
           end
         end
       end

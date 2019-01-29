@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: None' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :nil) { none? }
+        required(:foo).value(:nil)
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe 'Predicates: None' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :nil) { none? }
+        optional(:foo).value(:nil)
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: None' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :nil).value(:none?)
+            required(:foo).value(:nil)
           end
         end
 
@@ -175,7 +175,7 @@ RSpec.describe 'Predicates: None' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :nil).value(:none?)
+            optional(:foo).value(:nil)
           end
         end
 
@@ -215,7 +215,7 @@ RSpec.describe 'Predicates: None' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).filled(:none?)
+            optional(:foo).filled(:nil)
           end
         end
 
@@ -252,11 +252,11 @@ RSpec.describe 'Predicates: None' do
         end
       end
 
-      #makes no sense see: #134
+      # makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
           expect { Dry::Schema.Params do
-            optional(:foo).maybe(:none?)
+            optional(:foo).maybe(:nil)
           end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end

@@ -61,7 +61,7 @@ RSpec.describe Dry::Schema, '.define' do
     context 'with simple predicates' do
       subject(:schema) do
         Dry::Schema.define do
-          required(:tags, :array).value(:array?).each(:str?) { size?(2..4) }
+          required(:tags).value(:array).each(:str?) { size?(2..4) }
         end
       end
 
@@ -78,9 +78,9 @@ RSpec.describe Dry::Schema, '.define' do
     context 'with a nested schema' do
       subject(:schema) do
         Dry::Schema.define do
-          required(:tags, :array).value(:array?).each do
+          required(:tags).value(:array).each do
             schema do
-              required(:name, :string).filled
+              required(:name).filled(:string)
             end
           end
         end
@@ -126,8 +126,8 @@ RSpec.describe Dry::Schema, '.define' do
   context 'with coercible type specs' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:birthday, Types::Params::Date).value(:date?)
-        optional(:age, Types::Params::Integer).value(:int?)
+        required(:birthday).value(Types::Params::Date).value(:date?)
+        optional(:age).value(Types::Params::Integer).value(:int?)
       end
     end
 

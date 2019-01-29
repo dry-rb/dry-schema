@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Includes' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(includes?: 1)
+        required(:foo).value(array[:integer]).each(:int?).value(includes?: 1)
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'Predicates: Includes' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, Types::Params::Array.of(Types::Params::Integer)).value(:array?).each(:int?).value(includes?: 1)
+        optional(:foo).value(array[:integer]).each(:int?).value(includes?: 1)
       end
     end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Includes' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :string]).maybe(:str?, includes?: 'Hello')
+            required(:foo).maybe(:string).maybe(:str?, includes?: 'Hello')
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Includes' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :string]).maybe(includes?: 'Hello')
+            optional(:foo).maybe(:string).maybe(includes?: 'Hello')
           end
         end
 

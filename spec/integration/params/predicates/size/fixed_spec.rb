@@ -3,12 +3,12 @@ RSpec.describe 'Predicates: Size' do
     context 'with required' do
       subject(:schema) do
         Dry::Schema.Params do
-          required(:foo, [:integer, :string]) { size?(3) }
+          required(:foo).value(:string) { size?(3) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { 'foo' => %w(1 2 3) } }
+        let(:input) { { 'foo' => 'bar' } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -26,8 +26,8 @@ RSpec.describe 'Predicates: Size' do
       context 'with nil input' do
         let(:input) { { 'foo' => nil } }
 
-        it 'is raises error' do
-          expect { result }.to raise_error(NoMethodError)
+        it 'is not successful' do
+          expect(result).to be_failing ['must be a string', 'size must be 3']
         end
       end
 
@@ -43,7 +43,7 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be 3']
+          expect(result).to be_failing ['must be a string', 'size must be 3']
         end
       end
     end
@@ -51,12 +51,12 @@ RSpec.describe 'Predicates: Size' do
     context 'with optional' do
       subject(:schema) do
         Dry::Schema.Params do
-          optional(:foo, [:integer, :string]) { size?(3) }
+          optional(:foo).value([:integer, :string]) { size?(3) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { 'foo' => %w(1 2 3) } }
+        let(:input) { { 'foo' => 'bar' } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -74,8 +74,8 @@ RSpec.describe 'Predicates: Size' do
       context 'with nil input' do
         let(:input) { { 'foo' => nil } }
 
-        it 'is raises error' do
-          expect { result }.to raise_error(NoMethodError)
+        it 'is not successful' do
+          expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
         end
       end
 
@@ -91,7 +91,7 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be 3']
+          expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
         end
       end
     end
@@ -101,12 +101,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo, [:integer, :string]).value(size?: 3)
+              required(:foo).value([:integer, :string], size?: 3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -117,15 +117,15 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'must be an integer or must be a string', 'size must be 3']
             end
           end
 
           context 'with nil input' do
             let(:input) { { 'foo' => nil } }
 
-            it 'is raises error' do
-              expect { result }.to raise_error(NoMethodError)
+            it 'is not successful' do
+              expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
             end
           end
 
@@ -141,7 +141,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
             end
           end
         end
@@ -149,7 +149,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo, [:integer, :string]).filled(size?: 3)
+              required(:foo).filled([:array, :string], size?: 3)
             end
           end
 
@@ -165,7 +165,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'must be an array or must be a string', 'size must be 3']
             end
           end
 
@@ -173,7 +173,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled', 'must be an array or must be a string', 'size must be 3']
             end
           end
 
@@ -181,7 +181,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be 3']
+              expect(result).to be_failing ['must be filled', 'must be an array or must be a string', 'size must be 3']
             end
           end
 
@@ -189,7 +189,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be an array or must be a string', 'size must be 3']
             end
           end
         end
@@ -197,12 +197,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo, [:nil, [:integer, :string]]).maybe(size?: 3)
+              required(:foo).maybe([:integer, :string], size?: 3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -213,7 +213,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be 3']
+              expect(result).to be_failing ['is missing', 'must be an integer or must be a string', 'size must be 3']
             end
           end
 
@@ -229,7 +229,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is successful' do
-              expect(result).to be_successful
+              expect(result).to be_failing ['length must be 3']
             end
           end
 
@@ -237,7 +237,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
             end
           end
         end
@@ -247,12 +247,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo, [:integer, :string]).value(size?: 3)
+              optional(:foo).value([:integer, :string], size?: 3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -270,8 +270,8 @@ RSpec.describe 'Predicates: Size' do
           context 'with nil input' do
             let(:input) { { 'foo' => nil } }
 
-            it 'is raises error' do
-              expect { result }.to raise_error(NoMethodError)
+            it 'is not successful' do
+              expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
             end
           end
 
@@ -287,7 +287,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
             end
           end
         end
@@ -295,7 +295,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo, [:integer, :string]).filled(size?: 3)
+              optional(:foo).filled([:array, :string], size?: 3)
             end
           end
 
@@ -319,7 +319,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled', 'must be an array or must be a string', 'size must be 3']
             end
           end
 
@@ -327,7 +327,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be 3']
+              expect(result).to be_failing ['must be filled', 'must be an array or must be a string', 'size must be 3']
             end
           end
 
@@ -335,7 +335,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be an array or must be a string', 'size must be 3']
             end
           end
         end
@@ -343,12 +343,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo, [:nil, [:integer, :string]]).maybe(size?: 3)
+              optional(:foo).maybe([:integer, :string], size?: 3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -375,7 +375,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is successful' do
-              expect(result).to be_successful
+              expect(result).to be_failing ['length must be 3']
             end
           end
 
@@ -383,7 +383,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be 3']
+              expect(result).to be_failing ['must be an integer or must be a string', 'size must be 3']
             end
           end
         end

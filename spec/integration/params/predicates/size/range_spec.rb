@@ -199,12 +199,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo, [:nil, :string]).maybe(size?: 2..3)
+              required(:foo).maybe(:string, size?: 2..3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -239,7 +239,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be within 2 - 3']
+              expect(result).to be_failing ['must be a string', 'size must be within 2 - 3']
             end
           end
         end
@@ -298,12 +298,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo).filled(size?: 2..3)
+              optional(:foo).filled(:string, size?: 2..3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -338,7 +338,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be within 2 - 3']
+              expect(result).to be_failing ['must be a string', 'size must be within 2 - 3']
             end
           end
         end
@@ -346,12 +346,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo, [:nil, :string]).maybe(size?: 2..3)
+              optional(:foo).maybe(:string, size?: 2..3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'bar' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -383,10 +383,10 @@ RSpec.describe 'Predicates: Size' do
           end
 
           context 'with invalid input' do
-            let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+            let(:input) { { 'foo' => 'barbar' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be within 2 - 3']
+              expect(result).to be_failing ['length must be within 2 - 3']
             end
           end
         end

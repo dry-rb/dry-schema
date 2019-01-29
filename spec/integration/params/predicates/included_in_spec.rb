@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :string]).maybe(included_in?: %w(1 3 5))
+            required(:foo).maybe(:string, included_in?: %w(1 3 5))
           end
         end
 
@@ -268,7 +268,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be one of: 1, 3, 5']
+            expect(result).to be_failing ['must be a string', 'must be one of: 1, 3, 5']
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :string]).maybe(included_in?: %w(1 3 5))
+            optional(:foo).maybe(:string).maybe(included_in?: %w(1 3 5))
           end
         end
 
@@ -438,7 +438,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be one of: 1, 3, 5']
+            expect(result).to be_failing ['must be a string', 'must be one of: 1, 3, 5']
           end
         end
 

@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: Gt' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :integer) { int? & gt?(23) }
+        required(:foo).value(:integer) { gt?(23) }
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe 'Predicates: Gt' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :integer) { int? & gt?(23) }
+        optional(:foo).value(:integer) { gt?(23) }
       end
     end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Predicates: Gt' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).value(:int?, gt?: 23)
+            required(:foo).value(:integer, gt?: 23)
           end
         end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Gt' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :integer).filled(:int?, gt?: 23)
+            required(:foo).filled(:integer, gt?: 23)
           end
         end
 
@@ -260,7 +260,7 @@ RSpec.describe 'Predicates: Gt' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :integer]).maybe(:int?, gt?: 23)
+            required(:foo).maybe(:integer).maybe(:int?, gt?: 23)
           end
         end
 
@@ -326,7 +326,7 @@ RSpec.describe 'Predicates: Gt' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).value(:int?, gt?: 23)
+            optional(:foo).value(:integer, gt?: 23)
           end
         end
 
@@ -390,7 +390,7 @@ RSpec.describe 'Predicates: Gt' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :integer).filled(:int?, gt?: 23)
+            optional(:foo).filled(:integer, gt?: 23)
           end
         end
 
@@ -454,7 +454,7 @@ RSpec.describe 'Predicates: Gt' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :integer]).maybe(:int?, gt?: 23)
+            optional(:foo).maybe(:integer).maybe(:int?, gt?: 23)
           end
         end
 

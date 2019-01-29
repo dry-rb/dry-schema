@@ -196,7 +196,7 @@ RSpec.describe 'Predicates: Min Size' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :integer]).maybe(min_size?: 3)
+            required(:foo).maybe(:array, min_size?: 3)
           end
         end
 
@@ -236,7 +236,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be an array', 'size cannot be less than 3']
           end
         end
       end
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: Min Size' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :integer]).maybe(min_size?: 3)
+            optional(:foo).maybe(:array, min_size?: 3)
           end
         end
 
@@ -382,7 +382,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['size cannot be less than 3']
+            expect(result).to be_failing ['must be an array', 'size cannot be less than 3']
           end
         end
       end

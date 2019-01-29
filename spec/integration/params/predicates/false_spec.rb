@@ -2,7 +2,7 @@ RSpec.describe 'Predicates: False' do
   context 'with key' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo, :false) { false? }
+        required(:foo).value(:false)
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Predicates: False' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo, :false) { false? }
+        optional(:foo).value(:false)
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: False' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :false).value(:false?)
+            required(:foo).value(:false)
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: False' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, :false).filled(:false?)
+            required(:foo).filled(:false)
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: False' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :false]).maybe(:false?)
+            required(:foo).maybe(:false)
           end
         end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Predicates: False' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :false).value(:false?)
+            optional(:foo).value(:false)
           end
         end
 
@@ -342,7 +342,7 @@ RSpec.describe 'Predicates: False' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, :false).filled(:false?)
+            optional(:foo).filled(:false)
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: False' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :false]).maybe(:false?)
+            optional(:foo).maybe(:false)
           end
         end
 

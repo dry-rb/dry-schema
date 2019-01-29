@@ -2,7 +2,7 @@ RSpec.describe 'Macros #each' do
   context "predicate without options" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo, :array).value(:array?).each(:filled?, :str?)
+        required(:foo).value(:array).each(:filled?, :str?)
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Macros #each' do
   context "predicate with options" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo, :array).value(:array?).each(size?: 3)
+        required(:foo).value(:array).each(size?: 3)
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe 'Macros #each' do
   context 'with filled macro' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo, :array).value(:array?).filled(size?: 2) { each(:str?) }
+        required(:foo).value(:array).filled(size?: 2) { each(:str?) }
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe 'Macros #each' do
   context 'with maybe macro' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo, [:nil, :array]).maybe(:array?) { each(:str?) }
+        required(:foo).maybe(:array).maybe(:array?) { each(:str?) }
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe 'Macros #each' do
   context 'with external schema macro' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo, :array).value(:array?).each(FooSchema)
+        required(:foo).value(:array).each(FooSchema)
       end
     end
 
@@ -166,7 +166,7 @@ RSpec.describe 'Macros #each' do
     context 'with a nested schema' do
       subject(:schema) do
         Dry::Schema.define do
-          required(:songs, :array).value(:array?).each(:hash?) do
+          required(:songs).value(:array).each(:hash?) do
             schema do
               required(:title).filled
               required(:author).filled

@@ -234,7 +234,7 @@ RSpec.describe 'Predicates: Filled' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo, [:nil, :string]).maybe(:filled?)
+            required(:foo).maybe([:array, :hash], :filled?)
           end
         end
 
@@ -258,7 +258,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be an array or must be a hash']
           end
         end
 
@@ -274,7 +274,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -410,7 +410,7 @@ RSpec.describe 'Predicates: Filled' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo, [:nil, :string]).maybe(:filled?)
+            optional(:foo).maybe([:array, :hash], :filled?)
           end
         end
 
@@ -450,7 +450,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect(result).to be_successful
+            expect(result).to be_failing ['must be filled']
           end
         end
 
