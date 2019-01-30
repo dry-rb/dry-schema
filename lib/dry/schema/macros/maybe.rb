@@ -13,8 +13,8 @@ module Dry
             raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"
           end
 
-          if args.include?(:none?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with none? predicate is redundant"
+          if args.include?(:nil?)
+            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with nil? predicate is redundant"
           end
 
           value(*args, **opts, &block)
@@ -26,7 +26,7 @@ module Dry
         def to_ast
           [:implication,
            [
-             [:not, [:predicate, [:none?, [[:input, Undefined]]]]],
+             [:not, [:predicate, [:nil?, [[:input, Undefined]]]]],
              trace.to_rule.to_ast
            ]
           ]

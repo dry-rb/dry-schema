@@ -12,6 +12,7 @@ module Dry
         include Dry::Logic::Operators
 
         undef :eql?
+        undef :nil?
 
         # @api private
         option :chain, default: -> { true }

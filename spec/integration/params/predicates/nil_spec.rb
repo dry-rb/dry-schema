@@ -1,8 +1,8 @@
 RSpec.describe 'Predicates: None' do
   context 'with required' do
     subject(:schema) do
-      Dry::Schema.define do
-        required(:foo) { none? }
+      Dry::Schema.Params do
+        required(:foo).value(:nil)
       end
     end
 
@@ -15,7 +15,7 @@ RSpec.describe 'Predicates: None' do
     end
 
     context 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -23,15 +23,15 @@ RSpec.describe 'Predicates: None' do
     end
 
     context 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['cannot be defined']
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
     context 'with other input' do
-      let(:input) { { foo: 23 } }
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
         expect(result).to be_failing ['cannot be defined']
@@ -41,8 +41,8 @@ RSpec.describe 'Predicates: None' do
 
   context 'with optional' do
     subject(:schema) do
-      Dry::Schema.define do
-        optional(:foo) { none? }
+      Dry::Schema.Params do
+        optional(:foo).value(:nil)
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe 'Predicates: None' do
     end
 
     context 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -63,15 +63,15 @@ RSpec.describe 'Predicates: None' do
     end
 
     context 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['cannot be defined']
+      it 'is successful' do
+        expect(result).to be_successful
       end
     end
 
     context 'with other input' do
-      let(:input) { { foo: 23 } }
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
         expect(result).to be_failing ['cannot be defined']
@@ -83,8 +83,8 @@ RSpec.describe 'Predicates: None' do
     context 'with required' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.define do
-            required(:foo).value(:none?)
+          Dry::Schema.Params do
+            required(:foo).value(:nil)
           end
         end
 
@@ -97,7 +97,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -105,15 +105,15 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['cannot be defined']
+          it 'is successful' do
+            expect(result).to be_successful
           end
         end
 
         context 'with other input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['cannot be defined']
@@ -123,8 +123,8 @@ RSpec.describe 'Predicates: None' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.define do
-            required(:foo).filled(:none?)
+          Dry::Schema.Params do
+            required(:foo).filled(:nil)
           end
         end
 
@@ -137,7 +137,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must be filled']
@@ -145,7 +145,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must be filled']
@@ -153,7 +153,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with other input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['cannot be defined']
@@ -164,8 +164,8 @@ RSpec.describe 'Predicates: None' do
       #makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
-          expect { Dry::Schema.define do
-            required(:foo).maybe(:none?)
+          expect { Dry::Schema.Params do
+            required(:foo).maybe(:nil?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end
@@ -174,8 +174,8 @@ RSpec.describe 'Predicates: None' do
     context 'with optional' do
       context 'with value' do
         subject(:schema) do
-          Dry::Schema.define do
-            optional(:foo).value(:none?)
+          Dry::Schema.Params do
+            optional(:foo).value(:nil)
           end
         end
 
@@ -188,7 +188,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -196,15 +196,15 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['cannot be defined']
+          it 'is  successful' do
+            expect(result).to be_successful
           end
         end
 
         context 'with other input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['cannot be defined']
@@ -214,8 +214,8 @@ RSpec.describe 'Predicates: None' do
 
       context 'with filled' do
         subject(:schema) do
-          Dry::Schema.define do
-            optional(:foo).filled(:none?)
+          Dry::Schema.Params do
+            optional(:foo).filled(:nil)
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must be filled']
@@ -236,7 +236,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must be filled']
@@ -244,7 +244,7 @@ RSpec.describe 'Predicates: None' do
         end
 
         context 'with other input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['cannot be defined']
@@ -252,11 +252,11 @@ RSpec.describe 'Predicates: None' do
         end
       end
 
-      #makes no sense see: #134
+      # makes no sense see: #134
       context 'with maybe' do
         it "should raise error" do
-          expect { Dry::Schema.define do
-            optional(:foo).maybe(:none?)
+          expect { Dry::Schema.Params do
+            optional(:foo).maybe(:nil)
           end }.to raise_error Dry::Schema::InvalidSchemaError
         end
       end

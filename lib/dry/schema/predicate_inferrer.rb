@@ -22,7 +22,7 @@ module Dry
       TYPE_TO_PREDICATE.update(
         FalseClass => :false?,
         Integer => :int?,
-        NilClass => :none?,
+        NilClass => :nil?,
         String => :str?,
         TrueClass => :true?
       ).freeze

@@ -9,7 +9,7 @@ module Dry
       include Enumerable
 
       HINT_EXCLUSION = %i(
-        key? filled? none? bool?
+        key? filled? nil? bool?
         str? int? float? decimal?
         date? date_time? time? hash?
         array? format?

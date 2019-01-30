@@ -3,7 +3,7 @@ RSpec.describe 'Verifying predicates in the DSL' do
     expect { Dry::Schema.define { required(:age).value(filled?: 312) } }
       .to raise_error(ArgumentError, "filled? predicate arity is invalid")
 
-    expect { Dry::Schema.define { required(:age) { none? | filled?(312) } } }
+    expect { Dry::Schema.define { required(:age) { nil? | filled?(312) } } }
       .to raise_error(ArgumentError, "filled? predicate arity is invalid")
 
     expect { Dry::Schema.define { required(:age).value(:oops?) } }
