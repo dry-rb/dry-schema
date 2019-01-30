@@ -5,12 +5,12 @@ Gem::Specification.new do |spec|
   spec.name          = 'dry-schema'
   spec.version       = Dry::Schema::VERSION
   spec.authors       = ['Piotr Solnica']
-  spec.email         = ['piotr.solnica+oss@gmail.com']
-  spec.summary       = 'Schema definition DSL'
-  spec.homepage      = 'https://github.com/dryrb/dry-validation'
+  spec.email         = ['piotr.solnica@gmail.com']
+  spec.summary       = 'Schema coercion and validation'
+  spec.homepage      = 'https://github.com/dry-rb/dry-schema'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0") - ['bin/console']
+  gem.files          = Dir['CHANGELOG.md', 'LICENSE', 'README.md', 'lib/**/*']
   spec.executables   = []
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
