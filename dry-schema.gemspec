@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/dry-rb/dry-schema'
   spec.license       = 'MIT'
 
-  gem.files          = Dir['CHANGELOG.md', 'LICENSE', 'README.md', 'lib/**/*']
+  spec.files         = Dir['CHANGELOG.md', 'LICENSE', 'README.md', 'lib/**/*']
   spec.executables   = []
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
