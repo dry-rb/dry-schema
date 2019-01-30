@@ -1,3 +1,3 @@
-# 0.11.0 to-be-released
+# 0.1.0 2019-01-30
 
-Code imported from dry-validation and renamed to dry-schema
+Initial release.
