@@ -11,7 +11,7 @@ module Dry
 
     # Define a schema
     #
-    # @return [Definition]
+    # @return [Processor]
     #
     # @api public
     def self.define(options = EMPTY_HASH, &block)
@@ -20,7 +20,7 @@ module Dry
 
     # Define a param schema
     #
-    # @return [Definition]
+    # @return [Params]
     #
     # @api public
     def self.Params(**options, &block)
@@ -30,7 +30,7 @@ module Dry
 
     # Define a JSON schema
     #
-    # @return [Definition]
+    # @return [JSON]
     #
     # @api public
     def self.JSON(**options, &block)
