@@ -9,8 +9,6 @@ module Dry
   module Schema
     extend Dry::Core::Extensions
 
-    InvalidSchemaError = Class.new(StandardError)
-
     # Define a schema
     #
     # @return [Definition]
