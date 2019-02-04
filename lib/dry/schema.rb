@@ -14,7 +14,7 @@ module Dry
     # @return [Processor]
     #
     # @api public
-    def self.define(options = EMPTY_HASH, &block)
+    def self.define(**options, &block)
       DSL.new(options, &block).call
     end
 

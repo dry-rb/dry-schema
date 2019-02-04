@@ -96,7 +96,7 @@ module Dry
 
           tokens[:path] = options[:rule] || Array(options[:path]).join(DOT)
 
-          opts = options.reject { |k, _| config.lookup_options.include?(k) }
+          opts = options.select { |k, _| !config.lookup_options.include?(k) }
 
           path = lookup_paths(tokens).detect do |key|
             key?(key, opts) && get(key, opts).is_a?(String)

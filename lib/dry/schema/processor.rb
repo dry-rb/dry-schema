@@ -15,7 +15,7 @@ module Dry
     #   1. Prepare input hash using a key map
     #   2. Apply pre-coercion filtering rules (optional step, used only when `filter` was used)
     #   3. Apply value coercions based on type specifications
-    #   4. Apply rules 
+    #   4. Apply rules
     #
     # @see Params
     # @see JSON
@@ -51,7 +51,7 @@ module Dry
       #
       # @api private
       def self.definition
-        @__definition__
+        @__definition__ ||= nil
       end
 
       # Build a new processor object

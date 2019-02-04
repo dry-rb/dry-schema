@@ -90,7 +90,7 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def self.new(options = EMPTY_HASH, &block)
+      def self.new(**options, &block)
         dsl = super
         dsl.instance_eval(&block) if block
         dsl

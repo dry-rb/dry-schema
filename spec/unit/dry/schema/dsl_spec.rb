@@ -3,7 +3,7 @@ require 'dry/schema/compiler'
 
 RSpec.describe Dry::Schema::DSL do
   subject(:dsl) do
-    Dry::Schema::DSL.new(Dry::Schema::Compiler.new)
+    Dry::Schema::DSL.new
   end
 
   describe '#schema' do
