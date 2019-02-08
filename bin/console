@@ -4,10 +4,14 @@ require 'optparse'
 require 'bundler/setup'
 require 'dry/schema'
 
+module Types
+  include Dry::Types.module
+end
+
 if ARGV.include?('--pry')
   require 'pry'
-  Pry.start
+  binding.pry
 else
   require 'irb'
-  IRB.start
+  binding.irb
 end
