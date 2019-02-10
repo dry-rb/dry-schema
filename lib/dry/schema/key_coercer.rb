@@ -1,4 +1,5 @@
 require 'dry/core/cache'
+require 'dry/equalizer'
 
 module Dry
   module Schema
@@ -7,6 +8,7 @@ module Dry
     # @api private
     class KeyCoercer
       extend Dry::Core::Cache
+      include ::Dry::Equalizer(:key_map, :coercer)
 
       TO_SYM = :to_sym.to_proc.freeze
 
@@ -26,7 +28,7 @@ module Dry
       def initialize(key_map, &coercer)
         @key_map = key_map.coercible(&coercer)
       end
-      
+
       # @api private
       def call(source)
         key_map.write(Hash(source))

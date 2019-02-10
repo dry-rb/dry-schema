@@ -1,3 +1,4 @@
+require 'dry/equalizer'
 require 'dry/initializer'
 
 module Dry
@@ -7,6 +8,7 @@ module Dry
     # @api private
     class ValueCoercer
       extend Dry::Initializer
+      include ::Dry::Equalizer(:type_schema)
 
       # @api private
       param :type_schema
