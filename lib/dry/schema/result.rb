@@ -105,7 +105,7 @@ module Dry
       def errors(options = EMPTY_HASH)
         message_set(options.merge(hints: false)).dump
       end
-      
+
       HINTS_BUG_ERROR_MESSAGE = /no implicit conversion of Symbol into Integer/
 
       # Get all messages including hints
