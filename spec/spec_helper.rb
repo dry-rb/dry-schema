@@ -12,7 +12,7 @@ if RUBY_ENGINE == 'ruby' && ENV['COVERAGE'] == 'true'
 end
 
 begin
-  require 'byebug'
+  require 'pry-byebug'
 rescue LoadError; end
 
 SPEC_ROOT = Pathname(__dir__)
@@ -32,6 +32,7 @@ Undefined = Dry::Core::Constants::Undefined
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.warnings = true
+  config.filter_run_when_matching :focus
 
   config.after do
     if defined?(I18n)
