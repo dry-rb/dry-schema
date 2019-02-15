@@ -1,6 +1,8 @@
 require 'dry/initializer'
 require 'dry/equalizer'
 
+require 'dry/schema/path'
+
 module Dry
   module Schema
     # Processing result
@@ -66,15 +68,15 @@ module Dry
         output.key?(name)
       end
 
-      # Check if a given key resulted in an error
+      # Check if there's an error for the provided spec
       #
-      # @param [Symbol] name
+      # @param [Symbol, Hash<Symbol=>Symbol>] name
       #
       # @return [Boolean]
       #
       # @api public
-      def error?(name)
-        errors.key?(name)
+      def error?(spec)
+        message_set.any? { |msg| Path[spec] == msg.path }
       end
 
       # Check if the result is successful
