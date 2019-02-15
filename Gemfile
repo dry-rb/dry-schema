@@ -3,24 +3,21 @@ source 'https://rubygems.org'
 gemspec
 
 group :test do
-  gem 'i18n', require: false
-  platform :mri do
-    gem 'simplecov', require: false
-  end
   gem 'dry-monads', require: false
-  gem 'dry-struct', require: false
+  gem 'i18n', require: false
+  gem 'simplecov', require: false, platform: :mri
 end
 
 group :tools do
-  gem 'pry-byebug', platform: :mri
   gem 'pry'
-  gem 'redcarpet'
+  gem 'pry-byebug', platform: :mri
+  gem 'redcarpet', platform: :mri
 end
 
 group :benchmarks do
-  gem 'hotch', platform: :mri
-  gem 'activemodel', '~> 5.0'
   gem 'actionpack', '~> 5.0'
+  gem 'activemodel', '~> 5.0'
   gem 'benchmark-ips'
+  gem 'hotch', platform: :mri
   gem 'virtus'
 end
