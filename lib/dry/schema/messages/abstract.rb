@@ -4,6 +4,7 @@ require 'dry/equalizer'
 require 'dry/configurable'
 
 require 'dry/schema/constants'
+require 'dry/schema/messages/template'
 
 module Dry
   module Schema
@@ -69,15 +70,15 @@ module Dry
           get(path, options) if key?(path, options)
         end
 
-        # Retrieve a message
+        # Retrieve a message template
         #
-        # @return [String]
+        # @return [Template]
         #
         # @api public
         def call(*args)
           cache.fetch_or_store(args.hash) do
             path, opts = lookup(*args)
-            get(path, opts) if path
+            Template[get(path, opts)] if path
           end
         end
         alias_method :[], :call
