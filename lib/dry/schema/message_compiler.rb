@@ -164,9 +164,7 @@ module Dry
 
       # @api private
       def message_text(rule, template, tokens, opts)
-        original_verbosity = $VERBOSE
-        $VERBOSE = nil
-        text = template % tokens
+        text = template[template.data(tokens)]
 
         if full?
           rule_name = rule ? (messages.rule(rule, opts) || rule) : (opts[:name] || opts[:path].last)
@@ -174,8 +172,6 @@ module Dry
         else
           text
         end
-      ensure
-        $VERBOSE = original_verbosity
       end
 
       # @api private
