@@ -17,7 +17,7 @@ pl:
     rules:
       email:
         filled?: "Proszę podać adres email"
-      user:
-        rules:
-          email:
-            filled?: "Hej user! Dawaj ten email no!"
+    user:
+      rules:
+        email:
+          filled?: "Hej user! Dawaj ten email no!"

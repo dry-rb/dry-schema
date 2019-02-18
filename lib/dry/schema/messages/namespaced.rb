@@ -15,11 +15,15 @@ module Dry
         attr_reader :root
 
         # @api private
+        attr_reader :call_opts
+
+        # @api private
         def initialize(namespace, messages)
           super()
           @namespace = namespace
           @messages = messages
           @root = messages.root
+          @call_opts = { namespace: namespace }.freeze
         end
 
         # Get a message for the given key and its options
@@ -34,6 +38,12 @@ module Dry
           messages.get(key, options)
         end
 
+        # @api public
+        def call(key, options = {})
+          super(key, options.empty? ? call_opts : options.merge(call_opts))
+        end
+        alias_method :[], :call
+
         # Check if given key is defined
         #
         # @return [Boolean]
@@ -45,7 +55,7 @@ module Dry
 
         # @api private
         def lookup_paths(tokens)
-          super(tokens.merge(root: "#{root}.rules.#{namespace}")) + super
+          super(tokens.merge(root: "#{root}.#{namespace}")) + super
         end
 
         def rule_lookup_paths(tokens)
