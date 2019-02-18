@@ -71,10 +71,7 @@ module Dry
         # @api private
         def rule(name, options = {})
           tokens = { name: name, locale: options.fetch(:locale, default_locale) }
-
-          path = rule_lookup_paths.
-            map { |key| key % tokens }.
-            detect { |key| key?(key, options) }
+          path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
 
           get(path, options) if path
         end
@@ -121,8 +118,8 @@ module Dry
         end
 
         # @api private
-        def rule_lookup_paths
-          config.rule_lookup_paths
+        def rule_lookup_paths(tokens)
+          config.rule_lookup_paths.map { |key| key % tokens }
         end
 
         # Return a new message backend that will look for messages under provided namespace

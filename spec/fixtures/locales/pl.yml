@@ -1,6 +1,9 @@
 pl:
   rules:
     email: "Adres mailowy"
+  company:
+    rules:
+      email: "Email firmowy"
   errors:
     filled?: "nie może być pusty"
     size?:

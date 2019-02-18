@@ -1,6 +1,9 @@
 en:
   rules:
     email: "E-mail address"
+  company:
+    rules:
+      email: "Company email"
   errors:
     rules:
       email:
