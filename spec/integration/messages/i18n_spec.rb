@@ -92,6 +92,16 @@ RSpec.describe Dry::Schema::Messages::I18n do
     end
   end
 
+  describe '#rule' do
+    it 'returns rule name using default locale' do
+      expect(messages.rule(:email)).to eql('Adres mailowy')
+    end
+
+    it 'returns rule name using provided locale' do
+      expect(messages.rule(:email, locale: :en)).to eql('E-mail address')
+    end
+  end
+
   after(:all) do
     I18n.locale = I18n.default_locale
   end

@@ -17,6 +17,7 @@ module Dry
       # @api private
       configure do |config|
         config.root = '%{locale}.errors'.freeze
+        config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "%{locale}.#{path}" }
       end
 
       # @api private
@@ -51,7 +52,11 @@ module Dry
       #
       # @api public
       def get(key, options = {})
-        data[key % { locale: options.fetch(:locale, default_locale) }]
+        evaluated_key = key.include?('%{locale}') ?
+          key % { locale: options.fetch(:locale, default_locale) } :
+          key
+
+        data[evaluated_key]
       end
 
       # Check if given key is defined
@@ -60,7 +65,11 @@ module Dry
       #
       # @api public
       def key?(key, options = {})
-        data.key?(key % { locale: options.fetch(:locale, default_locale) })
+        evaluated_key = key.include?('%{locale}') ?
+          key % { locale: options.fetch(:locale, default_locale) } :
+          key
+
+        data.key?(evaluated_key)
       end
 
       # Merge messages from an additional path

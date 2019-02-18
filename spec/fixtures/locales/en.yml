@@ -1,4 +1,6 @@
 en:
+  rules:
+    email: "E-mail address"
   errors:
     rules:
       email:
