@@ -47,6 +47,10 @@ module Dry
         def lookup_paths(tokens)
           super(tokens.merge(root: "#{root}.rules.#{namespace}")) + super
         end
+
+        def rule_lookup_paths(tokens)
+          super(tokens).map { |key| "#{namespace}.#{key}" } + super
+        end
       end
     end
   end

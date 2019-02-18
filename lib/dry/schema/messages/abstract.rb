@@ -34,6 +34,10 @@ module Dry
           %{root}.%{predicate}
         ).freeze
 
+        setting :rule_lookup_paths, %w(
+          rules.%{name}
+        ).freeze
+
         setting :arg_type_default, 'default'.freeze
         setting :val_type_default, 'default'.freeze
 
@@ -66,8 +70,10 @@ module Dry
 
         # @api private
         def rule(name, options = {})
-          path = "%{locale}.rules.#{name}"
-          get(path, options) if key?(path, options)
+          tokens = { name: name, locale: options.fetch(:locale, default_locale) }
+          path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
+
+          get(path, options) if path
         end
 
         # Retrieve a message template
@@ -109,6 +115,11 @@ module Dry
         # @api private
         def lookup_paths(tokens)
           config.lookup_paths.map { |path| path % tokens }
+        end
+
+        # @api private
+        def rule_lookup_paths(tokens)
+          config.rule_lookup_paths.map { |key| key % tokens }
         end
 
         # Return a new message backend that will look for messages under provided namespace
