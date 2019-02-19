@@ -29,17 +29,13 @@ end
 
 Undefined = Dry::Core::Constants::Undefined
 
+require 'i18n'
+require 'dry/schema/messages/i18n'
+
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.warnings = true
   config.filter_run_when_matching :focus
-
-  config.after do
-    if defined?(I18n)
-      I18n.load_path = Dry::Schema.messages_paths.dup
-      I18n.backend.reload!
-    end
-  end
 
   config.include PredicatesIntegration
 
@@ -54,5 +50,9 @@ RSpec.configure do |config|
 
   config.after do
     Object.send(:remove_const, Test.remove_constants.name)
+
+    I18n.load_path = Dry::Schema.messages_paths.dup
+    I18n.locale = :en
+    I18n.reload!
   end
 end

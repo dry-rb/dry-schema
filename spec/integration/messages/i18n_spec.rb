@@ -4,10 +4,11 @@ RSpec.describe Dry::Schema::Messages::I18n do
   subject(:messages) { Dry::Schema::Messages::I18n.new }
 
   before do
-    I18n.config.available_locales_set << :pl
+    I18n.config.available_locales = [:en, :pl]
     I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
     I18n.backend.load_translations
     I18n.locale = :pl
+    I18n.reload!
   end
 
   describe '#[]' do
@@ -108,9 +109,5 @@ RSpec.describe Dry::Schema::Messages::I18n do
     it 'returns rule name using provided locale within a namespace' do
       expect(messages.namespaced(:company).rule(:email, locale: :en)).to eql('Company email')
     end
-  end
-
-  after(:all) do
-    I18n.locale = I18n.default_locale
   end
 end

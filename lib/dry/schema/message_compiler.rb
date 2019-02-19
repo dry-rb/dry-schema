@@ -20,8 +20,8 @@ module Dry
         @options = options
         @full = @options.fetch(:full, false)
         @hints = @options.fetch(:hints, true)
-        @locale = @options.fetch(:locale, messages.default_locale)
-        @default_lookup_options = { locale: locale }
+        @locale = @options[:locale]
+        @default_lookup_options = @locale ? { locale: locale } : EMPTY_HASH
       end
 
       # @api private
