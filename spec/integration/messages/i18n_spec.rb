@@ -4,7 +4,7 @@ RSpec.describe Dry::Schema::Messages::I18n do
   subject(:messages) { Dry::Schema::Messages::I18n.new }
 
   before do
-    I18n.config.available_locales_set << :pl
+    I18n.config.available_locales = [:en, :pl]
     I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
     I18n.backend.load_translations
     I18n.locale = :pl

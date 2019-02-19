@@ -2,7 +2,7 @@ require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema, 'with localized messages' do
   before do
-    I18n.config.available_locales_set << :pl
+    I18n.config.available_locales = [:en, :pl]
     I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
     I18n.backend.load_translations
     I18n.reload!
