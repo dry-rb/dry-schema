@@ -55,7 +55,7 @@ module Dry
 
         # @api private
         def lookup_paths(tokens)
-          super(tokens.merge(root: "#{root}.#{namespace}")) + super
+          super(tokens.merge(root: "#{tokens[:root]}.#{namespace}")) + super
         end
 
         def rule_lookup_paths(tokens)
