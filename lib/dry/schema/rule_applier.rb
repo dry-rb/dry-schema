@@ -38,7 +38,11 @@ module Dry
 
       # @api private
       def to_ast
-        [:set, rules.values.map(&:to_ast)]
+        if config.namespace
+          [:namespace, [config.namespace, [:set, rules.values.map(&:to_ast)]]]
+        else
+          [:set, rules.values.map(&:to_ast)]
+        end
       end
     end
   end

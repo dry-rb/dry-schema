@@ -99,6 +99,12 @@ module Dry
       end
 
       # @api private
+      def visit_namespace(node, opts = EMPTY_OPTS.dup)
+        ns, rest = node
+        self.class.new(messages.namespaced(ns), options).visit(rest, opts)
+      end
+
+      # @api private
       def visit_predicate(node, base_opts = EMPTY_OPTS.dup)
         predicate, args = node
 

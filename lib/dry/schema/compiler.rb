@@ -1,4 +1,5 @@
 require 'dry/logic/rule_compiler'
+require 'dry/schema/namespaced_rule'
 require 'dry/schema/predicate_registry'
 
 module Dry
@@ -14,6 +15,22 @@ module Dry
       # @api private
       def self.new(predicates = PredicateRegistry.new)
         super
+      end
+
+      # Build a special rule that will produce namespaced failures
+      #
+      # This is needed for schemas that are namespaced and they are
+      # used as nested schemas
+      #
+      # @param [Array] node
+      # @param [Hash] opts
+      #
+      # @return [NamespacedRule]
+      #
+      # @api private
+      def visit_namespace(node, opts = EMPTY_HASH)
+        namespace, rest = node
+        NamespacedRule.new(namespace, visit(rest))
       end
 
       # Return true if a given predicate is supported by this compiler
