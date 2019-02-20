@@ -64,7 +64,7 @@ module Dry
 
       # @api private
       def initialize_placeholders!
-        @placeholders = paths.reduce({}) do |hash, path|
+        @placeholders = messages.map(&:path).uniq.reduce({}) do |hash, path|
           curr_idx = 0
           last_idx = path.size - 1
           node = hash

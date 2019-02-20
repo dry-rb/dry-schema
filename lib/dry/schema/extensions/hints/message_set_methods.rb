@@ -15,14 +15,13 @@ module Dry
           # @api private
           def initialize(messages, options = EMPTY_HASH)
             @hints = messages.select(&:hint?)
-            @failures = messages - hints
             @hints.reject! { |hint| HINT_EXCLUSION.include?(hint.predicate) }
-            super
+            super(messages.reject(&:hint?) + @hints, options)
           end
 
           # @api public
           def to_h
-            failures? ? messages_map : hints_map
+            failures? ? messages_map : messages_map(hints)
           end
           alias_method :to_hash, :to_h
           alias_method :dump, :to_h
@@ -35,23 +34,8 @@ module Dry
           private
 
           # @api private
-          def messages_map(messages = failures + hints)
-            super
-          end
-
-          # @api private
-          def hints_map
-            messages_map(hints)
-          end
-
-          # @api private
           def hint_groups
             @hint_groups ||= hints.group_by(&:path)
-          end
-
-          # @api private
-          def paths
-            @paths ||= failures.map(&:path).uniq
           end
         end
       end
