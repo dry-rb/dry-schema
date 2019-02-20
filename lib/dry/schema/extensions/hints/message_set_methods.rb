@@ -22,13 +22,6 @@ module Dry
           def failures?
             options[:failures].equal?(true)
           end
-
-          private
-
-          # @api private
-          def hint_groups
-            @hint_groups ||= hints.group_by(&:path)
-          end
         end
       end
     end
