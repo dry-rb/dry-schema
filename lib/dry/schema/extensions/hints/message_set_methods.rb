@@ -7,8 +7,8 @@ module Dry
 
           # @api private
           def initialize(messages, options = EMPTY_HASH)
+            super
             @hints = messages.select(&:hint?)
-            super(messages.reject(&:hint?) + @hints, options)
           end
 
           # @api public
