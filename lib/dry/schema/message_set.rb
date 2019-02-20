@@ -8,14 +8,7 @@ module Dry
     class MessageSet
       include Enumerable
 
-      HINT_EXCLUSION = %i(
-        key? filled? nil? bool?
-        str? int? float? decimal?
-        date? date_time? time? hash?
-        array? format?
-      ).freeze
-
-      attr_reader :messages, :failures, :hints, :paths, :placeholders, :options
+      attr_reader :messages, :placeholders, :options
 
       # @api private
       def self.[](messages, options = EMPTY_HASH)
@@ -25,12 +18,7 @@ module Dry
       # @api private
       def initialize(messages, options = EMPTY_HASH)
         @messages = messages
-        @hints = messages.select(&:hint?)
-        @failures = messages - hints
-        @paths = failures.map(&:path).uniq
         @options = options
-
-        initialize_hints!
         initialize_placeholders!
       end
 
@@ -42,15 +30,10 @@ module Dry
 
       # @api public
       def to_h
-        failures? ? messages_map : hints_map
+        messages_map
       end
       alias_method :to_hash, :to_h
       alias_method :dump, :to_h
-
-      # @api private
-      def failures?
-        options[:failures].equal?(true)
-      end
 
       # @api private
       def empty?
@@ -60,26 +43,8 @@ module Dry
       private
 
       # @api private
-      def messages_map
-        failures.group_by(&:path).reduce(placeholders) do |hash, (path, msgs)|
-          node = path.reduce(hash) { |a, e| a[e] }
-
-          msgs.each do |msg|
-            node << msg
-          end
-
-          msg_hints = hint_groups[path]
-          node.concat(msg_hints) if msg_hints
-
-          node.map!(&:to_s)
-
-          hash
-        end
-      end
-
-      # @api private
-      def hints_map
-        hints.group_by(&:path).reduce(placeholders) do |hash, (path, msgs)|
+      def messages_map(messages = self.messages)
+        messages.group_by(&:path).reduce(placeholders) do |hash, (path, msgs)|
           node = path.reduce(hash) { |a, e| a[e] }
 
           msgs.each do |msg|
@@ -93,18 +58,13 @@ module Dry
       end
 
       # @api private
-      def hint_groups
-        @hint_groups ||= hints.group_by(&:path)
-      end
-
-      # @api private
-      def initialize_hints!
-        hints.reject! { |hint| HINT_EXCLUSION.include?(hint.predicate) }
+      def paths
+        @paths ||= messages.map(&:path).uniq
       end
 
       # @api private
       def initialize_placeholders!
-        @placeholders = paths.reduce({}) do |hash, path|
+        @placeholders = messages.map(&:path).uniq.reduce({}) do |hash, path|
           curr_idx = 0
           last_idx = path.size - 1
           node = hash

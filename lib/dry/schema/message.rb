@@ -34,11 +34,6 @@ module Dry
           @path = left.path
         end
 
-        # @api private
-        def hint?
-          false
-        end
-
         # Return a string representation of the message
         #
         # @api public
@@ -76,27 +71,8 @@ module Dry
       end
 
       # @api private
-      def hint?
-        false
-      end
-
-      # @api private
       def eql?(other)
         other.is_a?(String) ? text == other : super
-      end
-    end
-
-    # A hint message sub-type
-    #
-    # @api private
-    class Hint < Message
-      def self.[](predicate, path, text, options)
-        Hint.new(predicate, path, text, options)
-      end
-
-      # @api private
-      def hint?
-        true
       end
     end
   end

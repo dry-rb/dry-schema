@@ -1,3 +1,5 @@
+require 'dry/schema/message'
+
 module Dry
   module Schema
     # @api private

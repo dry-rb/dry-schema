@@ -19,7 +19,6 @@ module Dry
         @messages = messages
         @options = options
         @full = @options.fetch(:full, false)
-        @hints = @options.fetch(:hints, true)
         @locale = @options[:locale]
         @default_lookup_options = @locale ? { locale: locale } : EMPTY_HASH
       end
@@ -27,11 +26,6 @@ module Dry
       # @api private
       def full?
         @full
-      end
-
-      # @api private
-      def hints?
-        @hints
       end
 
       # @api private
@@ -58,15 +52,7 @@ module Dry
 
       # @api private
       def visit_hint(node, opts = EMPTY_OPTS.dup)
-        if hints?
-          visit(node, opts.(message_type: :hint))
-        end
-      end
-
-      # @api private
-      def visit_each(node, opts = EMPTY_OPTS.dup)
-        # TODO: we can still generate a hint for elements here!
-        []
+        nil
       end
 
       # @api private
@@ -127,14 +113,17 @@ module Dry
 
         text = message_text(rule, template, tokens, options)
 
-        message_class = options[:message_type] == :hint ? Hint : Message
-
-        message_class[
+        message_type(options)[
           predicate, path, text,
           args: arg_vals,
           input: input,
           rule: rule || msg_opts[:name]
         ]
+      end
+
+      # @api private
+      def message_type(*)
+        Message
       end
 
       # @api private

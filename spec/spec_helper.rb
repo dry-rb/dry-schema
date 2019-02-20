@@ -29,6 +29,8 @@ end
 
 Undefined = Dry::Core::Constants::Undefined
 
+Dry::Schema.load_extensions(:hints)
+
 require 'i18n'
 require 'dry/schema/messages/i18n'
 
