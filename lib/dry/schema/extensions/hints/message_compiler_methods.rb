@@ -35,6 +35,11 @@ module Dry
           end
 
           # @api private
+          def message_type(options)
+            options[:message_type].equal?(:hint) ? Hint : Message
+          end
+
+          # @api private
           def visit_hint(node, opts = EMPTY_OPTS.dup)
             if hints?
               filter(visit(node, opts.(message_type: :hint)))

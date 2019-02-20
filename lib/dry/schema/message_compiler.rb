@@ -113,14 +113,17 @@ module Dry
 
         text = message_text(rule, template, tokens, options)
 
-        message_class = options[:message_type] == :hint ? Hint : Message
-
-        message_class[
+        message_type(options)[
           predicate, path, text,
           args: arg_vals,
           input: input,
           rule: rule || msg_opts[:name]
         ]
+      end
+
+      # @api private
+      def message_type(*)
+        Message
       end
 
       # @api private
