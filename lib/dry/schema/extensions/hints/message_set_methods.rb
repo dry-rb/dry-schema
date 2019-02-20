@@ -3,19 +3,11 @@ module Dry
     module Extensions
       module Hints
         module MessageSetMethods
-          HINT_EXCLUSION = %i(
-            key? filled? nil? bool?
-            str? int? float? decimal?
-            date? date_time? time? hash?
-            array? format?
-          ).freeze
-
           attr_reader :hints, :failures
 
           # @api private
           def initialize(messages, options = EMPTY_HASH)
             @hints = messages.select(&:hint?)
-            @hints.reject! { |hint| HINT_EXCLUSION.include?(hint.predicate) }
             super(messages.reject(&:hint?) + @hints, options)
           end
 

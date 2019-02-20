@@ -3,6 +3,13 @@ module Dry
     module Extensions
       module Hints
         module MessageCompilerMethods
+          HINT_EXCLUSION = %i(
+            key? filled? nil? bool?
+            str? int? float? decimal?
+            date? date_time? time? hash?
+            array? format?
+          ).freeze
+
           attr_reader :hints
 
           def initialize(*args)
@@ -16,8 +23,22 @@ module Dry
           end
 
           # @api private
+          def filter(messages)
+            Array(messages).flatten.reject do |msg|
+              case msg
+              when Message::Or
+                false
+              else
+                HINT_EXCLUSION.include?(msg.predicate)
+              end
+            end
+          end
+
+          # @api private
           def visit_hint(node, opts = EMPTY_OPTS.dup)
-            visit(node, opts.(message_type: :hint)) if hints?
+            if hints?
+              filter(visit(node, opts.(message_type: :hint)))
+            end
           end
 
           # @api private
