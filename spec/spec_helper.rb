@@ -41,6 +41,10 @@ RSpec.configure do |config|
 
   config.include PredicatesIntegration
 
+  config.define_derived_metadata do |meta|
+    meta[:aggregate_failures] = true
+  end
+
   config.before do
     module Test
       def self.remove_constants

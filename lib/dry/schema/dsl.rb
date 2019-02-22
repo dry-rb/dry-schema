@@ -212,7 +212,11 @@ module Dry
       #
       # @api private
       def type_schema
-        type_registry["hash"].schema(types.merge(parent_types)).safe
+        if parent
+          parent.type_schema.schema(types)
+        else
+          type_registry["hash"].schema(types).safe
+        end
       end
 
       # Return a new DSL instance using the same processor type
@@ -270,9 +274,7 @@ module Dry
       #
       # @api protected
       def key_map(types = self.types)
-        keys = types.keys.each_with_object([]) { |key_name, arr|
-          arr << key_spec(key_name, types[key_name])
-        }
+        keys = types.map { |key, type| key_spec(key, type) }
         km = KeyMap.new(keys)
 
         if key_map_type
@@ -336,8 +338,8 @@ module Dry
       #
       # @api private
       def key_spec(name, type)
-        if type.respond_to?(:member_types)
-          { name => key_map(type.member_types) }
+        if type.respond_to?(:keys)
+          { name => key_map(type.name_key_map) }
         elsif type.respond_to?(:member)
           kv = key_spec(name, type.member)
           kv.equal?(name) ? name : kv.flatten(1)
@@ -365,12 +367,6 @@ module Dry
       # @api private
       def parent_rules
         parent&.rules || EMPTY_HASH
-      end
-
-      # @api private
-      def parent_types
-        # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
-        parent&.type_schema&.member_types || EMPTY_HASH
       end
 
       # @api private
