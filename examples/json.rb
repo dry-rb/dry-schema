@@ -1,5 +1,5 @@
 require 'json'
-require 'dry-validation'
+require 'dry-schema'
 
 schema = Dry::Schema.JSON do
   required(:email).filled

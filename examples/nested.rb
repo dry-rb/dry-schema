@@ -1,6 +1,6 @@
-require 'dry-validation'
+require 'dry-schema'
 
-schema = Dry::Schema.build do
+schema = Dry::Schema.define do
   required(:address).schema do
     required(:city).filled(min_size?: 3)
 
