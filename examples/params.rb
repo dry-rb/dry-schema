@@ -1,4 +1,4 @@
-require 'dry-validation'
+require 'dry-schema'
 
 schema = Dry::Schema.Params do
   required(:email).filled

@@ -1,8 +1,7 @@
-require 'byebug'
-require 'dry-validation'
+require 'dry-schema'
 
-schema = Dry::Schema.build do
-  key(:phone_numbers).each(:str?)
+schema = Dry::Schema.define do
+  required(:phone_numbers).value(:array?).each(:str?)
 end
 
 errors = schema.call(phone_numbers: '').messages
