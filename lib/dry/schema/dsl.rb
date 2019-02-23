@@ -238,7 +238,7 @@ module Dry
       # @api private
       def set_type(name, spec)
         type = resolve_type(spec)
-        meta = { omittable: true, maybe: type.optional? }
+        meta = { required: false, maybe: type.optional? }
 
         types[name] = type.meta(meta)
       end
