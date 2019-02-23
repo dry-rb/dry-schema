@@ -238,16 +238,9 @@ module Dry
       # @api private
       def set_type(name, spec)
         type = resolve_type(spec)
-        meta = { omittable: true, maybe: maybe?(type) }
+        meta = { omittable: true, maybe: type.optional? }
 
         types[name] = type.meta(meta)
-      end
-
-      # Check if the given type is a maybe sum
-      #
-      # @api private
-      def maybe?(type)
-        type.is_a?(Dry::Types::Sum) && type.left.primitive.equal?(NilClass)
       end
 
       protected
