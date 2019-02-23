@@ -28,6 +28,9 @@ module Dry
 
       # @api private
       def evaluate(*predicates, **opts, &block)
+        pred_opts = opts.dup
+        pred_opts.delete(:type_spec)
+
         predicates.each do |predicate|
           if predicate.respond_to?(:call)
             append(predicate)
@@ -38,7 +41,7 @@ module Dry
           end
         end
 
-        opts.each do |predicate, *args|
+        pred_opts.each do |predicate, *args|
           append(__send__(predicate, *args))
         end
 

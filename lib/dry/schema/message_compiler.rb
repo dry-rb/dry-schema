@@ -36,32 +36,35 @@ module Dry
 
       # @api private
       def call(ast)
-        MessageSet[ast.map { |node| visit(node) }, failures: options.fetch(:failures, true)]
+        current_messages = EMPTY_ARRAY.dup
+        compiled_messages = ast.map { |node| visit(node, EMPTY_OPTS.dup(current_messages)) }
+
+        MessageSet[compiled_messages, failures: options.fetch(:failures, true)]
       end
 
       # @api private
-      def visit(node, *args)
-        __send__(:"visit_#{node[0]}", node[1], *args)
+      def visit(node, opts = EMPTY_OPTS.dup)
+        __send__(:"visit_#{node[0]}", node[1], opts)
       end
 
       # @api private
-      def visit_failure(node, opts = EMPTY_OPTS.dup)
+      def visit_failure(node, opts)
         rule, other = node
         visit(other, opts.(rule: rule))
       end
 
       # @api private
-      def visit_hint(node, opts = EMPTY_OPTS.dup)
+      def visit_hint(node, opts)
         nil
       end
 
       # @api private
-      def visit_not(node, opts = EMPTY_OPTS.dup)
+      def visit_not(node, opts)
         visit(node, opts.(not: true))
       end
 
       # @api private
-      def visit_and(node, opts = EMPTY_OPTS.dup)
+      def visit_and(node, opts)
         left, right = node.map { |n| visit(n, opts) }
 
         if right
@@ -72,7 +75,7 @@ module Dry
       end
 
       # @api private
-      def visit_or(node, opts = EMPTY_OPTS.dup)
+      def visit_or(node, opts)
         left, right = node.map { |n| visit(n, opts) }
 
         if [left, right].flatten.map(&:path).uniq.size == 1
@@ -85,13 +88,14 @@ module Dry
       end
 
       # @api private
-      def visit_namespace(node, opts = EMPTY_OPTS.dup)
+      def visit_namespace(node, opts)
         ns, rest = node
         self.class.new(messages.namespaced(ns), options).visit(rest, opts)
       end
 
       # @api private
-      def visit_predicate(node, base_opts = EMPTY_OPTS.dup)
+      def visit_predicate(node, opts)
+        base_opts = opts.dup
         predicate, args = node
 
         *arg_vals, val = args.map(&:last)
@@ -127,13 +131,13 @@ module Dry
       end
 
       # @api private
-      def visit_key(node, opts = EMPTY_OPTS.dup)
+      def visit_key(node, opts)
         name, other = node
         visit(other, opts.(path: name))
       end
 
       # @api private
-      def visit_set(node, opts = EMPTY_OPTS.dup)
+      def visit_set(node, opts)
         node.map { |el| visit(el, opts) }
       end
 
@@ -144,7 +148,7 @@ module Dry
       end
 
       # @api private
-      def visit_xor(node, opts = EMPTY_OPTS.dup)
+      def visit_xor(node, opts)
         left, right = node
         [visit(left, opts), visit(right, opts)].uniq
       end

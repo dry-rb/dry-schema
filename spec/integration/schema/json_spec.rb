@@ -25,7 +25,7 @@ RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
 
       expect(result.messages).to eql(
         email: ['must be filled'],
-        address: ['is missing'],
+        address: ['is missing', 'must be a hash']
       )
 
       expect(result.output).to eql(email: '', age: 19)
@@ -44,7 +44,7 @@ RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
 
       expect(result.messages).to eql(
         address: {
-          loc: { lat: ['must be a float'], lng: ['must be filled'] },
+          loc: { lat: ['must be a float'], lng: ['must be a float'] },
           city: ['must be filled']
         }
       )
@@ -78,7 +78,7 @@ RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
       result = schema.('email' => '', 'age' => 18)
 
       expect(result.messages).to eql(
-        address: ['is missing'],
+        address: ['is missing', 'must be a hash'],
         age: ['must be greater than 18'],
         email: ['must be filled']
       )

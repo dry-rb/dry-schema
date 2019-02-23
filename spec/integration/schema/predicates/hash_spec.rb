@@ -45,7 +45,7 @@ RSpec.describe 'Predicates: hash?' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect(result).to be_failing ['is missing']
+          expect(result).to be_failing ['is missing', 'must be a hash']
         end
       end
     end

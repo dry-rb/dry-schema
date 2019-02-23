@@ -10,7 +10,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing']
+        expect(result).to be_failing ['is missing', 'cannot be defined']
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'cannot be defined']
           end
         end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'cannot be defined']
           end
         end
 

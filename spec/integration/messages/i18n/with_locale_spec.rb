@@ -11,7 +11,7 @@ RSpec.describe 'I18n validation messages / using I18n.with_locale' do
     end
   end
 
-  let(:result) { schema.(name: nil) }
+  let(:result) { schema.(name: '') }
   let(:expected) { ['заполните это поле'] }
 
   around do |example|
