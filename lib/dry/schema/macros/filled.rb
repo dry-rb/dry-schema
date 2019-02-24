@@ -7,16 +7,20 @@ module Dry
       #
       # @api public
       class Filled < Value
-        def call(*args, &block)
-          if args.include?(:empty?)
+        def call(*predicates, **opts, &block)
+          if predicates.include?(:empty?)
             raise ::Dry::Schema::InvalidSchemaError, "Using filled with empty? predicate is invalid"
           end
 
-          if args.include?(:filled?)
+          if predicates.include?(:filled?)
             raise ::Dry::Schema::InvalidSchemaError, "Using filled with filled? is redundant"
           end
 
-          value(:filled?, *args, &block)
+          if opts[:type_spec].equal?(true)
+            value(predicates[0], :filled?, *predicates[1..predicates.size-1], **opts, &block)
+          else
+            value(:filled?, *predicates, **opts, &block)
+          end
         end
       end
     end

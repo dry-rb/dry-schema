@@ -16,13 +16,13 @@ RSpec.describe 'Macros #filled' do
   describe 'with a type specification' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).filled(:int?)
+        required(:age).filled(:string)
       end
     end
 
-    it 'generates filled? & int? rule' do
+    it 'generates str? && filled? rule' do
       expect(schema.(age: nil).messages).to eql(
-        age: ['must be filled']
+        age: ['must be a string']
       )
     end
   end
