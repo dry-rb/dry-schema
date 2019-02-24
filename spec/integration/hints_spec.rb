@@ -38,7 +38,7 @@ RSpec.describe 'Validation hints' do
   end
 
   context 'when type expectation is specified' do
-    subject(:schema)  do
+    subject(:schema) do
       Dry::Schema.define do
         required(:email).filled
         required(:name).filled(:str?, size?: 5..25)
@@ -161,6 +161,26 @@ RSpec.describe 'Validation hints' do
     it 'provides a correct hint' do
       expect(schema.(pill: nil).messages).to eql(
         pill: ['must be filled', 'must be equal to blue']
+      )
+    end
+  end
+
+  context 'disjunctions on an optional key' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:attributes).schema do
+          optional(:text) { int? | nil? }
+        end
+      end
+    end
+
+    it 'skips hints when key is missing' do
+      expect(schema.({}).messages).to eql(attributes: ['is missing', 'must be a hash'])
+    end
+
+    it 'shows hints when key is present' do
+      expect(schema.(attributes: { text: 'invalid' }).messages).to eql(
+        attributes: { text: ['must be an integer or cannot be defined'] }
       )
     end
   end

@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Includes' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must include 1']
+        expect(result).to be_failing ['is missing', 'must be an array', 'must include 1']
       end
     end
 
@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Includes' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must include Hello']
+            expect(result).to be_failing ['is missing', 'must be a string', 'must include Hello']
           end
         end
 

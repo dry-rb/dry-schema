@@ -8,8 +8,8 @@ RSpec.describe 'Predicates: Key' do
     end
 
     it 'uses key? predicate for required' do
-      expect(schema.({}).messages(full: true)).to eql(foo: ['foo is missing'])
-      expect(schema.({}).messages).to eql(foo: ['is missing'])
+      expect(schema.({}).messages(full: true)).to eql(foo: ['foo is missing', 'foo must be a string'])
+      expect(schema.({}).messages).to eql(foo: ['is missing', 'must be a string'])
     end
   end
 

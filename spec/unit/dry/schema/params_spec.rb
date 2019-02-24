@@ -14,7 +14,7 @@ RSpec.describe Dry::Schema::Params do
     it 'returns a params schema instance' do
       schema = klass.new
 
-      expect(schema.('name' => 'Jane', 'age' => '').errors).to eql(age: ['must be filled'])
+      expect(schema.('name' => 'Jane', 'age' => '').errors).to eql(age: ['must be an integer'])
     end
 
     it 'raises exception when definition is missing' do

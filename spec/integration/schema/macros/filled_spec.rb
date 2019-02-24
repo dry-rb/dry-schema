@@ -22,7 +22,7 @@ RSpec.describe 'Macros #filled' do
 
     it 'generates str? && filled? rule' do
       expect(schema.(age: nil).messages).to eql(
-        age: ['must be filled']
+        age: ['must be a string']
       )
     end
   end

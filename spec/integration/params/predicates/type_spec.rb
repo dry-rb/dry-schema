@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing']
+        expect(result).to be_failing ['is missing', 'must be an integer']
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be an integer']
           end
         end
 
@@ -164,7 +164,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be an integer']
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -180,7 +180,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be an integer']
           end
         end
 
@@ -318,7 +318,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 
@@ -326,7 +326,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be an integer']
           end
         end
 

@@ -22,7 +22,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing']
+        expect(result).to be_failing ['is missing', 'must be an array']
       end
     end
 
@@ -163,7 +163,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect(result).to be_failing ['is missing']
+          expect(result).to be_failing ['is missing', 'must be an array']
         end
       end
 

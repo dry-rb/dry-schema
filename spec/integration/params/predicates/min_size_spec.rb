@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'size cannot be less than 3']
+            expect(result).to be_failing ['is missing', 'must be an array', 'size cannot be less than 3']
           end
         end
 

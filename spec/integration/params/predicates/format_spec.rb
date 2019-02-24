@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing']
+        expect(result).to be_failing ['is missing', 'must be a string']
       end
     end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be a string']
           end
         end
 
@@ -188,7 +188,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be a string']
           end
         end
 
@@ -244,7 +244,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing']
+            expect(result).to be_failing ['is missing', 'must be a string']
           end
         end
 

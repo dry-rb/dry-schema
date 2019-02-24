@@ -244,7 +244,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be one of: 1, 3, 5']
+            expect(result).to be_failing ['is missing', 'must be a string', 'must be one of: 1, 3, 5']
           end
         end
 

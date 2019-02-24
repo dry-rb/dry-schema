@@ -6,6 +6,6 @@ RSpec.shared_context :message_compiler do
   end
 
   let(:result) do
-    compiler.public_send(visitor, node)
+    compiler.public_send(visitor, node, Dry::Schema::MessageCompiler::EMPTY_OPTS.dup)
   end
 end

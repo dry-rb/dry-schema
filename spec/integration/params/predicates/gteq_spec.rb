@@ -18,7 +18,7 @@ RSpec.describe 'Predicates: Gteq' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+        expect(result).to be_failing ['is missing', 'must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -148,7 +148,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -212,7 +212,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -220,7 +220,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -236,7 +236,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -276,7 +276,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['is missing', 'must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -414,7 +414,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -422,7 +422,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -430,7 +430,7 @@ RSpec.describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be greater than or equal to 23']
+            expect(result).to be_failing ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
