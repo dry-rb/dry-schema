@@ -1,5 +1,6 @@
 en:
-  errors:
-    eql?:
-      failure: '%{right} is not equal to blue'
-      hint: 'must be equal to blue'
+  dry_schema:
+    errors:
+      eql?:
+        failure: '%{right} is not equal to blue'
+        hint: 'must be equal to blue'

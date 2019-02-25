@@ -20,17 +20,19 @@ module Dry
 
       # @api private
       def self.build(config)
-        case config.messages
+        klass = case config.messages
         when :yaml then default
-        when :i18n then Messages::I18n.new
+        when :i18n then Messages::I18n
         else
           raise "+#{config.messages}+ is not a valid messages identifier"
         end
+
+        klass.build
       end
 
       # @api private
       def self.default
-        Messages::YAML.load
+        Messages::YAML
       end
     end
   end

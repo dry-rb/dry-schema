@@ -2,7 +2,7 @@ RSpec.shared_context :message_compiler do
   subject(:compiler) { Dry::Schema::MessageCompiler.new(messages) }
 
   let(:messages) do
-    Dry::Schema::Messages::YAML.load
+    Dry::Schema::Messages::YAML.build
   end
 
   let(:result) do
