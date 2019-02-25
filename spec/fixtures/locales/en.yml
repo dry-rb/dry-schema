@@ -1,11 +1,12 @@
 en:
-  rules:
-    email: "E-mail address"
-  company:
+  dry_schema:
     rules:
-      email: "Company email"
-  errors:
-    rules:
-      email:
-        filled?: "Please provide your email"
-    email?: "must be an email"
+      email: "E-mail address"
+    company:
+      rules:
+        email: "Company email"
+    errors:
+      rules:
+        email:
+          filled?: "Please provide your email"
+      email?: "must be an email"

@@ -1,10 +1,11 @@
 en:
-  errors:
-    comment:
-      rules:
-        comment_body:
-          filled?: "COMMENT can't be blank"
-    post:
-      rules:
-        post_body:
-          filled?: "POST can't be blank"
+  dry_schema:
+    errors:
+      comment:
+        rules:
+          comment_body:
+            filled?: "COMMENT can't be blank"
+      post:
+        rules:
+          post_body:
+            filled?: "POST can't be blank"

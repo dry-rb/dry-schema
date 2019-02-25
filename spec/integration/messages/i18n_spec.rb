@@ -1,7 +1,7 @@
 require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema::Messages::I18n do
-  subject(:messages) { Dry::Schema::Messages::I18n.new }
+  subject(:messages) { Dry::Schema::Messages::I18n.build }
 
   before do
     I18n.config.available_locales = [:en, :pl]

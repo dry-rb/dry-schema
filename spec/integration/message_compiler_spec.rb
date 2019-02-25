@@ -6,30 +6,34 @@ RSpec.describe Dry::Schema::MessageCompiler do
   include_context 'predicate helper'
 
   let(:messages) do
-   Dry::Schema::Messages.default.merge(
+   Dry::Schema::Messages::YAML.build.merge(
       en: {
-        errors: {
-          key?: {
-            arg: {
-              default: '+%{name}+ key is missing in the hash',
+        dry_schema: {
+          errors: {
+            key?: {
+              arg: {
+                default: '+%{name}+ key is missing in the hash',
+              },
+              value: {
+                gender: 'Please provide your gender'
+              }
             },
-            value: {
-              gender: 'Please provide your gender'
-            }
-          },
-          rules: {
-            address: {
-              filled?: 'Please provide your address'
+            rules: {
+              address: {
+                filled?: 'Please provide your address'
+              }
             }
           }
-        }
+        },
       },
       pl: {
-        rules: {
-          email: 'adres email'
-        },
-        errors: {
-          email?: 'nie jest poprawny'
+        dry_schema: {
+          rules: {
+            email: 'adres email'
+          },
+          errors: {
+            email?: 'nie jest poprawny'
+          }
         }
       }
     )

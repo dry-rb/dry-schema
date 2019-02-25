@@ -9,7 +9,21 @@ module Dry
     class Messages::I18n < Messages::Abstract
       attr_reader :t
 
-      ::I18n.load_path.concat(config.paths)
+      configure do |config|
+        config.root = 'dry_schema.errors'.freeze
+        config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "dry_schema.#{path}" }
+      end
+
+      # @api private
+      def self.build(paths = config.paths)
+        set_load_paths(paths)
+        new
+      end
+
+      # @api private
+      def self.set_load_paths(paths)
+        ::I18n.load_path.concat(paths)
+      end
 
       # @api private
       def initialize

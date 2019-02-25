@@ -19,11 +19,11 @@ RSpec.describe 'I18n validation messages / using I18n.with_locale' do
     I18n.locale = I18n.default_locale = :en
 
     I18n.backend.store_translations(:en,
-      errors: { user: { rules: { name: { filled?: 'must be filled' } } } }
+      dry_schema: { errors: { user: { rules: { name: { filled?: 'must be filled' } } } } }
     )
 
     I18n.backend.store_translations(:ru,
-      errors: { user: { rules: { name: { filled?: 'заполните это поле' } } } }
+      dry_schema: { errors: { user: { rules: { name: { filled?: 'заполните это поле' } } } } }
     )
 
     I18n.with_locale(:ru) { example.run }

@@ -16,12 +16,12 @@ module Dry
 
       # @api private
       configure do |config|
-        config.root = '%{locale}.errors'.freeze
-        config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "%{locale}.#{path}" }
+        config.root = '%{locale}.dry_schema.errors'.freeze
+        config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "%{locale}.dry_schema.#{path}" }
       end
 
       # @api private
-      def self.load(paths = config.paths)
+      def self.build(paths = config.paths)
         new(paths.map { |path| load_file(path) }.reduce(:merge))
       end
 

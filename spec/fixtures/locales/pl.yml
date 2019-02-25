@@ -1,23 +1,24 @@
 pl:
-  rules:
-    email: "Adres mailowy"
-  company:
+  dry_schema:
     rules:
-      email: "Email firmowy"
-  errors:
-    filled?: "nie może być pusty"
-    size?:
-      arg:
-        default: "wielkość musi być równa %{size}"
-        range: "wielkość musi być między %{size_left} a %{size_right}"
-      value:
-        string:
-          arg:
-            default: "wielkość musi być równa %{size}"
-    rules:
-      email:
-        filled?: "Proszę podać adres email"
-    user:
+      email: "Adres mailowy"
+    company:
+      rules:
+        email: "Email firmowy"
+    errors:
+      filled?: "nie może być pusty"
+      size?:
+        arg:
+          default: "wielkość musi być równa %{size}"
+          range: "wielkość musi być między %{size_left} a %{size_right}"
+        value:
+          string:
+            arg:
+              default: "wielkość musi być równa %{size}"
       rules:
         email:
-          filled?: "Hej user! Dawaj ten email no!"
+          filled?: "Proszę podać adres email"
+      user:
+        rules:
+          email:
+            filled?: "Hej user! Dawaj ten email no!"
