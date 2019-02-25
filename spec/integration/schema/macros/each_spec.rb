@@ -1,5 +1,5 @@
 RSpec.describe 'Macros #each' do
-  context "predicate without options" do
+  context 'predicate without options' do
     subject(:schema) do
       Dry::Schema.define do
         required(:foo).value(:array).each(:filled?, :str?)
@@ -7,7 +7,7 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with valid input' do
-      let(:input) { { foo: %w(a b c) } }
+      let(:input) { { foo: %w[a b c] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -15,10 +15,10 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with invalid input' do
-      let(:input) { { foo: [[1, 2], "", "foo"] } }
+      let(:input) { { foo: [[1, 2], '', 'foo'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing(0 => ["must be a string"], 1 => ["must be filled"])
+        expect(result).to be_failing(0 => ['must be a string'], 1 => ['must be filled'])
       end
     end
 
@@ -26,12 +26,12 @@ RSpec.describe 'Macros #each' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ["must be an array"]
+        expect(result).to be_failing ['must be an array']
       end
     end
   end
 
-  context "predicate with options" do
+  context 'predicate with options' do
     subject(:schema) do
       Dry::Schema.define do
         required(:foo).value(:array).each(size?: 3)
@@ -39,7 +39,7 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with valid input' do
-      let(:input) { { foo: [[1,2,3], "foo"] } }
+      let(:input) { { foo: [[1, 2, 3], 'foo'] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -47,10 +47,10 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with invalid input' do
-      let(:input) { { foo: [[1,2], "foo"] } }
+      let(:input) { { foo: [[1, 2], 'foo'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing(0 => ["size must be 3"])
+        expect(result).to be_failing(0 => ['size must be 3'])
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'Macros #each' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        expect(result).to be_failing ["must be an array"]
+        expect(result).to be_failing ['must be an array']
       end
     end
   end
@@ -71,7 +71,7 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with valid input' do
-      let(:input) { { foo: %w(a b) } }
+      let(:input) { { foo: %w[a b] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -79,18 +79,18 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'when value is not valid' do
-      let(:input) { { foo: ["foo"] } }
+      let(:input) { { foo: ['foo'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing(["size must be 2"])
+        expect(result).to be_failing(['size must be 2'])
       end
     end
 
     context 'when value has invalid elements' do
-      let(:input) { { foo: [:foo, "foo"] } }
+      let(:input) { { foo: [:foo, 'foo'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing(0 => ["must be a string"])
+        expect(result).to be_failing(0 => ['must be a string'])
       end
     end
   end
@@ -111,7 +111,7 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with valid input' do
-      let(:input) { { foo: %w(a b c) } }
+      let(:input) { { foo: %w[a b c] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -119,10 +119,10 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with invalid input' do
-      let(:input) { { foo: [:foo, "foo"] } }
+      let(:input) { { foo: [:foo, 'foo'] } }
 
       it 'is not successful' do
-        expect(result).to be_failing(0 => ["must be a string"])
+        expect(result).to be_failing(0 => ['must be a string'])
       end
     end
   end
@@ -145,7 +145,7 @@ RSpec.describe 'Macros #each' do
     end
 
     context 'with valid input' do
-      let(:input) { { foo: [{ bar: "baz" }] } }
+      let(:input) { { foo: [{ bar: 'baz' }] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -157,7 +157,7 @@ RSpec.describe 'Macros #each' do
 
       it 'is not successful' do
         # FIXME: our be_failing didn't work with such nested wow hash
-        expect(result.messages).to eql(foo: { 0 => { bar: ["must be a string"] } })
+        expect(result.messages).to eql(foo: { 0 => { bar: ['must be a string'] } })
       end
     end
   end
@@ -208,7 +208,7 @@ RSpec.describe 'Macros #each' do
   end
 
   context 'with inferred predicates and a form schema' do
-    context "predicate w/o options" do
+    context 'predicate w/o options' do
       subject(:schema) do
         Dry::Schema.Params do
           required(:songs).value(:array?).each(:str?)
@@ -216,7 +216,7 @@ RSpec.describe 'Macros #each' do
       end
 
       it 'passes when all elements are valid' do
-        songs = %w(hello world)
+        songs = %w[hello world]
 
         expect(schema.(songs: songs)).to be_success
       end
