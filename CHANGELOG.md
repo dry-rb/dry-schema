@@ -1,4 +1,9 @@
-# 0.2.0 to-be-released
+# 0.2.0 2019-02-26
+
+### Added
+
+* New `hash` macro which prepends `hash?` type-check and allows nested schema definition (solnic)
+* New `array` macro which works like `each` but prepends `array?` type-check (solnic)
 
 ### Fixed
 
@@ -10,14 +15,15 @@
 * Hints are correctly generated for disjunction that use type-check predicates (issue #24) (solnic)
 * Hints are correctly generated for nested schemas (issue #26) (solnic)
 * `filled` macro respects inferred type-check predicates and puts them in front (solnic)
+* Value coercion works correctly with re-usable nested schemas (issue #25) (solnic)
 
 ### Changed
 
 * [BREAKING] **Messages are now configured under `dry_schema` namespace by default** (issue #38) (solnic)
 * [BREAKING] Hints are now an optional feature provided by `:hints` extension, to load it do `Dry::Schema.load_extensions(:hints)` (solnic)
 * [BREAKING] Hints generation was improved in general, output of `Result#messages` and `Result#hints` changed in some cases (solnic)
+* [BREAKING] `schema` macro no longer prepends `hash?` check, for this behavior use the new `hash` macro (see #31) (solnic)
 * [BREAKING] Support for MRI < 2.4 was dropped (solnic)
-
 
 [Compare v0.1.1...v0.2.0](https://github.com/dry-rb/dry-schema/compare/v0.1.1...v0.2.0)
 
