@@ -18,9 +18,11 @@ module Dry
         if input.success?
           type_schema[Hash(input)]
         else
-          type_schema.member_types.reduce(EMPTY_HASH.dup) do |hash, (name, type)|
-            hash[name] = input.error?(name) ? input[name] : type[input[name]]
-            hash
+          type_schema.each_with_object(EMPTY_HASH.dup) do |key, hash|
+            name = key.name
+            value = input[name]
+
+            hash[name] = input.error?(name) ? value : key[value]
           end
         end
       end
