@@ -32,8 +32,8 @@ RSpec.describe Dry::Schema::Result, '#error?' do
   context 'with a nested hash' do
     let(:schema) do
       Dry::Schema.Params do
-        required(:user).schema do
-          required(:address).schema do
+        required(:user).hash do
+          required(:address).hash do
             required(:street).filled
           end
         end

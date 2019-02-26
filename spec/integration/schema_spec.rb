@@ -99,7 +99,7 @@ RSpec.describe Dry::Schema, '.define' do
   context 'nested schema' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:user).schema do
+        required(:user).hash do
           required(:name).filled
           required(:age).filled(:int?)
         end

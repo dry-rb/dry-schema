@@ -17,7 +17,7 @@ RSpec.describe 'Namespaced messages' do
         config.namespace = :post
 
         required(:post_body).filled
-        required(:comment).schema(::Test::CommentSchema)
+        required(:comment).hash(::Test::CommentSchema)
       end
     end
 

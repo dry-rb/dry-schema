@@ -5,11 +5,11 @@ RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
 
       required(:age).maybe(:integer).maybe(:int?, gt?: 18)
 
-      required(:address).value(:hash).schema do
+      required(:address).value(:hash).hash do
         required(:city).value(:string).filled
         required(:street).value(:string).filled
 
-        required(:loc).value(:hash).schema do
+        required(:loc).value(:hash).hash do
           required(:lat).filled(:float)
           required(:lng).filled(:float)
         end

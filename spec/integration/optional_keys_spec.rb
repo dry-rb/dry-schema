@@ -4,7 +4,7 @@ RSpec.describe Dry::Schema do
       Dry::Schema.define do
         optional(:email).value(:filled?)
 
-        required(:address).schema do
+        required(:address).hash do
           required(:city).value(:filled?)
           required(:street).value(:filled?)
 

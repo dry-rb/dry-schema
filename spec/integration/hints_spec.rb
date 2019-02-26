@@ -70,7 +70,7 @@ RSpec.describe 'Validation hints' do
       Dry::Schema.define do
         required(:code).filled(:str?, eql?: 'foo')
 
-        required(:nested).schema do
+        required(:nested).hash do
           required(:code).filled(:str?, eql?: 'bar')
         end
       end
@@ -168,7 +168,7 @@ RSpec.describe 'Validation hints' do
   context 'disjunctions on an optional key' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:attributes).schema do
+        required(:attributes).hash do
           optional(:text) { int? | nil? }
         end
       end

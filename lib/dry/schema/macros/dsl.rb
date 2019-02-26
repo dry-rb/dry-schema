@@ -35,10 +35,21 @@ module Dry
           end
         end
 
-        # Specify a nested schema
+        # Specify a nested hash without enforced hash? type-check
         #
         # @api public
         def schema(*args, &block)
+          append_macro(Macros::Schema) do |macro|
+            macro.call(*args, &block)
+          end
+        end
+
+        # Specify a nested hash with enforced hash? type-check
+        #
+        # @see #schema
+        #
+        # @api public
+        def hash(*args, &block)
           append_macro(Macros::Hash) do |macro|
             macro.call(*args, &block)
           end

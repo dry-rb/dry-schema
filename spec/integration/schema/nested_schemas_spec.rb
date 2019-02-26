@@ -2,12 +2,12 @@ RSpec.describe Dry::Schema, 'nested schemas' do
   context 'with multiple nested schemas' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:content).value(:hash).schema do
-          required(:meta).value(:hash).schema do
+        required(:content).value(:hash).hash do
+          required(:meta).value(:hash).hash do
             required(:version).value(:string).filled
           end
 
-          required(:data).value(:hash).schema do
+          required(:data).value(:hash).hash do
             required(:city).value(:string).filled
           end
         end
@@ -41,8 +41,8 @@ RSpec.describe Dry::Schema, 'nested schemas' do
   context 'with a 2-level deep schema' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:meta).schema do
-          required(:info).schema do
+        required(:meta).hash do
+          required(:info).hash do
             required(:details).filled(:string)
             required(:meta).filled(:string)
           end
@@ -86,7 +86,7 @@ RSpec.describe Dry::Schema, 'nested schemas' do
   context 'when duplicated key names are used in 2 subsequent levels' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:meta).value(:hash).schema do
+        required(:meta).value(:hash).hash do
           required(:meta).value(:string).filled
         end
       end
@@ -114,8 +114,8 @@ RSpec.describe Dry::Schema, 'nested schemas' do
   context 'when duplicated key names are used in 2 subsequent levels as schemas' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:meta).value(:hash).schema do
-          required(:meta).value(:hash).schema do
+        required(:meta).value(:hash).hash do
+          required(:meta).value(:hash).hash do
             required(:data).value(:string).filled
           end
         end
@@ -156,10 +156,10 @@ RSpec.describe Dry::Schema, 'nested schemas' do
   context 'with `each` + schema inside another schema' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:meta).value(:hash).schema do
+        required(:meta).value(:hash).hash do
           required(:data).value(:array).each do
             schema do
-              required(:info).value(:hash).schema do
+              required(:info).value(:hash).hash do
                 required(:name).value(:string).filled
               end
             end
