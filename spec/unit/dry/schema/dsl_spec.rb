@@ -8,7 +8,7 @@ RSpec.describe Dry::Schema::DSL do
 
   describe '#schema' do
     it 'defines a rule from a nested schema' do
-      dsl.required(:user).schema do
+      dsl.required(:user).hash do
         required(:name).filled
       end
 

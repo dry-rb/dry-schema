@@ -79,16 +79,16 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'nested schema' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:user).type(:hash).schema do
+        required(:user).type(:hash).hash do
           required(:email).type(:string)
           required(:age).type(:integer)
 
-          required(:address).type(:hash).schema do
+          required(:address).type(:hash).hash do
             required(:street).type(:string)
             required(:city).type(:string)
             required(:zipcode).type(:string)
 
-            required(:location).type(:hash).schema do
+            required(:location).type(:hash).hash do
               required(:lat).type(:float)
               required(:lng).type(:float)
             end
@@ -129,7 +129,7 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'nested schema with arrays' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:song).type(:hash).value(:hash?).schema do
+        required(:song).type(:hash).value(:hash?).hash do
           required(:title).type(:string)
 
           required(:tags).type(:array).value(:array?).each do

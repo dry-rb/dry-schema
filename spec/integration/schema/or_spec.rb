@@ -67,7 +67,7 @@ RSpec.describe Dry::Schema, 'OR messages' do
   context 'with a predicate and a schema' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo) { str? | schema { required(:bar).filled } }
+        required(:foo) { str? | hash { required(:bar).filled } }
       end
     end
 
