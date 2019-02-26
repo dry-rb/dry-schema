@@ -237,4 +237,22 @@ RSpec.describe 'Macros #each' do
       end
     end
   end
+
+  context 'using other schema for elements' do
+    let(:schema) do
+      Dry::Schema.Params do
+        optional(:foo).value(:array).each(Test::ElementSchema)
+      end
+    end
+
+    before do
+      Test::ElementSchema = Dry::Schema.Params do
+        required(:bar).value(:integer)
+      end
+    end
+
+    it 'applies other schema to element values' do
+      expect(schema.(foo: [{ bar: '123' }])).to be_success
+    end
+  end
 end
