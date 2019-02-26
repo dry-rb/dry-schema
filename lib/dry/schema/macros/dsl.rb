@@ -64,6 +64,16 @@ module Dry
           end
         end
 
+        # Like `each`, but prepends `array?` check
+        #
+        # @api public
+        def array(*args, &block)
+          value(:array)
+          append_macro(Macros::Each) do |macro|
+            macro.value(*args, &block)
+          end
+        end
+
         private
 
         # @api private
