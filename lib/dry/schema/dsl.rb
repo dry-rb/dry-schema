@@ -212,11 +212,7 @@ module Dry
       #
       # @api private
       def type_schema
-        if parent
-          parent.type_schema.schema(types)
-        else
-          type_registry["hash"].schema(types).safe
-        end
+        type_registry["hash"].schema(types.merge(parent_types)).safe
       end
 
       # Return a new DSL instance using the same processor type
@@ -238,9 +234,16 @@ module Dry
       # @api private
       def set_type(name, spec)
         type = resolve_type(spec)
-        meta = { required: false, maybe: type.optional? }
+        meta = { omittable: true, maybe: maybe?(type) }
 
         types[name] = type.meta(meta)
+      end
+
+      # Check if the given type is a maybe sum
+      #
+      # @api private
+      def maybe?(type)
+        type.is_a?(Dry::Types::Sum) && type.left.primitive.equal?(NilClass)
       end
 
       protected
@@ -267,7 +270,9 @@ module Dry
       #
       # @api protected
       def key_map(types = self.types)
-        keys = types.map { |key, type| key_spec(key, type) }
+        keys = types.keys.each_with_object([]) { |key_name, arr|
+          arr << key_spec(key_name, types[key_name])
+        }
         km = KeyMap.new(keys)
 
         if key_map_type
@@ -331,8 +336,8 @@ module Dry
       #
       # @api private
       def key_spec(name, type)
-        if type.respond_to?(:keys)
-          { name => key_map(type.name_key_map) }
+        if type.respond_to?(:member_types)
+          { name => key_map(type.member_types) }
         elsif type.respond_to?(:member)
           kv = key_spec(name, type.member)
           kv.equal?(name) ? name : kv.flatten(1)
@@ -360,6 +365,12 @@ module Dry
       # @api private
       def parent_rules
         parent&.rules || EMPTY_HASH
+      end
+
+      # @api private
+      def parent_types
+        # TODO: this is awful, it'd be nice if we had `Dry::Types::Hash::Schema#merge`
+        parent&.type_schema&.member_types || EMPTY_HASH
       end
 
       # @api private

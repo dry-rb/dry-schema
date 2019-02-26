@@ -27,7 +27,7 @@ module Dry
               end
 
             final_type =
-              if parent_type.optional?
+              if schema_dsl.maybe?(parent_type)
                 schema_type.optional
               else
                 schema_type
