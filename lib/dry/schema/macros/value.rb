@@ -9,6 +9,15 @@ module Dry
       class Value < DSL
         # @api private
         def call(*predicates, **opts, &block)
+          schema = predicates.detect { |predicate| predicate.is_a?(Processor) }
+
+          if schema
+            current_type = schema_dsl.types[name]
+            updated_type = current_type.respond_to?(:of) ? current_type.of(schema.type_schema) : schema.type_schema
+
+            schema_dsl.set_type(name, updated_type)
+          end
+
           trace.evaluate(*predicates, **opts, &block)
 
           trace.append(new(chain: false).instance_exec(&block)) if block

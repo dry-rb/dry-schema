@@ -171,8 +171,8 @@ RSpec.describe 'Macros #value' do
       end
 
       before do
-        DataSchema = Dry::Schema.define do
-          required(:foo).filled(size?: 2..10)
+        DataSchema = Dry::Schema.Params do
+          required(:num).filled(:integer, gt?: 10)
         end
       end
 
@@ -181,9 +181,13 @@ RSpec.describe 'Macros #value' do
       end
 
       it 'uses the schema' do
-        expect(schema.(data: { foo: '' }).messages).to eql(
-          data: { foo: ['must be filled', 'length must be within 2 - 10'] }
+        expect(schema.(data: { num: '' }).messages).to eql(
+          data: { num: ['must be an integer', 'must be greater than 10'] }
         )
+      end
+
+      it 'applies value coercer from the reused schema' do
+        expect(schema.(data: { num: '11' })).to be_success
       end
     end
   end
