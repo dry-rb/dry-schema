@@ -72,7 +72,7 @@ module Dry
 
       # @!attribute [r] config
       #   @return [Config] Configuration object exposed via `#configure` method
-      option :config, optional: true, default: -> { Config.new }
+      option :config, optional: true, default: proc { parent ? parent.config.dup : Config.new }
 
       # Build a new DSL object and evaluate provided block
       #

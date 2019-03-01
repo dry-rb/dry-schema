@@ -113,6 +113,15 @@ module Dry
         @__type_schema__ ||= steps.detect { |s| s.is_a?(ValueCoercer) }.type_schema
       end
 
+      # Return the rules config
+      #
+      # @return [Dry::Types::Config]
+      #
+      # @api private
+      def config
+        @__config__ ||= steps.detect { |s| s.is_a?(RuleApplier) }.config
+      end
+
       # Return AST representation of the rules
       #
       # @api private
