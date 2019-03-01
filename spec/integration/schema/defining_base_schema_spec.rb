@@ -8,6 +8,10 @@ RSpec.describe 'Defining base schema class' do
 
   let(:parent) do
     Dry::Schema.define do
+      configure do |config|
+        config.messages = :i18n
+      end
+
       optional(:email).filled
       required(:name).filled
     end
@@ -19,5 +23,23 @@ RSpec.describe 'Defining base schema class' do
 
   it 'overrides parent rules' do
     expect(schema.(age: 21, name: 'Jane').errors).to eql(email: ['is missing'])
+  end
+
+  it 'inherits config' do
+    expect(schema.config.messages).to eql(:i18n)
+  end
+
+  context 'when child schema defines config' do
+    subject(:schema) do
+      Dry::Schema.define(parent: parent) do
+        configure do |config|
+          config.messages = :yaml
+        end
+      end
+    end
+
+    it 'overrides parent config' do
+      expect(schema.config.messages).to eql(:yaml)
+    end
   end
 end
