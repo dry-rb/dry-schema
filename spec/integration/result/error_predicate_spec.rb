@@ -37,6 +37,7 @@ RSpec.describe Dry::Schema::Result, '#error?' do
             required(:street).filled
           end
         end
+        optional(:address).filled(:string)
       end
     end
 
@@ -54,9 +55,37 @@ RSpec.describe Dry::Schema::Result, '#error?' do
       end
     end
 
-    context 'when there is an error' do
+    context 'when there is an error under matching key but in another branch' do
+      let(:input) do
+        { user: { address: { street: 'test' } }, address: '' }
+      end
+
+      it 'returns false for a hash spec' do
+        expect(result.error?(user: { address: :street })).to be(false)
+      end
+
+      it 'returns false for dot notation spec' do
+        expect(result.error?('user.address.street')).to be(false)
+      end
+    end
+
+    context 'when there is an error under the last key' do
       let(:input) do
         { user: { address: { street: '' } } }
+      end
+
+      it 'returns true for a hash spec' do
+        expect(result.error?(user: { address: :street })).to be(true)
+      end
+
+      it 'returns true for dot notation spec' do
+        expect(result.error?('user.address.street')).to be(true)
+      end
+    end
+
+    context 'when there is an error under one of the intermediate keys' do
+      let(:input) do
+        { user: { address: nil } }
       end
 
       it 'returns true for a hash spec' do

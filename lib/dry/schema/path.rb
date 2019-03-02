@@ -47,8 +47,8 @@ module Dry
       end
 
       # @api private
-      def ==(other)
-        keys == Path[other].keys
+      def include?(other)
+        !other.keys.find { |key| keys[other.keys.index(key)] == key }.nil?
       end
     end
   end
