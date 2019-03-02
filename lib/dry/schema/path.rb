@@ -6,6 +6,8 @@ module Dry
     #
     # @api private
     class Path
+      include Enumerable
+
       # !@attribute [r] keys
       #   @return [Array<Symbol>]
       attr_reader :keys
@@ -47,8 +49,18 @@ module Dry
       end
 
       # @api private
+      def each(&block)
+        keys.each(&block)
+      end
+
+      # @api private
+      def index(key)
+        keys.index(key)
+      end
+
+      # @api private
       def include?(other)
-        !other.keys.find { |key| keys[other.keys.index(key)] == key }.nil?
+        !find { |key| (idx = other.index(key)) && keys[idx].equal?(key) }.nil?
       end
     end
   end
