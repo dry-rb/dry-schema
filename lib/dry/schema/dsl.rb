@@ -216,10 +216,10 @@ module Dry
       #
       # @api private
       def type_schema
-       if parent
+        if parent
           parent.type_schema.schema(types)
         else
-          type_registry["hash"].schema(types).safe
+          type_registry['hash'].schema(types).safe
         end
       end
 
