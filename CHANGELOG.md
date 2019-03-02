@@ -1,3 +1,12 @@
+# 0.2.1 2019-02-26
+
+### Fixed
+
+* Configuration is properly inherited from a parent schema (skryukov)
+* `Result#error?` returns `true` when a preceding key has errors (solnic) 
+
+[Compare v0.2.0...v0.2.1](https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.2.1)
+
 # 0.2.0 2019-02-26
 
 ### Added
