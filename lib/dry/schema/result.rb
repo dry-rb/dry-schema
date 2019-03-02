@@ -76,7 +76,7 @@ module Dry
       #
       # @api public
       def error?(spec)
-        message_set.any? { |msg| Path[spec] == msg.path }
+        message_set.any? { |msg| Path[msg.path].include?(Path[spec]) }
       end
 
       # Check if the result is successful
