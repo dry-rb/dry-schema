@@ -1,11 +1,13 @@
-# 0.2.1 to-be-released
+# 0.3.0 to-be-released
 
 ### Fixed
 
 * Configuration is properly inherited from a parent schema (skryukov)
-* `Result#error?` returns `true` when a preceding key has errors (solnic) 
+* `Result#error?` returns `true` when a preceding key has errors (solnic)
+* Predicate inferrer no longer chokes on sum type and constructor types (solnic)
+* Predicate inferrer infers `:bool?` from boolean types (solnic)
 
-[Compare v0.2.0...v0.2.1](https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.2.1)
+[Compare v0.2.0...v0.3.0](https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.3.0)
 
 # 0.2.0 2019-02-26
 
