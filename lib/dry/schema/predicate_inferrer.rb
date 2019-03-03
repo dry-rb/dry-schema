@@ -9,23 +9,66 @@ module Dry
     class PredicateInferrer
       extend Dry::Core::Cache
 
-      TYPE_TO_PREDICATE = Hash.new do |hash, type|
-        primitive = type.meta[:maybe] ? type.right.primitive : type.primitive
-
-        if hash.key?(primitive)
-          hash[primitive]
-        else
-          :"#{primitive.name.split('::').last.downcase}?"
-        end
-      end
-
-      TYPE_TO_PREDICATE.update(
+      TYPE_TO_PREDICATE = {
         FalseClass => :false?,
         Integer => :int?,
         NilClass => :nil?,
         String => :str?,
         TrueClass => :true?
-      ).freeze
+      }.freeze
+
+      REDUCED_TYPES = {
+        %i[true? false?] => :bool?
+      }.freeze
+
+      # Compiler reduces type AST into a list of predicates
+      #
+      # @api private
+      class Compiler
+        def visit(node)
+          meth, rest = node
+          public_send(:"visit_#{meth}", rest)
+        end
+
+        def visit_definition(node)
+          type = node[0]
+
+          TYPE_TO_PREDICATE.fetch(type) {
+            :"#{type.name.split('::').last.downcase}?"
+          }
+        end
+
+        def visit_array(*)
+          :array?
+        end
+
+        def visit_safe(node)
+          other, * = node
+          visit(other)
+        end
+
+        def visit_constructor(node)
+          other, * = node
+          visit(other)
+        end
+
+        def visit_sum(node)
+          left, right = node
+
+          predicates = [visit(left), visit(right)]
+
+          if predicates.first == :nil?
+            predicates[1..predicates.size - 1]
+          else
+            predicates
+          end
+        end
+
+        def visit_constrained(node)
+          other, * = node
+          visit(other)
+        end
+      end
 
       # Infer predicate identifier from the provided type
       #
@@ -34,15 +77,14 @@ module Dry
       # @api private
       def self.[](type)
         fetch_or_store(type.hash) {
-          predicates =
-            if type.is_a?(Dry::Types::Sum) && !type.meta[:maybe]
-              [self[type.left], self[type.right]]
-            else
-              TYPE_TO_PREDICATE[type]
-            end
-
-          Array(predicates).flatten
+          predicates = Array(compiler.visit(type.to_ast)).flatten
+          Array(REDUCED_TYPES[predicates] || predicates).flatten
         }
+      end
+
+      # @api private
+      def self.compiler
+        @compiler ||= Compiler.new
       end
     end
   end
