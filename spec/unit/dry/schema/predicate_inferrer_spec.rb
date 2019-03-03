@@ -30,4 +30,8 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
   it 'returns false? for a false type' do
     expect(inferrer[type(:false)]).to eql([:false?])
   end
+
+  it 'returns bool? for bool type' do
+    expect(inferrer[type(:bool)]).to eql([:bool?])
+  end
 end

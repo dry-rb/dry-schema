@@ -27,6 +27,10 @@ module Dry
         TrueClass => :true?
       ).freeze
 
+      REDUCED_TYPES = {
+        [:true?, :false?] => :bool?
+      }.freeze
+
       # Infer predicate identifier from the provided type
       #
       # @return [Symbol]
@@ -41,7 +45,9 @@ module Dry
               TYPE_TO_PREDICATE[type]
             end
 
-          Array(predicates).flatten
+          predicate_list = Array(predicates).flatten
+
+          Array(REDUCED_TYPES[predicate_list] || predicate_list).flatten
         }
       end
     end
