@@ -6,9 +6,8 @@ RSpec.describe Dry::Schema::Result do
   context 'interface' do
     let(:input) { {} }
 
-    it 'responds to #to_monad and #to_result' do
+    it 'responds to #to_monad' do
       expect(result).to respond_to(:to_monad)
-      expect(result).to respond_to(:to_result)
     end
   end
 

@@ -9,10 +9,9 @@ module Dry
         if success?
           Success(output)
         else
-          Failure(messages(options))
+          Failure(message_set(options).dump)
         end
       end
-      alias_method :to_result, :to_monad
     end
   end
 end
