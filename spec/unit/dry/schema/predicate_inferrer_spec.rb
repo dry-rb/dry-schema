@@ -34,4 +34,8 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
   it 'returns bool? for bool type' do
     expect(inferrer[type(:bool)]).to eql([:bool?])
   end
+
+  it 'returns :int? from an optional integer with constructor' do
+    expect(inferrer[type(:integer).optional.constructor(&:to_i)]).to eql([:int?])
+  end
 end
