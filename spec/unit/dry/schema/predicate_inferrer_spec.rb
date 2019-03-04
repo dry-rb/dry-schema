@@ -38,4 +38,8 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
   it 'returns :int? from an optional integer with constructor' do
     expect(inferrer[type(:integer).optional.constructor(&:to_i)]).to eql([:int?])
   end
+
+  it 'returns int? for integer enum type' do
+    expect(inferrer[type(:integer).enum(1, 2)]).to eql([:int?])
+  end
 end

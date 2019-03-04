@@ -52,6 +52,11 @@ module Dry
           visit(other)
         end
 
+        def visit_enum(node)
+          other, * = node
+          visit(other)
+        end
+
         def visit_sum(node)
           left, right = node
 
