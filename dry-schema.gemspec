@@ -14,7 +14,6 @@ Gem::Specification.new do |spec|
   spec.executables   = []
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 2.4'
 
   spec.add_runtime_dependency 'concurrent-ruby', '~> 1.0'
   spec.add_runtime_dependency 'dry-configurable', '~> 0.1', '>= 0.1.3'
