@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Macros #each' do
   context 'predicate without options' do
     subject(:schema) do

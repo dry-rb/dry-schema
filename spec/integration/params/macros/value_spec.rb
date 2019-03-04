@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Schema / Form / Macros / #value' do
   describe "with a type spec as a symbol" do
     subject(:schema) do

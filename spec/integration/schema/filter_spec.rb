@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema, 'pre-coercion input rules' do
   context 'coercion' do
     subject(:schema) do

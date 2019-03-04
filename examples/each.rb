@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry-schema'
 
 schema = Dry::Schema.define do

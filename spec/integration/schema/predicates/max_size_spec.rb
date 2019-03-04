@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: Max Size' do
   context 'with required' do
     subject(:schema) do

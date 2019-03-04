@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/predicate_inferrer'
 require 'dry/schema/processor'
 require 'dry/schema/macros/dsl'

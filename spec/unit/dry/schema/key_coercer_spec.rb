@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/key_map'
 require 'dry/schema/key_coercer'
 

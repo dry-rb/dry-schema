@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/predicate_registry'
 
 RSpec.describe Dry::Schema::PredicateRegistry do

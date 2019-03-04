@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/macros/value'
 
 RSpec.describe Dry::Schema::Macros::Value do

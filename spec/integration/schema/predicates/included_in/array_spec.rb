@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.context 'Predicates: Included In' do
 
   context "Array" do

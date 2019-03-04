@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Verifying predicates in the DSL' do
   it 'raises error when invalid predicate name is used' do
     expect { Dry::Schema.define { required(:age).value(filled?: 312) } }

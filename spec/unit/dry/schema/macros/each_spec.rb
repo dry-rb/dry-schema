@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/macros/each'
 
 RSpec.describe Dry::Schema::Macros::Each do

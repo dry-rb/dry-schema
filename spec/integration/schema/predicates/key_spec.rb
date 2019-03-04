@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: Key' do
   context 'inferred from required/optional macros' do
     subject(:schema) do

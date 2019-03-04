@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/params'
 
 RSpec.describe Dry::Schema::Params do

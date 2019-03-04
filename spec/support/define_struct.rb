@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DefineStruct
   def from_hash(hash = {})
     values = members.map do |attr|

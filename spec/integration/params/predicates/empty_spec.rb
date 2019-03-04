@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: Empty' do
   context 'with required' do
     subject(:schema) do

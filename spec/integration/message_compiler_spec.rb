@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/message_compiler'
 
 RSpec.describe Dry::Schema::MessageCompiler do

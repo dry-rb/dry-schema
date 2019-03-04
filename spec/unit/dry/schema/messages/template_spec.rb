@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/messages/template'
 
 RSpec.describe Dry::Schema::Messages::Template do

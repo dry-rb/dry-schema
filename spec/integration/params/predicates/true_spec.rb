@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: True' do
   context 'with key' do
     subject(:schema) do

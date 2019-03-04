@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/predicate_inferrer'
 
 RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do

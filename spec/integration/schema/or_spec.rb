@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema, 'OR messages' do
   context 'with two predicates' do
     subject(:schema) do

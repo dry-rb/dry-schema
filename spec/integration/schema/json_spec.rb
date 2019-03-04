@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
   subject(:schema) do
     Dry::Schema.JSON do

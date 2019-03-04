@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Schema with each and set rules' do
   subject(:schema) do
     Dry::Schema.define do

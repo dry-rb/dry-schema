@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/message'
 require 'dry/schema/message_compiler'
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Defining base schema class' do
   subject(:form) do
     Dry::Schema.Params(parent: parent) do

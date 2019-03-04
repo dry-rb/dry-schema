@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: Size' do
   context 'Fixed (integer)' do
     context 'with required' do

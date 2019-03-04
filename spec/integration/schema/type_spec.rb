@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec without rules' do
     subject(:schema) do

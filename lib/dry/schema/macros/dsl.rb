@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/logic/operators'
 
 require 'dry/schema/macros/core'

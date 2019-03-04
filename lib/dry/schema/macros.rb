@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/macros/array'
 require 'dry/schema/macros/each'
 require 'dry/schema/macros/filled'

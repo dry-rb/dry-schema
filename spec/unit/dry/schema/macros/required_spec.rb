@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/macros/required'
 
 RSpec.describe Dry::Schema::Macros::Required do

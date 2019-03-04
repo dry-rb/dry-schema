@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/macros/optional'
 
 RSpec.describe Dry::Schema::Macros::Optional do

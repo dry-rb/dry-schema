@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema do
   describe 'defining schema with optional keys' do
     subject(:schema) do

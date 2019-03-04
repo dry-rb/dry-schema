@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: hash?' do
   shared_examples 'hash predicate' do
     context 'with valid input' do

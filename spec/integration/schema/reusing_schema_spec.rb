@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Reusing schemas' do
   subject(:schema) do
     Dry::Schema.define do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema do
   subject(:schema) do
     Dry::Schema.define do

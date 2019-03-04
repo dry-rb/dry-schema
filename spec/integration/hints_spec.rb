@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/messages/i18n'
 
 RSpec.describe 'Validation hints' do

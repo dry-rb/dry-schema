@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema, 'nested schemas' do
   context 'with multiple nested schemas' do
     subject(:schema) do

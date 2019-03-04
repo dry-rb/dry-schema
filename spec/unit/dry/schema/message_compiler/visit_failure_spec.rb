@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema::MessageCompiler, '#visit_failure' do
   include_context :message_compiler
 

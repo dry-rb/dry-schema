@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dry
   module Schema
     # An API for configuring message backends

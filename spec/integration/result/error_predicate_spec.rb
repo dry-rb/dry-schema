@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/result'
 
 RSpec.describe Dry::Schema::Result, '#error?' do

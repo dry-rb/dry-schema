@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Predicates: Key' do
   context 'with required' do
     it "raises error" do

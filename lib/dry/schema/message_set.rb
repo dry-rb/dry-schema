@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dry
   module Schema
     # A set of messages used to generate errors

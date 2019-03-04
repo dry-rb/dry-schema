@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/key_map'
 
 RSpec.describe Dry::Schema::KeyMap do

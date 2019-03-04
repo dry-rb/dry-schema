@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Macros #value' do
   describe 'with no args' do
     it 'raises an exception' do

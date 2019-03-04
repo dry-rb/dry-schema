@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Macros #maybe' do
   describe 'with no args' do
     subject(:schema) do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema::Result do
   subject(:result) { schema.(input) }
 

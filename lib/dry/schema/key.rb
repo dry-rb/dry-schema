@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dry
   module Schema
     # Key objects used by key maps

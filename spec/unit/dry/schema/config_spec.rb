@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/config'
 
 RSpec.describe Dry::Schema::Config do
