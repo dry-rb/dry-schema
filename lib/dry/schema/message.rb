@@ -1,4 +1,5 @@
 require 'dry/equalizer'
+require 'dry/schema/path'
 
 module Dry
   module Schema
@@ -85,6 +86,17 @@ module Dry
       # @api private
       def eql?(other)
         other.is_a?(String) ? text == other : super
+      end
+
+      def <=>(other)
+        l_path = Path[path]
+        r_path = Path[other.path]
+
+        unless l_path.include?(r_path)
+          raise ArgumentError, 'Cannot compare messages from different root paths'
+        end
+
+        l_path <=> r_path
       end
     end
   end

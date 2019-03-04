@@ -83,7 +83,7 @@ module Dry
         elsif right.is_a?(Array)
           right
         else
-          [left, right]
+          [left, right].flatten.max
         end
       end
 

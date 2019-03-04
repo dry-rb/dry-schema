@@ -177,6 +177,16 @@ RSpec.describe 'Macros #value' do
         expect(schema.(nums: nil).errors)
           .to eql(nums: ['must be an array or must be a hash'])
       end
+
+      it 'applies rules to array elements' do
+        expect(schema.(nums: [{ val: 'foo' }]).errors)
+          .to eql(nums: { 0 => { val: ['must be an integer'] } })
+      end
+
+      it 'applies rules to hash members' do
+        expect(schema.(nums: { val: 'foo' }).errors)
+          .to eql(nums: { val: ['must be an integer'] })
+      end
     end
 
     context 'with a schema' do
