@@ -62,6 +62,11 @@ module Dry
       def include?(other)
         !find { |key| (idx = other.index(key)) && keys[idx].equal?(key) }.nil?
       end
+
+      # @api private
+      def <=>(other)
+        keys.count <=> other.count
+      end
     end
   end
 end
