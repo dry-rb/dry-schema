@@ -11,11 +11,11 @@ module Dry
       class Filled < Value
         def call(*predicates, **opts, &block)
           if predicates.include?(:empty?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using filled with empty? predicate is invalid"
+            raise ::Dry::Schema::InvalidSchemaError, 'Using filled with empty? predicate is invalid'
           end
 
           if predicates.include?(:filled?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using filled with filled? is redundant"
+            raise ::Dry::Schema::InvalidSchemaError, 'Using filled with filled? is redundant'
           end
 
           if opts[:type_spec].equal?(true)

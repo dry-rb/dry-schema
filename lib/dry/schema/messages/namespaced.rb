@@ -62,7 +62,7 @@ module Dry
 
         def rule_lookup_paths(tokens)
           base_paths = messages.rule_lookup_paths(tokens)
-          base_paths.map { |key| key.gsub("dry_schema", "dry_schema.#{namespace}") } + base_paths
+          base_paths.map { |key| key.gsub('dry_schema', "dry_schema.#{namespace}") } + base_paths
         end
       end
     end

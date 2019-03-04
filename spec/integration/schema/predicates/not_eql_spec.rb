@@ -44,7 +44,7 @@ RSpec.describe 'Predicates: Not Eql' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        expect(result).to be_failing ["must not be equal to 23"]
+        expect(result).to be_failing ['must not be equal to 23']
       end
     end
   end
@@ -92,7 +92,7 @@ RSpec.describe 'Predicates: Not Eql' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        expect(result).to be_failing ["must not be equal to 23"]
+        expect(result).to be_failing ['must not be equal to 23']
       end
     end
   end
@@ -142,7 +142,7 @@ RSpec.describe 'Predicates: Not Eql' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must not be equal to 23"]
+            expect(result).to be_failing ['must not be equal to 23']
           end
         end
       end
@@ -190,7 +190,7 @@ RSpec.describe 'Predicates: Not Eql' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must not be equal to 23"]
+            expect(result).to be_failing ['must not be equal to 23']
           end
         end
       end
@@ -238,7 +238,7 @@ RSpec.describe 'Predicates: Not Eql' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must not be equal to 23"]
+            expect(result).to be_failing ['must not be equal to 23']
           end
         end
       end
@@ -288,7 +288,7 @@ RSpec.describe 'Predicates: Not Eql' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must not be equal to 23"]
+            expect(result).to be_failing ['must not be equal to 23']
           end
         end
       end
@@ -336,7 +336,7 @@ RSpec.describe 'Predicates: Not Eql' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must not be equal to 23"]
+            expect(result).to be_failing ['must not be equal to 23']
           end
         end
       end
@@ -384,7 +384,7 @@ RSpec.describe 'Predicates: Not Eql' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must not be equal to 23"]
+            expect(result).to be_failing ['must not be equal to 23']
           end
         end
       end

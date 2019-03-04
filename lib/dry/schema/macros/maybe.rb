@@ -12,11 +12,11 @@ module Dry
         # @api private
         def call(*args, **opts, &block)
           if args.include?(:empty?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"
+            raise ::Dry::Schema::InvalidSchemaError, 'Using maybe with empty? predicate is invalid'
           end
 
           if args.include?(:nil?)
-            raise ::Dry::Schema::InvalidSchemaError, "Using maybe with nil? predicate is redundant"
+            raise ::Dry::Schema::InvalidSchemaError, 'Using maybe with nil? predicate is redundant'
           end
 
           value(*args, **opts, &block)

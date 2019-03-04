@@ -17,12 +17,12 @@ RSpec.describe Dry::Schema, 'nested schemas' do
     end
 
     it 'passes when input is valid' do
-      input = {content: {meta: {version: "1.0"}, data: {city: "Canberra"}}}
+      input = {content: {meta: {version: '1.0'}, data: {city: 'Canberra'}}}
       expect(schema.(input)).to be_success
     end
 
     it 'fails when one sub-key is missing' do
-      input = {content: {data: {city: "Canberra"}}}
+      input = {content: {data: {city: 'Canberra'}}}
       expect(schema.(input).messages).to eql(content: {meta: ['is missing', 'must be a hash']})
     end
 
@@ -32,10 +32,10 @@ RSpec.describe Dry::Schema, 'nested schemas' do
     end
 
     it 'fails when the deeply nested keys are invalid' do
-      input = {content: {meta: {version: ""}, data: {city: ""}}}
+      input = {content: {meta: {version: ''}, data: {city: ''}}}
 
       expect(schema.(input).messages).to eql(
-        content: {meta: {version: ["must be filled"]}, data: {city: ["must be filled"]}}
+        content: {meta: {version: ['must be filled']}, data: {city: ['must be filled']}}
       )
     end
   end

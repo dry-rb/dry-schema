@@ -54,11 +54,11 @@ RSpec.describe Dry::Schema::MessageCompiler do
 
     it 'converts error ast into another format' do
       expect(message_compiler.(ast).to_h).to eql(
-        name: ["+name+ key is missing in the hash"],
-        gender: ["Please provide your gender"],
-        age: ["must be greater than 18"],
-        email: ["must be filled"],
-        address: ["Please provide your address"]
+        name: ['+name+ key is missing in the hash'],
+        gender: ['Please provide your gender'],
+        age: ['must be greater than 18'],
+        email: ['must be filled'],
+        address: ['Please provide your address']
       )
     end
   end

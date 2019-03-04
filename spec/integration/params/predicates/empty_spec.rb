@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Empty' do
       end
 
       context 'with filled' do
-        it "should raise error" do
+        it 'should raise error' do
           expect { Dry::Schema.Params do
             required(:foo).filled(:empty?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
@@ -180,7 +180,7 @@ RSpec.describe 'Predicates: Empty' do
       end
 
       context 'with maybe' do
-        it "should raise error" do
+        it 'should raise error' do
           expect { Dry::Schema.Params do
             required(:foo).maybe(:empty?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Empty' do
       end
 
       context 'with filled' do
-        it "should raise error" do
+        it 'should raise error' do
           expect { Dry::Schema.Params do
             optional(:foo).filled(:empty?)
           end }.to raise_error Dry::Schema::InvalidSchemaError
@@ -254,7 +254,7 @@ RSpec.describe 'Predicates: Empty' do
       end
 
       context 'with maybe' do
-        it "should raise error" do
+        it 'should raise error' do
           expect { Dry::Schema.Params do
             optional(:foo).maybe(:empty?)
           end }.to raise_error Dry::Schema::InvalidSchemaError

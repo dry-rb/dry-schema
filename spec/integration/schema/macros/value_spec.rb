@@ -4,7 +4,7 @@ RSpec.describe 'Macros #value' do
   describe 'with no args' do
     it 'raises an exception' do
       expect { Dry::Schema.define { required(:email).value } }.to raise_error(
-        ArgumentError, "wrong number of arguments (given 0, expected at least 1)"
+        ArgumentError, 'wrong number of arguments (given 0, expected at least 1)'
       )
     end
   end

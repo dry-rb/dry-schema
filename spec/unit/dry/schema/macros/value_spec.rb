@@ -13,9 +13,9 @@ RSpec.describe Dry::Schema::Macros::Value do
 
       rule = macro.to_rule
 
-      expect(rule.("foobar")).to be_success
-      expect(rule.("f")).to be_failure
-      expect(rule.("foo"*20)).to be_failure
+      expect(rule.('foobar')).to be_success
+      expect(rule.('f')).to be_failure
+      expect(rule.('foo'*20)).to be_failure
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Dry::Schema::Macros::Value do
     it 'returns a predicate when method ends with a question mark' do
       rule = macro.str?.to_rule
 
-      expect(rule.("foobar")).to be_success
+      expect(rule.('foobar')).to be_success
       expect(rule.(:foobar)).to be_failure
     end
 

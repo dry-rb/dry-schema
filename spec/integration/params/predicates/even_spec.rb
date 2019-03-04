@@ -440,7 +440,7 @@ RSpec.describe 'Predicates: Even' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ["must be an integer", "must be even"]
+            expect(result).to be_failing ['must be an integer', 'must be even']
           end
         end
 

@@ -22,31 +22,31 @@ RSpec.describe Dry::Schema::Messages::I18n do
       it 'returns a message for a predicate' do
         template = messages[:filled?, path: :name]
 
-        expect(template.()).to eql("nie może być pusty")
+        expect(template.()).to eql('nie może być pusty')
       end
 
       it 'returns a message for a specific rule' do
         template = messages[:filled?, path: :email]
 
-        expect(template.()).to eql("Proszę podać adres email")
+        expect(template.()).to eql('Proszę podać adres email')
       end
 
       it 'returns a message for a specific val type' do
         template = messages[:size?, path: :pages, val_type: String]
 
-        expect(template.(size: 2)).to eql("wielkość musi być równa 2")
+        expect(template.(size: 2)).to eql('wielkość musi być równa 2')
       end
 
       it 'returns a message for a specific rule and its default arg type' do
         template = messages[:size?, path: :pages]
 
-        expect(template.(size: 2)).to eql("wielkość musi być równa 2")
+        expect(template.(size: 2)).to eql('wielkość musi być równa 2')
       end
 
       it 'returns a message for a specific rule and its arg type' do
         template = messages[:size?, path: :pages, arg_type: Range]
 
-        expect(template.(size_left: 1, size_right: 2)).to eql("wielkość musi być między 1 a 2")
+        expect(template.(size_left: 1, size_right: 2)).to eql('wielkość musi być między 1 a 2')
       end
     end
 
@@ -54,31 +54,31 @@ RSpec.describe Dry::Schema::Messages::I18n do
       it 'returns a message for a predicate' do
         template = messages[:filled?, path: :name, locale: :en]
 
-        expect(template.()).to eql("must be filled")
+        expect(template.()).to eql('must be filled')
       end
 
       it 'returns a message for a specific rule' do
         template = messages[:filled?, path: :email, locale: :en]
 
-        expect(template.()).to eql("Please provide your email")
+        expect(template.()).to eql('Please provide your email')
       end
 
       it 'returns a message for a specific rule and its default arg type' do
         template = messages[:size?, path: :pages, locale: :en]
 
-        expect(template.(size: 2)).to eql("size must be 2")
+        expect(template.(size: 2)).to eql('size must be 2')
       end
 
       it 'returns a message for a specific rule and its arg type' do
         template = messages[:size?, path: :pages, arg_type: Range, locale: :en]
 
-        expect(template.(size_left: 1, size_right: 2)).to eql("size must be within 1 - 2")
+        expect(template.(size_left: 1, size_right: 2)).to eql('size must be within 1 - 2')
       end
     end
 
     context 'fallbacking to I18n.default_locale with fallback backend config' do
       before do
-        require "i18n/backend/fallbacks"
+        require 'i18n/backend/fallbacks'
 
         # https://github.com/svenfuchs/i18n/pull/415
         # Since I18n does not provide default fallbacks anymore, we have to do this explicitly
@@ -90,7 +90,7 @@ RSpec.describe Dry::Schema::Messages::I18n do
         template = messages[:even?, path: :some_number]
 
         expect(I18n.locale).to eql(:pl)
-        expect(template.()).to eql("must be even")
+        expect(template.()).to eql('must be even')
       end
     end
   end

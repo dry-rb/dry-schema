@@ -2,7 +2,7 @@
 
 RSpec.context 'Predicates: Included In' do
 
-  context "Array" do
+  context 'Array' do
 
     context 'with required' do
       subject(:schema) do

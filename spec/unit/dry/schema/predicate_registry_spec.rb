@@ -7,7 +7,7 @@ RSpec.describe Dry::Schema::PredicateRegistry do
 
   describe '#[]' do
     it 'gives access to built-in predicates' do
-      expect(predicate_registry[:filled?].("sutin")).to be(true)
+      expect(predicate_registry[:filled?].('sutin')).to be(true)
     end
   end
 end

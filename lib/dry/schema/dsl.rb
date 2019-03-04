@@ -205,7 +205,7 @@ module Dry
       #
       # @api public
       def array
-        -> member_type { type_registry["array"].of(resolve_type(member_type)) }
+        -> member_type { type_registry['array'].of(resolve_type(member_type)) }
       end
 
       # Return type schema used by the value coercer
@@ -214,7 +214,7 @@ module Dry
       #
       # @api private
       def type_schema
-        type_registry["hash"].schema(types.merge(parent_types)).safe
+        type_registry['hash'].schema(types.merge(parent_types)).safe
       end
 
       # Return a new DSL instance using the same processor type

@@ -2,7 +2,7 @@
 
 RSpec.describe 'Predicates: Excluded From' do
 
-  context "Range" do
+  context 'Range' do
 
     context 'with required' do
       subject(:schema) do

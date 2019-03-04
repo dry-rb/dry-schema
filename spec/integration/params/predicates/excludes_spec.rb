@@ -102,12 +102,12 @@ RSpec.describe 'Predicates: Excludes' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).value(:string, excludes?: "foo")
+            required(:foo).value(:string, excludes?: 'foo')
           end
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => "bar" } }
+          let(:input) { { 'foo' => 'bar' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -139,7 +139,7 @@ RSpec.describe 'Predicates: Excludes' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => "foo" } }
+          let(:input) { { 'foo' => 'foo' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must not include foo']
@@ -155,7 +155,7 @@ RSpec.describe 'Predicates: Excludes' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => "Hello World" } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -187,7 +187,7 @@ RSpec.describe 'Predicates: Excludes' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => "foo bar" } }
+          let(:input) { { 'foo' => 'foo bar' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must not include foo']
@@ -203,7 +203,7 @@ RSpec.describe 'Predicates: Excludes' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => "Hello World" } }
+          let(:input) { { 'foo' => 'Hello World' } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -235,7 +235,7 @@ RSpec.describe 'Predicates: Excludes' do
         end
 
         context 'with invalid input' do
-          let(:input) { { 'foo' => "foo bar" } }
+          let(:input) { { 'foo' => 'foo bar' } }
 
           it 'is not successful' do
             expect(result).to be_failing ['must not include foo']
