@@ -17,6 +17,9 @@ Style/StabbyLambdaParentheses:
 Metrics/LineLength:                                                             
   Max: 100 
 
+Metrics/AbcSize:
+  Max: 20
+
 Metrics/BlockLength:
   Enabled: true
   Exclude:
