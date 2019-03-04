@@ -18,8 +18,7 @@ module Dry
             schema_dsl.set_type(name, updated_type)
           end
 
-          trace.evaluate(*predicates, **opts, &block)
-
+          trace.evaluate(*predicates, **opts)
           trace.append(new(chain: false).instance_exec(&block)) if block
 
           if trace.captures.empty?
