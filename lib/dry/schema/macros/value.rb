@@ -15,7 +15,13 @@ module Dry
 
           if schema
             current_type = schema_dsl.types[name]
-            updated_type = current_type.respond_to?(:of) ? current_type.of(schema.type_schema) : schema.type_schema
+
+            updated_type =
+              if current_type.respond_to?(:of)
+                current_type.of(schema.type_schema)
+              else
+                schema.type_schema
+              end
 
             schema_dsl.set_type(name, updated_type)
           end

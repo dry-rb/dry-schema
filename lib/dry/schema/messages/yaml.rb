@@ -19,7 +19,9 @@ module Dry
       # @api private
       configure do |config|
         config.root = '%{locale}.dry_schema.errors'
-        config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "%{locale}.dry_schema.#{path}" }
+        config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
+          "%{locale}.dry_schema.#{path}"
+        }
       end
 
       # @api private

@@ -32,14 +32,19 @@ module Dry
           # @api private
           def exclude?(messages, opts)
             Array(messages).all? do |msg|
-              hints = opts.hints.reject { |hint| msg == hint }.reject { |hint| hint.predicate == :filled? }
+              hints = opts
+                .hints
+                .reject { |hint| msg == hint }
+                .reject { |hint| hint.predicate == :filled? }
+
               key_failure = opts.key_failure?(msg.path)
               predicate = msg.predicate
 
               (HINT_TYPE_EXCLUSION.include?(predicate) && !key_failure) ||
                 (msg.predicate == :filled? && key_failure) ||
-                  (!key_failure && HINT_TYPE_EXCLUSION.include?(predicate) && !hints.empty? && hints.any? { |hint| hint.path == msg.path }) ||
-                    HINT_OTHER_EXCLUSION.include?(predicate)
+                (!key_failure && HINT_TYPE_EXCLUSION.include?(predicate) &&
+                  !hints.empty? && hints.any? { |hint| hint.path == msg.path }) ||
+                HINT_OTHER_EXCLUSION.include?(predicate)
             end
           end
 

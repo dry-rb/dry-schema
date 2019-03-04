@@ -106,9 +106,11 @@ module Dry
         def extract_type_spec(*args, nullable: false)
           type_spec = args[0]
 
-          if type_spec.kind_of?(Dry::Schema::Processor) || type_spec.is_a?(Symbol) && type_spec.to_s.end_with?(QUESTION_MARK)
-            type_spec = nil
-          end
+          is_type_spec = type_spec.kind_of?(Dry::Schema::Processor) ||
+                         type_spec.is_a?(Symbol) &&
+                         type_spec.to_s.end_with?(QUESTION_MARK)
+
+          type_spec = nil if is_type_spec
 
           predicates = Array(type_spec ? args[1..-1] : args)
 
