@@ -1,3 +1,4 @@
+require 'dry/schema/macros/array'
 require 'dry/schema/macros/each'
 require 'dry/schema/macros/filled'
 require 'dry/schema/macros/schema'

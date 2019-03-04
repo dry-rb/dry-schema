@@ -68,8 +68,7 @@ module Dry
         #
         # @api public
         def array(*args, &block)
-          value(:array)
-          append_macro(Macros::Each) do |macro|
+          append_macro(Macros::Array) do |macro|
             macro.value(*args, &block)
           end
         end

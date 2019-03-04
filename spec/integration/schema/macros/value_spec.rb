@@ -163,6 +163,22 @@ RSpec.describe 'Macros #value' do
       end
     end
 
+    context 'with a hash or array within a block' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:nums).value do
+            array { hash { required(:val).value(:integer) } } |
+              hash { required(:val).value(:integer) }
+          end
+        end
+      end
+
+      it 'generates correct disjunction' do
+        expect(schema.(nums: nil).errors)
+          .to eql(nums: ['must be an array or must be a hash'])
+      end
+    end
+
     context 'with a schema' do
       subject(:schema) do
         Dry::Schema.define do
