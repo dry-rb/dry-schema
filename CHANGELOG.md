@@ -1,11 +1,17 @@
-# 0.3.0 to-be-released
+# 0.3.0 2018-03-04
 
 ### Fixed
 
 * Configuration is properly inherited from a parent schema (skryukov)
 * `Result#error?` returns `true` when a preceding key has errors (solnic)
-* Predicate inferrer no longer chokes on sum type and constructor types (solnic)
+* Predicate inferrer no longer chokes on sum, constructor and enum types (solnic)
 * Predicate inferrer infers `:bool?` from boolean types (solnic)
+* Block-based definitions using `array` works correctly (solnic)
+* Using a disjunction with `array` and `hash` produces correct errors when element validation for array failed (solnic)
+
+### Changed
+
+* Required ruby version was removed from gemspec for people who are stuck on MRI 2.3.x (solnic)
 
 [Compare v0.2.0...v0.3.0](https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.3.0)
 
