@@ -1,6 +1,10 @@
 AllCops:
   TargetRubyVersion: 2.4
 
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
 Style/Alias:
   Enabled: false
 
@@ -10,6 +14,17 @@ Style/LambdaCall:
 Style/StabbyLambdaParentheses:
   Enabled: false
 
+Metrics/LineLength:                                                             
+  Max: 100 
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
 Metrics/CyclomaticComplexity:
   Enabled: true
   Max: 10
+
+Lint/BooleanSymbol:
+  Enabled: false
