@@ -21,7 +21,7 @@ module Dry
         DEFAULT_PATH = Pathname(__dir__).join('../../../../config/errors.yml').realpath.freeze
 
         setting :paths, [DEFAULT_PATH]
-        setting :root, 'errors'.freeze
+        setting :root, 'errors'
         setting :lookup_options, [:root, :predicate, :path, :val_type, :arg_type].freeze
 
         setting :lookup_paths, %w(
@@ -40,8 +40,8 @@ module Dry
           rules.%{name}
         ).freeze
 
-        setting :arg_type_default, 'default'.freeze
-        setting :val_type_default, 'default'.freeze
+        setting :arg_type_default, 'default'
+        setting :val_type_default, 'default'
 
         setting :arg_types, Hash.new { |*| config.arg_type_default }.update(
           Range => 'range'

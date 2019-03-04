@@ -14,7 +14,7 @@ module Dry
       attr_reader :messages, :options, :locale, :default_lookup_options
 
       EMPTY_OPTS = VisitorOpts.new
-      LIST_SEPARATOR = ', '.freeze
+      LIST_SEPARATOR = ', '
 
       # @api private
       def initialize(messages, options = {})

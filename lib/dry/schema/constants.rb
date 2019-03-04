@@ -9,7 +9,7 @@ module Dry
     InvalidSchemaError = Class.new(StandardError)
     MissingMessageError = Class.new(StandardError)
 
-    QUESTION_MARK = '?'.freeze
-    DOT = '.'.freeze
+    QUESTION_MARK = '?'
+    DOT = '.'
   end
 end

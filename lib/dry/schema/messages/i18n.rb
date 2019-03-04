@@ -12,7 +12,7 @@ module Dry
       attr_reader :t
 
       configure do |config|
-        config.root = 'dry_schema.errors'.freeze
+        config.root = 'dry_schema.errors'
         config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "dry_schema.#{path}" }
       end
 

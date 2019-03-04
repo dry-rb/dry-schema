@@ -18,7 +18,7 @@ module Dry
 
       # @api private
       configure do |config|
-        config.root = '%{locale}.dry_schema.errors'.freeze
+        config.root = '%{locale}.dry_schema.errors'
         config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "%{locale}.dry_schema.#{path}" }
       end
 
@@ -34,7 +34,7 @@ module Dry
 
       # @api private
       def self.flat_hash(h, f = [], g = {})
-        return g.update(f.join('.'.freeze) => h) unless h.is_a? Hash
+        return g.update(f.join('.') => h) unless h.is_a? Hash
         h.each { |k, r| flat_hash(r, f + [k], g) }
         g
       end
