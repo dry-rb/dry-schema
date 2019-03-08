@@ -11,7 +11,7 @@ module Dry
     class Message
       include Dry::Equalizer(:predicate, :path, :text, :options)
 
-      attr_reader :predicate, :path, :text, :rule, :args, :options
+      attr_reader :predicate, :path, :text, :args, :options
 
       # A message sub-type used by OR operations
       #
@@ -67,15 +67,10 @@ module Dry
       # @api private
       def initialize(predicate, path, text, options)
         @predicate = predicate
-        @path = path.dup
+        @path = path
         @text = text
         @options = options
-        @rule = options[:rule] || path.last
         @args = options[:args] || EMPTY_ARRAY
-
-        if predicate == :key?
-          @path << rule
-        end
       end
 
       # Return a string representation of the message

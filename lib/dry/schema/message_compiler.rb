@@ -15,12 +15,25 @@ module Dry
     class MessageCompiler
       extend Dry::Initializer
 
+      resolve_key_predicate = proc { |node, opts|
+        *arg_vals, val = node.map(&:last)
+        [[*opts.path, arg_vals[0]], arg_vals[1..arg_vals.size - 1], val]
+      }
+
+      resolve_predicate = proc { |node, opts|
+        [opts.path, *node.map(&:last)]
+      }
+
+      DEFAULT_PREDICATE_RESOLVERS = Hash
+        .new(resolve_predicate).update(key?: resolve_key_predicate).freeze
+
       EMPTY_OPTS = VisitorOpts.new
 
       param :messages
 
       option :full, default: -> { false }
       option :locale, default: -> { :en }
+      option :predicate_resolvers, default: -> { DEFAULT_PREDICATE_RESOLVERS }
 
       attr_reader :options
 
@@ -106,33 +119,30 @@ module Dry
 
       # @api private
       def visit_predicate(node, opts)
-        base_opts = opts.dup
         predicate, args = node
 
-        *arg_vals, val = args.map(&:last)
+        path, *arg_vals, val = predicate_resolvers[predicate].(args, opts)
+
+        base_opts = opts.dup
         tokens = message_tokens(args)
 
         input = val != Undefined ? val : nil
 
-        options = base_opts.update(lookup_options(arg_vals: arg_vals, input: input))
-        msg_opts = options.update(tokens)
+        options = base_opts.update(path: path, **lookup_options(arg_vals: arg_vals, input: input))
+        options.update(tokens)
 
-        rule = msg_opts[:rule]
-        path = msg_opts[:path]
-
-        template = messages[rule] || messages[predicate, msg_opts]
+        template = messages[predicate, options]
 
         unless template
           raise MissingMessageError, "message for #{predicate} was not found"
         end
 
-        text = message_text(rule, template, tokens, options)
+        text = message_text(template, tokens, options)
 
         message_type(options)[
           predicate, path, text,
           args: arg_vals,
-          input: input,
-          rule: rule || msg_opts[:name]
+          input: input
         ]
       end
 
@@ -173,12 +183,12 @@ module Dry
       end
 
       # @api private
-      def message_text(rule, template, tokens, opts)
+      def message_text(template, tokens, options)
         text = template[template.data(tokens)]
 
         if full?
-          rule_name = rule ? (messages.rule(rule, opts) || rule) : (opts[:name] || opts[:path].last)
-          "#{rule_name} #{text}"
+          rule = options[:path].last
+          "#{messages.rule(rule, options) || rule} #{text}"
         else
           text
         end

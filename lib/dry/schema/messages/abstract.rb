@@ -103,7 +103,7 @@ module Dry
             message_type: options[:message_type] || :failure
           )
 
-          tokens[:path] = options[:rule] || Array(options[:path]).last
+          tokens[:path] = Array(options[:path]).last
 
           opts = options.select { |k, _| !config.lookup_options.include?(k) }
 
