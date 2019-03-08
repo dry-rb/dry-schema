@@ -13,6 +13,11 @@ module Dry
         def operation
           :then
         end
+
+        # @api private
+        def to_rule
+          super unless trace.captures.empty?
+        end
       end
     end
   end
