@@ -26,12 +26,12 @@ module Dry
 
           # @api private
           def filter(messages, opts)
-            Array(messages).flatten.map { |msg| msg unless exclude?(msg, opts) }.compact.uniq
+            Array[messages].flatten.map { |msg| msg unless exclude?(msg, opts) }.compact.uniq
           end
 
           # @api private
           def exclude?(messages, opts)
-            Array(messages).all? do |msg|
+            Array[messages].map { |msg| msg.is_a?(Message::Or) ? msg.to_a : msg }.flatten.all? do |msg|
               hints = opts
                 .hints
                 .reject { |hint| msg == hint }

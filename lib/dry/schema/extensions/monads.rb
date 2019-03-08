@@ -11,7 +11,7 @@ module Dry
         if success?
           Success(output)
         else
-          Failure(message_set(options).dump)
+          Failure(message_set(options).to_h)
         end
       end
     end

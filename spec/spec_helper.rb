@@ -35,6 +35,15 @@ Dry::Schema.load_extensions(:hints)
 
 require 'i18n'
 require 'dry/schema/messages/i18n'
+require 'dry/schema/message_set'
+
+module MessageSetSupport
+  def eql?(other)
+    to_h.eql?(other)
+  end
+end
+
+Dry::Schema::MessageSet.include(MessageSetSupport)
 
 RSpec.configure do |config|
   config.disable_monkey_patching!

@@ -70,7 +70,7 @@ module Dry
         @path = path.dup
         @text = text
         @options = options
-        @rule = options[:rule]
+        @rule = options[:rule] || path.last
         @args = options[:args] || EMPTY_ARRAY
 
         if predicate == :key?
@@ -88,6 +88,11 @@ module Dry
       # @api private
       def eql?(other)
         other.is_a?(String) ? text == other : super
+      end
+
+      # @api private
+      def to_a
+        [rule, text]
       end
 
       def <=>(other)

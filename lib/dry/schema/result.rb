@@ -107,7 +107,7 @@ module Dry
       #
       # @api public
       def errors(options = EMPTY_HASH)
-        message_set(options).dump
+        message_set(options)
       end
 
       # Return the message set
@@ -130,7 +130,7 @@ module Dry
       #
       # @api public
       def inspect
-        "#<#{self.class}#{to_h.inspect} errors=#{errors.inspect}>"
+        "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect}>"
       end
 
       private

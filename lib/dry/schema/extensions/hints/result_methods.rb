@@ -9,7 +9,7 @@ module Dry
           #
           # @api public
           def errors(options = EMPTY_HASH)
-            message_set(options.merge(hints: false)).dump
+            message_set(options.merge(hints: false))
           end
 
           # Get all messages including hints
@@ -20,7 +20,7 @@ module Dry
           #
           # @api public
           def messages(options = EMPTY_HASH)
-            message_set(options).dump
+            message_set(options)
           end
 
           # Get hints exclusively without errors
@@ -31,7 +31,7 @@ module Dry
           #
           # @api public
           def hints(options = EMPTY_HASH)
-            message_set(options.merge(failures: false)).dump
+            message_set(options.merge(failures: false))
           end
         end
       end
