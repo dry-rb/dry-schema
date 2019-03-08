@@ -23,7 +23,7 @@ RSpec.describe Dry::Schema, 'pre-coercion input rules' do
     end
 
     it 'uses pre-coercion rules' do
-      expect(schema.call(age: 'foo', login: 'jane').errors)
+      expect(schema.call(age: 'foo', login: 'jane').errors.to_h)
         .to include(age: ['is in invalid format'])
     end
 

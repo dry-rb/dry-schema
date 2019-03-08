@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dry/equalizer'
+
 module Dry
   module Schema
     # A set of messages used to generate errors
@@ -9,6 +11,7 @@ module Dry
     # @api public
     class MessageSet
       include Enumerable
+      include Dry::Equalizer(:messages, :options)
 
       attr_reader :messages, :placeholders, :options
 
@@ -35,7 +38,16 @@ module Dry
         messages_map
       end
       alias_method :to_hash, :to_h
-      alias_method :dump, :to_h
+
+      # @api public
+      def [](key)
+        to_h[key]
+      end
+
+      # @api public
+      def fetch(key)
+        self[key] || raise(KeyError, "+#{key}+ message was not found")
+      end
 
       # @api private
       def empty?
