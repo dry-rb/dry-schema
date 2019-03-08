@@ -31,7 +31,7 @@ module Dry
 
           # @api private
           def exclude?(messages, opts)
-            Array[messages].map { |msg| msg.is_a?(Message::Or) ? msg.to_a : msg }.flatten.all? do |msg|
+            Array[messages].flat_map { |msg| msg.is_a?(Message::Or) ? msg.to_a : msg }.all? do |msg|
               hints = opts
                 .hints
                 .reject { |hint| msg == hint }
