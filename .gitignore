@@ -8,3 +8,4 @@ tmp/
 .idea/
 Gemfile.lock
 doc
+.rubocop.yml
