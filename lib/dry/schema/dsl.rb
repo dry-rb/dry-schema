@@ -265,7 +265,7 @@ module Dry
       #
       # @api protected
       def rules
-        parent_rules.merge(macros.map { |m| [m.name, m.to_rule] }.to_h)
+        parent_rules.merge(macros.map { |m| [m.name, m.to_rule] }.to_h.compact)
       end
 
       # Build a key map from defined types
