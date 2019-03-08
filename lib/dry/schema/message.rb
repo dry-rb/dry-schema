@@ -90,11 +90,6 @@ module Dry
         other.is_a?(String) ? text == other : super
       end
 
-      # @api private
-      def to_a
-        [rule, text]
-      end
-
       def <=>(other)
         l_path = Path[path]
         r_path = Path[other.path]
