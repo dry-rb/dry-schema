@@ -116,12 +116,10 @@ module Dry
       def visit_predicate(node, opts)
         predicate, args = node
 
-        path, *arg_vals, val = predicate_resolvers[predicate].(args, opts)
+        path, *arg_vals, input = predicate_resolvers[predicate].(args, opts)
 
         base_opts = opts.dup
         tokens = message_tokens(args)
-
-        input = val != Undefined ? val : nil
 
         options = base_opts.update(path: path, **lookup_options(arg_vals: arg_vals, input: input))
         options.update(tokens)
@@ -168,10 +166,10 @@ module Dry
       end
 
       # @api private
-      def lookup_options(arg_vals: [], input: nil)
+      def lookup_options(arg_vals:, input:)
         default_lookup_options.merge(
           arg_type: arg_vals.size == 1 && arg_vals[0].class,
-          val_type: input.class
+          val_type: input.equal?(Undefined) ? NilClass : input.class
         )
       end
 
