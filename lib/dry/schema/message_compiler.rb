@@ -78,7 +78,7 @@ module Dry
       end
 
       # @api private
-      def visit_hint(node, opts)
+      def visit_hint(*)
         nil
       end
 
@@ -103,7 +103,7 @@ module Dry
         left, right = node.map { |n| visit(n, opts) }
 
         if [left, right].flatten.map(&:path).uniq.size == 1
-          Message::Or.new(left, right, -> k { messages[k, default_lookup_options] })
+          Message::Or.new(left, right, proc { |k| messages[k, default_lookup_options] })
         elsif right.is_a?(Array)
           right
         else
@@ -133,9 +133,7 @@ module Dry
 
         template = messages[predicate, options]
 
-        unless template
-          raise MissingMessageError, "message for #{predicate} was not found"
-        end
+        template || raise(MissingMessageError, "message for #{predicate} was not found")
 
         text = message_text(template, tokens, options)
 
@@ -186,17 +184,15 @@ module Dry
       def message_text(template, tokens, options)
         text = template[template.data(tokens)]
 
-        if full?
-          rule = options[:path].last
-          "#{messages.rule(rule, options) || rule} #{text}"
-        else
-          text
-        end
+        return text unless full?
+
+        rule = options[:path].last
+        "#{messages.rule(rule, options) || rule} #{text}"
       end
 
       # @api private
       def message_tokens(args)
-        args.each_with_object({}) { |arg, hash|
+        args.each_with_object({}) do |arg, hash|
           case arg[1]
           when Array
             hash[arg[0]] = arg[1].join(LIST_SEPARATOR)
@@ -206,7 +202,7 @@ module Dry
           else
             hash[arg[0]] = arg[1]
           end
-        }
+        end
       end
     end
   end
