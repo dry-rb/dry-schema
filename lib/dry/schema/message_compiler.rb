@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dry/initializer'
+
 require 'dry/schema/constants'
 require 'dry/schema/message'
 require 'dry/schema/message_set'
@@ -11,18 +13,25 @@ module Dry
     #
     # @api private
     class MessageCompiler
-      attr_reader :messages, :options, :locale, :default_lookup_options
+      extend Dry::Initializer
 
       EMPTY_OPTS = VisitorOpts.new
       LIST_SEPARATOR = ', '
 
+      param :messages
+
+      option :full, default: -> { false }
+      option :locale, default: -> { :en }
+
+      attr_reader :options
+
+      attr_reader :default_lookup_options
+
       # @api private
-      def initialize(messages, options = {})
-        @messages = messages
+      def initialize(messages, options = EMPTY_HASH)
+        super
         @options = options
-        @full = @options.fetch(:full, false)
-        @locale = @options[:locale]
-        @default_lookup_options = @locale ? { locale: locale } : EMPTY_HASH
+        @default_lookup_options = options[:locale] ? { locale: locale } : EMPTY_HASH
       end
 
       # @api private
