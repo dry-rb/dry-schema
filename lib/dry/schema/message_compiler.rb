@@ -123,9 +123,7 @@ module Dry
           path: path, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
         )
 
-        template = messages[predicate, options]
-
-        template || raise(MissingMessageError, "message for #{predicate} was not found")
+        template = messages[predicate, options] || raise(MissingMessageError, path)
 
         text = message_text(template, tokens, options)
 

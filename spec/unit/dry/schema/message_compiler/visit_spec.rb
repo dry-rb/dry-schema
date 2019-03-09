@@ -15,4 +15,16 @@ RSpec.describe Dry::Schema::MessageCompiler, '#visit' do
       expect(result).to eql('must be an integer')
     end
   end
+
+  context 'with an unsupported predicate' do
+    let(:node) do
+      [:key, [%i[user address street], [:predicate, [:oops?, [[:input, '17']]]]]]
+    end
+
+    it 'raises MissingMessageError' do
+      expect { result }.to raise_error(Dry::Schema::MissingMessageError, <<~STR)
+        Message template for :street under "user.address" was not found
+      STR
+    end
+  end
 end
