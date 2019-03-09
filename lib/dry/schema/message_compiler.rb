@@ -33,6 +33,7 @@ module Dry
       # @api private
       def with(new_options)
         return self if new_options.empty?
+
         self.class.new(messages, options.merge(new_options))
       end
 
