@@ -1,3 +1,16 @@
+# 0.4.0 to-be-released
+
+### Fixed
+
+* Handling of messages for `optional` keys without value rules works correctly (issue #87) (solnic)
+* Message structure for `optional` keys with an array of hashes no longer duplicates keys (issue #89) (solnic)
+
+### Changed
+
+* [BREAKING] `Result#{errors,messages,hints}` returns `MessageSet` object now which is an enumerable coercible to a hash (solnic)
+
+[Compare v0.3.0...v0.4.0](https://github.com/dry-rb/dry-schema/compare/v0.3.0...v0.4.0)
+
 # 0.3.0 2018-03-04
 
 ### Fixed
