@@ -9,6 +9,7 @@ module Dry
     InvalidSchemaError = Class.new(StandardError)
     MissingMessageError = Class.new(StandardError)
 
+    LIST_SEPARATOR = ', '
     QUESTION_MARK = '?'
     DOT = '.'
   end

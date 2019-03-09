@@ -16,7 +16,6 @@ module Dry
       extend Dry::Initializer
 
       EMPTY_OPTS = VisitorOpts.new
-      LIST_SEPARATOR = ', '
 
       param :messages
 
