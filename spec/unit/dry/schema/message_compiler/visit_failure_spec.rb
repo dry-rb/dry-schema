@@ -11,7 +11,6 @@ RSpec.describe Dry::Schema::MessageCompiler, '#visit_failure' do
     end
 
     it 'returns a message for :int? failure with :rule name inferred from key-rule' do
-      expect(result.rule).to be(:age)
       expect(result.path).to eql([:age])
       expect(result).to eql('must be an integer')
     end
@@ -26,13 +25,11 @@ RSpec.describe Dry::Schema::MessageCompiler, '#visit_failure' do
     end
 
     it 'returns a message for the first element that failed' do
-      expect(result[0].rule).to be(:items)
       expect(result[0].path).to eql([:items, 0])
       expect(result[0]).to eql('must be an integer')
     end
 
     it 'returns a message for the third element that failed' do
-      expect(result[1].rule).to be(:items)
       expect(result[1].path).to eql([:items, 2])
       expect(result[1]).to eql('must be an integer')
     end

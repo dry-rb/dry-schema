@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dry/initializer'
+
 require 'dry/schema/constants'
 require 'dry/schema/message'
 require 'dry/schema/message_set'
@@ -11,28 +13,43 @@ module Dry
     #
     # @api private
     class MessageCompiler
-      attr_reader :messages, :options, :locale, :default_lookup_options
+      extend Dry::Initializer
+
+      resolve_key_predicate = proc { |node, opts|
+        *arg_vals, val = node.map(&:last)
+        [[*opts.path, arg_vals[0]], arg_vals[1..arg_vals.size - 1], val]
+      }
+
+      resolve_predicate = proc { |node, opts|
+        [Array(opts.path), *node.map(&:last)]
+      }
+
+      DEFAULT_PREDICATE_RESOLVERS = Hash
+        .new(resolve_predicate).update(key?: resolve_key_predicate).freeze
 
       EMPTY_OPTS = VisitorOpts.new
-      LIST_SEPARATOR = ', '
+
+      param :messages
+
+      option :full, default: -> { false }
+      option :locale, default: -> { :en }
+      option :predicate_resolvers, default: -> { DEFAULT_PREDICATE_RESOLVERS }
+
+      attr_reader :options
+
+      attr_reader :default_lookup_options
 
       # @api private
-      def initialize(messages, options = {})
-        @messages = messages
+      def initialize(messages, options = EMPTY_HASH)
+        super
         @options = options
-        @full = @options.fetch(:full, false)
-        @locale = @options[:locale]
-        @default_lookup_options = @locale ? { locale: locale } : EMPTY_HASH
-      end
-
-      # @api private
-      def full?
-        @full
+        @default_lookup_options = options[:locale] ? { locale: locale } : EMPTY_HASH
       end
 
       # @api private
       def with(new_options)
         return self if new_options.empty?
+
         self.class.new(messages, options.merge(new_options))
       end
 
@@ -56,7 +73,7 @@ module Dry
       end
 
       # @api private
-      def visit_hint(node, opts)
+      def visit_hint(*)
         nil
       end
 
@@ -81,7 +98,7 @@ module Dry
         left, right = node.map { |n| visit(n, opts) }
 
         if [left, right].flatten.map(&:path).uniq.size == 1
-          Message::Or.new(left, right, -> k { messages[k, default_lookup_options] })
+          Message::Or.new(left, right, proc { |k| messages.translate(k, default_lookup_options) })
         elsif right.is_a?(Array)
           right
         else
@@ -97,33 +114,23 @@ module Dry
 
       # @api private
       def visit_predicate(node, opts)
-        base_opts = opts.dup
         predicate, args = node
 
-        *arg_vals, val = args.map(&:last)
         tokens = message_tokens(args)
+        path, *arg_vals, input = predicate_resolvers[predicate].(args, opts)
 
-        input = val != Undefined ? val : nil
+        options = opts.dup.update(
+          path: path.last, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
+        )
 
-        options = base_opts.update(lookup_options(arg_vals: arg_vals, input: input))
-        msg_opts = options.update(tokens)
+        template = messages[predicate, options] || raise(MissingMessageError, path)
 
-        rule = msg_opts[:rule]
-        path = msg_opts[:path]
-
-        template = messages[rule] || messages[predicate, msg_opts]
-
-        unless template
-          raise MissingMessageError, "message for #{predicate} was not found"
-        end
-
-        text = message_text(rule, template, tokens, options)
+        text = message_text(template, tokens, options)
 
         message_type(options)[
           predicate, path, text,
           args: arg_vals,
-          input: input,
-          rule: rule || msg_opts[:name]
+          input: input
         ]
       end
 
@@ -156,28 +163,26 @@ module Dry
       end
 
       # @api private
-      def lookup_options(arg_vals: [], input: nil)
+      def lookup_options(arg_vals:, input:)
         default_lookup_options.merge(
           arg_type: arg_vals.size == 1 && arg_vals[0].class,
-          val_type: input.class
+          val_type: input.equal?(Undefined) ? NilClass : input.class
         )
       end
 
       # @api private
-      def message_text(rule, template, tokens, opts)
+      def message_text(template, tokens, options)
         text = template[template.data(tokens)]
 
-        if full?
-          rule_name = rule ? (messages.rule(rule, opts) || rule) : (opts[:name] || opts[:path].last)
-          "#{rule_name} #{text}"
-        else
-          text
-        end
+        return text unless full
+
+        rule = options[:path]
+        "#{messages.rule(rule, options) || rule} #{text}"
       end
 
       # @api private
       def message_tokens(args)
-        args.each_with_object({}) { |arg, hash|
+        args.each_with_object({}) do |arg, hash|
           case arg[1]
           when Array
             hash[arg[0]] = arg[1].join(LIST_SEPARATOR)
@@ -187,7 +192,7 @@ module Dry
           else
             hash[arg[0]] = arg[1]
           end
-        }
+        end
       end
     end
   end

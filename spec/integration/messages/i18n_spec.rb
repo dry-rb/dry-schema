@@ -95,6 +95,13 @@ RSpec.describe Dry::Schema::Messages::I18n do
     end
   end
 
+  describe '#translate' do
+    it 'translates raw paths to stored translation texts' do
+      expect(messages.translate(:or)).to eql('lub')
+      expect(messages.translate(:or, locale: :en)).to eql('or')
+    end
+  end
+
   describe '#rule' do
     it 'returns rule name using default locale' do
       expect(messages.rule(:email)).to eql('Adres mailowy')

@@ -71,6 +71,11 @@ module Dry
         end
 
         # @api private
+        def translate(key, locale: default_locale)
+          t["dry_schema.#{key}", locale: locale]
+        end
+
+        # @api private
         def rule(name, options = {})
           tokens = { name: name, locale: options.fetch(:locale, default_locale) }
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
@@ -102,8 +107,6 @@ module Dry
             val_type: config.val_types[options[:val_type]],
             message_type: options[:message_type] || :failure
           )
-
-          tokens[:path] = options[:rule] || Array(options[:path]).last
 
           opts = options.select { |k, _| !config.lookup_options.include?(k) }
 

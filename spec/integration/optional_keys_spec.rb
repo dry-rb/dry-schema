@@ -43,4 +43,26 @@ RSpec.describe Dry::Schema do
       expect(result).to be_success
     end
   end
+
+  describe 'defining schema with optional key that can be an array with hashes' do
+    subject(:schema) do
+      Dry::Schema.define do
+        optional(:contacts).array do
+          hash do
+            required(:name).filled
+          end
+        end
+      end
+    end
+
+    it 'produces correct errors when array has an empty element' do
+      expect(schema.(contacts: [{}]).errors)
+        .to eql(contacts: { 0 => { name: ['is missing'] } })
+    end
+
+    it 'produces correct errors when array has an invalid element' do
+      expect(schema.(contacts: [{ name: nil }]).errors)
+        .to eql(contacts: { 0 => { name: ['must be filled'] } })
+    end
+  end
 end

@@ -15,7 +15,6 @@ module Dry
         def self.new
           opts = super
           opts[:path] = EMPTY_ARRAY
-          opts[:rule] = nil
           opts[:message_type] = :failure
           opts[:current_messages] = EMPTY_ARRAY.dup
           opts
