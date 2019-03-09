@@ -116,13 +116,12 @@ module Dry
       def visit_predicate(node, opts)
         predicate, args = node
 
+        tokens = message_tokens(args)
         path, *arg_vals, input = predicate_resolvers[predicate].(args, opts)
 
-        base_opts = opts.dup
-        tokens = message_tokens(args)
-
-        options = base_opts.update(path: path, **lookup_options(arg_vals: arg_vals, input: input))
-        options.update(tokens)
+        options = opts.dup.update(
+          path: path, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
+        )
 
         template = messages[predicate, options]
 
