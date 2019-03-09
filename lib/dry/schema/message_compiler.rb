@@ -21,7 +21,7 @@ module Dry
       }
 
       resolve_predicate = proc { |node, opts|
-        [opts.path, *node.map(&:last)]
+        [Array(opts.path), *node.map(&:last)]
       }
 
       DEFAULT_PREDICATE_RESOLVERS = Hash
@@ -120,7 +120,7 @@ module Dry
         path, *arg_vals, input = predicate_resolvers[predicate].(args, opts)
 
         options = opts.dup.update(
-          path: path, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
+          path: path.last, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
         )
 
         template = messages[predicate, options] || raise(MissingMessageError, path)
@@ -176,7 +176,7 @@ module Dry
 
         return text unless full
 
-        rule = options[:path].last
+        rule = options[:path]
         "#{messages.rule(rule, options) || rule} #{text}"
       end
 
