@@ -14,7 +14,7 @@ module Dry
     class Messages::YAML < Messages::Abstract
       include Dry::Equalizer(:data)
 
-      attr_reader :data
+      attr_reader :data, :t
 
       # @api private
       configure do |config|
@@ -45,6 +45,7 @@ module Dry
       def initialize(data)
         super()
         @data = data
+        @t = proc { |key, locale: default_locale| get("%{locale}.#{key}", locale: locale) }
       end
 
       # Get a message for the given key and its options

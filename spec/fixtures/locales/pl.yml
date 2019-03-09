@@ -1,5 +1,6 @@
 pl:
   dry_schema:
+    or: "lub"
     rules:
       email: "Adres mailowy"
     company:

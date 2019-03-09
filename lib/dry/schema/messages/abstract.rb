@@ -71,6 +71,11 @@ module Dry
         end
 
         # @api private
+        def translate(key, locale: default_locale)
+          t["dry_schema.#{key}", locale: locale]
+        end
+
+        # @api private
         def rule(name, options = {})
           tokens = { name: name, locale: options.fetch(:locale, default_locale) }
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }

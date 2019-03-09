@@ -98,7 +98,7 @@ module Dry
         left, right = node.map { |n| visit(n, opts) }
 
         if [left, right].flatten.map(&:path).uniq.size == 1
-          Message::Or.new(left, right, proc { |k| messages[k, default_lookup_options] })
+          Message::Or.new(left, right, proc { |k| messages.translate(k, default_lookup_options) })
         elsif right.is_a?(Array)
           right
         else

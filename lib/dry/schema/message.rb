@@ -43,7 +43,7 @@ module Dry
         #
         # @api public
         def to_s
-          uniq.join(" #{messages[:or].()} ")
+          uniq.join(" #{messages[:or]} ")
         end
 
         # @api private
