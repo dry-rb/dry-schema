@@ -47,11 +47,6 @@ module Dry
       end
 
       # @api private
-      def full?
-        @full
-      end
-
-      # @api private
       def with(new_options)
         return self if new_options.empty?
 
@@ -184,7 +179,7 @@ module Dry
       def message_text(template, tokens, options)
         text = template[template.data(tokens)]
 
-        return text unless full?
+        return text unless full
 
         rule = options[:path].last
         "#{messages.rule(rule, options) || rule} #{text}"
