@@ -41,7 +41,11 @@ module Dry
           }
         end
 
-        def visit_array(*)
+        def visit_hash(_)
+          :hash?
+        end
+
+        def visit_array(_)
           :array?
         end
 
