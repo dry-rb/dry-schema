@@ -25,6 +25,27 @@ RSpec.describe Dry::Schema::Params do
     end
   end
 
+  describe '#inspect' do
+    subject(:klass) do
+      class Test::UserSchema < Dry::Schema::Params
+        define do
+          required(:name).filled(:string)
+        end
+      end
+    end
+
+    it 'returns a representation of a params object' do
+      expect(klass.new.inspect).to eql(<<~STR.strip)
+        #<Test::UserSchema keys=["name"] rules={:name=>"key?(:name) AND key[name](str? AND filled?)"}>
+      STR
+    end
+
+    it 'raises exception when definition is missing' do
+      expect { Class.new(Dry::Schema::Params).new }.
+        to raise_error(ArgumentError, 'Cannot create a schema without a definition')
+    end
+  end
+
   describe 'inheritance' do
     let(:parent_class) do
       class Test::UserSchema < Dry::Schema::Params

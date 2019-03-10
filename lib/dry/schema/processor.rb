@@ -105,6 +105,17 @@ module Dry
         @key_map ||= steps.detect { |s| s.is_a?(KeyCoercer) }.key_map
       end
 
+      # Return string represntation
+      #
+      # @return [String]
+      #
+      # @api public
+      def inspect
+        <<~STR.strip
+          #<#{self.class.name} keys=#{key_map.map(&:dump)} rules=#{rules.map { |k, v| [k, v.to_s] }.to_h}>
+        STR
+      end
+
       # Return the type schema
       #
       # @return [Dry::Types::Safe]
