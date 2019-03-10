@@ -75,4 +75,12 @@ RSpec.describe Dry::Schema::Params do
       expect(schema.config.messages).to eql(:i18n)
     end
   end
+
+  describe '#to_proc' do
+    it 'returns a proc' do
+      schema = Dry::Schema.Params { required(:name).filled(:string) }
+
+      expect(schema.to_proc.(name: '').errors).to eql(name: ['must be filled'])
+    end
+  end
 end

@@ -95,6 +95,16 @@ module Dry
           end
         end
       end
+      alias_method :[], :call
+
+      # Return a proc that acts like a schema object
+      #
+      # @return [Proc]
+      #
+      # @api public
+      def to_proc
+        ->(input) { call(input) }
+      end
 
       # Return the key map
       #
