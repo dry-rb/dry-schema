@@ -11,7 +11,22 @@ end
 
 if ARGV.include?('--pry')
   require 'pry'
-  binding.pry
+
+  class Context
+    def schema(&block)
+      Dry::Schema.define(&block)
+    end
+
+    def params(&block)
+      Dry::Schema.Params(&block)
+    end
+
+    def json(&block)
+      Dry::Schema.JSON(&block)
+    end
+
+    Pry.start(Context.new, prompt: [proc { "dry-schema> " }, proc { "dry-schema*>" }])
+  end
 else
   require 'irb'
   binding.irb
