@@ -32,42 +32,41 @@ module Dry
 
       param :steps, default: -> { EMPTY_ARRAY.dup }
 
-      # Define a schema for your processor class
-      #
-      # @see Params
-      # @see JSON
-      #
-      # @return [Class]
-      #
-      # @api public
-      def self.define(&block)
-        @__definition__ ||= DSL.new(
-          processor_type: self, parent: superclass.definition, **config, &block
-        )
-        self
-      end
+      class << self
+        # @!attribute [r] definition
+        #   Return DSL configured via #define
+        #   @return [DSL]
+        #   @api private
+        attr_reader :definition
 
-      # Return DSL configured via #define
-      #
-      # @return [DSL]
-      #
-      # @api private
-      def self.definition
-        @__definition__ ||= nil
-      end
+        # Define a schema for your processor class
+        #
+        # @see Params
+        # @see JSON
+        #
+        # @return [Class]
+        #
+        # @api public
+        def define(&block)
+          @definition ||= DSL.new(
+            processor_type: self, parent: superclass.definition, **config, &block
+          )
+          self
+        end
 
-      # Build a new processor object
-      #
-      # @return [Processor]
-      #
-      # @api public
-      def self.new(&block)
-        if block
-          super.tap(&block)
-        elsif definition
-          definition.call
-        else
-          raise ArgumentError, 'Cannot create a schema without a definition'
+        # Build a new processor object
+        #
+        # @return [Processor]
+        #
+        # @api public
+        def new(&block)
+          if block
+            super.tap(&block)
+          elsif definition
+            definition.call
+          else
+            raise ArgumentError, 'Cannot create a schema without a definition'
+          end
         end
       end
 
@@ -103,7 +102,7 @@ module Dry
       #
       # @api public
       def key_map
-        @__key_map__ ||= steps.detect { |s| s.is_a?(KeyCoercer) }.key_map
+        @key_map ||= steps.detect { |s| s.is_a?(KeyCoercer) }.key_map
       end
 
       # Return the type schema
@@ -112,7 +111,7 @@ module Dry
       #
       # @api private
       def type_schema
-        @__type_schema__ ||= steps.detect { |s| s.is_a?(ValueCoercer) }.type_schema
+        @type_schema ||= steps.detect { |s| s.is_a?(ValueCoercer) }.type_schema
       end
 
       # Return the rules config
@@ -121,7 +120,7 @@ module Dry
       #
       # @api private
       def config
-        @__config__ ||= steps.detect { |s| s.is_a?(RuleApplier) }.config
+        @config ||= rule_applier.config
       end
 
       # Return AST representation of the rules
@@ -153,8 +152,7 @@ module Dry
       #
       # @api private
       def rule_applier
-        # TODO: make this more explicit through class types
-        @__rule_applier__ ||= steps.last
+        @rule_applier ||= steps.last
       end
       alias_method :to_rule, :rule_applier
     end
