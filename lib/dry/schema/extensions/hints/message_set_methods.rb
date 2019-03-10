@@ -11,18 +11,14 @@ module Dry
           def initialize(messages, options = EMPTY_HASH)
             super
             @hints = messages.select(&:hint?)
+            @failures = options.fetch(:failures, true)
           end
 
           # @api public
           def to_h
-            failures? ? messages_map : messages_map(hints)
+            failures ? messages_map : messages_map(hints)
           end
           alias_method :to_hash, :to_h
-
-          # @api private
-          def failures?
-            options[:failures].equal?(true)
-          end
         end
       end
     end
