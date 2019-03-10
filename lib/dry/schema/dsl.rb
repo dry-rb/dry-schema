@@ -162,6 +162,8 @@ module Dry
       #
       # @api public
       def key(name, macro:, &block)
+        raise ArgumentError, "Key +#{name}+ is not a symbol" unless name.is_a?(::Symbol)
+
         set_type(name, Types::Any)
 
         macro = macro.new(

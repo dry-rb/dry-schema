@@ -8,6 +8,18 @@ RSpec.describe Dry::Schema::DSL do
     Dry::Schema::DSL.new
   end
 
+  describe '#required' do
+    it 'raises ArgumentError if a non-symbol name was provided' do
+      expect { dsl.required('foo') }.to raise_error(ArgumentError, 'Key +foo+ is not a symbol')
+    end
+  end
+
+  describe '#optional' do
+    it 'raises ArgumentError if a non-symbol name was provided' do
+      expect { dsl.optional('foo') }.to raise_error(ArgumentError, 'Key +foo+ is not a symbol')
+    end
+  end
+
   describe '#schema' do
     it 'defines a rule from a nested schema' do
       dsl.required(:user).hash do
