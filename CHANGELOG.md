@@ -4,6 +4,7 @@
 
 * Handling of messages for `optional` keys without value rules works correctly (issue #87) (solnic)
 * Message structure for `optional` keys with an array of hashes no longer duplicates keys (issue #89) (solnic)
+* Inferring `:date_time?` predicate works correctly with `DateTime` types (issue #97) (solnic)
 
 ### Changed
 
