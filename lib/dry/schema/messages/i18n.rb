@@ -57,13 +57,15 @@ module Dry
 
       # Merge messages from an additional path
       #
-      # @param [String] path
+      # @param [String, Array<String>] paths
       #
       # @return [Messages::I18n]
       #
       # @api public
-      def merge(path)
-        ::I18n.load_path << path
+      def merge(paths)
+        ::I18n.load_path.concat(Array(paths))
+        ::I18n.backend.load_translations
+        ::I18n.reload!
         self
       end
 

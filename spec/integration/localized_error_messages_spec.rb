@@ -4,10 +4,7 @@ require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema, 'with localized messages' do
   before do
-    I18n.config.available_locales = [:en, :pl]
-    I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
-    I18n.backend.load_translations
-    I18n.reload!
+    I18n.config.available_locales = %i[en pl]
   end
 
   describe 'defining schema' do
@@ -15,6 +12,8 @@ RSpec.describe Dry::Schema, 'with localized messages' do
       subject(:schema) do
         Dry::Schema.define do
           config.messages.backend = :i18n
+          config.messages.load_paths = %w[en pl]
+            .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
 
           required(:email).value(:filled?)
         end
@@ -34,6 +33,8 @@ RSpec.describe Dry::Schema, 'with localized messages' do
         Dry::Schema.define do
           config.messages.backend = :i18n
           config.messages.namespace = :user
+          config.messages.load_paths = %w[en pl]
+            .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
 
           required(:email).value(:filled?)
         end

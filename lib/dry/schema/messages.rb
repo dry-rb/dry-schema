@@ -13,9 +13,9 @@ module Dry
         namespace = config.namespace
 
         if config.load_paths.any? && namespace
-          messages.merge(config.load_paths[0]).namespaced(namespace)
+          messages.merge(config.load_paths).namespaced(namespace)
         elsif config.load_paths.any?
-          messages.merge(config.load_paths[0])
+          messages.merge(config.load_paths)
         elsif namespace
           messages.namespaced(namespace)
         else

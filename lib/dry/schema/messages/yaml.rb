@@ -88,7 +88,9 @@ module Dry
         if overrides.is_a?(Hash)
           self.class.new(data.merge(self.class.flat_hash(overrides)))
         else
-          self.class.new(data.merge(Messages::YAML.load_file(overrides)))
+          self.class.new(
+            Array(overrides).reduce(data) { |a, e| a.merge(Messages::YAML.load_file(e)) }
+          )
         end
       end
     end
