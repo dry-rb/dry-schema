@@ -121,7 +121,7 @@ module Dry
 
         options = opts.dup.update(
           path: path.last, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
-        )
+        ).to_h
 
         template = messages[predicate, options] || raise(MissingMessageError, path)
 
