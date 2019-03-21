@@ -9,27 +9,28 @@ module Dry
       module_function
 
       public def setup(config)
-        messages = build(config)
+        messages = build(config.backend)
+        namespace = config.namespace
 
-        if config.messages_file && config.namespace
-          messages.merge(config.messages_file).namespaced(config.namespace)
-        elsif config.messages_file
-          messages.merge(config.messages_file)
-        elsif config.namespace
-          messages.namespaced(config.namespace)
+        if config.load_paths.any? && namespace
+          messages.merge(config.load_paths[0]).namespaced(namespace)
+        elsif config.load_paths.any?
+          messages.merge(config.load_paths[0])
+        elsif namespace
+          messages.namespaced(namespace)
         else
           messages
         end
       end
 
       # @api private
-      def build(config)
+      def build(backend)
         klass =
-          case config.messages
+          case backend
           when :yaml then default
           when :i18n then const_get(:I18n)
           else
-            raise "+#{config.messages}+ is not a valid messages identifier"
+            raise "+#{backend}+ is not a valid messages identifier"
           end
 
         klass.build

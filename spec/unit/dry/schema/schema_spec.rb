@@ -17,7 +17,7 @@ RSpec.describe Dry::Schema do
 
     context 'with i18n setting' do
       let(:schema) do
-        Dry::Schema.define { configure { config.messages = :i18n } }
+        Dry::Schema.define { configure { config.messages.backend = :i18n } }
       end
 
       it 'returns default i18n messages' do
@@ -28,7 +28,7 @@ RSpec.describe Dry::Schema do
 
     context 'with an invalid setting' do
       let(:schema) do
-        Dry::Schema.define { configure { config.messages = :oops } }
+        Dry::Schema.define { configure { config.messages.backend = :oops } }
       end
 
       it 'returns default i18n messages' do

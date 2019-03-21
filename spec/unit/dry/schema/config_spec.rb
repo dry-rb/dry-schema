@@ -9,15 +9,15 @@ RSpec.describe Dry::Schema::Config do
 
   describe '#messages' do
     it 'returns default value' do
-      expect(config.messages).to be(:yaml)
+      expect(config.messages.backend).to be(:yaml)
     end
 
     it 'returns overridden value' do
       config.configure do |config|
-        config.messages = :i18n
+        config.messages.backend = :i18n
       end
 
-      expect(config.messages).to be(:i18n)
+      expect(config.messages.backend).to be(:i18n)
     end
   end
 end

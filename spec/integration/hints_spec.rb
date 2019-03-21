@@ -30,7 +30,7 @@ RSpec.describe 'Validation hints' do
   context 'with i18n messages' do
     subject(:schema) do
       Dry::Schema.define do
-        configure { |c| c.messages = :i18n }
+        config.messages.backend = :i18n
 
         required(:age).maybe(:int?, gt?: 18)
       end
@@ -148,7 +148,7 @@ RSpec.describe 'Validation hints' do
   context 'when the message uses input value' do
     subject(:schema) do
       Dry::Schema.define do
-        configure { |c| c.messages_file = SPEC_ROOT.join('fixtures/messages.yml') }
+        configure { |c| c.messages.load_paths << SPEC_ROOT.join('fixtures/messages.yml') }
 
         required(:pill).filled(eql?: 'blue')
       end

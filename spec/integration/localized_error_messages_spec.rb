@@ -14,9 +14,7 @@ RSpec.describe Dry::Schema, 'with localized messages' do
     context 'without a namespace' do
       subject(:schema) do
         Dry::Schema.define do
-          configure do
-            config.messages = :i18n
-          end
+          config.messages.backend = :i18n
 
           required(:email).value(:filled?)
         end
@@ -34,12 +32,8 @@ RSpec.describe Dry::Schema, 'with localized messages' do
     context 'with a namespace' do
       subject(:schema) do
         Dry::Schema.define do
-          configure do
-            configure do |config|
-              config.messages = :i18n
-              config.namespace = :user
-            end
-          end
+          config.messages.backend = :i18n
+          config.messages.namespace = :user
 
           required(:email).value(:filled?)
         end
