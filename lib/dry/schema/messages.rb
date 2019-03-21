@@ -6,7 +6,9 @@ module Dry
     #
     # @api private
     module Messages
-      def self.setup(config)
+      module_function
+
+      public def setup(config)
         messages = build(config)
 
         if config.messages_file && config.namespace
@@ -21,20 +23,21 @@ module Dry
       end
 
       # @api private
-      def self.build(config)
-        klass = case config.messages
-        when :yaml then default
-        when :i18n then Messages::I18n
-        else
-          raise "+#{config.messages}+ is not a valid messages identifier"
-        end
+      def build(config)
+        klass =
+          case config.messages
+          when :yaml then default
+          when :i18n then const_get(:I18n)
+          else
+            raise "+#{config.messages}+ is not a valid messages identifier"
+          end
 
         klass.build
       end
 
       # @api private
-      def self.default
-        Messages::YAML
+      def default
+        const_get(:YAML)
       end
     end
   end
