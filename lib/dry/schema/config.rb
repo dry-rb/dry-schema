@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require 'delegate'
+require 'dry/equalizer'
 require 'dry/configurable'
-
 require 'dry/schema/predicate_registry'
 
 module Dry
@@ -12,42 +11,34 @@ module Dry
     # @see DSL#configure
     #
     # @api public
-    class Config < SimpleDelegator
-      extend Dry::Configurable
+    class Config
+      include Dry::Configurable
+      include Dry::Equalizer(:predicates, :messages)
 
-      setting :predicates, Schema::PredicateRegistry.new
-      setting :messages, :yaml
-      setting :messages_file
-      setting :namespace
-      setting :rules, {}
+      setting(:predicates, Schema::PredicateRegistry.new)
 
-      # Build a new config object with defaults filled in
-      #
-      # @api private
-      def self.new
-        super(struct.new(*settings.map { |key| config.public_send(key) }))
+      setting(:messages) do
+        setting(:backend, :yaml)
+        setting(:namespace)
+        setting(:load_paths, EMPTY_ARRAY, &:dup)
       end
 
-      # Build a struct with defined settings
+      # Return configured predicate registry
       #
-      # @return [Struct]
+      # @return [Schema::PredicateRegistry]
       #
-      # @api private
-      def self.struct
-        ::Struct.new(*settings)
+      # @api public
+      def predicates
+        config.predicates
       end
 
-      # Expose configurable object to the provided block
+      # Return configuration for message backend
       #
-      # This method is used by `DSL#configure`
+      # @return [Dry::Configurable::Config]
       #
-      # @return [Config]
-      #
-      # @api private
-      def configure(&block)
-        yield(__getobj__)
-        values.freeze
-        freeze
+      # @api public
+      def messages
+        config.messages
       end
     end
   end

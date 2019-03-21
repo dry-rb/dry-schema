@@ -11,7 +11,7 @@ RSpec.describe 'Defining base schema class' do
   let(:parent) do
     Dry::Schema.define do
       configure do |config|
-        config.messages = :i18n
+        config.messages.backend = :i18n
       end
 
       optional(:email).filled
@@ -28,20 +28,20 @@ RSpec.describe 'Defining base schema class' do
   end
 
   it 'inherits config' do
-    expect(schema.config.messages).to eql(:i18n)
+    expect(schema.config.messages.backend).to eql(:i18n)
   end
 
   context 'when child schema defines config' do
     subject(:schema) do
       Dry::Schema.define(parent: parent) do
         configure do |config|
-          config.messages = :yaml
+          config.messages.backend = :yaml
         end
       end
     end
 
     it 'overrides parent config' do
-      expect(schema.config.messages).to eql(:yaml)
+      expect(schema.config.messages.backend).to eql(:yaml)
     end
   end
 end

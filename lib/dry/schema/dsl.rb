@@ -103,7 +103,7 @@ module Dry
       # @example
       #   Dry::Schema.define do
       #     configure do |config|
-      #       config.messages = :i18n
+      #       config.messages.backend = :i18n
       #     end
       #   end
       #

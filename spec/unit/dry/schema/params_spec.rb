@@ -50,9 +50,7 @@ RSpec.describe Dry::Schema::Params do
     let(:parent_class) do
       class Test::UserSchema < Dry::Schema::Params
         define do
-          configure do |config|
-            config.messages = :i18n
-          end
+          config.messages.backend = :i18n
 
           required(:name).filled(:string)
         end
@@ -72,7 +70,7 @@ RSpec.describe Dry::Schema::Params do
 
       expect(schema.('name' => '', 'age' => '18').errors).to eql(name: ['must be filled'])
       expect(schema.('name' => 'Jane', 'age' => 'foo').errors).to eql(age: ['must be an integer'])
-      expect(schema.config.messages).to eql(:i18n)
+      expect(schema.config.messages.backend).to eql(:i18n)
     end
   end
 

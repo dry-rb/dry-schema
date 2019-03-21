@@ -6,8 +6,8 @@ require 'dry/schema/messages/i18n'
 RSpec.describe 'I18n validation messages / using I18n.with_locale' do
   subject(:schema) do
     Dry::Schema.Params do
-      config.messages = :i18n
-      config.namespace = :user
+      config.messages.backend = :i18n
+      config.messages.namespace = :user
 
       required(:name).filled(:string)
     end

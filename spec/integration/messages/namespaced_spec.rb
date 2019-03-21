@@ -6,8 +6,8 @@ RSpec.describe 'Namespaced messages' do
   context 'in nested schemas' do
     let!(:comment_schema) do
       Test::CommentSchema = Dry::Schema.Params do
-        config.messages_file = "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
-        config.namespace = :comment
+        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+        config.messages.namespace = :comment
 
         required(:comment_body).filled
       end
@@ -15,8 +15,8 @@ RSpec.describe 'Namespaced messages' do
 
     let(:post_schema) do
       Test::PostSchema = Dry::Schema.Params do
-        config.messages_file = "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
-        config.namespace = :post
+        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+        config.messages.namespace = :post
 
         required(:post_body).filled
         required(:comment).hash(::Test::CommentSchema)
