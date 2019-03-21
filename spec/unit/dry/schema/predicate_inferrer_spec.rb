@@ -17,6 +17,10 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
     expect(inferrer[type(:integer)]).to eql([:int?])
   end
 
+  it 'returns date_time? for a datetime type' do
+    expect(inferrer[type(:date_time)]).to eql([:date_time?])
+  end
+
   it 'returns nil? for a nil type' do
     expect(inferrer[type(:nil)]).to eql([:nil?])
   end

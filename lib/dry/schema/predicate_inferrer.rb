@@ -12,6 +12,7 @@ module Dry
       extend Dry::Core::Cache
 
       TYPE_TO_PREDICATE = {
+        DateTime => :date_time?,
         FalseClass => :false?,
         Integer => :int?,
         NilClass => :nil?,
