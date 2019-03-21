@@ -20,10 +20,10 @@ module Dry
       param :rules
 
       # @api private
-      option :config, default: proc { Config.new }
+      option :config, default: -> { Config.new }
 
       # @api private
-      option :message_compiler, default: proc { MessageCompiler.new(Messages.setup(config.messages)) }
+      option :message_compiler, default: -> { MessageCompiler.new(Messages.setup(config.messages)) }
 
       # @api private
       def call(input)
@@ -31,6 +31,7 @@ module Dry
 
         rules.each do |name, rule|
           next if input.error?(name)
+
           result = rule.(input)
           results << result if result.failure?
         end
