@@ -11,10 +11,11 @@ module Dry
       public def setup(config)
         messages = build(config.backend)
         namespace = config.namespace
+        load_paths = config.load_paths
 
-        if config.load_paths.any? && namespace
+        if !load_paths.empty? && namespace
           messages.merge(config.load_paths).namespaced(namespace)
-        elsif config.load_paths.any?
+        elsif !load_paths.empty?
           messages.merge(config.load_paths)
         elsif namespace
           messages.namespaced(namespace)
