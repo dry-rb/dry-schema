@@ -8,7 +8,7 @@ module Dry
     #
     # @api public
     module Types
-      include Dry::Types.module
+      include Dry.Types
     end
   end
 end

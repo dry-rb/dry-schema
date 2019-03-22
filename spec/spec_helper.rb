@@ -26,7 +26,7 @@ require 'dry/schema'
 require 'dry/types'
 
 module Types
-  include Dry::Types.module
+  include Dry.Types
 end
 
 Undefined = Dry::Core::Constants::Undefined
@@ -51,6 +51,10 @@ RSpec.configure do |config|
   config.filter_run_when_matching :focus
 
   config.include PredicatesIntegration
+
+  config.define_derived_metadata do |meta|
+    meta[:aggregate_failures] = true
+  end
 
   config.before do
     module Test

@@ -80,7 +80,7 @@ RSpec.describe 'Macros #value' do
     end
 
     before do
-      Dry::Types.register('custom', Dry::Types::Definition.new(Dry::Schema::Macros::Value))
+      Dry::Types.register('custom', Dry::Types::Nominal.new(Dry::Schema::Macros::Value))
     end
 
     after do

@@ -13,7 +13,6 @@ module Dry
         def call(*args, &block)
           trace << hash?
           super(*args, &block)
-          self
         end
       end
     end

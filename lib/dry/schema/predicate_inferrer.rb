@@ -33,7 +33,7 @@ module Dry
           public_send(:"visit_#{meth}", rest)
         end
 
-        def visit_definition(node)
+        def visit_nominal(node)
           type = node[0]
 
           TYPE_TO_PREDICATE.fetch(type) {
@@ -41,7 +41,11 @@ module Dry
           }
         end
 
-        def visit_array(*)
+        def visit_hash(_)
+          :hash?
+        end
+
+        def visit_array(_)
           :array?
         end
 
