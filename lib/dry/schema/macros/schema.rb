@@ -11,7 +11,7 @@ module Dry
       class Schema < Value
         # @api private
         def call(*args, &block)
-          super(*args) unless args.empty?
+          super(*args, &nil) unless args.empty?
 
           if block
             definition = schema_dsl.new(&block)
@@ -22,6 +22,8 @@ module Dry
             schema_type =
               if parent_type.respond_to?(:of)
                 parent_type.of(definition_schema)
+              elsif parent_type.respond_to?(:schema)
+                parent_type.schema(definition.types)
               else
                 definition_schema
               end
