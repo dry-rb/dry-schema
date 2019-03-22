@@ -18,12 +18,12 @@ module Dry
       attr_reader :namespace
 
       # @api private
-      def self.new(types = Dry::Types, namespace = nil)
+      def self.new(types = Dry::Types, namespace = :nominal)
         super
       end
 
       # @api private
-      def initialize(types, namespace = nil)
+      def initialize(types, namespace = :nominal)
         @types = types
         @namespace = namespace
       end
