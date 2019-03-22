@@ -59,7 +59,7 @@ RSpec.configure do |config|
   config.before do
     module Test
       def self.remove_constants
-        constants.each { |const| remove_const(const)  }
+        constants.each { |const| remove_const(const) }
         self
       end
     end
@@ -68,7 +68,7 @@ RSpec.configure do |config|
   config.after do
     Object.send(:remove_const, Test.remove_constants.name)
 
-    I18n.load_path = Dry::Schema.messages_paths.dup
+    I18n.load_path = [Dry::Schema::Messages::Abstract::DEFAULT_PATH]
     I18n.locale = :en
     I18n.reload!
   end

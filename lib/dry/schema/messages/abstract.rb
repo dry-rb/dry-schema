@@ -15,12 +15,14 @@ module Dry
       #
       # @api public
       class Abstract
-        extend Dry::Configurable
+        include Dry::Configurable
         include Dry::Equalizer(:config)
 
         DEFAULT_PATH = Pathname(__dir__).join('../../../../config/errors.yml').realpath.freeze
+        DEFAULT_TOP_NAMESPACE = 'dry_schema'
 
         setting :paths, [DEFAULT_PATH]
+        setting :top_namespace, DEFAULT_TOP_NAMESPACE
         setting :root, 'errors'
         setting :lookup_options, [:root, :predicate, :path, :val_type, :arg_type].freeze
 
@@ -40,14 +42,11 @@ module Dry
           rules.%{name}
         ).freeze
 
-        setting :arg_type_default, 'default'
-        setting :val_type_default, 'default'
-
-        setting :arg_types, Hash.new { |*| config.arg_type_default }.update(
+        setting :arg_types, Hash.new { |*| 'default' }.update(
           Range => 'range'
         )
 
-        setting :val_types, Hash.new { |*| config.val_type_default }.update(
+        setting :val_types, Hash.new { |*| 'default' }.update(
           Range => 'range',
           String => 'string'
         )
@@ -58,21 +57,13 @@ module Dry
         end
 
         # @api private
-        attr_reader :config
-
-        # @api private
-        def initialize
-          @config = self.class.config
-        end
-
-        # @api private
         def hash
           @hash ||= config.hash
         end
 
         # @api private
         def translate(key, locale: default_locale)
-          t["dry_schema.#{key}", locale: locale]
+          t["#{config.top_namespace}.#{key}", locale: locale]
         end
 
         # @api private
@@ -133,7 +124,7 @@ module Dry
         #
         # @api public
         def namespaced(namespace)
-         Dry::Schema::Messages::Namespaced.new(namespace, self)
+          Dry::Schema::Messages::Namespaced.new(namespace, self)
         end
 
         # Return root path to messages file

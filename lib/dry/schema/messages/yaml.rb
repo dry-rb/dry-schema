@@ -4,6 +4,7 @@ require 'yaml'
 require 'pathname'
 
 require 'dry/equalizer'
+require 'dry/schema/constants'
 require 'dry/schema/messages/abstract'
 
 module Dry
@@ -17,35 +18,56 @@ module Dry
       attr_reader :data, :t
 
       # @api private
-      configure do |config|
-        config.root = '%{locale}.dry_schema.errors'
-        config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
-          "%{locale}.dry_schema.#{path}"
-        }
+      def self.build(options = EMPTY_HASH)
+        messages = new
+
+        messages.configure do |config|
+          options.each do |key, value|
+            config.public_send(:"#{key}=", value)
+          end
+
+          config.root = "%{locale}.#{config.top_namespace}.#{config.root}"
+
+          config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
+            "%{locale}.#{config.top_namespace}.#{path}"
+          }
+        end
+
+        messages.prepare
+
+        messages
       end
 
       # @api private
-      def self.build(paths = config.paths)
-        new(paths.map { |path| load_file(path) }.reduce(:merge))
+      def self.flat_hash(hash, acc = [], result = {})
+        return result.update(acc.join(DOT) => hash) unless hash.is_a?(Hash)
+
+        hash.each { |k, v| flat_hash(v, acc + [k], result) }
+        result
       end
 
       # @api private
-      def self.load_file(path)
-        flat_hash(YAML.load_file(path))
-      end
-
-      # @api private
-      def self.flat_hash(h, f = [], g = {})
-        return g.update(f.join('.') => h) unless h.is_a? Hash
-        h.each { |k, r| flat_hash(r, f + [k], g) }
-        g
-      end
-
-      # @api private
-      def initialize(data)
+      def initialize(data: EMPTY_HASH, config: nil)
         super()
         @data = data
+        @config = config if config
         @t = proc { |key, locale: default_locale| get("%{locale}.#{key}", locale: locale) }
+      end
+
+      # @api private
+      def prepare
+        @data = config.paths.map { |path| load_translations(path) }.reduce(:merge)
+      end
+
+      # @api private
+      def load_translations(path)
+        data = self.class.flat_hash(YAML.load_file(path))
+
+        unless path.equal?(DEFAULT_PATH) && config.top_namespace != DEFAULT_TOP_NAMESPACE
+          return data
+        end
+
+        data.map { |k, v| [k.gsub(DEFAULT_TOP_NAMESPACE, config.top_namespace), v] }.to_h
       end
 
       # Get a message for the given key and its options
@@ -86,10 +108,14 @@ module Dry
       # @api public
       def merge(overrides)
         if overrides.is_a?(Hash)
-          self.class.new(data.merge(self.class.flat_hash(overrides)))
+          self.class.new(
+            data: data.merge(self.class.flat_hash(overrides)),
+            config: config
+          )
         else
           self.class.new(
-            Array(overrides).reduce(data) { |a, e| a.merge(Messages::YAML.load_file(e)) }
+            data: Array(overrides).reduce(data) { |a, e| a.merge(load_translations(e)) },
+            config: config
           )
         end
       end

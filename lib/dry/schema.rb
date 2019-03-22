@@ -38,15 +38,6 @@ module Dry
     def self.JSON(**options, &block)
       define(**options, processor_type: JSON, &block)
     end
-
-    # Return configured paths to message files
-    #
-    # @return [Array<String>]
-    #
-    # @api public
-    def self.messages_paths
-      Messages::Abstract.config.paths
-    end
   end
 end
 
