@@ -8,7 +8,6 @@ gemspec
 
 group :test do
   gem 'dry-monads', require: false
-  gem 'dry-types', github: 'dry-rb/dry-types'
   gem 'i18n', require: false
   gem 'simplecov', require: false, platform: :mri
 end
