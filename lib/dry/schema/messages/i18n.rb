@@ -73,7 +73,7 @@ module Dry
         paths.each do |path|
           data = YAML.load_file(path)
 
-          if path.equal?(DEFAULT_PATH) && top_namespace != DEFAULT_TOP_NAMESPACE
+          if custom_top_namespace?(path)
             mapped_data = data
               .map { |k, v| [k, { top_namespace => v[DEFAULT_TOP_NAMESPACE] }] }
               .to_h

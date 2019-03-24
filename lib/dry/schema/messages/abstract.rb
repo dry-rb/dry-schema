@@ -158,6 +158,13 @@ module Dry
         def default_locale
           :en
         end
+
+        private
+
+        # @api private
+        def custom_top_namespace?(path)
+          path.to_s == DEFAULT_PATH.to_s && config.top_namespace != DEFAULT_TOP_NAMESPACE
+        end
       end
     end
   end

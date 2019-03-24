@@ -100,9 +100,7 @@ module Dry
       def load_translations(path)
         data = self.class.flat_hash(YAML.load_file(path))
 
-        unless path.equal?(DEFAULT_PATH) && config.top_namespace != DEFAULT_TOP_NAMESPACE
-          return data
-        end
+        return data unless custom_top_namespace?(path)
 
         data.map { |k, v| [k.gsub(DEFAULT_TOP_NAMESPACE, config.top_namespace), v] }.to_h
       end
