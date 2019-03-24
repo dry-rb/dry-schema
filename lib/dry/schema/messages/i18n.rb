@@ -68,12 +68,12 @@ module Dry
 
       # @api private
       def prepare(paths = config.paths)
-        top_namespace = config.top_namespace
-
         paths.each do |path|
           data = YAML.load_file(path)
 
           if custom_top_namespace?(path)
+            top_namespace = config.top_namespace
+
             mapped_data = data
               .map { |k, v| [k, { top_namespace => v[DEFAULT_TOP_NAMESPACE] }] }
               .to_h
