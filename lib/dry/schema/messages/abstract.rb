@@ -63,7 +63,13 @@ module Dry
               config.public_send(:"#{key}=", value)
             end
 
-            yield(config)
+            config.root = "#{config.top_namespace}.#{config.root}"
+
+            config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
+              "#{config.top_namespace}.#{path}"
+            }
+
+            yield(config) if block_given?
           end
 
           messages.prepare

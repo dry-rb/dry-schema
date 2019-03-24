@@ -12,17 +12,6 @@ module Dry
       attr_reader :t
 
       # @api private
-      def self.build(options = EMPTY_HASH)
-        super do |config|
-          config.root = "#{config.top_namespace}.#{config.root}"
-
-          config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
-            "#{config.top_namespace}.#{path}"
-          }
-        end
-      end
-
-      # @api private
       def initialize
         super
         @t = I18n.method(:t)
