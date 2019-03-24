@@ -28,38 +28,6 @@ module Dry
         @t = I18n.method(:t)
       end
 
-      # @api private
-      def prepare(paths = config.paths)
-        top_namespace = config.top_namespace
-
-        paths.each do |path|
-          data = YAML.load_file(path)
-
-          if path.equal?(DEFAULT_PATH) && top_namespace != DEFAULT_TOP_NAMESPACE
-            mapped_data = data
-              .map { |k, v| [k, { top_namespace => v[DEFAULT_TOP_NAMESPACE] }] }
-              .to_h
-
-            store_translations(mapped_data)
-          else
-            store_translations(data)
-          end
-        end
-
-        self
-      end
-
-      # @api private
-      def store_translations(data)
-        locales = data.keys.map(&:to_sym)
-
-        ::I18n.available_locales += locales
-
-        locales.each do |locale|
-          ::I18n.backend.store_translations(locale, data[locale.to_s])
-        end
-      end
-
       # Get a message for the given key and its options
       #
       # @param [Symbol] key
@@ -96,6 +64,40 @@ module Dry
       # @api private
       def default_locale
         I18n.locale || I18n.default_locale || super
+      end
+
+      # @api private
+      def prepare(paths = config.paths)
+        top_namespace = config.top_namespace
+
+        paths.each do |path|
+          data = YAML.load_file(path)
+
+          if path.equal?(DEFAULT_PATH) && top_namespace != DEFAULT_TOP_NAMESPACE
+            mapped_data = data
+              .map { |k, v| [k, { top_namespace => v[DEFAULT_TOP_NAMESPACE] }] }
+              .to_h
+
+            store_translations(mapped_data)
+          else
+            store_translations(data)
+          end
+        end
+
+        self
+      end
+
+      private
+
+      # @api private
+      def store_translations(data)
+        locales = data.keys.map(&:to_sym)
+
+        ::I18n.available_locales += locales
+
+        locales.each do |locale|
+          ::I18n.backend.store_translations(locale, data[locale.to_s])
+        end
       end
     end
   end

@@ -46,22 +46,6 @@ module Dry
         @t = proc { |key, locale: default_locale| get("%<locale>s.#{key}", locale: locale) }
       end
 
-      # @api private
-      def prepare
-        @data = config.paths.map { |path| load_translations(path) }.reduce(:merge)
-      end
-
-      # @api private
-      def load_translations(path)
-        data = self.class.flat_hash(YAML.load_file(path))
-
-        unless path.equal?(DEFAULT_PATH) && config.top_namespace != DEFAULT_TOP_NAMESPACE
-          return data
-        end
-
-        data.map { |k, v| [k.gsub(DEFAULT_TOP_NAMESPACE, config.top_namespace), v] }.to_h
-      end
-
       # Get a message for the given key and its options
       #
       # @param [Symbol] key
@@ -104,7 +88,24 @@ module Dry
         end
       end
 
+      # @api private
+      def prepare
+        @data = config.paths.map { |path| load_translations(path) }.reduce(:merge)
+        self
+      end
+
       private
+
+      # @api private
+      def load_translations(path)
+        data = self.class.flat_hash(YAML.load_file(path))
+
+        unless path.equal?(DEFAULT_PATH) && config.top_namespace != DEFAULT_TOP_NAMESPACE
+          return data
+        end
+
+        data.map { |k, v| [k.gsub(DEFAULT_TOP_NAMESPACE, config.top_namespace), v] }.to_h
+      end
 
       # @api private
       def evaluated_key(key, options)

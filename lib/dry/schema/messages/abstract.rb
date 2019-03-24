@@ -67,8 +67,6 @@ module Dry
           end
 
           messages.prepare
-
-          messages
         end
 
         # @api private
