@@ -36,7 +36,7 @@ module Dry
       # @return [String]
       #
       # @api public
-      def get(key, options = {})
+      def get(key, options = EMPTY_HASH)
         t.(key, options) if key
       end
 
