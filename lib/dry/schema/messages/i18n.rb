@@ -29,10 +29,10 @@ module Dry
       end
 
       # @api private
-      def prepare
+      def prepare(paths = config.paths)
         top_namespace = config.top_namespace
 
-        config.paths.each do |path|
+        paths.each do |path|
           data = YAML.load_file(path)
 
           if path.equal?(DEFAULT_PATH) && top_namespace != DEFAULT_TOP_NAMESPACE
@@ -45,6 +45,8 @@ module Dry
             store_translations(data)
           end
         end
+
+        self
       end
 
       # @api private
@@ -88,9 +90,7 @@ module Dry
       #
       # @api public
       def merge(paths)
-        ::I18n.load_path.concat(Array(paths))
-        ::I18n.backend.load_translations
-        self
+        prepare(paths)
       end
 
       # @api private
