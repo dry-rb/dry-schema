@@ -26,10 +26,10 @@ module Dry
             config.public_send(:"#{key}=", value)
           end
 
-          config.root = "%{locale}.#{config.top_namespace}.#{config.root}"
+          config.root = "%<locale>s.#{config.top_namespace}.#{config.root}"
 
           config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
-            "%{locale}.#{config.top_namespace}.#{path}"
+            "%<locale>s.#{config.top_namespace}.#{path}"
           }
         end
 
@@ -51,7 +51,7 @@ module Dry
         super()
         @data = data
         @config = config if config
-        @t = proc { |key, locale: default_locale| get("%{locale}.#{key}", locale: locale) }
+        @t = proc { |key, locale: default_locale| get("%<locale>s.#{key}", locale: locale) }
       end
 
       # @api private
@@ -79,7 +79,7 @@ module Dry
       #
       # @api public
       def get(key, options = {})
-        evaluated_key = key.include?('%{locale}') ?
+        evaluated_key = key.include?('%<locale>s') ?
           key % { locale: options.fetch(:locale, default_locale) } :
           key
 
@@ -92,7 +92,7 @@ module Dry
       #
       # @api public
       def key?(key, options = {})
-        evaluated_key = key.include?('%{locale}') ?
+        evaluated_key = key.include?('%<locale>s') ?
           key % { locale: options.fetch(:locale, default_locale) } :
           key
 

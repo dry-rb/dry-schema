@@ -24,23 +24,21 @@ module Dry
         setting :paths, [DEFAULT_PATH]
         setting :top_namespace, DEFAULT_TOP_NAMESPACE
         setting :root, 'errors'
-        setting :lookup_options, [:root, :predicate, :path, :val_type, :arg_type].freeze
+        setting :lookup_options, %i[root predicate path val_type arg_type].freeze
 
-        setting :lookup_paths, %w(
-          %{root}.rules.%{path}.%{predicate}.arg.%{arg_type}
-          %{root}.rules.%{path}.%{predicate}
-          %{root}.%{predicate}.%{message_type}
-          %{root}.%{predicate}.value.%{path}.arg.%{arg_type}
-          %{root}.%{predicate}.value.%{path}
-          %{root}.%{predicate}.value.%{val_type}.arg.%{arg_type}
-          %{root}.%{predicate}.value.%{val_type}
-          %{root}.%{predicate}.arg.%{arg_type}
-          %{root}.%{predicate}
-        ).freeze
+        setting :lookup_paths, [
+          '%<root>s.rules.%<path>s.%<predicate>s.arg.%<arg_type>s',
+          '%<root>s.rules.%<path>s.%<predicate>s',
+          '%<root>s.%<predicate>s.%<message_type>s',
+          '%<root>s.%<predicate>s.value.%<path>s.arg.%<arg_type>s',
+          '%<root>s.%<predicate>s.value.%<path>s',
+          '%<root>s.%<predicate>s.value.%<val_type>s.arg.%<arg_type>s',
+          '%<root>s.%<predicate>s.value.%<val_type>s',
+          '%<root>s.%<predicate>s.arg.%<arg_type>s',
+          '%<root>s.%<predicate>s'
+        ].freeze
 
-        setting :rule_lookup_paths, %w(
-          rules.%{name}
-        ).freeze
+        setting :rule_lookup_paths, ['rules.%<name>s'].freeze
 
         setting :arg_types, Hash.new { |*| 'default' }.update(
           Range => 'range'
@@ -99,7 +97,7 @@ module Dry
             message_type: options[:message_type] || :failure
           )
 
-          opts = options.select { |k, _| !config.lookup_options.include?(k) }
+          opts = options.reject { |k, _| config.lookup_options.include?(k) }
 
           path = lookup_paths(tokens).detect do |key|
             key?(key, opts) && get(key, opts).is_a?(String)
