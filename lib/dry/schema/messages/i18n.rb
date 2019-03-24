@@ -46,8 +46,8 @@ module Dry
       #
       # @api public
       def key?(key, options)
-        ::I18n.exists?(key, options.fetch(:locale, default_locale)) ||
-          ::I18n.exists?(key, I18n.default_locale)
+        I18n.exists?(key, options.fetch(:locale, default_locale)) ||
+          I18n.exists?(key, I18n.default_locale)
       end
 
       # Merge messages from an additional path
@@ -93,10 +93,10 @@ module Dry
       def store_translations(data)
         locales = data.keys.map(&:to_sym)
 
-        ::I18n.available_locales += locales
+        I18n.available_locales += locales
 
         locales.each do |locale|
-          ::I18n.backend.store_translations(locale, data[locale.to_s])
+          I18n.backend.store_translations(locale, data[locale.to_s])
         end
       end
     end
