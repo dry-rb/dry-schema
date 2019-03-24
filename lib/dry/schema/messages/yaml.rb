@@ -13,6 +13,8 @@ module Dry
     #
     # @api public
     class Messages::YAML < Messages::Abstract
+      LOCALE_TOKEN = '%<locale>s'
+
       include Dry::Equalizer(:data)
 
       attr_reader :data, :t
@@ -78,12 +80,8 @@ module Dry
       # @return [String]
       #
       # @api public
-      def get(key, options = {})
-        evaluated_key = key.include?('%<locale>s') ?
-          key % { locale: options.fetch(:locale, default_locale) } :
-          key
-
-        data[evaluated_key]
+      def get(key, options = EMPTY_HASH)
+        data[evaluated_key(key, options)]
       end
 
       # Check if given key is defined
@@ -91,12 +89,8 @@ module Dry
       # @return [Boolean]
       #
       # @api public
-      def key?(key, options = {})
-        evaluated_key = key.include?('%<locale>s') ?
-          key % { locale: options.fetch(:locale, default_locale) } :
-          key
-
-        data.key?(evaluated_key)
+      def key?(key, options = EMPTY_HASH)
+        data.key?(evaluated_key(key, options))
       end
 
       # Merge messages from an additional path
@@ -118,6 +112,15 @@ module Dry
             config: config
           )
         end
+      end
+
+      private
+
+      # @api private
+      def evaluated_key(key, options)
+        return key unless key.include?(LOCALE_TOKEN)
+
+        key % { locale: options[:locale] || default_locale }
       end
     end
   end
