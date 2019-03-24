@@ -55,6 +55,23 @@ module Dry
         end
 
         # @api private
+        def self.build(options = EMPTY_HASH)
+          messages = new
+
+          messages.configure do |config|
+            options.each do |key, value|
+              config.public_send(:"#{key}=", value)
+            end
+
+            yield(config)
+          end
+
+          messages.prepare
+
+          messages
+        end
+
+        # @api private
         def hash
           @hash ||= config.hash
         end

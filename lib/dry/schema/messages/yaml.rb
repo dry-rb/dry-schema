@@ -21,23 +21,13 @@ module Dry
 
       # @api private
       def self.build(options = EMPTY_HASH)
-        messages = new
-
-        messages.configure do |config|
-          options.each do |key, value|
-            config.public_send(:"#{key}=", value)
-          end
-
+        super do |config|
           config.root = "%<locale>s.#{config.top_namespace}.#{config.root}"
 
           config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
             "%<locale>s.#{config.top_namespace}.#{path}"
           }
         end
-
-        messages.prepare
-
-        messages
       end
 
       # @api private
