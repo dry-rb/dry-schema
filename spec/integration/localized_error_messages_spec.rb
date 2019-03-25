@@ -3,10 +3,6 @@
 require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema, 'with localized messages' do
-  before do
-    I18n.config.available_locales = %i[en pl]
-  end
-
   describe 'defining schema' do
     context 'without a namespace' do
       subject(:schema) do

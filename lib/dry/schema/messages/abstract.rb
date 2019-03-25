@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pathname'
+require 'set'
 require 'concurrent/map'
 require 'dry/equalizer'
 require 'dry/configurable'
@@ -15,39 +15,33 @@ module Dry
       #
       # @api public
       class Abstract
-        extend Dry::Configurable
+        include Dry::Configurable
         include Dry::Equalizer(:config)
 
-        DEFAULT_PATH = Pathname(__dir__).join('../../../../config/errors.yml').realpath.freeze
-
-        setting :paths, [DEFAULT_PATH]
+        setting :load_paths, Set[DEFAULT_MESSAGES_PATH]
+        setting :top_namespace, DEFAULT_MESSAGES_ROOT
         setting :root, 'errors'
-        setting :lookup_options, [:root, :predicate, :path, :val_type, :arg_type].freeze
+        setting :lookup_options, %i[root predicate path val_type arg_type].freeze
 
-        setting :lookup_paths, %w(
-          %{root}.rules.%{path}.%{predicate}.arg.%{arg_type}
-          %{root}.rules.%{path}.%{predicate}
-          %{root}.%{predicate}.%{message_type}
-          %{root}.%{predicate}.value.%{path}.arg.%{arg_type}
-          %{root}.%{predicate}.value.%{path}
-          %{root}.%{predicate}.value.%{val_type}.arg.%{arg_type}
-          %{root}.%{predicate}.value.%{val_type}
-          %{root}.%{predicate}.arg.%{arg_type}
-          %{root}.%{predicate}
-        ).freeze
+        setting :lookup_paths, [
+          '%<root>s.rules.%<path>s.%<predicate>s.arg.%<arg_type>s',
+          '%<root>s.rules.%<path>s.%<predicate>s',
+          '%<root>s.%<predicate>s.%<message_type>s',
+          '%<root>s.%<predicate>s.value.%<path>s.arg.%<arg_type>s',
+          '%<root>s.%<predicate>s.value.%<path>s',
+          '%<root>s.%<predicate>s.value.%<val_type>s.arg.%<arg_type>s',
+          '%<root>s.%<predicate>s.value.%<val_type>s',
+          '%<root>s.%<predicate>s.arg.%<arg_type>s',
+          '%<root>s.%<predicate>s'
+        ].freeze
 
-        setting :rule_lookup_paths, %w(
-          rules.%{name}
-        ).freeze
+        setting :rule_lookup_paths, ['rules.%<name>s'].freeze
 
-        setting :arg_type_default, 'default'
-        setting :val_type_default, 'default'
-
-        setting :arg_types, Hash.new { |*| config.arg_type_default }.update(
+        setting :arg_types, Hash.new { |*| 'default' }.update(
           Range => 'range'
         )
 
-        setting :val_types, Hash.new { |*| config.val_type_default }.update(
+        setting :val_types, Hash.new { |*| 'default' }.update(
           Range => 'range',
           String => 'string'
         )
@@ -58,11 +52,24 @@ module Dry
         end
 
         # @api private
-        attr_reader :config
+        def self.build(options = EMPTY_HASH)
+          messages = new
 
-        # @api private
-        def initialize
-          @config = self.class.config
+          messages.configure do |config|
+            options.each do |key, value|
+              config.public_send(:"#{key}=", value)
+            end
+
+            config.root = "#{config.top_namespace}.#{config.root}"
+
+            config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
+              "#{config.top_namespace}.#{path}"
+            }
+
+            yield(config) if block_given?
+          end
+
+          messages.prepare
         end
 
         # @api private
@@ -72,7 +79,7 @@ module Dry
 
         # @api private
         def translate(key, locale: default_locale)
-          t["dry_schema.#{key}", locale: locale]
+          t["#{config.top_namespace}.#{key}", locale: locale]
         end
 
         # @api private
@@ -108,7 +115,7 @@ module Dry
             message_type: options[:message_type] || :failure
           )
 
-          opts = options.select { |k, _| !config.lookup_options.include?(k) }
+          opts = options.reject { |k, _| config.lookup_options.include?(k) }
 
           path = lookup_paths(tokens).detect do |key|
             key?(key, opts) && get(key, opts).is_a?(String)
@@ -133,7 +140,7 @@ module Dry
         #
         # @api public
         def namespaced(namespace)
-         Dry::Schema::Messages::Namespaced.new(namespace, self)
+          Dry::Schema::Messages::Namespaced.new(namespace, self)
         end
 
         # Return root path to messages file
@@ -153,6 +160,13 @@ module Dry
         # @api private
         def default_locale
           :en
+        end
+
+        private
+
+        # @api private
+        def custom_top_namespace?(path)
+          path.to_s == DEFAULT_MESSAGES_PATH.to_s && config.top_namespace != DEFAULT_MESSAGES_ROOT
         end
       end
     end

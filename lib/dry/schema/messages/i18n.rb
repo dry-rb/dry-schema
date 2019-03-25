@@ -11,22 +11,6 @@ module Dry
     class Messages::I18n < Messages::Abstract
       attr_reader :t
 
-      configure do |config|
-        config.root = 'dry_schema.errors'
-        config.rule_lookup_paths = config.rule_lookup_paths.map { |path| "dry_schema.#{path}" }
-      end
-
-      # @api private
-      def self.build(paths = config.paths)
-        set_load_paths(paths)
-        new
-      end
-
-      # @api private
-      def self.set_load_paths(paths)
-        ::I18n.load_path.concat(paths)
-      end
-
       # @api private
       def initialize
         super
@@ -41,7 +25,7 @@ module Dry
       # @return [String]
       #
       # @api public
-      def get(key, options = {})
+      def get(key, options = EMPTY_HASH)
         t.(key, options) if key
       end
 
@@ -51,8 +35,8 @@ module Dry
       #
       # @api public
       def key?(key, options)
-        ::I18n.exists?(key, options.fetch(:locale, default_locale)) ||
-          ::I18n.exists?(key, I18n.default_locale)
+        I18n.exists?(key, options.fetch(:locale, default_locale)) ||
+          I18n.exists?(key, I18n.default_locale)
       end
 
       # Merge messages from an additional path
@@ -63,15 +47,46 @@ module Dry
       #
       # @api public
       def merge(paths)
-        ::I18n.load_path.concat(Array(paths))
-        ::I18n.backend.load_translations
-        ::I18n.reload!
-        self
+        prepare(paths)
       end
 
       # @api private
       def default_locale
         I18n.locale || I18n.default_locale || super
+      end
+
+      # @api private
+      def prepare(paths = config.load_paths)
+        paths.each do |path|
+          data = YAML.load_file(path)
+
+          if custom_top_namespace?(path)
+            top_namespace = config.top_namespace
+
+            mapped_data = data
+              .map { |k, v| [k, { top_namespace => v[DEFAULT_MESSAGES_ROOT] }] }
+              .to_h
+
+            store_translations(mapped_data)
+          else
+            store_translations(data)
+          end
+        end
+
+        self
+      end
+
+      private
+
+      # @api private
+      def store_translations(data)
+        locales = data.keys.map(&:to_sym)
+
+        I18n.available_locales += locales
+
+        locales.each do |locale|
+          I18n.backend.store_translations(locale, data[locale.to_s])
+        end
       end
     end
   end

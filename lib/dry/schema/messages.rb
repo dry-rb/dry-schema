@@ -6,40 +6,26 @@ module Dry
     #
     # @api private
     module Messages
+      BACKENDS = {
+        i18n: 'I18n',
+        yaml: 'YAML'
+      }.freeze
+
       module_function
 
       public def setup(config)
-        messages = build(config.backend)
-        namespace = config.namespace
-        load_paths = config.load_paths
-
-        if !load_paths.empty? && namespace
-          messages.merge(config.load_paths).namespaced(namespace)
-        elsif !load_paths.empty?
-          messages.merge(config.load_paths)
-        elsif namespace
-          messages.namespaced(namespace)
-        else
-          messages
+        backend_class = BACKENDS.fetch(config.backend) do
+          raise "+#{config.backend}+ is not a valid messages identifier"
         end
-      end
 
-      # @api private
-      def build(backend)
-        klass =
-          case backend
-          when :yaml then default
-          when :i18n then const_get(:I18n)
-          else
-            raise "+#{backend}+ is not a valid messages identifier"
-          end
+        namespace = config.namespace
+        options = config.to_h.select { |k, _| Abstract.settings.include?(k) }
 
-        klass.build
-      end
+        messages = Messages.const_get(backend_class).build(options)
 
-      # @api private
-      def default
-        const_get(:YAML)
+        return messages.namespaced(namespace) if namespace
+
+        messages
       end
     end
   end

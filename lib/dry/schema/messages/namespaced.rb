@@ -6,7 +6,7 @@ module Dry
       # Namespaced messages backend
       #
       # @api public
-      class Namespaced <Dry::Schema::Messages::Abstract
+      class Namespaced < Dry::Schema::Messages::Abstract
         # @api private
         attr_reader :namespace
 
@@ -14,17 +14,16 @@ module Dry
         attr_reader :messages
 
         # @api private
-        attr_reader :root
+        attr_reader :config
 
         # @api private
         attr_reader :call_opts
 
         # @api private
         def initialize(namespace, messages)
-          super()
+          @config = messages.config
           @namespace = namespace
           @messages = messages
-          @root = messages.root
           @call_opts = { namespace: namespace }.freeze
         end
 
