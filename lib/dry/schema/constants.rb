@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pathname'
 require 'dry/core/constants'
 
 module Dry
@@ -9,6 +10,9 @@ module Dry
     LIST_SEPARATOR = ', '
     QUESTION_MARK = '?'
     DOT = '.'
+
+    DEFAULT_MESSAGES_PATH = Pathname(__dir__).join('../../../config/errors.yml').realpath.freeze
+    DEFAULT_MESSAGES_ROOT = 'dry_schema'
 
     InvalidSchemaError = Class.new(StandardError)
 

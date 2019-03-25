@@ -90,7 +90,7 @@ module Dry
 
       # @api private
       def prepare
-        @data = config.paths.map { |path| load_translations(path) }.reduce(:merge)
+        @data = config.load_paths.map { |path| load_translations(path) }.reduce(:merge)
         self
       end
 
@@ -102,7 +102,7 @@ module Dry
 
         return data unless custom_top_namespace?(path)
 
-        data.map { |k, v| [k.gsub(DEFAULT_TOP_NAMESPACE, config.top_namespace), v] }.to_h
+        data.map { |k, v| [k.gsub(DEFAULT_MESSAGES_ROOT, config.top_namespace), v] }.to_h
       end
 
       # @api private

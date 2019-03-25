@@ -56,7 +56,7 @@ module Dry
       end
 
       # @api private
-      def prepare(paths = config.paths)
+      def prepare(paths = config.load_paths)
         paths.each do |path|
           data = YAML.load_file(path)
 
@@ -64,7 +64,7 @@ module Dry
             top_namespace = config.top_namespace
 
             mapped_data = data
-              .map { |k, v| [k, { top_namespace => v[DEFAULT_TOP_NAMESPACE] }] }
+              .map { |k, v| [k, { top_namespace => v[DEFAULT_MESSAGES_ROOT] }] }
               .to_h
 
             store_translations(mapped_data)

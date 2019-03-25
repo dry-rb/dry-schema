@@ -2,6 +2,8 @@
 
 require 'dry/equalizer'
 require 'dry/configurable'
+
+require 'dry/schema/constants'
 require 'dry/schema/predicate_registry'
 
 module Dry
@@ -20,7 +22,8 @@ module Dry
       setting(:messages) do
         setting(:backend, :yaml)
         setting(:namespace)
-        setting(:load_paths, EMPTY_ARRAY, &:dup)
+        setting(:load_paths, Set[DEFAULT_MESSAGES_PATH], &:dup)
+        setting(:top_namespace, DEFAULT_MESSAGES_ROOT)
       end
 
       # Return configured predicate registry

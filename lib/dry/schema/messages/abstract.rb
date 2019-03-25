@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pathname'
+require 'set'
 require 'concurrent/map'
 require 'dry/equalizer'
 require 'dry/configurable'
@@ -18,11 +18,8 @@ module Dry
         include Dry::Configurable
         include Dry::Equalizer(:config)
 
-        DEFAULT_PATH = Pathname(__dir__).join('../../../../config/errors.yml').realpath.freeze
-        DEFAULT_TOP_NAMESPACE = 'dry_schema'
-
-        setting :paths, [DEFAULT_PATH]
-        setting :top_namespace, DEFAULT_TOP_NAMESPACE
+        setting :load_paths, Set[DEFAULT_MESSAGES_PATH]
+        setting :top_namespace, DEFAULT_MESSAGES_ROOT
         setting :root, 'errors'
         setting :lookup_options, %i[root predicate path val_type arg_type].freeze
 
@@ -169,7 +166,7 @@ module Dry
 
         # @api private
         def custom_top_namespace?(path)
-          path.to_s == DEFAULT_PATH.to_s && config.top_namespace != DEFAULT_TOP_NAMESPACE
+          path.to_s == DEFAULT_MESSAGES_PATH.to_s && config.top_namespace != DEFAULT_MESSAGES_ROOT
         end
       end
     end
