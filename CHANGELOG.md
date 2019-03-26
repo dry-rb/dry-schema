@@ -1,4 +1,11 @@
-# 0.4.0 to-be-released
+# 0.4.0 2019-03-26
+
+### Added
+
+* Schemas are now compatible with procs via `#to_proc` (issue #53) (solnic)
+* Support for configuring `top_namespace` for localized messages (solnic)
+* Support for configuring more than one load path for localized messages (solnic)
+* Support for inferring predicates from arbitrary types (issue #101) (solnic)
 
 ### Fixed
 
@@ -8,7 +15,17 @@
 
 ### Changed
 
+* [BREAKING] Updated to work with `dry-types 0.15.0`  (flash-gordon)
 * [BREAKING] `Result#{errors,messages,hints}` returns `MessageSet` object now which is an enumerable coercible to a hash (solnic)
+* [BREAKING] `Messages` backend classes no longer use global configuration (solnic)
+* [BREAKING] Passing a non-symbol key name in the DSL will raise `ArgumentError` (issue #29) (solnic)
+* [BREAKING] Configuration for message backends is now nested under `messages` key with following settings:
+  * `messages.backend` - previously `messages`
+  * `messages.load_paths` - previously `messages_path`
+  * `messages.namespace` - previously `namespace`
+  * `messages.top_namespace` - **new setting** see above
+* [BREAKING] `Messages::I18n` uses `I18.store_translations` instead of messing with `I18n.load_path` (solnic)
+* Schemas (`Params` and `JSON`) have nicer inspect (solnic)
 
 [Compare v0.3.0...v0.4.0](https://github.com/dry-rb/dry-schema/compare/v0.3.0...v0.4.0)
 
