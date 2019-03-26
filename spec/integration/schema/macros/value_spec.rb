@@ -66,7 +66,7 @@ RSpec.describe 'Macros #value' do
     end
 
     it 'infers type check predicates for defined types' do
-      expect(schema.(age: nil).errors).to eql( age: ['must be an integer or must be a string'])
+      expect(schema.(age: nil).errors).to eql(age: ['must be an integer or must be a string'])
       expect(schema.(age: 19)).to be_success
       expect(schema.(age: '19')).to be_success
     end
@@ -75,22 +75,21 @@ RSpec.describe 'Macros #value' do
   describe 'with an invalid type spec' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).value(:custom, :even?, gt?: 18)
+        required(:price).value(:custom, gt?: 0)
       end
     end
 
     before do
-      Dry::Types.register('custom', Dry::Types::Nominal.new(Dry::Schema::Macros::Value))
+      Dry::Types.register('custom', Dry::Types::Nominal.new(BigDecimal))
     end
 
     after do
       Dry::Types.container._container.delete('custom')
     end
 
-    it 'raises an ArgumentError' do
-      expect { schema }.to raise_error(ArgumentError, <<-STR.strip)
-        Predicate +:value?+ inferred from :custom type spec is not supported
-      STR
+    it 'infers type?(type) predicate' do
+      expect(schema.(price: nil).errors).to eql(price: ['must be BigDecimal'])
+      expect(schema.(price: BigDecimal('19.4'))).to be_success
     end
   end
 

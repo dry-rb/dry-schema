@@ -28,42 +28,68 @@ module Dry
       #
       # @api private
       class Compiler
+        # @!attribute [r] registry
+        #   @return [PredicateRegistry]
+        #   @api private
+        attr_reader :registry
+
+        # @api private
+        def initialize(registry)
+          @registry = registry
+        end
+
+        # @api private
+        def infer_predicate(type)
+          TYPE_TO_PREDICATE.fetch(type) { :"#{type.name.split('::').last.downcase}?" }
+        end
+
+        # @api private
         def visit(node)
           meth, rest = node
           public_send(:"visit_#{meth}", rest)
         end
 
+        # @api private
         def visit_nominal(node)
           type = node[0]
+          predicate = infer_predicate(type)
 
-          TYPE_TO_PREDICATE.fetch(type) {
-            :"#{type.name.split('::').last.downcase}?"
-          }
+          if registry.key?(predicate)
+            predicate
+          else
+            { type?: type }
+          end
         end
 
+        # @api private
         def visit_hash(_)
           :hash?
         end
 
+        # @api private
         def visit_array(_)
           :array?
         end
 
+        # @api private
         def visit_safe(node)
           other, * = node
           visit(other)
         end
 
+        # @api private
         def visit_constructor(node)
           other, * = node
           visit(other)
         end
 
+        # @api private
         def visit_enum(node)
           other, * = node
           visit(other)
         end
 
+        # @api private
         def visit_sum(node)
           left, right = node
 
@@ -76,10 +102,21 @@ module Dry
           end
         end
 
+        # @api private
         def visit_constrained(node)
           other, * = node
           visit(other)
         end
+      end
+
+      # @!attribute [r] compiler
+      #   @return [Compiler]
+      #   @api private
+      attr_reader :compiler
+
+      # @api private
+      def initialize(registry)
+        @compiler = Compiler.new(registry)
       end
 
       # Infer predicate identifier from the provided type
@@ -87,16 +124,16 @@ module Dry
       # @return [Symbol]
       #
       # @api private
-      def self.[](type)
-        fetch_or_store(type.hash) {
-          predicates = Array(compiler.visit(type.to_ast)).flatten
-          Array(REDUCED_TYPES[predicates] || predicates).flatten
-        }
-      end
+      def [](type)
+        self.class.fetch_or_store(type.hash) do
+          predicates = compiler.visit(type.to_ast)
 
-      # @api private
-      def self.compiler
-        @compiler ||= Compiler.new
+          if predicates.is_a?(Hash)
+            predicates
+          else
+            Array(REDUCED_TYPES[predicates] || predicates).flatten
+          end
+        end
       end
     end
   end

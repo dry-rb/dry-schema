@@ -29,13 +29,15 @@ module Dry
       end
 
       # @api private
-      def evaluate(*predicates, **opts, &block)
+      def evaluate(*predicates, **opts)
         pred_opts = opts.dup
         pred_opts.delete(:type_spec)
 
         predicates.each do |predicate|
           if predicate.respond_to?(:call)
             append(predicate)
+          elsif predicate.is_a?(::Hash)
+            evaluate_hash_predicates(predicate)
           elsif predicate.is_a?(::Array)
             append(predicate.map { |pred| __send__(pred) }.reduce(:|))
           else
@@ -43,10 +45,16 @@ module Dry
           end
         end
 
-        pred_opts.each do |predicate, *args|
+        evaluate_hash_predicates(pred_opts)
+
+        self
+      end
+
+      # @api private
+      def evaluate_hash_predicates(predicates)
+        predicates.each do |predicate, *args|
           append(__send__(predicate, *args))
         end
-
         self
       end
 

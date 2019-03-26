@@ -19,6 +19,13 @@ module Dry
         #   @api private
         option :filter_schema, optional: true, default: proc { schema_dsl&.new }
 
+        # @!attribute [r] predicate_inferrer
+        #   @return [PredicateInferrer]
+        #   @api private
+        option :predicate_inferrer, default: proc {
+          PredicateInferrer.new(compiler.predicates)
+        }
+
         # Specify predicates that should be used to filter out values
         # before coercion is applied
         #
@@ -119,16 +126,11 @@ module Dry
 
           if type_spec
             type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec)
-            type_predicates = PredicateInferrer[schema_dsl.types[name]]
+
+            type_predicates = predicate_inferrer[schema_dsl.types[name]]
 
             unless predicates.include?(type_predicates)
-              type_predicates.each do |pred|
-                unless compiler.supports?(pred)
-                  raise ArgumentError, "Predicate +#{pred.inspect}+ inferred from #{type_spec.inspect} type spec is not supported"
-                end
-              end
-
-              if type_predicates.size.equal?(1)
+              if type_predicates.is_a?(::Array) && type_predicates.size.equal?(1)
                 predicates.unshift(type_predicates[0])
               else
                 predicates.unshift(type_predicates)
