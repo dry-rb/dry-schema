@@ -61,7 +61,7 @@ RSpec.describe 'Macros #value' do
   describe 'with a sum type spec' do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).value([:integer, :string], :filled?)
+        required(:age).value(%i[integer string], :filled?)
       end
     end
 
