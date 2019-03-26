@@ -14,6 +14,9 @@ module Dry
       #
       # @api public
       class Key < DSL
+        # @!attribute [r] filter_schema
+        #   @return [Schema::DSL]
+        #   @api private
         option :filter_schema, optional: true, default: proc { schema_dsl&.new }
 
         # Specify predicates that should be used to filter out values
