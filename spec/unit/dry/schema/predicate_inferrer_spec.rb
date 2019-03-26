@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
 require 'dry/schema/predicate_inferrer'
+require 'dry/schema/predicate_registry'
 
 RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
-  subject(:inferrer) { Dry::Schema::PredicateInferrer }
+  subject(:inferrer) do
+    Dry::Schema::PredicateInferrer.new(Dry::Schema::PredicateRegistry.new)
+  end
 
   def type(*args)
     args.map { |name| Dry::Types[name.to_s] }.reduce(:|)
+  end
+
+  it 'caches results' do
+    expect(inferrer[type(:string)]).to be(inferrer[type(:string)])
   end
 
   it 'returns str? for a string type' do
@@ -47,5 +54,11 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
 
   it 'returns int? for integer enum type' do
     expect(inferrer[type(:integer).enum(1, 2)]).to eql([:int?])
+  end
+
+  it 'returns type?(type) for arbitrary types' do
+    custom_type = Dry::Types::Nominal.new(double(:some_type, name: 'ObjectID'))
+
+    expect(inferrer[custom_type]).to eql(type?: custom_type.primitive)
   end
 end
