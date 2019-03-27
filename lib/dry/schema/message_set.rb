@@ -60,6 +60,8 @@ module Dry
 
       # @api private
       def messages_map(messages = self.messages)
+        return EMPTY_HASH if empty?
+
         messages.group_by(&:path).reduce(placeholders) do |hash, (path, msgs)|
           node = path.reduce(hash) { |a, e| a[e] }
 
