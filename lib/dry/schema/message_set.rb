@@ -53,7 +53,7 @@ module Dry
 
       # @api private
       def empty?
-        messages.empty?
+        @empty ||= messages.empty?
       end
 
       private
