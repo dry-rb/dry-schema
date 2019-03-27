@@ -29,13 +29,15 @@ module Dry
 
       # @api public
       def each(&block)
+        return self if empty?
         return to_enum unless block
+
         messages.each(&block)
       end
 
       # @api public
       def to_h
-        messages_map
+        @to_h ||= messages_map
       end
       alias_method :to_hash, :to_h
 
@@ -51,13 +53,15 @@ module Dry
 
       # @api private
       def empty?
-        messages.empty?
+        @empty ||= messages.empty?
       end
 
       private
 
       # @api private
       def messages_map(messages = self.messages)
+        return EMPTY_HASH if empty?
+
         messages.group_by(&:path).reduce(placeholders) do |hash, (path, msgs)|
           node = path.reduce(hash) { |a, e| a[e] }
 
@@ -78,12 +82,14 @@ module Dry
 
       # @api private
       def initialize_placeholders!
-        @placeholders = messages.map(&:path).uniq.reduce({}) do |hash, path|
+        return @placeholders = EMPTY_HASH if empty?
+
+        @placeholders = paths.reduce(EMPTY_HASH.dup) do |hash, path|
           curr_idx = 0
           last_idx = path.size - 1
           node = hash
 
-          while curr_idx <= last_idx do
+          while curr_idx <= last_idx
             key = path[curr_idx]
             node = (node[key] || node[key] = curr_idx < last_idx ? {} : [])
             curr_idx += 1

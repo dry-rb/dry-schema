@@ -28,6 +28,7 @@ module Dry
         .new(resolve_predicate).update(key?: resolve_key_predicate).freeze
 
       EMPTY_OPTS = VisitorOpts.new
+      EMPTY_MESSAGE_SET = MessageSet.new(EMPTY_ARRAY).freeze
 
       param :messages
 
@@ -50,11 +51,17 @@ module Dry
       def with(new_options)
         return self if new_options.empty?
 
-        self.class.new(messages, options.merge(new_options))
+        updated_opts = options.merge(new_options)
+
+        return self if updated_opts.eql?(options)
+
+        self.class.new(messages, updated_opts)
       end
 
       # @api private
       def call(ast)
+        return EMPTY_MESSAGE_SET if ast.empty?
+
         current_messages = EMPTY_ARRAY.dup
         compiled_messages = ast.map { |node| visit(node, EMPTY_OPTS.dup(current_messages)) }
 
