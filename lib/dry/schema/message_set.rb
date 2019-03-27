@@ -37,7 +37,7 @@ module Dry
 
       # @api public
       def to_h
-        messages_map
+        @to_h ||= messages_map
       end
       alias_method :to_hash, :to_h
 
