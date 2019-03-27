@@ -29,7 +29,9 @@ module Dry
 
       # @api public
       def each(&block)
+        return self if empty?
         return to_enum unless block
+
         messages.each(&block)
       end
 
