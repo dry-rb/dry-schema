@@ -69,7 +69,7 @@ module Dry
             node << msg
           end
 
-          node.map!(&:to_s)
+          node.map!(&:dump)
 
           hash
         end

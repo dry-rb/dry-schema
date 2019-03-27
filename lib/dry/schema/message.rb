@@ -9,9 +9,9 @@ module Dry
     #
     # @api public
     class Message
-      include Dry::Equalizer(:predicate, :path, :text, :options)
+      include Dry::Equalizer(:predicate, :path, :message, :options)
 
-      attr_reader :predicate, :path, :text, :args, :options
+      attr_reader :predicate, :path, :message, :args, :options
 
       # A message sub-type used by OR operations
       #
@@ -42,8 +42,8 @@ module Dry
         # Return a string representation of the message
         #
         # @api public
-        def to_s
-          uniq.join(" #{messages[:or]} ")
+        def dump
+          uniq.map(&:dump).join(" #{messages[:or]} ")
         end
 
         # @api private
@@ -60,29 +60,29 @@ module Dry
       # Build a new message object
       #
       # @api private
-      def self.[](predicate, path, text, options)
-        Message.new(predicate, path, text, options)
+      def self.[](predicate, path, message, options)
+        Message.new(predicate, path, message, options)
       end
 
       # @api private
-      def initialize(predicate, path, text, options)
+      def initialize(predicate, path, message, options)
         @predicate = predicate
         @path = path
-        @text = text
+        @message = message
         @options = options
         @args = options[:args] || EMPTY_ARRAY
       end
 
-      # Return a string representation of the message
+      # Return internal representation of the message
       #
       # @api public
-      def to_s
-        text
+      def dump
+        message
       end
 
       # @api private
       def eql?(other)
-        other.is_a?(String) ? text == other : super
+        other.is_a?(String) ? message == other : super
       end
 
       def <=>(other)
