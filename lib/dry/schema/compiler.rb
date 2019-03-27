@@ -19,6 +19,11 @@ module Dry
         super
       end
 
+      # @api private
+      def visit_and(node)
+        super.with(hints: false)
+      end
+
       # Build a special rule that will produce namespaced failures
       #
       # This is needed for schemas that are namespaced and they are
