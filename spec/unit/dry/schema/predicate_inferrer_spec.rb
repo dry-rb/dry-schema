@@ -61,4 +61,8 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
 
     expect(inferrer[custom_type]).to eql(type?: custom_type.primitive)
   end
+
+  it 'returns nothing for any' do
+    expect(inferrer[type(:any)]).to eql([])
+  end
 end

@@ -107,6 +107,11 @@ module Dry
           other, * = node
           visit(other)
         end
+
+        # @api private
+        def visit_any(_)
+          nil
+        end
       end
 
       # @!attribute [r] compiler
