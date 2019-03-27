@@ -50,7 +50,11 @@ module Dry
       def with(new_options)
         return self if new_options.empty?
 
-        self.class.new(messages, options.merge(new_options))
+        updated_opts = options.merge(new_options)
+
+        return self if updated_opts.eql?(options)
+
+        self.class.new(messages, updated_opts)
       end
 
       # @api private
