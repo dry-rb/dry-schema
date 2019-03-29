@@ -86,7 +86,8 @@ module Dry
           tokens = { name: name, locale: options.fetch(:locale, default_locale) }
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
 
-          get(path, options) if path
+          rule = get(path, options) if path
+          rule.is_a?(Hash) ? rule[:text] : rule
         end
 
         # Retrieve a message template
@@ -96,8 +97,8 @@ module Dry
         # @api public
         def call(*args)
           cache.fetch_or_store(args.hash) do
-            path, opts = lookup(*args)
-            Template[get(path, opts)] if path
+            text, meta = lookup(*args)
+            [Template[text], meta] if text
           end
         end
         alias_method :[], :call
@@ -105,6 +106,8 @@ module Dry
         # Try to find a message for the given predicate and its options
         #
         # @api private
+        #
+        # rubocop:disable Metrics/AbcSize
         def lookup(predicate, options)
           tokens = options.merge(
             predicate: predicate,
@@ -118,8 +121,17 @@ module Dry
 
           path = lookup_paths(tokens).detect { |key| key?(key, opts) }
 
-          [path, opts]
+          return unless path
+
+          text = get(path, opts)
+
+          if text.is_a?(Hash)
+            text.values_at(:text, :meta)
+          else
+            [text, EMPTY_HASH]
+          end
         end
+        # rubocop:enable Metrics/AbcSize
 
         # @api private
         def lookup_paths(tokens)

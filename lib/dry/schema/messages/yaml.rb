@@ -31,11 +31,23 @@ module Dry
       end
 
       # @api private
-      def self.flat_hash(hash, acc = [], result = {})
-        return result.update(acc.join(DOT) => hash) unless hash.is_a?(Hash)
+      def self.flat_hash(hash, path = [], keys = {})
+        hash.each do |key, value|
+          flat_hash(value, [*path, key], keys) if value.is_a?(Hash)
 
-        hash.each { |k, v| flat_hash(v, acc + [k], result) }
-        result
+          if value.is_a?(String) && hash['text'] != value
+            keys[[*path, key].join(DOT)] = {
+              text: value,
+              meta: EMPTY_HASH
+            }
+          elsif value.is_a?(Hash) && value['text'].is_a?(String)
+            keys[[*path, key].join(DOT)] = {
+              text: value['text'],
+              meta: value.dup.delete_if { |k| k == 'text' }.map { |k, v| [k.to_sym, v] }.to_h
+            }
+          end
+        end
+        keys
       end
 
       # @api private

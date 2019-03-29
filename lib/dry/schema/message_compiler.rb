@@ -130,12 +130,12 @@ module Dry
           path: path.last, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
         ).to_h
 
-        template = messages[predicate, options] || raise(MissingMessageError, path)
+        template, meta = messages[predicate, options] || raise(MissingMessageError, path)
 
         text = message_text(template, tokens, options)
 
         message_type(options).new(
-          text: text, path: path, predicate: predicate, args: arg_vals, input: input
+          text: text, path: path, predicate: predicate, args: arg_vals, input: input, meta: meta
         )
       end
 

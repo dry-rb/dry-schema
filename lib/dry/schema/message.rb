@@ -26,6 +26,8 @@ module Dry
 
       option :input
 
+      option :meta, optional: true
+
       # Return a string representation of the message
       #
       # @api public
