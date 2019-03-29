@@ -5,12 +5,12 @@ RSpec.describe Dry::Schema::MessageCompiler, '#visit' do
 
   let(:visitor) { :visit }
 
-  context 'with an anonymous :failure' do
+  context 'with a :failure node' do
     let(:node) do
       [:failure, [:age, [:key, [:age, [:predicate, [:int?, [[:input, '17']]]]]]]]
     end
 
-    it 'returns a message for :int? failure with :rule name inferred from key-rule' do
+    it 'returns a message for :int? failure with :rule inferred from :failure identifier' do
       expect(result.path).to eql([:age])
       expect(result).to eql('must be an integer')
     end
