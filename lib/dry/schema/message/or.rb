@@ -12,8 +12,6 @@ module Dry
       #
       # @api public
       class Or
-        include Enumerable
-
         # @api private
         attr_reader :left
 
@@ -38,12 +36,7 @@ module Dry
         #
         # @api public
         def to_s
-          uniq.join(" #{messages[:or]} ")
-        end
-
-        # @api private
-        def each(&block)
-          to_a.each(&block)
+          to_a.join(" #{messages[:or]} ")
         end
 
         # @api private
