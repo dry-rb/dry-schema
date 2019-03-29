@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'dry/equalizer'
+
 require 'dry/schema/path'
+require 'dry/schema/message/or'
 
 module Dry
   module Schema
@@ -12,50 +14,6 @@ module Dry
       include Dry::Equalizer(:predicate, :path, :text, :options)
 
       attr_reader :predicate, :path, :text, :args, :options
-
-      # A message sub-type used by OR operations
-      #
-      # @api public
-      class Or
-        include Enumerable
-
-        # @api private
-        attr_reader :left
-
-        # @api private
-        attr_reader :right
-
-        # @api private
-        attr_reader :path
-
-        # @api private
-        attr_reader :messages
-
-        # @api private
-        def initialize(left, right, messages)
-          @left = left
-          @right = right
-          @messages = messages
-          @path = left.path
-        end
-
-        # Return a string representation of the message
-        #
-        # @api public
-        def to_s
-          uniq.join(" #{messages[:or]} ")
-        end
-
-        # @api private
-        def each(&block)
-          to_a.each(&block)
-        end
-
-        # @api private
-        def to_a
-          [left, right]
-        end
-      end
 
       # Build a new message object
       #
