@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dry/initializer'
 require 'dry/equalizer'
 
 require 'dry/schema/path'
@@ -11,25 +12,19 @@ module Dry
     #
     # @api public
     class Message
-      include Dry::Equalizer(:predicate, :path, :text, :options)
+      include Dry::Equalizer(:text, :path, :predicate, :input)
 
-      attr_reader :predicate, :path, :text, :args, :options
+      extend Dry::Initializer
 
-      # Build a new message object
-      #
-      # @api private
-      def self.[](predicate, path, text, options)
-        Message.new(predicate, path, text, options)
-      end
+      option :text
 
-      # @api private
-      def initialize(predicate, path, text, options)
-        @predicate = predicate
-        @path = path
-        @text = text
-        @options = options
-        @args = options[:args] || EMPTY_ARRAY
-      end
+      option :path
+
+      option :predicate
+
+      option :args, default: proc { EMPTY_ARRAY }
+
+      option :input
 
       # Return a string representation of the message
       #

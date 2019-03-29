@@ -37,10 +37,6 @@ module Dry
     #
     # @api private
     class Hint < Message
-      def self.[](predicate, path, text, options)
-        Hint.new(predicate, path, text, options)
-      end
-
       # @api private
       def hint?
         true

@@ -134,11 +134,9 @@ module Dry
 
         text = message_text(template, tokens, options)
 
-        message_type(options)[
-          predicate, path, text,
-          args: arg_vals,
-          input: input
-        ]
+        message_type(options).new(
+          text: text, path: path, predicate: predicate, args: arg_vals, input: input
+        )
       end
 
       # @api private

@@ -4,7 +4,7 @@ require 'dry/schema/message'
 
 RSpec.describe Dry::Schema::Message do
   def msg(path)
-    Dry::Schema::Message.new(:int?, path, 'failed', {})
+    Dry::Schema::Message.new(text: 'failed', predicate: :int?, path: path, input: nil)
   end
 
   describe '#<=>' do
