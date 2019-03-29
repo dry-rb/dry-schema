@@ -106,7 +106,7 @@ module Dry
         # Try to find a message for the given predicate and its options
         #
         # @api private
-        def lookup(predicate, options = {})
+        def lookup(predicate, options)
           tokens = options.merge(
             root: options[:not] ? "#{root}.not" : root,
             predicate: predicate,
