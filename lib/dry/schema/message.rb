@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require 'dry/initializer'
 require 'dry/equalizer'
+
 require 'dry/schema/path'
+require 'dry/schema/message/or'
 
 module Dry
   module Schema
@@ -9,69 +12,19 @@ module Dry
     #
     # @api public
     class Message
-      include Dry::Equalizer(:predicate, :path, :text, :options)
+      include Dry::Equalizer(:text, :path, :predicate, :input)
 
-      attr_reader :predicate, :path, :text, :args, :options
+      extend Dry::Initializer
 
-      # A message sub-type used by OR operations
-      #
-      # @api public
-      class Or
-        include Enumerable
+      option :text
 
-        # @api private
-        attr_reader :left
+      option :path
 
-        # @api private
-        attr_reader :right
+      option :predicate
 
-        # @api private
-        attr_reader :path
+      option :args, default: proc { EMPTY_ARRAY }
 
-        # @api private
-        attr_reader :messages
-
-        # @api private
-        def initialize(left, right, messages)
-          @left = left
-          @right = right
-          @messages = messages
-          @path = left.path
-        end
-
-        # Return a string representation of the message
-        #
-        # @api public
-        def to_s
-          uniq.join(" #{messages[:or]} ")
-        end
-
-        # @api private
-        def each(&block)
-          to_a.each(&block)
-        end
-
-        # @api private
-        def to_a
-          [left, right]
-        end
-      end
-
-      # Build a new message object
-      #
-      # @api private
-      def self.[](predicate, path, text, options)
-        Message.new(predicate, path, text, options)
-      end
-
-      # @api private
-      def initialize(predicate, path, text, options)
-        @predicate = predicate
-        @path = path
-        @text = text
-        @options = options
-        @args = options[:args] || EMPTY_ARRAY
-      end
+      option :input
 
       # Return a string representation of the message
       #

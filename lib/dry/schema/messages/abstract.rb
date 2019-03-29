@@ -106,10 +106,10 @@ module Dry
         # Try to find a message for the given predicate and its options
         #
         # @api private
-        def lookup(predicate, options = {})
+        def lookup(predicate, options)
           tokens = options.merge(
-            root: options[:not] ? "#{root}.not" : root,
             predicate: predicate,
+            root: options[:not] ? "#{root}.not" : root,
             arg_type: config.arg_types[options[:arg_type]],
             val_type: config.val_types[options[:val_type]],
             message_type: options[:message_type] || :failure
@@ -117,9 +117,7 @@ module Dry
 
           opts = options.reject { |k, _| config.lookup_options.include?(k) }
 
-          path = lookup_paths(tokens).detect do |key|
-            key?(key, opts) && get(key, opts).is_a?(String)
-          end
+          path = lookup_paths(tokens).detect { |key| key?(key, opts) }
 
           [path, opts]
         end
