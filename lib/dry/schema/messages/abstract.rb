@@ -27,7 +27,6 @@ module Dry
           '%<root>s.rules.%<path>s.%<predicate>s.arg.%<arg_type>s',
           '%<root>s.rules.%<path>s.%<predicate>s',
           '%<root>s.%<predicate>s.%<message_type>s',
-          '%<root>s.%<predicate>s.value.%<path>s.arg.%<arg_type>s',
           '%<root>s.%<predicate>s.value.%<path>s',
           '%<root>s.%<predicate>s.value.%<val_type>s.arg.%<arg_type>s',
           '%<root>s.%<predicate>s.value.%<val_type>s',
