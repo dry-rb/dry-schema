@@ -34,12 +34,27 @@ Undefined = Dry::Core::Constants::Undefined
 Dry::Schema.load_extensions(:hints)
 
 require 'i18n'
+require 'transproc/all'
+
 require 'dry/schema/messages/i18n'
 require 'dry/schema/message_set'
 
 module MessageSetSupport
   def eql?(other)
     to_h.eql?(other)
+  end
+end
+
+module Coercions
+  extend Transproc::Registry
+
+  import Transproc::Recursion
+  import Transproc::HashTransformations
+
+  T = self
+
+  def stringify_keys(hash)
+    T[:hash_recursion, T[:stringify_keys]].(hash)
   end
 end
 
@@ -51,6 +66,7 @@ RSpec.configure do |config|
   config.filter_run_when_matching :focus
 
   config.include PredicatesIntegration
+  config.include Coercions
 
   config.define_derived_metadata do |meta|
     meta[:aggregate_failures] = true

@@ -12,6 +12,7 @@ group :test do
   gem 'dry-monads', require: false
   gem 'i18n', require: false
   gem 'simplecov', require: false, platform: :mri
+  gem 'transproc'
 end
 
 group :tools do

@@ -9,8 +9,11 @@ RSpec.describe Dry::Schema::Messages::I18n do
     end
 
     describe '#[]' do
-      it 'returns message template' do
-        expect(messages[:filled?, path: [:name]].()).to eql('must be filled')
+      it 'returns message template and optional meta' do
+        template, meta = messages[:filled?, path: [:name]]
+
+        expect(template.()).to eql('must be filled')
+        expect(meta).to eql({})
       end
     end
 
@@ -28,7 +31,10 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
     describe '#[]' do
       it 'returns message template' do
-        expect(messages[:filled?, path: [:name]].()).to eql('must be filled')
+        template, meta = messages[:filled?, path: [:name]]
+
+        expect(template.()).to eql('must be filled')
+        expect(meta).to eql({})
       end
     end
 

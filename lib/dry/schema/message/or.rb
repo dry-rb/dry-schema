@@ -36,7 +36,7 @@ module Dry
         #
         # @api public
         def to_s
-          to_a.join(" #{messages[:or]} ")
+          to_a.join(" #{messages[:or][:text]} ")
         end
 
         # @api private
