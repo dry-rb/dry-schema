@@ -1,6 +1,7 @@
 en:
   dry_schema:
     or: "or"
+
     errors:
       array?: "must be an array"
 
@@ -12,6 +13,7 @@ en:
         arg:
           default: "must not be one of: %{list}"
           range: "must not be one of: %{list_left} - %{list_right}"
+
       exclusion?: "must not be one of: %{list}"
 
       eql?: "must be equal to %{left}"
@@ -38,6 +40,7 @@ en:
         arg:
           default: "must be one of: %{list}"
           range: "must be one of: %{list_left} - %{list_right}"
+
       inclusion?: "must be one of: %{list}"
 
       includes?: "must include %{value}"
@@ -88,5 +91,6 @@ en:
             arg:
               default: "length must be %{size}"
               range: "length must be within %{size_left} - %{size_right}"
+
       not:
         empty?: "cannot be empty"
