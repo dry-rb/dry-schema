@@ -139,7 +139,7 @@ module Dry
       #
       # @api private
       def result_ast
-        @__result__ast ||= results.map(&:to_ast)
+        @result_ast ||= results.map(&:to_ast)
       end
     end
   end
