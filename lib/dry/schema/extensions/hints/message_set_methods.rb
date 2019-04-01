@@ -16,7 +16,7 @@ module Dry
 
           # @api public
           def to_h
-            failures ? messages_map : messages_map(hints)
+            @to_h ||= failures ? messages_map : messages_map(hints)
           end
           alias_method :to_hash, :to_h
         end

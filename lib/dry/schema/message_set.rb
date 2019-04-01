@@ -56,6 +56,13 @@ module Dry
         @empty ||= messages.empty?
       end
 
+      # @api private
+      def freeze
+        to_h
+        empty?
+        super
+      end
+
       private
 
       # @api private
