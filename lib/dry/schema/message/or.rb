@@ -32,12 +32,15 @@ module Dry
           @path = left.path
         end
 
-        # Return a string representation of the message
+        # @see Message#dump
+        #
+        # @return [String]
         #
         # @api public
-        def to_s
-          to_a.join(" #{messages[:or][:text]} ")
+        def dump
+          to_a.map(&:dump).join(" #{messages[:or][:text]} ")
         end
+        alias to_s dump
 
         # @api private
         def to_a

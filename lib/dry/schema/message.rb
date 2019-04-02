@@ -26,14 +26,17 @@ module Dry
 
       option :input
 
-      option :meta, optional: true
+      option :meta, optional: true, default: proc { EMPTY_HASH }
 
-      # Return a string representation of the message
+      # Dump the message to a representation suitable for the message set hash
+      #
+      # @return [String,Hash]
       #
       # @api public
-      def to_s
-        text
+      def dump
+        @dump ||= meta.empty? ? text : { text: text, **meta }
       end
+      alias to_s dump
 
       # @api private
       def eql?(other)
