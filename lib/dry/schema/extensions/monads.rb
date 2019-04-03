@@ -7,11 +7,11 @@ module Dry
     class Result
       include Dry::Monads::Result::Mixin
 
-      def to_monad(options = EMPTY_HASH)
+      def to_monad
         if success?
-          Success(output)
+          Success(self)
         else
-          Failure(message_set(options).to_h)
+          Failure(self)
         end
       end
     end
