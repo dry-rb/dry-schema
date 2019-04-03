@@ -165,18 +165,7 @@ RSpec.describe 'Macros #array' do
   end
 
   context 'with a block' do
-    context 'with a nested schema' do
-      subject(:schema) do
-        Dry::Schema.define do
-          required(:songs).array(:hash?) do
-            schema do
-              required(:title).filled
-              required(:author).filled
-            end
-          end
-        end
-      end
-
+    shared_context 'hash member' do
       it 'passes when all elements are valid' do
         songs = [
           { title: 'Hello', author: 'Jane' },
@@ -206,6 +195,34 @@ RSpec.describe 'Macros #array' do
           }
         )
       end
+    end
+
+    context 'with a nested schema' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:songs).array(:hash?) do
+            schema do
+              required(:title).filled
+              required(:author).filled
+            end
+          end
+        end
+      end
+
+      include_context 'hash member'
+    end
+
+    context 'with a nested hash' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:songs).array(:hash) do
+            required(:title).filled
+            required(:author).filled
+          end
+        end
+      end
+
+      include_context 'hash member'
     end
   end
 

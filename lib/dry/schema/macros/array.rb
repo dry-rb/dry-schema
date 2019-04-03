@@ -10,9 +10,31 @@ module Dry
       # @api public
       class Array < DSL
         # @api private
-        def value(*args, &block)
-          schema_dsl.set_type(name, :array)
-          super
+        def value(*args, **opts, &block)
+          type(:array)
+
+          extract_type_spec(*args, set_type: false) do |*predicates, type_spec:|
+            if type_spec
+              type(schema_dsl.array[type_spec])
+            else
+              type(:array)
+            end
+
+            predicates.delete(:array?)
+            is_hash_block = type_spec.equal?(:hash)
+
+            if predicates.any? || opts.any? || !is_hash_block
+              super(*predicates, type_spec: type_spec, **opts, &(is_hash_block ? nil : block))
+            end
+
+            if is_hash_block
+              macro = Macros::Hash.new(schema_dsl: schema_dsl, name: name)
+              macro.call(&block)
+              trace << macro
+            end
+          end
+
+          self
         end
 
         # @api private
