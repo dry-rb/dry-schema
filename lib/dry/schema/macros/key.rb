@@ -19,13 +19,6 @@ module Dry
         #   @api private
         option :filter_schema, optional: true, default: proc { schema_dsl&.new }
 
-        # @!attribute [r] predicate_inferrer
-        #   @return [PredicateInferrer]
-        #   @api private
-        option :predicate_inferrer, default: proc {
-          PredicateInferrer.new(compiler.predicates)
-        }
-
         # Specify predicates that should be used to filter out values
         # before coercion is applied
         #
@@ -80,18 +73,6 @@ module Dry
           end
         end
 
-        # Set type spec
-        #
-        # @param [Symbol, Array, Dry::Types::Type]
-        #
-        # @return [Macros::Key]
-        #
-        # @api public
-        def type(spec)
-          schema_dsl.set_type(name, spec)
-          self
-        end
-
         # Coerce macro to a rule
         #
         # @return [Dry::Logic::Rule]
@@ -108,37 +89,6 @@ module Dry
         # @api private
         def to_ast
           [:predicate, [:key?, [[:name, name], [:input, Undefined]]]]
-        end
-
-        private
-
-        # @api private
-        def extract_type_spec(*args, nullable: false)
-          type_spec = args[0]
-
-          is_type_spec = type_spec.kind_of?(Dry::Schema::Processor) ||
-                         type_spec.is_a?(Symbol) &&
-                         type_spec.to_s.end_with?(QUESTION_MARK)
-
-          type_spec = nil if is_type_spec
-
-          predicates = Array(type_spec ? args[1..-1] : args)
-
-          if type_spec
-            type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec)
-
-            type_predicates = predicate_inferrer[schema_dsl.types[name]]
-
-            unless predicates.include?(type_predicates)
-              if type_predicates.is_a?(::Array) && type_predicates.size.equal?(1)
-                predicates.unshift(type_predicates[0])
-              else
-                predicates.unshift(type_predicates)
-              end
-            end
-          end
-
-          yield(*predicates, type_spec: !type_spec.nil?)
         end
       end
     end

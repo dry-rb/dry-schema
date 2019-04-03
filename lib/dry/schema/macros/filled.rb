@@ -18,8 +18,8 @@ module Dry
             raise ::Dry::Schema::InvalidSchemaError, 'Using filled with filled? is redundant'
           end
 
-          if opts[:type_spec].equal?(true)
-            value(predicates[0], :filled?, *predicates[1..predicates.size-1], **opts, &block)
+          if opts[:type_spec]
+            value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
           else
             value(:filled?, *predicates, **opts, &block)
           end
