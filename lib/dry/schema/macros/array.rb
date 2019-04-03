@@ -14,11 +14,7 @@ module Dry
           type(:array)
 
           extract_type_spec(*args, set_type: false) do |*predicates, type_spec:|
-            if type_spec
-              type(schema_dsl.array[type_spec])
-            else
-              type(:array)
-            end
+            type(schema_dsl.array[type_spec]) if type_spec
 
             predicates.delete(:array?)
             is_hash_block = type_spec.equal?(:hash)
@@ -27,11 +23,7 @@ module Dry
               super(*predicates, type_spec: type_spec, **opts, &(is_hash_block ? nil : block))
             end
 
-            if is_hash_block
-              macro = Macros::Hash.new(schema_dsl: schema_dsl, name: name)
-              macro.call(&block)
-              trace << macro
-            end
+            hash(&block) if is_hash_block
           end
 
           self
