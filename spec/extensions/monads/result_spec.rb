@@ -5,6 +5,8 @@ RSpec.describe Dry::Schema::Result do
 
   let(:schema) { Dry::Schema.define { required(:name).filled(:str?, size?: 2..4) } }
 
+  let(:result) { schema.(input) }
+
   context 'interface' do
     let(:input) { {} }
 
@@ -22,7 +24,7 @@ RSpec.describe Dry::Schema::Result do
 
         expect(monad).to be_a Dry::Monads::Result
         expect(monad).to be_success
-        expect(monad.value!).to eql(name: 'Jane')
+        expect(monad.value!).to be(result)
       end
     end
   end
@@ -31,19 +33,12 @@ RSpec.describe Dry::Schema::Result do
     let(:input) { { name: '' } }
 
     describe '#to_monad' do
-      it 'returns a Failure value' do
+      it 'wraps Reuslt with Failure constructor' do
         monad = result.to_monad
-
-        expect(monad).to be_failure
-        expect(monad.failure).to eql(name: ['must be filled', 'length must be within 2 - 4'])
-      end
-
-      it 'returns full messages' do
-        monad = result.to_monad(full: true)
 
         expect(monad).to be_a Dry::Monads::Result
         expect(monad).to be_failure
-        expect(monad.failure).to eql(name: ['name must be filled', 'name length must be within 2 - 4'])
+        expect(monad.failure).to be(result)
       end
     end
   end
