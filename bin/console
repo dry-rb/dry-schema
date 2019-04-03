@@ -1,33 +1,27 @@
 #!/usr/bin/env ruby
+
 # frozen_string_literal: true
 
-require 'optparse'
 require 'bundler/setup'
+require 'pry'
 require 'dry/schema'
 
 module Types
-  include Dry::Types.module
+  include Dry::Types()
 end
 
-if ARGV.include?('--pry')
-  require 'pry'
-
-  class Context
-    def schema(&block)
-      Dry::Schema.define(&block)
-    end
-
-    def params(&block)
-      Dry::Schema.Params(&block)
-    end
-
-    def json(&block)
-      Dry::Schema.JSON(&block)
-    end
-
-    Pry.start(Context.new, prompt: [proc { "dry-schema> " }, proc { "dry-schema*>" }])
+class Context
+  def schema(&block)
+    Dry::Schema.define(&block)
   end
-else
-  require 'irb'
-  binding.irb
+
+  def params(&block)
+    Dry::Schema.Params(&block)
+  end
+
+  def json(&block)
+    Dry::Schema.JSON(&block)
+  end
 end
+
+Pry.start(Context.new, prompt: [proc { "dry-schema> " }, proc { "dry-schema*> " }])
