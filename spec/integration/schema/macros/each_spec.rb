@@ -240,6 +240,18 @@ RSpec.describe 'Macros #each' do
     end
   end
 
+  context 'using type spec for elements' do
+    let(:schema) do
+      Dry::Schema.Params do
+        optional(:foo).value(:array).each(:integer)
+      end
+    end
+
+    it 'applies inferred type to elements' do
+      expect(schema.(foo: %w[1 2])).to be_success
+    end
+  end
+
   context 'using other schema for elements' do
     let(:schema) do
       Dry::Schema.Params do

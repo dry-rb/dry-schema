@@ -10,6 +10,15 @@ module Dry
       # @api public
       class Each < DSL
         # @api private
+        def value(*args, **opts)
+          extract_type_spec(*args, set_type: false) do |*predicates, type_spec:|
+            type(schema_dsl.array[type_spec]) if type_spec
+
+            super(*predicates, type_spec: type_spec, **opts)
+          end
+        end
+
+        # @api private
         def to_ast(*)
           [:each, trace.to_ast]
         end
