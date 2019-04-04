@@ -33,6 +33,7 @@
 
 ### Changed
 
+* [BREAKING] `:monads` extension wraps entire result objects in `Success` or `Failure` (flash-gordon)
 * When `:hints` are disabled, result AST will not include hint nodes (solnic)
 
 [Compare v0.4.0...v0.5.0](https://github.com/dry-rb/dry-schema/compare/v0.4.0...v0.5.0)
