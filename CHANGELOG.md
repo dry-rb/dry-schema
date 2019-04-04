@@ -1,3 +1,42 @@
+# 0.5.0 2019-04-04
+
+### Added
+
+* Support for arbitrary meta-data in messages, ie:
+
+  ```yaml
+  en:
+    dry_schema:
+      errors:
+        filled?:
+          text: "cannot be blank"
+          code: 123
+  ```
+
+  Now your error hash will include `{ foo: [{ text: 'cannot be blank', code: 123 }] }` (solnic + flash-gordon)
+
+* Support for type specs in `array` macro, ie `required(:tags).array(:integer)` (solnic)
+* Support for type specs in `each` macro, ie `required(:tags).each(:integer)` (solnic)
+* Shortcut for defining an array with hash as its member, ie:
+  
+  ```ruby
+  Dry::Schema.Params do
+    required(:tags).array(:hash) do
+      required(:name).filled(:string)
+    end
+  end
+  ```
+
+### Fixed
+
+* Inferring type specs when type is already set works correctly (solnic)
+
+### Changed
+
+* When `:hints` are disabled, result AST will not include hint nodes (solnic)
+
+[Compare v0.4.0...v0.5.0](https://github.com/dry-rb/dry-schema/compare/v0.4.0...v0.5.0)
+
 # 0.4.0 2019-03-26
 
 ### Added
