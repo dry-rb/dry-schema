@@ -112,7 +112,7 @@ module Dry
         def extract_type_spec(*args, nullable: false, set_type: true)
           type_spec = args[0]
 
-          is_type_spec = type_spec.kind_of?(Dry::Schema::Processor) ||
+          is_type_spec = type_spec.is_a?(Dry::Schema::Processor) ||
                          type_spec.is_a?(Symbol) &&
                          type_spec.to_s.end_with?(QUESTION_MARK)
 
