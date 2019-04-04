@@ -29,6 +29,7 @@
 
 ### Fixed
 
+* Inferring predicates doesn't crash when `Any` type is used (flash-gordon)
 * Inferring type specs when type is already set works correctly (solnic)
 
 ### Changed
