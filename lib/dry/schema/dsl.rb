@@ -247,6 +247,22 @@ module Dry
         types[name] = type.meta(meta)
       end
 
+      # Resolve type object from the provided spec
+      #
+      # @param [Symbol, Array<Symbol>, Dry::Types::Type]
+      #
+      # @return [Dry::Types::Type]
+      #
+      # @api private
+      def resolve_type(spec)
+        case spec
+        when ::Dry::Types::Type then spec
+        when ::Array then spec.map { |s| resolve_type(s) }.reduce(:|)
+        else
+          type_registry[spec]
+        end
+      end
+
       protected
 
       # Build a rule applier
@@ -342,22 +358,6 @@ module Dry
           kv.equal?(name) ? name : kv.flatten(1)
         else
           name
-        end
-      end
-
-      # Resolve type object from the provided spec
-      #
-      # @param [Symbol, Array<Symbol>, Dry::Types::Type]
-      #
-      # @return [Dry::Types::Type]
-      #
-      # @api private
-      def resolve_type(spec)
-        case spec
-        when ::Dry::Types::Type then spec
-        when ::Array then spec.map { |s| resolve_type(s) }.reduce(:|)
-        else
-          type_registry[spec]
         end
       end
 

@@ -121,9 +121,13 @@ module Dry
           predicates = Array(type_spec ? args[1..-1] : args)
 
           if type_spec
-            type(nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec) if set_type
+            resolved_type = schema_dsl.resolve_type(
+              nullable && !type_spec.is_a?(::Array) ? [:nil, type_spec] : type_spec
+            )
 
-            type_predicates = predicate_inferrer[schema_dsl.types[name]]
+            type(resolved_type) if set_type
+
+            type_predicates = predicate_inferrer[resolved_type]
 
             unless predicates.include?(type_predicates)
               if type_predicates.is_a?(::Array) && type_predicates.size.equal?(1)

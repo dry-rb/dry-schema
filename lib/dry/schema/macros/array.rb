@@ -16,7 +16,6 @@ module Dry
           extract_type_spec(*args, set_type: false) do |*predicates, type_spec:|
             type(schema_dsl.array[type_spec]) if type_spec
 
-            predicates.delete(:array?)
             is_hash_block = type_spec.equal?(:hash)
 
             if predicates.any? || opts.any? || !is_hash_block
