@@ -6,9 +6,9 @@ require 'dry-schema'
 schema = Dry::Schema.JSON do
   required(:email).filled
 
-  required(:age).filled(:int?, gt?: 18)
+  required(:age).filled(:integer, gt?: 18)
 end
 
-errors = schema.call(JSON.parse('{"email": "", "age": "18"}')).messages
+result = schema.call(JSON.parse('{"email": "", "age": "18"}'))
 
-puts errors.inspect
+puts result.errors.messages.inspect

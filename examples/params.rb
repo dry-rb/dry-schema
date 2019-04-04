@@ -5,9 +5,8 @@ require 'dry-schema'
 schema = Dry::Schema.Params do
   required(:email).filled
 
-  required(:age).filled(:int?, gt?: 18)
+  required(:age).filled(:integer, gt?: 18)
 end
 
-errors = schema.call('email' => '', 'age' => '18').messages
-
-puts errors.inspect
+result = schema.call('email' => '', 'age' => '18')
+puts result.errors.messages.inspect
