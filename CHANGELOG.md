@@ -1,3 +1,11 @@
+# 0.5.1 2019-04-17
+
+### Fixed
+
+* Key map no longer crashes on unexpected input (issue #118) (solnic)
+
+[Compare v0.5.0...v0.5.1](https://github.com/dry-rb/dry-schema/compare/v0.5.0...v0.5.1)
+
 # 0.5.0 2019-04-04
 
 ### Added
