@@ -8,6 +8,21 @@ RSpec.describe Dry::Schema::KeyMap do
   context 'with a flat list of keys' do
     let(:keys) { %i[id name email] }
 
+    describe '#write' do
+      it 'creates a new full hash based on keys' do
+        expect(key_map.write(id: 1, name: 'Jane', email: 'jane@doe.org'))
+          .to eql(id: 1, name: 'Jane', email: 'jane@doe.org')
+      end
+
+      it 'creates a new partial hash based on keys' do
+        expect(key_map.write(name: 'Jane')).to eql(name: 'Jane')
+      end
+
+      it 'does not choke on a non-hash input' do
+        expect(key_map.write(nil)).to eql(Dry::Schema::EMPTY_HASH)
+      end
+    end
+
     describe '#each' do
       it 'yields each key' do
         result = []
