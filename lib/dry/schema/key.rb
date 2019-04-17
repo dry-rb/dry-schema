@@ -46,6 +46,8 @@ module Dry
 
       # @api private
       def read(source)
+        return unless source.is_a?(::Hash)
+
         if source.key?(name)
           yield(source[name])
         elsif source.key?(coerced_name)
