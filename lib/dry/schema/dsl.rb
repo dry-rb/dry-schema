@@ -219,7 +219,7 @@ module Dry
         if parent
           parent.type_schema.schema(types)
         else
-          type_registry['hash'].schema(types).safe
+          type_registry['hash'].schema(types).lax
         end
       end
 
