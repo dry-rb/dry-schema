@@ -22,8 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'dry-core', '~> 0.2', '>= 0.2.1'
   spec.add_runtime_dependency 'dry-equalizer', '~> 0.2'
   spec.add_runtime_dependency 'dry-initializer', '~> 2.4'
-  spec.add_runtime_dependency 'dry-logic', '~> 0.6', '>= 0.6.0'
-  spec.add_runtime_dependency 'dry-types', '~> 0.15', '>= 0.15.0'
+  spec.add_runtime_dependency 'dry-logic', '~> 1.0'
+  spec.add_runtime_dependency 'dry-types', '~> 1.0'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
