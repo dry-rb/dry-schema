@@ -15,10 +15,8 @@ schema = Dry::Schema.define do
   end
 end
 
-errors = schema.call({}).messages
+result = schema.call({})
+puts result.errors.messages.inspect
 
-puts errors.inspect
-
-errors = schema.call(address: { city: 'NYC' }).messages
-
-puts errors.inspect
+result = schema.call(address: { city: 'NYC' })
+puts result.errors.messages.inspect

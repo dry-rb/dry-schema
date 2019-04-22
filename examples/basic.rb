@@ -8,10 +8,8 @@ schema = Dry::Schema.define do
   required(:age).filled(:int?, gt?: 18)
 end
 
-errors = schema.call(email: 'jane@doe.org', age: 19).messages
+result = schema.call(email: 'jane@doe.org', age: 19)
+puts result.to_h
 
-puts errors.inspect
-
-errors = schema.call(email: nil, age: 19).messages
-
-puts errors.inspect
+result = schema.call(email: nil, age: 19)
+puts result.errors.messages.inspect

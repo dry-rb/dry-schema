@@ -3,13 +3,11 @@
 require 'dry-schema'
 
 schema = Dry::Schema.define do
-  required(:phone_numbers).value(:array?).each(:str?)
+  required(:phone_numbers).value(:array).each(:string)
 end
 
-errors = schema.call(phone_numbers: '').messages
+result = schema.call(phone_numbers: '')
+puts result.errors.messages.inspect
 
-puts errors.inspect
-
-errors = schema.call(phone_numbers: ['123456789', 123456789]).messages
-
-puts errors.inspect
+result = schema.call(phone_numbers: ['123456789', 123_456_789])
+puts result.errors.messages.inspect
