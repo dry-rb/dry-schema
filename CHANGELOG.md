@@ -4,6 +4,7 @@
 
 * Dependency on `dry-types` was bumped to `~> 1.0` (solnic)
 * Dependency on `dry-logic` was bumped to `~> 1.0` (solnic)
+* Dependency on `dry-initializer` was bumped to `~> 3.0` (solnic)
 
 [Compare v0.5.1...v0.6.0](https://github.com/dry-rb/dry-schema/compare/v0.5.1...v0.6.0)
 
