@@ -6,9 +6,6 @@ git_source(:github) { |repo_name| "https://github.com/dry-rb/#{repo_name}" }
 
 gemspec
 
-gem 'dry-logic', github: 'dry-logic', branch: 'master'
-gem 'dry-types', github: 'dry-types', branch: 'master'
-
 group :test do
   gem 'dry-monads', require: false
   gem 'i18n', require: false
