@@ -46,7 +46,7 @@ module Dry
         #   @example with a block
         #     required(:name).value { filled? & min_size?(2) }
         #
-        # @return [Macro]
+        # @return [Macros::Core]
         #
         # @api public
         def value(*predicates, **opts, &block)
@@ -63,7 +63,7 @@ module Dry
         # @example with a type spec and a predicate
         #   required(:name).filled(:string, format?: /\w+/)
         #
-        # @return [Macro]
+        # @return [Macros::Core]
         #
         # @api public
         def filled(*args, &block)
@@ -83,7 +83,7 @@ module Dry
         #     required(:name).value(:string)
         #   end
         #
-        # @return [Macro]
+        # @return [Macros::Core]
         #
         # @api public
         def schema(*args, &block)
@@ -120,7 +120,7 @@ module Dry
         #     required(:name).filled(:string)
         #   end
         #
-        # @return [Macro]
+        # @return [Macros::Core]
         #
         # @api public
         def each(*args, &block)
@@ -139,7 +139,7 @@ module Dry
         #     required(:name).filled(:string)
         #   end
         #
-        # @return [Macro]
+        # @return [Macros::Core]
         #
         # @api public
         def array(*args, &block)
