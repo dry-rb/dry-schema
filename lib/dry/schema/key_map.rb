@@ -41,7 +41,7 @@ module Dry
 
       # Build new, or returned a cached instance of a key map
       #
-      # @param [Array<Symbol, Array, Hash<Symbol=>Array>>
+      # @param [Array<Symbol>, Array, Hash<Symbol=>Array>] args
       #
       # @return [KeyMap]
       def self.new(*args)

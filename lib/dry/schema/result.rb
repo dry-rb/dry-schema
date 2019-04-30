@@ -72,7 +72,7 @@ module Dry
 
       # Check if there's an error for the provided spec
       #
-      # @param [Symbol, Hash<Symbol=>Symbol>] name
+      # @param [Symbol, Hash<Symbol=>Symbol>] spec
       #
       # @return [Boolean]
       #

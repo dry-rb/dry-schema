@@ -249,7 +249,7 @@ module Dry
 
       # Resolve type object from the provided spec
       #
-      # @param [Symbol, Array<Symbol>, Dry::Types::Type]
+      # @param [Symbol, Array<Symbol>, Dry::Types::Type] spec
       #
       # @return [Dry::Types::Type]
       #

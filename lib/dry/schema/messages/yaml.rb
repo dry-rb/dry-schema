@@ -81,7 +81,7 @@ module Dry
 
       # Merge messages from an additional path
       #
-      # @param [String] path
+      # @param [String] overrides
       #
       # @return [Messages::I18n]
       #

@@ -82,7 +82,7 @@ module Dry
 
         # Set type spec
         #
-        # @param [Symbol, Array, Dry::Types::Type]
+        # @param [Symbol, Array, Dry::Types::Type] spec
         #
         # @return [Macros::Key]
         #
