@@ -17,7 +17,7 @@ RSpec.describe Dry::Schema::Result do
     end
 
     it 'coerces to validated hash' do
-      expect(Hash(result)).to eql(name: 'Jane')
+      expect(result.to_h).to eql(name: 'Jane')
     end
 
     describe '#inspect' do
@@ -47,7 +47,7 @@ RSpec.describe Dry::Schema::Result do
     end
 
     it 'coerces to validated hash' do
-      expect(Hash(result)).to eql(name: '')
+      expect(result.to_h).to eql(name: '')
     end
 
     describe '#inspect' do

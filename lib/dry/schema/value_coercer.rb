@@ -18,7 +18,7 @@ module Dry
       # @api private
       def call(input)
         if input.success?
-          type_schema[Hash(input)]
+          type_schema[input.to_h]
         else
           type_schema.each_with_object(EMPTY_HASH.dup) do |key, hash|
             name = key.name

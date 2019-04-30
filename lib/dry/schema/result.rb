@@ -24,7 +24,6 @@ module Dry
       #
       # @return [Hash]
       alias_method :to_h, :output
-      alias_method :to_hash, :output
 
       # @api private
       param :results, default: -> { EMPTY_ARRAY.dup }

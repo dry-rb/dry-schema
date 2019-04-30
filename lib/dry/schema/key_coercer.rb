@@ -33,7 +33,7 @@ module Dry
 
       # @api private
       def call(source)
-        key_map.write(Hash(source))
+        key_map.write(source.to_h)
       end
       alias_method :[], :call
     end
