@@ -10,7 +10,6 @@ module Dry
     class Path
       include Enumerable
 
-      # !@attribute [r] keys
       # @return [Array<Symbol>]
       attr_reader :keys
 
