@@ -15,7 +15,7 @@ module Dry
 
       # Coerce a spec into a path object
       #
-      # @param [Symbol, String, Hash, Array<Symbol>] spec
+      # @param [Path, Symbol, String, Hash, Array<Symbol>] spec
       #
       # @return [Path]
       #
@@ -28,8 +28,10 @@ module Dry
           new(spec.split(DOT).map(&:to_sym))
         when Hash
           new(keys_from_hash(spec))
+        when Path
+          spec
         else
-          raise ArgumentError, '+spec+ must be either a Symbol, Array or Hash'
+          raise ArgumentError, '+spec+ must be either a Symbol, Array, Hash or a Path'
         end
       end
 
