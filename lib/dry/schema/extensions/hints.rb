@@ -17,6 +17,8 @@ module Dry
     #
     # @api public
     class Message
+      # Hints extension for Or messages
+      #
       # @see Message::Or
       #
       # @api public

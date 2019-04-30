@@ -17,6 +17,7 @@ module Dry
       extend Dry::Initializer
 
       # @!attribute [r] text
+      #   Message text representation created from a localized template
       #   @return [String]
       option :text
 

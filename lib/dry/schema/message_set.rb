@@ -13,12 +13,19 @@ module Dry
       include Enumerable
       include Dry::Equalizer(:messages, :options)
 
+      # A list of compiled message objects
+      #
       # @return [Array<Message>]
       attr_reader :messages
       
+      # An internal hash that is filled in with dumped messages
+      # when a message set is coerced to a hash
+      #
       # @return [Hash<Symbol=>[Array,Hash]>]
       attr_reader :placeholders
       
+      # Options hash
+      #
       # @return [Hash]
       attr_reader :options
 

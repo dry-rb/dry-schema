@@ -8,10 +8,14 @@ module Dry
         #
         # @api public
         module MessageSetMethods
+          # Filtered message hints from all messages
+          #
           # @return [Array<Message::Hint>]
           attr_reader :hints
           
-          # @return [Array<Message>]
+          # Configuration option to enable/disable showing errors
+          #
+          # @return [Boolean]
           attr_reader :failures
 
           # @api private
