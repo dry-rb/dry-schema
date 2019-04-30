@@ -13,7 +13,14 @@ module Dry
       include Enumerable
       include Dry::Equalizer(:messages, :options)
 
-      attr_reader :messages, :placeholders, :options
+      # @return [Array<Message>]
+      attr_reader :messages
+      
+      # @return [Hash<Symbol=>[Array,Hash]>]
+      attr_reader :placeholders
+      
+      # @return [Hash]
+      attr_reader :options
 
       # @api private
       def self.[](messages, options = EMPTY_HASH)
@@ -27,6 +34,15 @@ module Dry
         initialize_placeholders!
       end
 
+      # Iterate over messages
+      #
+      # @example
+      #   result.errors.each do |message|
+      #     puts message.text
+      #   end
+      #
+      # @return [Array]
+      #
       # @api public
       def each(&block)
         return self if empty?
@@ -35,23 +51,45 @@ module Dry
         messages.each(&block)
       end
 
+      # Dump message set to a hash
+      #
+      # @return [Hash<Symbol=>Array<String>>]
+      #
       # @api public
       def to_h
         @to_h ||= messages_map
       end
       alias_method :to_hash, :to_h
 
+      # Get a list of message texts for the given key
+      #
+      # @param [Symbol] key
+      #
+      # @return [Array<String>]
+      #
       # @api public
       def [](key)
         to_h[key]
       end
 
+      # Get a list of message texts for the given key
+      #
+      # @param [Symbol] key
+      #
+      # @return [Array<String>]
+      #
+      # @raise KeyError
+      #
       # @api public
       def fetch(key)
         self[key] || raise(KeyError, "+#{key}+ message was not found")
       end
 
-      # @api private
+      # Check if a message set is empty
+      #
+      # @return [Boolean]
+      #
+      # @api public
       def empty?
         @empty ||= messages.empty?
       end

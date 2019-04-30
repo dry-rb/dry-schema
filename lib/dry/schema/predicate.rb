@@ -53,6 +53,9 @@ module Dry
 
       # Negate a predicate
       #
+      # @example
+      #   required(:name).value(:string) { !empty? }
+      #
       # @return [Negation]
       #
       # @api public

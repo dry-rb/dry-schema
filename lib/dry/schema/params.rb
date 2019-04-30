@@ -7,7 +7,7 @@ module Dry
     # Params schema type
     #
     # @see Processor
-    # @see Schema.Params
+    # @see Schema#Params
     #
     # @api public
     class Params < Processor

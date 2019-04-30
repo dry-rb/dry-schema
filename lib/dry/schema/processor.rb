@@ -41,8 +41,9 @@ module Dry
 
         # Define a schema for your processor class
         #
-        # @see Params
-        # @see JSON
+        # @see Schema#define
+        # @see Schema#Params
+        # @see Schema#JSON
         #
         # @return [Class]
         #

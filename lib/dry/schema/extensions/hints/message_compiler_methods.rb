@@ -4,6 +4,9 @@ module Dry
   module Schema
     module Extensions
       module Hints
+        # Adds support for processing [:hint, ...] nodes produced by dry-logic
+        #
+        # @api private
         module MessageCompilerMethods
           HINT_TYPE_EXCLUSION = %i[
             key? nil? bool? str? int? float? decimal?
@@ -12,8 +15,10 @@ module Dry
 
           HINT_OTHER_EXCLUSION = %i[format? filled?].freeze
 
+          # @api private
           attr_reader :hints
 
+          # @api private
           def initialize(*args)
             super
             @hints = @options.fetch(:hints, true)

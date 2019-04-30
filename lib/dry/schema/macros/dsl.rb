@@ -16,14 +16,37 @@ module Dry
         undef :eql?
         undef :nil?
 
-        # @api private
+        # @!attribute [r] chain
+        #   Indicate if the macro should append its rules to the provided trace
+        #   @return [Boolean]
+        #   @api private
         option :chain, default: -> { true }
 
-        # @return [PredicateInferrer]
-        # @api private
+        # @!attribute [r] predicate_inferrer
+        #   PredicateInferrer is used to infer predicate type-check from a type spec
+        #   @return [PredicateInferrer]
+        #   @api private
         option :predicate_inferrer, default: proc { PredicateInferrer.new(compiler.predicates) }
 
-        # Specify predicates that should be applied to a value
+        # @overload value(*predicates, **predicate_opts)
+        #   Set predicates without and with arguments
+        #
+        #   @param [Array<Symbol>] predicates
+        #   @param [Hash] predicate_opts
+        #
+        #   @example with a predicate
+        #     required(:name).value(:filled?)
+        #
+        #   @example with a predicate with arguments
+        #     required(:name).value(min_size?: 2)
+        #
+        #   @example with a predicate with and without arguments
+        #     required(:name).value(:filled?, min_size?: 2)
+        #
+        #   @example with a block
+        #     required(:name).value { filled? & min_size?(2) }
+        #
+        # @return [Macro]
         #
         # @api public
         def value(*predicates, **opts, &block)
@@ -34,6 +57,14 @@ module Dry
 
         # Prepends `:filled?` predicate
         #
+        # @example with a type spec
+        #   required(:name).filled(:string)
+        #
+        # @example with a type spec and a predicate
+        #   required(:name).filled(:string, format?: /\w+/)
+        #
+        # @return [Macro]
+        #
         # @api public
         def filled(*args, &block)
           append_macro(Macros::Filled) do |macro|
@@ -41,7 +72,18 @@ module Dry
           end
         end
 
-        # Specify a nested hash without enforced hash? type-check
+        # Specify a nested hash without enforced `hash?` type-check
+        #
+        # This is a simpler building block than `hash` macro, use it
+        # when you want to provide `hash?` type-check with other rules
+        # manually.
+        #
+        # @example
+        #   required(:tags).value(:hash, min_size?: 1).schema do
+        #     required(:name).value(:string)
+        #   end
+        #
+        # @return [Macro]
         #
         # @api public
         def schema(*args, &block)
@@ -50,9 +92,12 @@ module Dry
           end
         end
 
-        # Specify a nested hash with enforced hash? type-check
+        # Specify a nested hash with enforced `hash?` type-check
         #
-        # @see #schema
+        # @example
+        #   required(:tags).hash do
+        #     required(:name).value(:string)
+        #   end
         #
         # @api public
         def hash(*args, &block)
@@ -63,6 +108,20 @@ module Dry
 
         # Specify predicates that should be applied to each element of an array
         #
+        # This is a simpler building block than `array` macro, use it
+        # when you want to provide `array?` type-check with other rules
+        # manually.
+        #
+        # @example a list of strings
+        #   required(:tags).value(:array, min_size?: 2).each(:str?)
+        #
+        # @example a list of hashes
+        #   required(:tags).value(:array, min_size?: 2).each(:hash) do
+        #     required(:name).filled(:string)
+        #   end
+        #
+        # @return [Macro]
+        #
         # @api public
         def each(*args, &block)
           append_macro(Macros::Each) do |macro|
@@ -70,7 +129,17 @@ module Dry
           end
         end
 
-        # Like `each`, but prepends `array?` check
+        # Like `each` but sets `array?` type-check
+        #
+        # @example a list of strings
+        #   required(:tags).array(:str?)
+        #
+        # @example a list of hashes
+        #   required(:tags).array(:hash) do
+        #     required(:name).filled(:string)
+        #   end
+        #
+        # @return [Macro]
         #
         # @api public
         def array(*args, &block)
@@ -80,6 +149,9 @@ module Dry
         end
 
         # Set type spec
+        #
+        # @example
+        #   required(:name).type(:string).value(min_size?: 2)
         #
         # @param [Symbol, Array, Dry::Types::Type] spec
         #

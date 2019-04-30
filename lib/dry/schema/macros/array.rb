@@ -7,7 +7,7 @@ module Dry
     module Macros
       # Macro used to specify predicates for each element of an array
       #
-      # @api public
+      # @api private
       class Array < DSL
         # @api private
         def value(*args, **opts, &block)
@@ -32,7 +32,6 @@ module Dry
         def to_ast(*)
           [:and, [trace.array?.to_ast, [:each, trace.to_ast]]]
         end
-
         alias_method :ast, :to_ast
       end
     end

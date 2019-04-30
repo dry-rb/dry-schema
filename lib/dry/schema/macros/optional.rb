@@ -7,7 +7,7 @@ module Dry
     module Macros
       # A Key specialization used for keys that can be skipped
       #
-      # @api public
+      # @api private
       class Optional < Key
         # @api private
         def operation

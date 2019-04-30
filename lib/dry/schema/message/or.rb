@@ -32,6 +32,8 @@ module Dry
           @path = left.path
         end
 
+        # Dump a message into a string
+        #
         # @see Message#dump
         #
         # @return [String]

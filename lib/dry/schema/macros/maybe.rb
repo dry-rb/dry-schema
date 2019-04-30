@@ -7,7 +7,7 @@ module Dry
     module Macros
       # Macro used to specify predicates for a value that can be `nil`
       #
-      # @api public
+      # @api private
       class Maybe < DSL
         # @api private
         def call(*args, **opts, &block)

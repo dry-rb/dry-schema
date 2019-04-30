@@ -7,7 +7,7 @@ module Dry
     module Macros
       # A Key specialization used for keys that must be present
       #
-      # @api public
+      # @api private
       class Required < Key
         # @api private
         def operation

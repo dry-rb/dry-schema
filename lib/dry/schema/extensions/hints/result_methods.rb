@@ -4,8 +4,15 @@ module Dry
   module Schema
     module Extensions
       module Hints
+        # Get errors exclusively without hints
+        #
+        # @api public
         module ResultMethods
+          # Return error messages exclusively
+          #
           # @see Result#errors
+          #
+          # @return [MessageSet]
           #
           # @api public
           def errors(options = EMPTY_HASH)
@@ -16,7 +23,7 @@ module Dry
           #
           # @see #message_set
           #
-          # @return [Hash<Symbol=>Array>]
+          # @return [MessageSet]
           #
           # @api public
           def messages(options = EMPTY_HASH)
@@ -27,7 +34,7 @@ module Dry
           #
           # @see #message_set
           #
-          # @return [Hash<Symbol=>Array>]
+          # @return [MessageSet]
           #
           # @api public
           def hints(options = EMPTY_HASH)

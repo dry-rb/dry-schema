@@ -8,9 +8,7 @@ require 'dry/schema/constants'
 module Dry
   module Schema
     module Macros
-      # Base macro for specifying rules applied to a value found under the key
-      #
-      # @see DSL#key
+      # Base macro for specifying rules applied to a value found under a key
       #
       # @api public
       class Key < DSL
@@ -18,10 +16,12 @@ module Dry
         # @api private
         option :filter_schema, optional: true, default: proc { schema_dsl&.new }
 
-        # Specify predicates that should be used to filter out values
-        # before coercion is applied
+        # Specify predicates that should be applied before coercion
         #
-        # @see Macros::DSL#value
+        # @example check format before coercing to a date
+        #   required(:publish_date).filter(format?: /\d{4}-\d{2}-\d{2}).value(:date)
+        #
+        # @see Macros::Key#value
         #
         # @return [Macros::Key]
         #
@@ -31,11 +31,25 @@ module Dry
           self
         end
 
-        # Set type specification and predicates
+        # @overload value(type_spec, *predicates, **predicate_opts)
+        #   Set type specification and predicates
         #
-        # @see Macros::DSL#value
+        #   @param [Symbol,Types::Type,Array] type_spec
+        #   @param [Array<Symbol>] predicates
+        #   @param [Hash] predicate_opts
+        #
+        #   @example with a predicate
+        #     required(:name).value(:string, :filled?)
+        #
+        #   @example with a predicate with arguments
+        #     required(:name).value(:string, min_size?: 2)
+        #
+        #   @example with a block
+        #     required(:name).value(:string) { filled? & min_size?(2) }
         #
         # @return [Macros::Key]
+        #
+        # @see Macros::DSL#value
         #
         # @api public
         def value(*args, **opts, &block)
@@ -46,7 +60,10 @@ module Dry
 
         # Set type specification and predicates for a filled value
         #
-        # @see Macros::DSL#value
+        # @example
+        #   required(:name).filled(:string)
+        #
+        # @see Macros::Key#value
         #
         # @return [Macros::Key]
         #
@@ -59,7 +76,10 @@ module Dry
 
         # Set type specification and predicates for a maybe value
         #
-        # @see Macros::DSL#value
+        # @example
+        #   required(:name).maybe(:string)
+        #
+        # @see Macros::Key#value
         #
         # @return [Macros::Key]
         #

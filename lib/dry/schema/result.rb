@@ -103,7 +103,7 @@ module Dry
       #
       # @see #message_set
       #
-      # @return [Hash<Symbol=>Array>]
+      # @return [MessageSet]
       #
       # @api public
       def errors(options = EMPTY_HASH)

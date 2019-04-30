@@ -7,7 +7,7 @@ module Dry
     # JSON schema type
     #
     # @see Processor
-    # @see Schema.JSON
+    # @see Schema#JSON
     #
     # @api public
     class JSON < Processor

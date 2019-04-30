@@ -7,7 +7,7 @@ module Dry
     module Macros
       # A macro used for specifying predicates to be applied to values from a hash
       #
-      # @api public
+      # @api private
       class Value < DSL
         # @api private
         def call(*predicates, **opts, &block)

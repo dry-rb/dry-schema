@@ -7,7 +7,7 @@ module Dry
     module Macros
       # Macro used to specify a nested schema
       #
-      # @api public
+      # @api private
       class Schema < Value
         # @api private
         def call(*args, &block)

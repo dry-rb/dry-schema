@@ -43,6 +43,7 @@ module Dry
       end
     end
 
+    # Hints extensions
     module Extensions
       Compiler.prepend(Hints::CompilerMethods)
       MessageCompiler.prepend(Hints::MessageCompilerMethods)

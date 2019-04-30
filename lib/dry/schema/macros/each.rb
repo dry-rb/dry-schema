@@ -7,7 +7,7 @@ module Dry
     module Macros
       # Macro used to specify predicates for each element of an array
       #
-      # @api public
+      # @api private
       class Each < DSL
         # @api private
         def value(*args, **opts)

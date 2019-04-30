@@ -7,8 +7,9 @@ module Dry
     module Macros
       # Macro used to prepend `:filled?` predicate
       #
-      # @api public
+      # @api private
       class Filled < Value
+        # @api private
         def call(*predicates, **opts, &block)
           if predicates.include?(:empty?)
             raise ::Dry::Schema::InvalidSchemaError, 'Using filled with empty? predicate is invalid'
