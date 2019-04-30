@@ -71,9 +71,8 @@ module Dry
         end
 
         # @api private
-        def visit_safe(node)
-          other, * = node
-          visit(other)
+        def visit_lax(node)
+          visit(node)
         end
 
         # @api private

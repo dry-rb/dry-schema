@@ -48,6 +48,10 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
     expect(inferrer[type(:bool)]).to eql([:bool?])
   end
 
+  it 'returns int? for a lax constructor integer type' do
+    expect(inferrer[type('params.integer').lax]).to eql([:int?])
+  end
+
   it 'returns :int? from an optional integer with constructor' do
     expect(inferrer[type(:integer).optional.constructor(&:to_i)]).to eql([:int?])
   end
