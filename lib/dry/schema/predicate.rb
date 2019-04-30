@@ -21,6 +21,10 @@ module Dry
           @predicate = predicate
         end
 
+        # Dump negated predicate to an AST
+        #
+        # @return [Array]
+        #
         # @api private
         def to_ast(*args)
           [:not, predicate.to_ast(*args)]
