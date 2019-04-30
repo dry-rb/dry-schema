@@ -29,6 +29,17 @@ RSpec.describe Dry::Schema::Result, '#error?' do
         expect(result.error?(:name)).to be(true)
       end
     end
+
+    context 'when spec is invalid' do
+      let(:input) do
+        { name: '' }
+      end
+
+      it 'raises error' do
+        expect { result.error?(Object.new) }
+          .to raise_error(ArgumentError, '+spec+ must be either a Symbol, Array or Hash')
+      end
+    end
   end
 
   context 'with a nested hash' do

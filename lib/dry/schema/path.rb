@@ -28,8 +28,6 @@ module Dry
           new(spec.split(DOT).map(&:to_sym))
         when Hash
           new(keys_from_hash(spec))
-        when self
-          spec
         else
           raise ArgumentError, '+spec+ must be either a Symbol, Array or Hash'
         end
