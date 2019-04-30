@@ -9,6 +9,9 @@ module Dry
     #
     # @api public
     class Messages::I18n < Messages::Abstract
+      # Translation function
+      #
+      # @return [Method]
       attr_reader :t
 
       # @api private

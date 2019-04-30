@@ -19,6 +19,10 @@ module Dry
 
       # @api private
       param :output
+
+      # Dump result to a hash returning processed and validated data
+      #
+      # @return [Hash]
       alias_method :to_h, :output
       alias_method :to_hash, :output
 

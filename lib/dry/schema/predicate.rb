@@ -70,11 +70,17 @@ module Dry
         end
       end
 
+      # Compile predicate to a rule object
+      #
       # @api private
       def to_rule
         compiler.visit(to_ast)
       end
 
+      # Dump predicate to an AST
+      #
+      # @return [Array]
+      #
       # @api private
       def to_ast(*)
         [:predicate, [name, compiler.predicates.arg_list(name, *args)]]

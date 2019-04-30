@@ -17,7 +17,15 @@ module Dry
 
       include Dry::Equalizer(:data)
 
-      attr_reader :data, :t
+      # Loaded localized message templates
+      #
+      # @return [Hash]
+      attr_reader :data
+
+      # Translation function     
+      #
+      # @return [Proc]
+      attr_reader :t
 
       # @api private
       def self.build(options = EMPTY_HASH)
