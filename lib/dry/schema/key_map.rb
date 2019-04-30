@@ -21,8 +21,7 @@ module Dry
       include Dry.Equalizer(:keys)
       include Enumerable
 
-      # @!attribute[r] keys
-      #   @return [Array<Key>] A list of defined key objects
+      # @return [Array<Key>] A list of defined key objects
       attr_reader :keys
 
       # Coerce a list of key specs into a key map

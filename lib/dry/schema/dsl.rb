@@ -52,28 +52,22 @@ module Dry
 
       include ::Dry::Equalizer(:options)
 
-      # @!attribute [r] compiler
-      #   @return [Compiler] The rule compiler object
+      # @return [Compiler] The rule compiler object
       option :compiler, default: -> { Compiler.new }
 
-      # @!attribute [r] processor_type
-      #   @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
+      # @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
       option :processor_type, default: -> { Processor }
 
-      # @!attribute [r] macros
-      #   @return [Array] An array with macros defined within the DSL
+      # @return [Array] An array with macros defined within the DSL
       option :macros, default: -> { EMPTY_ARRAY.dup }
 
-      # @!attribute [r] types
-      #   @return [Compiler] A key=>type map defined within the DSL
+      # @return [Compiler] A key=>type map defined within the DSL
       option :types, default: -> { EMPTY_HASH.dup }
 
-      # @!attribute [r] parent
-      #   @return [DSL] An optional parent DSL object that will be used to merge keys and rules
+      # @return [DSL] An optional parent DSL object that will be used to merge keys and rules
       option :parent, optional: true
 
-      # @!attribute [r] config
-      #   @return [Config] Configuration object exposed via `#configure` method
+      # @return [Config] Configuration object exposed via `#configure` method
       option :config, optional: true, default: proc { parent ? parent.config.dup : Config.new }
 
       # Build a new DSL object and evaluate provided block

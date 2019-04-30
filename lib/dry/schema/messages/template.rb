@@ -17,15 +17,15 @@ module Dry
         TOKEN_REGEXP = /%{([\w\d]*)}/
 
         # !@attribute [r] text
-        #   @return [String]
+        # @return [String]
         attr_reader :text
 
         # !@attribute [r] tokens
-        #   @return [Hash]
+        # @return [Hash]
         attr_reader :tokens
 
         # !@attribute [r] evaluator
-        #   @return [Proc]
+        # @return [Proc]
         attr_reader :evaluator
 
         # @api private

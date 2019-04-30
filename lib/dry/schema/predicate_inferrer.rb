@@ -28,9 +28,8 @@ module Dry
       #
       # @api private
       class Compiler
-        # @!attribute [r] registry
-        #   @return [PredicateRegistry]
-        #   @api private
+        # @return [PredicateRegistry]
+        # @api private
         attr_reader :registry
 
         # @api private
@@ -114,9 +113,8 @@ module Dry
         end
       end
 
-      # @!attribute [r] compiler
-      #   @return [Compiler]
-      #   @api private
+      # @return [Compiler]
+      # @api private
       attr_reader :compiler
 
       # @api private

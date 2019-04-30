@@ -19,9 +19,8 @@ module Dry
         # @api private
         option :chain, default: -> { true }
 
-        # @!attribute [r] predicate_inferrer
-        #   @return [PredicateInferrer]
-        #   @api private
+        # @return [PredicateInferrer]
+        # @api private
         option :predicate_inferrer, default: proc { PredicateInferrer.new(compiler.predicates) }
 
         # Specify predicates that should be applied to a value

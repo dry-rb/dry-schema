@@ -33,10 +33,10 @@ module Dry
       param :steps, default: -> { EMPTY_ARRAY.dup }
 
       class << self
-        # @!attribute [r] definition
-        #   Return DSL configured via #define
-        #   @return [DSL]
-        #   @api private
+        # Return DSL configured via #define
+        #
+        # @return [DSL]
+        # @api private
         attr_reader :definition
 
         # Define a schema for your processor class

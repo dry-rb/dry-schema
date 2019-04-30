@@ -11,7 +11,7 @@ module Dry
       include Enumerable
 
       # !@attribute [r] keys
-      #   @return [Array<Symbol>]
+      # @return [Array<Symbol>]
       attr_reader :keys
 
       # Coerce a spec into a path object

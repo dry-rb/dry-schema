@@ -12,19 +12,13 @@ module Dry
 
       include Dry.Equalizer(:name, :coercer)
 
-      # @!attribute[r] id
-      #   @return [Symbol] The key identifier
-      #   @api public
+      # @return [Symbol] The key identifier
       attr_reader :id
 
-      # @!attribute[r] name
-      #   @return [Symbol, String, Object] The actual key name expected in an input hash
-      #   @api public
+      # @return [Symbol, String, Object] The actual key name expected in an input hash
       attr_reader :name
 
-      # @!attribute[r] id
-      #   @return [Proc, #call] A key name coercer function
-      #   @api public
+      # @return [Proc, #call] A key name coercer function
       attr_reader :coercer
 
       # @api private
