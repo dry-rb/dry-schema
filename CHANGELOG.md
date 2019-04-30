@@ -1,3 +1,11 @@
+# 1.0.0 to-be-released
+
+### Changed
+
+* [BREAKING] `Result#to_hash` was removed (solnic)
+
+[Compare v0.6.0...v1.0.0](https://github.com/dry-rb/dry-schema/compare/v0.6.0...v1.0.0)
+
 # 0.6.0 2019-04-24
 
 ### Changed
