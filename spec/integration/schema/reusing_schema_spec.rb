@@ -30,22 +30,4 @@ RSpec.describe 'Reusing schemas' do
       }
     )
   end
-
-  context 'when overrides existing schema' do
-    subject(:schema) do
-      Dry::Schema.define do
-        required(:city).filled
-
-        required(:location).schema(LocationSchema) do
-          required(:lat).filled(:float?, gteq?: 18)
-        end
-      end
-    end
-
-    it 'uses new schema' do
-      expect(
-        schema.(city: 'NYC', location: { lat: 1.23, lng: nil }).messages
-      ).to eql(location: { lat: ['must be greater than or equal to 18'], lng: ['must be filled'] })
-    end
-  end
 end
