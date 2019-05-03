@@ -115,12 +115,76 @@ RSpec.describe Dry::Schema::Result, '#error?' do
         { user: { address: nil } }
       end
 
-      it 'returns true for a hash spec' do
-        expect(result.error?(user: { address: :street })).to be(true)
+      it 'returns true for a hash spec with the error' do
+        expect(result.error?(user: :address)).to be(true)
       end
 
-      it 'returns true for dot notation spec' do
-        expect(result.error?('user.address.street')).to be(true)
+      it 'returns true for dot notation spec with the error' do
+        expect(result.error?('user.address')).to be(true)
+      end
+
+      it 'returns false for a hash spec with no error' do
+        expect(result.error?(user: { address: :street })).to be(false)
+      end
+
+      it 'returns false for dot notation spec with no error' do
+        expect(result.error?('user.address.street')).to be(false)
+      end
+    end
+  end
+
+  context 'with an array' do
+    let(:schema) do
+      Dry::Schema.Params do
+        required(:tags).array(:str?)
+      end
+    end
+
+    context 'when there is no error' do
+      let(:input) do
+        { tags: ['foo', 'bar'] }
+      end
+
+      it 'returns false for symbol key spec' do
+        expect(result.error?(:tags)).to be(false)
+      end
+
+      it 'returns false for a path with index' do
+        expect(result.error?([:tags, 0])).to be(false)
+        expect(result.error?([:tags, 1])).to be(false)
+      end
+    end
+
+    context 'when there is an error under key' do
+      let(:input) do
+        { tags: nil }
+      end
+
+      it 'returns true for symbol key spec' do
+        expect(result.error?(:tags)).to be(true)
+      end
+
+      it 'returns false for a path with index' do
+        expect(result.error?([:tags, 0])).to be(false)
+        expect(result.error?([:tags, 1])).to be(false)
+      end
+    end
+
+    context 'when there is an error under one of the indices' do
+      let(:input) do
+        { tags: ['foo', 312] }
+      end
+
+      it 'returns true for symbol key spec' do
+        expect(result.error?(:tags)).to be(true)
+      end
+
+      it 'returns true for a path with index with the error' do
+        expect(result.error?([:tags, 1])).to be(true)
+      end
+
+      it 'returns false for a path with index with no error' do
+        expect(result.error?([:tags, 0])).to be(false)
       end
     end
   end
