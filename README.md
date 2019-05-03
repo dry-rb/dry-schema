@@ -14,7 +14,8 @@
 
 ## Links
 
-* [Documentation](http://dry-rb.org/gems/dry-schema)
+* [User documentation](http://dry-rb.org/gems/dry-schema)
+* [API documentation](http://rubydoc.info/gems/dry-schema)
 
 ## Supported Ruby versions
 
@@ -22,8 +23,6 @@ This library officially supports following Ruby versions:
 
 * MRI >= `2.4`
 * jruby >= `9.2`
-
-It **should** work on MRI `2.3.x` too, but there's no official support for this version.
 
 ## License
 
