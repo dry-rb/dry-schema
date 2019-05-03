@@ -200,13 +200,15 @@ module Dry
 
             type_predicates = predicate_inferrer[resolved_type]
 
-            unless predicates.include?(type_predicates)
+            unless type_predicates.empty? || predicates.include?(type_predicates)
               if type_predicates.is_a?(::Array) && type_predicates.size.equal?(1)
                 predicates.unshift(type_predicates[0])
               else
                 predicates.unshift(type_predicates)
               end
             end
+
+            return self if predicates.empty?
           end
 
           yield(*predicates, type_spec: type_spec)

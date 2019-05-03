@@ -65,6 +65,20 @@ RSpec.describe Dry::Schema, 'types specs' do
     end
   end
 
+  context 'using :any type' do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:stuff).value(:any)
+      end
+    end
+
+    it 'uses Any type that accepts all objects' do
+      expect(schema.(stuff: 1)).to be_success
+      expect(schema.(stuff: 'foo')).to be_success
+      expect(schema.(stuff: Object.new)).to be_success
+    end
+  end
+
   context 'using a type object' do
     subject(:schema) do
       Dry::Schema.Params do
