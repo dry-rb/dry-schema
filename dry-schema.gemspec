@@ -7,7 +7,12 @@ Gem::Specification.new do |spec|
   spec.version = Dry::Schema::VERSION
   spec.authors = ['Piotr Solnica']
   spec.email = ['piotr.solnica@gmail.com']
-  spec.summary = 'Schema coercion and validation'
+  spec.summary = 'Coercion and validation for data structures'
+  spec.description = <<~STR
+    dry-schema provides a DSL for defining schemas with keys and rules that should be applied to
+    values. It supports coercion, input sanitization, custom types and localized error messages
+    (with or without I18n gem). It's also used as the schema engine in dry-validation.
+  STR
   spec.homepage = 'https://github.com/dry-rb/dry-schema'
   spec.license = 'MIT'
 
