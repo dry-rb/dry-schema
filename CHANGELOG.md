@@ -4,6 +4,11 @@
 
 * [BREAKING] `Result#to_hash` was removed (solnic)
 
+### Fixed
+
+* Setting `:any` as the type spec no longer crashes (solnic)
+* `Result#error?` handles paths to array elements correctly (solnic)
+
 [Compare v0.6.0...v1.0.0](https://github.com/dry-rb/dry-schema/compare/v0.6.0...v1.0.0)
 
 # 0.6.0 2019-04-24
