@@ -76,7 +76,7 @@ module Dry
         l_path = Path[path]
         r_path = Path[other.path]
 
-        unless l_path.include?(r_path)
+        unless l_path.same_root?(r_path)
           raise ArgumentError, 'Cannot compare messages from different root paths'
         end
 
