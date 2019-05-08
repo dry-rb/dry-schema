@@ -32,7 +32,7 @@ module Dry
         rules.each do |name, rule|
           next if input.error?(name)
 
-          result = rule.(input)
+          result = rule.(input.to_h)
           results << result if result.failure?
         end
 
