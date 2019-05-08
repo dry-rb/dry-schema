@@ -1,3 +1,11 @@
+# 1.0.1 2019-05-08
+
+### Fixed
+
+* Applying `key?` predicate no longer causes recursive calls to `Result#errors` (issue #130) (solnic)
+
+[Compare v1.0.0...v1.0.1](https://github.com/dry-rb/dry-schema/compare/v1.0.0...v1.0.1)
+
 # 1.0.0 2019-05-03
 
 ### Changed
