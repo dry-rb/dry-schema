@@ -1,3 +1,11 @@
+# v1.0.2 2019-05-12
+
+### Fixed
+
+* Caching message templates uses restricted set of known keys to calculate cache keys (issue #132) (solnic)
+
+[Compare v1.0.1...v1.0.2](https://github.com/dry-rb/dry-schema/compare/v1.0.1...v1.0.2)
+
 # 1.0.1 2019-05-08
 
 ### Fixed
