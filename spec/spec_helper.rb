@@ -87,5 +87,9 @@ RSpec.configure do |config|
     I18n.load_path = [Dry::Schema::DEFAULT_MESSAGES_PATH]
     I18n.locale = :en
     I18n.reload!
+
+    %i[YAML I18n].each do |backend|
+      Dry::Schema::Messages.const_get(backend).instance_variable_set('@cache', nil)
+    end
   end
 end

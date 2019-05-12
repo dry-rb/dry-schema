@@ -45,6 +45,8 @@ module Dry
           String => 'string'
         )
 
+        CACHE_KEYS = %i[path message_type val_type arg_type locale].freeze
+
         # @api private
         def self.cache
           @cache ||= Concurrent::Map.new { |h, k| h[k] = Concurrent::Map.new }
@@ -72,11 +74,6 @@ module Dry
         end
 
         # @api private
-        def hash
-          @hash ||= config.hash
-        end
-
-        # @api private
         def translate(key, locale: default_locale)
           t["#{config.top_namespace}.#{key}", locale: locale]
         end
@@ -95,13 +92,23 @@ module Dry
         # @return [Template]
         #
         # @api public
-        def call(*args)
-          cache.fetch_or_store(args.hash) do
-            text, meta = lookup(*args)
+        def call(predicate, options)
+          cache.fetch_or_store(cache_key(predicate, options).hash) do
+            text, meta = lookup(predicate, options)
             [Template[text], meta] if text
           end
         end
         alias_method :[], :call
+
+        if ::Hash.instance_methods.include?(:slice)
+          def cache_key(predicate, options)
+            [predicate, options.slice(*CACHE_KEYS)]
+          end
+        else
+          def cache_key(predicate, options)
+            [predicate, options.select { |key,| CACHE_KEYS.include?(key) }]
+          end
+        end
 
         # Try to find a message for the given predicate and its options
         #
@@ -162,8 +169,13 @@ module Dry
         end
 
         # @api private
+        def hash
+          @hash ||= config.hash
+        end
+
+        # @api private
         def cache
-          @cache ||= self.class.cache[self]
+          @cache ||= self.class.cache[hash]
         end
 
         # @api private

@@ -36,11 +36,11 @@ RSpec.describe Dry::Schema, 'with localized messages' do
         end
       end
 
-      describe '#messages' do
+      describe '#errors' do
         it 'returns localized error messages' do
-          expect(schema.(email: '').messages(locale: :pl)).to eql(
-            email: ['Hej user! Dawaj ten email no!']
-          )
+          expect(schema.(email: '').errors).to eql(email: ['Please provide your email'])
+
+          expect(schema.(email: '').errors(locale: :pl)).to eql(email: ['Hej user! Dawaj ten email no!'])
         end
       end
     end
