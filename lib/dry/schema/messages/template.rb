@@ -14,7 +14,7 @@ module Dry
       class Template
         include Dry::Equalizer(:text)
 
-        TOKEN_REGEXP = /%{([\w\d]*)}/
+        TOKEN_REGEXP = /%{(\w*)}/
 
         # !@attribute [r] text
         # @return [String]
