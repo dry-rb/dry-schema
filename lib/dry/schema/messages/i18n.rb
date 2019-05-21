@@ -29,7 +29,7 @@ module Dry
       #
       # @api public
       def get(key, options = EMPTY_HASH)
-        t.(key, options) if key
+        t.(key, locale: options.fetch(:locale, default_locale)) if key
       end
 
       # Check if given key is defined
