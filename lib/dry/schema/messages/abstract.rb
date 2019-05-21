@@ -157,13 +157,8 @@ module Dry
         end
 
         # @api private
-        def hash
-          @hash ||= config.hash
-        end
-
-        # @api private
         def cache
-          @cache ||= self.class.cache[hash]
+          @cache ||= self.class.cache[self]
         end
 
         # @api private
