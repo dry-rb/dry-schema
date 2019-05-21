@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dry/schema/messages/template'
 require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema::Messages::I18n do
@@ -17,6 +18,18 @@ RSpec.describe Dry::Schema::Messages::I18n do
     context 'with the default locale' do
       it 'returns nil when message is not defined' do
         expect(messages[:not_here, path: :srsly]).to be(nil)
+      end
+
+      it 'returns a message template' do
+        template, = messages[:size?, path: :age, size: 10]
+
+        expect(template).to eql(Dry::Schema::Messages::Template['wielkość musi być równa %{size}'])
+      end
+
+      it 'caches message templates' do
+        template, = messages[:size?, path: :age, size: 10]
+
+        expect(messages[:size?, path: :age, size: 10][0]).to be(template)
       end
 
       it 'returns a message for a predicate' do
