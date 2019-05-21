@@ -20,6 +20,8 @@ RSpec.describe Dry::Schema::Messages::Abstract, '#call' do
       schema.(name: 12).errors
       schema.(name: 'foo').errors
       schema.(name: 'bar').errors
+      schema.(emails: ['foo']).errors
+      schema.(addresses: ['foo']).errors
     end
 
     def template(predicate, opts = {})
@@ -27,7 +29,7 @@ RSpec.describe Dry::Schema::Messages::Abstract, '#call' do
     end
 
     it 'caches min amount of templates' do
-      expect(cache.size).to be(4)
+      expect(cache.size).to be(6)
     end
 
     it 'caches templates' do
@@ -41,6 +43,8 @@ RSpec.describe Dry::Schema::Messages::Abstract, '#call' do
       let(:schema) do
         Dry::Schema.define do
           required(:name).value(:string, min_size?: 10)
+          optional(:emails).array(min_size?: 10)
+          optional(:addresses).array(min_size?: 20)
         end
       end
     end
@@ -53,6 +57,8 @@ RSpec.describe Dry::Schema::Messages::Abstract, '#call' do
           config.messages.backend = :i18n
 
           required(:name).value(:string, min_size?: 10)
+          optional(:emails).array(min_size?: 10)
+          optional(:addresses).array(min_size?: 20)
         end
       end
     end
