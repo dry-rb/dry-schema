@@ -4,6 +4,7 @@
 
 * `Object#hash` is no longer used to calculate cache keys due to a potential risk of having hash collisions (solnic)
 * Predicate arguments are used again for template cache keys (solnic)
+* `I18n` messages backend no longer evaluates templates twice (solnic)
 
 [Compare v1.0.2...v1.0.3](https://github.com/dry-rb/dry-schema/compare/v1.0.2...v1.0.3)
 
