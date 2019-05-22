@@ -66,9 +66,10 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def filled(*args, &block)
+        def filled(*args, **opts, &block)
           append_macro(Macros::Filled) do |macro|
-            macro.call(*args, &block)
+            filter(:filled?) if opts[:type_spec] && macro.filter?
+            macro.call(*args, **opts, &block)
           end
         end
 

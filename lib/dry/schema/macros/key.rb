@@ -28,7 +28,7 @@ module Dry
         #
         # @api public
         def filter(*args, &block)
-          filter_schema_dsl.optional(name).value(*args, &block)
+          (filter_schema_dsl[name] || filter_schema_dsl.optional(name)).value(*args, &block)
           self
         end
 

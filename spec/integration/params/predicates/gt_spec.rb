@@ -222,7 +222,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -238,7 +238,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -416,7 +416,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -424,7 +424,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -432,7 +432,7 @@ RSpec.describe 'Predicates: Gt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be an integer', 'must be greater than 23']
+            expect(result).to be_failing ['must be filled']
           end
         end
 

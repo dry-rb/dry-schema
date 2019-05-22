@@ -198,7 +198,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be a string', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must be filled']
           end
         end
 
@@ -206,7 +206,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must not be one of: 1, 3, 5']
+            expect(result).to be_failing ['must be filled']
           end
         end
 

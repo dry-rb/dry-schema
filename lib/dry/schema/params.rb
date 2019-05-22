@@ -13,6 +13,7 @@ module Dry
     class Params < Processor
       config.key_map_type = :stringified
       config.type_registry = config.type_registry.namespaced(:params)
+      config.filter_empty_string = true
     end
   end
 end
