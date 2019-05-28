@@ -210,11 +210,8 @@ module Dry
       #
       # @api private
       def type_schema
-        if parent
-          parent.type_schema.schema(types)
-        else
-          type_registry['hash'].schema(types).lax
-        end
+        schema = type_registry['hash'].schema(types).lax
+        parent ? parent.type_schema.schema(schema.to_a) : schema
       end
 
       # Return a new DSL instance using the same processor type
