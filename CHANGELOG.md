@@ -1,3 +1,13 @@
+# v1.1.0 to-be-released
+
+### Fixed
+
+* Filter rules no longer cause keys to be added to input (issue #142) (solnic)
+* Filter rules work now with inheritance (solnic)
+* Inherited type schemas used by coercion is now properly configured as `lax` type (solnic)
+
+[Compare v1.0.3...v1.1.0](https://github.com/dry-rb/dry-schema/compare/v1.0.3...v1.1.0)
+
 # v1.0.3 2019-05-21
 
 ### Fixed
