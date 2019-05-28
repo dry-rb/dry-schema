@@ -22,6 +22,9 @@ module Dry
         else
           type_schema.each_with_object(EMPTY_HASH.dup) do |key, hash|
             name = key.name
+
+            next unless input.key?(name)
+
             value = input[name]
 
             hash[name] = input.error?(name) ? value : key[value]

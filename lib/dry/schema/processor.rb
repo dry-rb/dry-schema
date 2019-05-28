@@ -30,7 +30,9 @@ module Dry
       setting :key_map_type
       setting :type_registry, TypeRegistry.new
 
-      param :steps, default: -> { EMPTY_ARRAY.dup }
+      option :steps, default: -> { EMPTY_ARRAY.dup }
+
+      option :schema_dsl
 
       class << self
         # Return DSL configured via #define
@@ -60,9 +62,11 @@ module Dry
         # @return [Processor]
         #
         # @api public
-        def new(&block)
-          if block
-            super.tap(&block)
+        def new(options = nil, &block)
+          if options || block
+            processor = super
+            yield(processor) if block
+            processor
           elsif definition
             definition.call
           else
@@ -177,6 +181,20 @@ module Dry
         @rule_applier ||= steps.last
       end
       alias_method :to_rule, :rule_applier
+
+      # Check if there are filter rules
+      #
+      # @api private
+      def filter_rules?
+        @filter_rules_predicate ||= schema_dsl.filter_rules?
+      end
+
+      # Return filter schema
+      #
+      # @api private
+      def filter_schema
+        @filter_schema ||= schema_dsl.filter_schema
+      end
     end
   end
 end

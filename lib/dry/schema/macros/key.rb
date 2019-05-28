@@ -12,9 +12,10 @@ module Dry
       #
       # @api public
       class Key < DSL
-        # @return [Schema::DSL]
-        # @api private
-        option :filter_schema, optional: true, default: proc { schema_dsl&.new }
+        # @!attribute [r] filter_schema_dsl
+        #   @return [Schema::DSL]
+        #   @api private
+        option :filter_schema_dsl, default: proc { schema_dsl&.filter_schema_dsl }
 
         # Specify predicates that should be applied before coercion
         #
@@ -27,7 +28,7 @@ module Dry
         #
         # @api public
         def filter(*args, &block)
-          filter_schema.optional(name).value(*args, &block)
+          filter_schema_dsl.optional(name).value(*args, &block)
           self
         end
 

@@ -164,7 +164,7 @@ module Dry
           name: name,
           compiler: compiler,
           schema_dsl: self,
-          filter_schema: filter_schema
+          filter_schema_dsl: filter_schema_dsl
         )
 
         macro.value(&block) if block
@@ -174,7 +174,7 @@ module Dry
 
       # Build a processor based on DSL's definitions
       #
-      # @return [Processor]
+      # @return [Processor, Params, JSON]
       #
       # @api private
       def call
@@ -182,7 +182,7 @@ module Dry
         steps << filter_schema.rule_applier if filter_rules?
         steps << value_coercer << rule_applier
 
-        processor_type.new { |processor| steps.each { |step| processor << step } }
+        processor_type.new(schema_dsl: self, steps: steps)
       end
 
       # Cast this DSL into a rule object
@@ -222,8 +222,8 @@ module Dry
       # @return [Dry::Types::Safe]
       #
       # @api private
-      def new(&block)
-        self.class.new(processor_type: processor_type, &block)
+      def new(options = EMPTY_HASH, &block)
+        self.class.new(options.merge(processor_type: processor_type), &block)
       end
 
       # Set a type for the given key name
@@ -255,6 +255,27 @@ module Dry
         else
           type_registry[spec]
         end
+      end
+
+      # @api private
+      def filter_schema
+        filter_schema_dsl.call
+      end
+
+      # Build an input schema DSL used by `filter` API
+      #
+      # @see Macros::Value#filter
+      #
+      # @api private
+      def filter_schema_dsl
+        @filter_schema_dsl ||= new(parent: parent_filter_schema)
+      end
+
+      # Check if any filter rules were defined
+      #
+      # @api private
+      def filter_rules?
+        (instance_variable_defined?('@filter_schema_dsl') && !filter_schema_dsl.macros.empty?) || parent&.filter_rules?
       end
 
       protected
@@ -293,20 +314,11 @@ module Dry
 
       private
 
-      # Check if any filter rules were defined
-      #
       # @api private
-      def filter_rules?
-        instance_variable_defined?('@__filter_schema__') && !filter_schema.macros.empty?
-      end
+      def parent_filter_schema
+        return unless parent
 
-      # Build an input schema DSL used by `filter` API
-      #
-      # @see Macros::Value#filter
-      #
-      # @api private
-      def filter_schema
-        @__filter_schema__ ||= new
+        parent.filter_schema if parent.filter_rules?
       end
 
       # Build a key coercer
