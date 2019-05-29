@@ -18,6 +18,7 @@ module Dry
         include Dry::Configurable
         include Dry::Equalizer(:config)
 
+        setting :default_locale, nil
         setting :load_paths, Set[DEFAULT_MESSAGES_PATH]
         setting :top_namespace, DEFAULT_MESSAGES_ROOT
         setting :root, 'errors'
@@ -163,7 +164,7 @@ module Dry
 
         # @api private
         def default_locale
-          :en
+          config.default_locale
         end
 
         private

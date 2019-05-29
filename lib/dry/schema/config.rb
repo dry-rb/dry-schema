@@ -38,6 +38,7 @@ module Dry
         setting(:namespace)
         setting(:load_paths, Set[DEFAULT_MESSAGES_PATH], &:dup)
         setting(:top_namespace, DEFAULT_MESSAGES_ROOT)
+        setting(:default_locale, nil)
       end
 
       # @api private

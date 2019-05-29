@@ -30,6 +30,8 @@ module Dry
       # @api private
       def self.build(options = EMPTY_HASH)
         super do |config|
+          config.default_locale = :en unless config.default_locale
+
           config.root = "%<locale>s.#{config.root}"
 
           config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
