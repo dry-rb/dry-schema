@@ -2,6 +2,7 @@
 
 ### Added
 
+* `config.messages.default_locale` for setting...default locale (surprise, surprise) (solnic)
 * `Config` exposes `predicates` setting too (solnic)
 
 ### Fixed
