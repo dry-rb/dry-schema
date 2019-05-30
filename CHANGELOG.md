@@ -1,10 +1,17 @@
-# v1.1.0 to-be-released
+# v1.1.0 2019-05-30
+
+### Added
+
+* `Config` exposes `predicates` setting too (solnic)
 
 ### Fixed
 
+* `filled` macro behavior results in `must be filled` error messages when appropriate - see PR #141 for more information (issue #134) (solnic)
 * Filter rules no longer cause keys to be added to input (issue #142) (solnic)
 * Filter rules work now with inheritance (solnic)
-* Inherited type schemas used by coercion is now properly configured as `lax` type (solnic)
+* Inherited type schemas used by coercion are now properly configured as `lax` type (solnic)
+* `Config` is now finalized before instantiating schemas and properly dupped when its inherited (flash-gordon + solnic)
+* `Config#eql?` works as expected (solnic)
 
 [Compare v1.0.3...v1.1.0](https://github.com/dry-rb/dry-schema/compare/v1.0.3...v1.1.0)
 
