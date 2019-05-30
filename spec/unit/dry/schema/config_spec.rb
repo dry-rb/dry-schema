@@ -13,11 +13,23 @@ RSpec.describe Dry::Schema::Config do
     end
 
     it 'returns overridden value' do
-      config.configure do |config|
-        config.messages.backend = :i18n
-      end
+      config.messages.backend = :i18n
 
       expect(config.messages.backend).to be(:i18n)
+    end
+  end
+
+  describe '#predicates' do
+    it 'returns configured predicates registry' do
+      expect(config.predicates).to be_instance_of(Dry::Schema::PredicateRegistry)
+    end
+  end
+
+  describe '#finalize!' do
+    it 'finalizes the config' do
+      config.finalize!
+
+      expect(config).to be_frozen
     end
   end
 end
