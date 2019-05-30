@@ -283,7 +283,7 @@ module Dry
       #
       # @api protected
       def rule_applier
-        RuleApplier.new(rules, config: config)
+        RuleApplier.new(rules, config: config.finalize!)
       end
 
       # Build rules from defined macros

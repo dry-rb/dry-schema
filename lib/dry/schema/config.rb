@@ -15,10 +15,24 @@ module Dry
     # @api public
     class Config
       include Dry::Configurable
-      include Dry::Equalizer(:predicates, :messages)
+      include Dry::Equalizer(:to_h, inspect: false)
 
+      # @!method predicates
+      #
+      # Return configured predicate registry
+      #
+      # @return [Schema::PredicateRegistry]
+      #
+      # @api public
       setting(:predicates, Schema::PredicateRegistry.new)
 
+      # @!method messages
+      #
+      # Return configuration for message backend
+      #
+      # @return [Dry::Configurable::Config]
+      #
+      # @api public
       setting(:messages) do
         setting(:backend, :yaml)
         setting(:namespace)
@@ -26,22 +40,24 @@ module Dry
         setting(:top_namespace, DEFAULT_MESSAGES_ROOT)
       end
 
-      # Return configured predicate registry
-      #
-      # @return [Schema::PredicateRegistry]
-      #
-      # @api public
-      def predicates
-        config.predicates
+      # @api private
+      def respond_to_missing?(meth, include_private = false)
+        super || config.respond_to?(meth, include_private)
       end
 
-      # Return configuration for message backend
+      # @api private
+      def inspect
+        "#<#{self.class} #{to_h.map { |k,v| ["#{k}=", v.inspect] }.map(&:join).join(' ')}>"
+      end
+
+      private
+
+      # Forward to the underlying config object
       #
-      # @return [Dry::Configurable::Config]
-      #
-      # @api public
-      def messages
-        config.messages
+      # @api private
+      def method_missing(meth, *args, &block)
+        super unless config.respond_to?(meth)
+        config.public_send(meth, *args)
       end
     end
   end
