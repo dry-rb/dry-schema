@@ -12,6 +12,7 @@
 * Inherited type schemas used by coercion are now properly configured as `lax` type (solnic)
 * `Config` is now finalized before instantiating schemas and properly dupped when its inherited (flash-gordon + solnic)
 * `Config#eql?` works as expected (solnic)
+* Predicates are properly inferred from array with a member type spec, ie `array[:integer]` results in `array? + each(:integer?)` (issue #140) (solnic)
 
 [Compare v1.0.3...v1.1.0](https://github.com/dry-rb/dry-schema/compare/v1.0.3...v1.1.0)
 
