@@ -34,9 +34,7 @@ RSpec.describe 'Defining base schema class' do
   context 'when child schema defines config' do
     subject(:schema) do
       Dry::Schema.define(parent: parent) do
-        configure do |config|
-          config.messages.backend = :yaml
-        end
+        config.messages.backend = :yaml
       end
     end
 
