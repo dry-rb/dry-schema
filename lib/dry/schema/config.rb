@@ -15,7 +15,7 @@ module Dry
     # @api public
     class Config
       include Dry::Configurable
-      include Dry::Equalizer(:predicates, :messages)
+      include Dry::Equalizer(:to_h, inspect: false)
 
       # @!method predicates
       #
@@ -43,6 +43,11 @@ module Dry
       # @api private
       def respond_to_missing?(meth, include_private = false)
         super || config.respond_to?(meth, include_private)
+      end
+
+      # @api private
+      def inspect
+        "#<#{self.class} #{to_h.map { |k,v| ["#{k}=", v.inspect] }.map(&:join).join(' ')}>"
       end
 
       private

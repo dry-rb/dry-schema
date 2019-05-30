@@ -32,4 +32,23 @@ RSpec.describe Dry::Schema::Config do
       expect(config).to be_frozen
     end
   end
+
+  describe '#eql?' do
+    it 'returns true when configs are the same' do
+      expect(config).to eql(config.dup)
+    end
+
+    it 'returns false when configs differ' do
+      other = config.dup
+      other.messages.backend = :i18n
+
+      expect(config).to_not eql(other)
+    end
+  end
+
+  describe '#inspect' do
+    it 'returns true when configs are the same' do
+      expect(config.inspect).to include('#<Dry::Schema::Config predicates=#<Dry::Schema::PredicateRegistry')
+    end
+  end
 end
