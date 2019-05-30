@@ -21,7 +21,7 @@ module Dry
           ensure_valid_predicates(predicates)
 
           if opts[:type_spec]
-            if filter?
+            if handle_via_filter?
               value(*predicates, **opts, &block)
             else
               value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
@@ -45,8 +45,8 @@ module Dry
         # rubocop:enable Style/GuardClause
 
         # @api private
-        def filter?
-          !primitives.include?(NilClass) && processor_config.filter_empty_string
+        def handle_via_filter?
+          !expected_primitives.include?(NilClass) && processor_config.filter_empty_string
         end
 
         # @api private
@@ -55,7 +55,7 @@ module Dry
         end
 
         # @api private
-        def primitives
+        def expected_primitives
           primitive_inferrer[schema_type]
         end
 
