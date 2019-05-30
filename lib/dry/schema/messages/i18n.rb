@@ -55,7 +55,7 @@ module Dry
 
       # @api private
       def default_locale
-        I18n.locale || I18n.default_locale || super
+        super || I18n.locale || I18n.default_locale
       end
 
       # @api private

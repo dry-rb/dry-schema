@@ -4,18 +4,37 @@ require 'dry/schema/messages/template'
 require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema::Messages::I18n do
-  subject(:messages) { Dry::Schema::Messages::I18n.build }
+  subject(:messages) { Dry::Schema::Messages::I18n.build(options) }
+
+  let(:options) do
+    {}
+  end
 
   before do
     I18n.config.available_locales = [:en, :pl]
     I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
     I18n.backend.load_translations
-    I18n.locale = :pl
     I18n.reload!
   end
 
   describe '#[]' do
-    context 'with the default locale' do
+    context 'when config.default_locale is set' do
+      let(:options) do
+        { default_locale: :pl }
+      end
+
+      it 'returns a message template' do
+        template, = messages[:size?, path: :age, size: 10]
+
+        expect(template).to eql(Dry::Schema::Messages::Template['wielkość musi być równa %{size}'])
+      end
+    end
+
+    context 'with the default locale set via I18n.locale=' do
+      before do
+        I18n.locale = :pl
+      end
+
       it 'returns nil when message is not defined' do
         expect(messages[:not_here, path: :srsly]).to be(nil)
       end
@@ -61,6 +80,49 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
         expect(template.(size_left: 1, size_right: 2)).to eql('wielkość musi być między 1 a 2')
       end
+
+      describe '#translate' do
+        it 'translates raw paths to stored translation texts' do
+          expect(messages.translate(:or)).to eql('lub')
+          expect(messages.translate(:or, locale: :en)).to eql('or')
+        end
+      end
+
+      describe '#rule' do
+        it 'returns rule name using default locale' do
+          expect(messages.rule(:email)).to eql('Adres mailowy')
+        end
+
+        it 'returns rule name using provided locale' do
+          expect(messages.rule(:email, locale: :en)).to eql('E-mail address')
+        end
+
+        it 'returns rule name using default locale within a namespace' do
+          expect(messages.namespaced(:company).rule(:email)).to eql('Email firmowy')
+        end
+
+        it 'returns rule name using provided locale within a namespace' do
+          expect(messages.namespaced(:company).rule(:email, locale: :en)).to eql('Company email')
+        end
+      end
+
+      describe 'fallbacking to I18n.default_locale with fallback backend config' do
+        before do
+          require 'i18n/backend/fallbacks'
+
+          # https://github.com/svenfuchs/i18n/pull/415
+          # Since I18n does not provide default fallbacks anymore, we have to do this explicitly
+          I18n::Backend::Simple.send(:include, I18n::Backend::Fallbacks)
+          I18n.fallbacks = I18n::Locale::Fallbacks.new(:en)
+        end
+
+        it 'returns a message for a predicate in the default_locale' do
+          template, = messages[:even?, path: :some_number]
+
+          expect(I18n.locale).to eql(:pl)
+          expect(template.()).to eql('must be even')
+        end
+      end
     end
 
     context 'with a different locale' do
@@ -87,49 +149,6 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
         expect(template.(size_left: 1, size_right: 2)).to eql('size must be within 1 - 2')
       end
-    end
-
-    context 'fallbacking to I18n.default_locale with fallback backend config' do
-      before do
-        require 'i18n/backend/fallbacks'
-
-        # https://github.com/svenfuchs/i18n/pull/415
-        # Since I18n does not provide default fallbacks anymore, we have to do this explicitly
-        I18n::Backend::Simple.send(:include, I18n::Backend::Fallbacks)
-        I18n.fallbacks = I18n::Locale::Fallbacks.new(:en)
-      end
-
-      it 'returns a message for a predicate in the default_locale' do
-        template, = messages[:even?, path: :some_number]
-
-        expect(I18n.locale).to eql(:pl)
-        expect(template.()).to eql('must be even')
-      end
-    end
-  end
-
-  describe '#translate' do
-    it 'translates raw paths to stored translation texts' do
-      expect(messages.translate(:or)).to eql('lub')
-      expect(messages.translate(:or, locale: :en)).to eql('or')
-    end
-  end
-
-  describe '#rule' do
-    it 'returns rule name using default locale' do
-      expect(messages.rule(:email)).to eql('Adres mailowy')
-    end
-
-    it 'returns rule name using provided locale' do
-      expect(messages.rule(:email, locale: :en)).to eql('E-mail address')
-    end
-
-    it 'returns rule name using default locale within a namespace' do
-      expect(messages.namespaced(:company).rule(:email)).to eql('Email firmowy')
-    end
-
-    it 'returns rule name using provided locale within a namespace' do
-      expect(messages.namespaced(:company).rule(:email, locale: :en)).to eql('Company email')
     end
   end
 end
