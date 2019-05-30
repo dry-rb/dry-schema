@@ -51,4 +51,10 @@ RSpec.describe Dry::Schema::Config do
       expect(config.inspect).to include('#<Dry::Schema::Config predicates=#<Dry::Schema::PredicateRegistry')
     end
   end
+
+  it 'quacks like a config' do
+    to_h = config.method(:to_h)
+
+    expect(to_h.()).to eql(config.config.to_h)
+  end
 end
