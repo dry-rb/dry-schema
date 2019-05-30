@@ -16,6 +16,14 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
     expect(inferrer[type(:string)]).to be(inferrer[type(:string)])
   end
 
+  it 'returns array? for an array type' do
+    expect(inferrer[type(:array)]).to eql([:array?])
+  end
+
+  it 'returns array? for an array type with member' do
+    expect(inferrer[type(:array).of(type(:integer))]).to eql([:array?])
+  end
+
   it 'returns str? for a string type' do
     expect(inferrer[type(:string)]).to eql([:str?])
   end

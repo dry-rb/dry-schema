@@ -33,6 +33,9 @@ module Dry
             raise ArgumentError, 'wrong number of arguments (given 0, expected at least 1)'
           end
 
+          type_spec = opts[:type_spec]
+          each(type_spec.type.member) if type_spec.respond_to?(:member)
+
           self
         end
 

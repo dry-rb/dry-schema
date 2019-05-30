@@ -29,12 +29,28 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec with an array' do
     subject(:schema) do
       Dry::Schema.Params do
+        required(:nums).value(:array)
+      end
+    end
+
+    it 'infers array? check' do
+      expect(schema.(nums: nil).errors.to_h).to eql(nums: ['must be an array'])
+    end
+  end
+
+  context 'single type spec with an array with a member' do
+    subject(:schema) do
+      Dry::Schema.Params do
         required(:nums).value(array[:integer])
       end
     end
 
-    it 'uses form coercion' do
+    it 'uses params coercion' do
       expect(schema.(nums: %w(1 2 3)).to_h).to eql(nums: [1, 2, 3])
+    end
+
+    it 'infers array? + each(:integer?)' do
+      expect(schema.(nums: %w(1 oops 3)).errors.to_h).to eql(nums: { 1 => ['must be an integer'] })
     end
   end
 

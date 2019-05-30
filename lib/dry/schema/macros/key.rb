@@ -55,7 +55,7 @@ module Dry
         # @api public
         def value(*args, **opts, &block)
           extract_type_spec(*args) do |*predicates, type_spec:|
-            super(*predicates, **opts, &block)
+            super(*predicates, type_spec: type_spec, **opts, &block)
           end
         end
 
