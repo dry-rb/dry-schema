@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dry/schema/primitive_inferrer'
 require 'dry/schema/macros/value'
 
 module Dry
@@ -9,12 +10,22 @@ module Dry
       #
       # @api private
       class Filled < Value
+        # @!attribute [r] primitive_inferrer
+        #   PrimitiveInferrer used to get a list of primitive classes from configured type
+        #   @return [PrimitiveInferrer]
+        #   @api private
+        option :primitive_inferrer, default: proc { PrimitiveInferrer.new }
+
         # @api private
         def call(*predicates, **opts, &block)
           ensure_valid_predicates(predicates)
 
           if opts[:type_spec]
-            value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
+            if filter?
+              value(*predicates, **opts, &block)
+            else
+              value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
+            end
           else
             value(:filled?, *predicates, **opts, &block)
           end
@@ -32,6 +43,26 @@ module Dry
           end
         end
         # rubocop:enable Style/GuardClause
+
+        # @api private
+        def filter?
+          !primitives.include?(NilClass) && processor_config.filter_empty_string
+        end
+
+        # @api private
+        def processor_config
+          schema_dsl.processor_type.config
+        end
+
+        # @api private
+        def primitives
+          primitive_inferrer[schema_type]
+        end
+
+        # @api private
+        def schema_type
+          schema_dsl.types[name]
+        end
       end
     end
   end

@@ -111,6 +111,17 @@ module Dry
         self
       end
 
+      # Return a macro with the provided name
+      #
+      # @param [Symbol] name
+      #
+      # @return [Macros::Core]
+      #
+      # @api public
+      def [](name)
+        macros.detect { |macro| macro.name.equal?(name) }
+      end
+
       # Define a required key
       #
       # @example

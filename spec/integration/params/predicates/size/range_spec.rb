@@ -324,7 +324,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be a string', 'size must be within 2 - 3']
+              expect(result).to be_failing ['must be filled']
             end
           end
 
@@ -332,7 +332,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be within 2 - 3']
+              expect(result).to be_failing ['must be filled']
             end
           end
 

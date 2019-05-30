@@ -29,6 +29,7 @@ module Dry
 
       setting :key_map_type
       setting :type_registry, TypeRegistry.new
+      setting :filter_empty_string, false
 
       option :steps, default: -> { EMPTY_ARRAY.dup }
 

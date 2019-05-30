@@ -175,7 +175,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be an array or must be a string', 'size must be 3']
+              expect(result).to be_failing ['must be filled']
             end
           end
 
@@ -183,7 +183,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled']
             end
           end
 
@@ -321,7 +321,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be an array or must be a string', 'size must be 3']
+              expect(result).to be_failing ['must be filled']
             end
           end
 
@@ -329,7 +329,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be 3']
+              expect(result).to be_failing ['must be filled']
             end
           end
 
