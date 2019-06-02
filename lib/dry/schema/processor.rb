@@ -4,6 +4,7 @@ require 'dry/configurable'
 require 'dry/initializer'
 
 require 'dry/schema/type_registry'
+require 'dry/schema/type_container'
 require 'dry/schema/rule_applier'
 require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
@@ -28,7 +29,7 @@ module Dry
       extend Dry::Configurable
 
       setting :key_map_type
-      setting :type_registry, TypeRegistry.new
+      setting :type_registry_namespace, :nominal
       setting :filter_empty_string, false
 
       option :steps, default: -> { EMPTY_ARRAY.dup }

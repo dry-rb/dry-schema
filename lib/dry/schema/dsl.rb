@@ -351,7 +351,10 @@ module Dry
       #
       # @api private
       def type_registry
-        processor_type.config.type_registry
+        @type_registry ||= TypeRegistry.new(
+          config.types,
+          processor_type.config.type_registry_namespace
+        )
       end
 
       # Return key map type configured by the processor type

@@ -5,6 +5,7 @@ require 'dry/configurable'
 
 require 'dry/schema/constants'
 require 'dry/schema/predicate_registry'
+require 'dry/schema/type_container'
 
 module Dry
   module Schema
@@ -26,6 +27,15 @@ module Dry
       # @api public
       setting(:predicates, Schema::PredicateRegistry.new)
 
+      # @!method types
+      #
+      # Return configured container with extra types
+      #
+      # @return [Hash]
+      #
+      # @api public
+      setting(:types, Dry::Types)
+
       # @!method messages
       #
       # Return configuration for message backend
@@ -40,6 +50,7 @@ module Dry
         setting(:top_namespace, DEFAULT_MESSAGES_ROOT)
         setting(:default_locale, nil)
       end
+
 
       # @api private
       def respond_to_missing?(meth, include_private = false)
