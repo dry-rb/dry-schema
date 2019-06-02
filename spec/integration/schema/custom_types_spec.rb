@@ -22,12 +22,12 @@ RSpec.describe 'Registering custom types' do
     Types::Strict::String.constructor(&:strip).constructor(&:downcase)
   end
 
-  let(:params) {
+  let(:params) do
     {
       email: 'some@body.abc',
       age: '  I AM NOT THAT OLD '
     }
-  }
+  end
 
   context 'types not registered' do
     it 'raises exception that nothing is registered with the key' do
