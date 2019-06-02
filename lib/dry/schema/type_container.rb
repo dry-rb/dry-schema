@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'dry-container'
+require 'dry-types'
+
 module Dry
   module Schema
     class TypeContainer

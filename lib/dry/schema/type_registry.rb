@@ -36,6 +36,7 @@ module Dry
       # @api private
       def [](name)
         key = [namespace, name].compact.join(DOT)
+
         type = types.registered?(key) ? types[key] : types[name.to_s]
         type
       end

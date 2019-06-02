@@ -1,21 +1,25 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Registering custom types' do
-  subject(:schema) do
-    Dry::Schema.define do
-      # config.types = types
+  let(:klass) do
+    Test::Kontainer = type_container
 
-      required(:email).filled(:string)
-      required(:age).filled(:trimmed_string)
+    class Test::CustomTypeSchema < Dry::Schema::Params
+      define do
+        config.types = Test::Kontainer
+
+        required(:email).filled(:string)
+        required(:age).filled(:trimmed_string)
+      end
     end
   end
 
-  let(:trimmed_string) do
-    Types::Strict::String.constructor(&:trim).constructor(&:downcase)
-  end
+  subject(:schema) { klass.new.call(params) }
 
-  let(:types) do
-    Dry::Schema::TypeContainer.new
+  let(:type_container) { Dry::Schema::TypeContainer.new  }
+
+  let(:trimmed_string) do
+    Types::Strict::String.constructor(&:strip).constructor(&:downcase)
   end
 
   let(:params) {
@@ -26,22 +30,23 @@ RSpec.describe 'Registering custom types' do
   }
 
   context 'types not registered' do
-    before do
-      types.register('missing_string', trimmed_string)
-    end
-
     it 'raises exception that nothing is registered with the key' do
       expect { subject }.to raise_exception(Dry::Container::Error)
     end
   end
 
   context 'custom type is registered' do
+    before do
+      type_container.register('trimmed_string', trimmed_string)
+      type_container.register('params.trimmed_string', trimmed_string)
+    end
+
     it 'does not raise any exceptions' do
       expect { subject }.not_to raise_exception
     end
 
     it 'coerces the type' do
-      expect(subject[:age]).to eql('I AM NOT THAT OLD')
+      expect(subject[:age]).to eql('i am not that old')
     end
   end
 end
