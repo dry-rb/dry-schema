@@ -5,6 +5,13 @@ require 'dry/types'
 
 module Dry
   module Schema
+    # A class to build containers for custom types, which can be used in schemas
+    #
+    # @example
+    #   MyTypeContainer = Dry::Schema::TypeContainer.new
+    #   MyTypeContainer.register('params.fancy_string', Types::FancyString)
+    #
+    # @api public
     class TypeContainer
       include Dry::Container::Mixin
 

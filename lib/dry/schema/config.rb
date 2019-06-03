@@ -51,7 +51,6 @@ module Dry
         setting(:default_locale, nil)
       end
 
-
       # @api private
       def respond_to_missing?(meth, include_private = false)
         super || config.respond_to?(meth, include_private)
