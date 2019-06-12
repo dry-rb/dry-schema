@@ -14,31 +14,43 @@ module Dry
           super(*args) unless args.empty?
 
           if block
-            definition = schema_dsl.new(&block)
-
-            parent_type = schema_dsl.types[name]
-            definition_schema = definition.type_schema
-
-            schema_type =
-              if parent_type.respond_to?(:of)
-                parent_type.of(definition_schema)
-              else
-                definition_schema
-              end
-
-            final_type =
-              if parent_type.optional?
-                schema_type.optional
-              else
-                schema_type
-              end
-
-            schema_dsl.set_type(name, final_type)
-
-            trace << definition.to_rule
+            schema = define(&block)
+            trace << schema.to_rule
           end
 
           self
+        end
+
+        private
+
+        # @api private
+        def define(&block)
+          definition = schema_dsl.new(&block)
+          schema = definition.call
+
+          type_schema = array? ? parent_type.of(definition.type_schema) : definition.type_schema
+          final_type = optional? ? type_schema.optional : type_schema
+
+          type(final_type)
+
+          schema_dsl[name].filter(:hash?, schema.filter_schema) if schema.filter_rules?
+
+          schema
+        end
+
+        # @api private
+        def parent_type
+          schema_dsl.types[name]
+        end
+
+        # @api private
+        def optional?
+          parent_type.optional?
+        end
+
+        # @api private
+        def array?
+          parent_type.respond_to?(:of)
         end
       end
     end
