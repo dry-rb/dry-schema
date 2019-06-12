@@ -12,8 +12,12 @@ module Dry
       attr_reader :predicates
 
       # @api private
+      attr_reader :has_predicate
+
+      # @api private
       def initialize(predicates = Dry::Logic::Predicates)
         @predicates = predicates
+        @has_predicate = ::Kernel.instance_method(:respond_to?).bind(@predicates)
       end
 
       # @api private
@@ -23,7 +27,7 @@ module Dry
 
       # @api private
       def key?(name)
-        predicates.respond_to?(name)
+        has_predicate.(name)
       end
 
       # @api private
