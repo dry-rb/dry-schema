@@ -35,7 +35,13 @@ module Dry
 
             schema_dsl.set_type(name, final_type)
 
-            trace << definition.to_rule
+            schema = definition.call
+
+            if schema.filter_rules?
+              schema_dsl[name].filter(:hash?, schema.filter_schema)
+            end
+
+            trace << schema.to_rule
           end
 
           self

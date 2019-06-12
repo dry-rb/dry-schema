@@ -33,19 +33,30 @@ RSpec.describe 'Macros #filled' do
         subject(:schema) do
           Dry::Schema.Params do
             required(:age).filled(:integer)
+
+            required(:address).hash do
+              required(:zipcode).filled(:integer)
+            end
           end
         end
 
         it 'applies filter(:filled?) for empty strings' do
-          expect(schema.(age: '').errors).to eql(age: ['must be filled'])
+          expect(schema.(age: '', address: { zipcode: '123' }).errors).to eql(age: ['must be filled'])
+        end
+
+        it 'applies filter(:filled?) for empty strings under nested keys' do
+          expect(schema.(age: '41', address: { zipcode: '' }).errors)
+            .to eql(address: { zipcode: ['must be filled'] })
         end
 
         it 'applies filter(:filled?) for nil' do
-          expect(schema.(age: nil).errors).to eql(age: ['must be filled'])
+          expect(schema.(age: nil, address: { zipcode: '123' }).errors)
+            .to eql(age: ['must be filled'])
         end
 
         it 'applies int?' do
-          expect(schema.(age: 'not-a-number').errors).to eql(age: ['must be an integer'])
+          expect(schema.(age: 'not-a-number', address: { zipcode: '123' }).errors)
+            .to eql(age: ['must be an integer'])
         end
       end
 
