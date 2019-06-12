@@ -20,12 +20,8 @@ module Dry
         def call(*predicates, **opts, &block)
           ensure_valid_predicates(predicates)
 
-          if opts[:type_spec]
-            if handle_via_filter?
-              value(*predicates, **opts, &block)
-            else
-              value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
-            end
+          if opts[:type_spec] && !filter_empty_string?
+            value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
           else
             value(:filled?, *predicates, **opts, &block)
           end
@@ -45,7 +41,7 @@ module Dry
         # rubocop:enable Style/GuardClause
 
         # @api private
-        def handle_via_filter?
+        def filter_empty_string?
           !expected_primitives.include?(NilClass) && processor_config.filter_empty_string
         end
 

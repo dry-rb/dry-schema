@@ -174,7 +174,7 @@ RSpec.describe 'Predicates: Excludes' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must not include foo']
           end
         end
 
@@ -182,7 +182,7 @@ RSpec.describe 'Predicates: Excludes' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must not include foo']
           end
         end
 
@@ -320,7 +320,7 @@ RSpec.describe 'Predicates: Excludes' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must not include foo']
           end
         end
 
@@ -328,7 +328,7 @@ RSpec.describe 'Predicates: Excludes' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must not include foo']
           end
         end
 
