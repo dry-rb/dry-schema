@@ -5,6 +5,7 @@ require 'dry/configurable'
 
 require 'dry/schema/constants'
 require 'dry/schema/predicate_registry'
+require 'dry/schema/type_container'
 
 module Dry
   module Schema
@@ -25,6 +26,15 @@ module Dry
       #
       # @api public
       setting(:predicates, Schema::PredicateRegistry.new)
+
+      # @!method types
+      #
+      # Return configured container with extra types
+      #
+      # @return [Hash]
+      #
+      # @api public
+      setting(:types, Dry::Types)
 
       # @!method messages
       #

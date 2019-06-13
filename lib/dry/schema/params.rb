@@ -12,7 +12,7 @@ module Dry
     # @api public
     class Params < Processor
       config.key_map_type = :stringified
-      config.type_registry = config.type_registry.namespaced(:params)
+      config.type_registry_namespace = :params
       config.filter_empty_string = true
     end
   end

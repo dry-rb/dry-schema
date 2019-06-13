@@ -12,7 +12,7 @@ module Dry
     # @api public
     class JSON < Processor
       config.key_map_type = :stringified
-      config.type_registry = config.type_registry.namespaced(:json)
+      config.type_registry_namespace = :json
       config.filter_empty_string = false
     end
   end
