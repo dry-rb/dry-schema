@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dry/types/type'
 require 'dry/schema/macros/dsl'
 
 module Dry
@@ -12,7 +13,9 @@ module Dry
         # @api private
         def value(*args, **opts)
           extract_type_spec(*args, set_type: false) do |*predicates, type_spec:|
-            type(schema_dsl.array[type_spec]) if type_spec
+            if type_spec && !type_spec.is_a?(Dry::Types::Type)
+              type(schema_dsl.array[type_spec])
+            end
 
             super(*predicates, type_spec: type_spec, **opts)
           end
