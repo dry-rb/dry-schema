@@ -17,7 +17,8 @@ module Dry
         Integer => :int?,
         NilClass => :nil?,
         String => :str?,
-        TrueClass => :true?
+        TrueClass => :true?,
+        BigDecimal => :decimal?
       }.freeze
 
       REDUCED_TYPES = {

@@ -88,7 +88,7 @@ RSpec.describe 'Macros #value' do
     end
 
     it 'infers type?(type) predicate' do
-      expect(schema.(price: nil).errors).to eql(price: ['must be BigDecimal'])
+      expect(schema.(price: nil).errors).to eql(price: ['must be a decimal'])
       expect(schema.(price: BigDecimal('19.4'))).to be_success
     end
   end

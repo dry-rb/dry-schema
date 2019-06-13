@@ -56,6 +56,10 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
     expect(inferrer[type(:bool)]).to eql([:bool?])
   end
 
+  it 'returns decimal? or str? for a sum type' do
+    expect(inferrer[type(:decimal) | type(:string)]).to eql([:decimal?, :str?])
+  end
+
   it 'returns int? for a lax constructor integer type' do
     expect(inferrer[type('params.integer').lax]).to eql([:int?])
   end
