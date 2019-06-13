@@ -8,7 +8,7 @@
 
 * `filled` macro no longer generates incorrect messages for arrays (issue #151) (@solnic)
 * `filled` macro works correctly with constructor types (@solnic)
-* `filled` works correctly with nested schemas (#149) (@solnic)
+* `filled` works correctly with nested schemas (#149) (@solnic + @timriley)
 * Custom array constructors are no longer discredited by `array` macro (@solnic)
 * `BigDecimal` type is correctly handled by predicate inference (@solnic)
 * Works with latest `dry-logic` which provides the new `respond_to?` predicate (#153) (@flash-gordon)
