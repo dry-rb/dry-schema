@@ -33,7 +33,9 @@ module Dry
 
           type(final_type)
 
-          schema_dsl[name].filter(:hash?, schema.filter_schema) if schema.filter_rules?
+          if schema.filter_rules?
+            schema_dsl[name].filter { hash?.then(schema(schema.filter_schema)) }
+          end
 
           schema
         end

@@ -1,4 +1,21 @@
 RSpec.describe 'Params / Macros / array' do
+  context 'array of hashes' do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:songs).array(:hash) do
+          required(:title).filled(:string)
+        end
+      end
+    end
+
+    it 'coerces an empty string to an array' do
+      result = schema.("songs" => "")
+
+      expect(result).to be_success
+      expect(result.to_h).to eq(songs: [])
+    end
+  end
+
   context 'when inherited' do
     subject(:schema) do
       Dry::Schema.Params(parent: parent) do
