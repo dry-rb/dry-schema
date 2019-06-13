@@ -150,7 +150,7 @@ RSpec.describe 'Predicates: Eql' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be equal to 23']
           end
         end
 
@@ -158,7 +158,7 @@ RSpec.describe 'Predicates: Eql' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be equal to 23']
           end
         end
       end
@@ -272,7 +272,7 @@ RSpec.describe 'Predicates: Eql' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be equal to 23']
           end
         end
 
@@ -280,7 +280,7 @@ RSpec.describe 'Predicates: Eql' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be equal to 23']
           end
         end
       end

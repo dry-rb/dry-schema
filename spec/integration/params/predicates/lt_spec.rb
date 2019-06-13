@@ -222,7 +222,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be less than 23']
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be less than 23']
           end
         end
 
@@ -238,7 +238,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be less than 23']
           end
         end
 
@@ -416,7 +416,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be less than 23']
           end
         end
 
@@ -424,7 +424,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be less than 23']
           end
         end
 
@@ -432,7 +432,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect(result).to be_failing ['must be filled']
+            expect(result).to be_failing ['must be filled', 'must be less than 23']
           end
         end
 

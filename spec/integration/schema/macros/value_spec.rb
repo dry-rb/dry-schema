@@ -209,7 +209,7 @@ RSpec.describe 'Macros #value' do
 
       it 'uses the schema' do
         expect(schema.(data: { num: '' }).messages).to eql(
-          data: { num: ['must be an integer', 'must be greater than 10'] }
+          data: { num: ['must be filled', 'must be greater than 10'] }
         )
       end
 
