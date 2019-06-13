@@ -1,3 +1,23 @@
+# v1.2.0 2019-06-13
+
+### Added
+
+* Ability to configure your own type container (@Morozzzko)
+
+### Fixed
+
+* `filled` macro no longer generates incorrect messages for arrays (@solnic)
+* `filled` macro works correctly with constructor types (@solnic)
+* Custom array constructors are no longer discredited by `array` macro (@solnic)
+* `BigDecimal` type is correctly handled by predicate inference (@solnic)
+
+### Changed
+
+* Fixes related to `filled` restored pre-1.1.0 behavior of `:hints` which are again included (@solnic)
+* `filled` no longer uses filter rules to handle empty strings in `Params` (@solnic)
+
+[Compare v1.1.0...v1.2.0](https://github.com/dry-rb/dry-schema/compare/v1.1.0...v1.2.0)
+
 # v1.1.0 2019-05-30
 
 ### Added
