@@ -1,3 +1,11 @@
+# to-be-released
+
+### Fixed
+
+* Type container is passed down to nested schemas (@flash-gordon)
+
+[Compare v1.2.0...master](https://github.com/dry-rb/dry-schema/compare/v1.2.0...master)
+
 # v1.2.0 2019-06-13
 
 ### Added
