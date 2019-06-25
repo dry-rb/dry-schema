@@ -100,6 +100,24 @@ RSpec.describe 'Registering custom types' do
       it 'coerces the type' do
         expect(subject[:age]).to eql('i am not that old')
       end
+
+      context 'nested schema' do
+        let(:params) { { user: { age: '  I AM NOT THAT OLD ' } } }
+
+        let(:schema_object) do
+          Dry::Schema.Params do
+            config.types = ContainerWithTypes
+
+            required(:user).hash do
+              required(:age).filled(:trimmed_string)
+            end
+          end
+        end
+
+        specify do
+          expect(subject[:user][:age]).to eql('i am not that old')
+        end
+      end
     end
   end
 end

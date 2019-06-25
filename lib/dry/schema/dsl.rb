@@ -231,7 +231,7 @@ module Dry
       #
       # @api private
       def new(options = EMPTY_HASH, &block)
-        self.class.new(options.merge(processor_type: processor_type), &block)
+        self.class.new(options.merge(processor_type: processor_type, config: config), &block)
       end
 
       # Set a type for the given key name
