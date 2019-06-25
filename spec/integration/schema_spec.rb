@@ -150,4 +150,80 @@ RSpec.describe Dry::Schema, '.define' do
       expect(result.errors[:age]).to include('must be an integer')
     end
   end
+
+  context 'with constrained type specs' do
+    context 'curried rules' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:age).value(Types::Params::Integer.constrained(gteq: 18))
+        end
+      end
+
+      it 'produces error messages' do
+        expect(schema.(age: 'oops').errors[:age]).to include('must be an integer')
+        expect(schema.(age: '17').errors[:age]).to include('must be greater than or equal to 18')
+      end
+    end
+
+    context '1-arity rules' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:age).value(Types::Params::Integer.constrained([:odd]))
+        end
+      end
+
+      it 'produces error messages' do
+        expect(schema.(age: 'oops').errors[:age]).to include('must be an integer')
+        expect(schema.(age: '18').errors[:age]).to include('must be odd')
+      end
+    end
+
+    context 'sum type' do
+      let(:type) do
+        Types::Params::Integer.constrained(gteq: 18) | Types::String.constrained(eql: 'old enough')
+      end
+
+      subject(:schema) do
+        type = self.type
+        Dry::Schema.define { required(:age).value(type) }
+      end
+
+      it 'accepts valid input' do
+        expect(schema.(age: '19')).to be_success
+        expect(schema.(age: 'old enough')).to be_success
+      end
+
+      it 'produces error messages' do
+        expect(schema.(age: 'young').errors[:age])
+          .to include('must be an integer or must be equal to old enough')
+
+        expect(schema.(age: '17').errors[:age])
+          .to include('must be an integer or must be equal to old enough')
+      end
+    end
+
+    context 'constrained sum type' do
+      let(:type) do
+        int = Types::Integer
+        (int.constrained([:odd]) | int.constrained(eql: 0)).constrained(gteq: 18)
+      end
+
+      subject(:schema) do
+        type = self.type
+        Dry::Schema.define { required(:age).value(type) }
+      end
+
+      it 'accepts valid input' do
+        expect(schema.(age: 19)).to be_success
+      end
+
+      it 'produces error messages' do
+        expect(schema.(age: 17).errors[:age])
+          .to include('must be greater than or equal to 18')
+
+        expect(schema.(age: 16).errors[:age])
+          .to include('must be odd or must be equal to 0')
+      end
+    end
+  end
 end

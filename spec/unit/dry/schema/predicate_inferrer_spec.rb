@@ -57,7 +57,7 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
   end
 
   it 'returns decimal? or str? for a sum type' do
-    expect(inferrer[type(:decimal) | type(:string)]).to eql([:decimal?, :str?])
+    expect(inferrer[type(:decimal) | type(:string)]).to eql([[[:decimal?], [:str?]]])
   end
 
   it 'returns int? for a lax constructor integer type' do
@@ -69,16 +69,45 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
   end
 
   it 'returns int? for integer enum type' do
-    expect(inferrer[type(:integer).enum(1, 2)]).to eql([:int?])
+    expect(inferrer[type(:integer).enum(1, 2)]).to eql([:int?, included_in?: [1, 2]])
   end
 
   it 'returns type?(type) for arbitrary types' do
     custom_type = Dry::Types::Nominal.new(double(:some_type, name: 'ObjectID'))
 
-    expect(inferrer[custom_type]).to eql(type?: custom_type.primitive)
+    expect(inferrer[custom_type]).to eql([type?: custom_type.primitive])
   end
 
   it 'returns nothing for any' do
     expect(inferrer[type(:any)]).to eql([])
+  end
+
+  context 'constrained types' do
+    it 'extracts predicates from contrained types' do
+      expect(inferrer[type(:integer).constrained(gteq: 18)]).to eql([:int?, gteq?: 18])
+    end
+
+    it 'works with rules without additional parameters' do
+      expect(inferrer[type(:integer).constrained([:odd])]).to eql([:int?, :odd?])
+    end
+
+    it 'can extract many rules' do
+      expect(inferrer[type(:integer).constrained(gteq: 18, lt: 100)])
+        .to eql([:int?, gteq?: 18, lt?: 100])
+    end
+
+    it 'infers chained types' do
+      expect(inferrer[type(:integer).constrained([:odd]).constrained(gteq: 18, lt: 100)])
+        .to eql([:int?, :odd?, gteq?: 18, lt?: 100])
+
+      expect(inferrer[type(:integer).constrained(gteq: 18, lt: 100).constrained([:odd])])
+        .to eql([:int?, :odd?, gteq?: 18, lt?: 100])
+    end
+
+    it 'works with complex case' do
+      type = type(:integer).constrained(gteq: 18) | type(:string).constrained(min_size: 3)
+
+      expect(inferrer[type]).to eql([[[:int?, gteq?: 18], [:str?, min_size?: 3]]])
+    end
   end
 end
