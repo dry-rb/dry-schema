@@ -109,5 +109,15 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
 
       expect(inferrer[type]).to eql([[[:int?, gteq?: 18], [:str?, min_size?: 3]]])
     end
+
+    describe 'unknown predicate' do
+      subject(:inferrer) do
+        Dry::Schema::PredicateInferrer.new(int?: true)
+      end
+
+      it 'ignores unknown predicates' do
+        expect(inferrer[type(:integer).constrained(gteq: 99999)]).to eql([:int?])
+      end
+    end
   end
 end
