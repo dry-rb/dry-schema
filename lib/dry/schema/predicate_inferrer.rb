@@ -22,8 +22,14 @@ module Dry
       }.freeze
 
       REDUCED_TYPES = {
-        %i[true? false?] => :bool?
+        [[[:true?], [:false?]]] => %i[bool?]
       }.freeze
+
+      HASH = %i[hash?].freeze
+
+      ARRAY = %i[array?].freeze
+
+      NIL = %i[nil?].freeze
 
       # Compiler reduces type AST into a list of predicates
       #
@@ -40,7 +46,7 @@ module Dry
 
         # @api private
         def infer_predicate(type)
-          TYPE_TO_PREDICATE.fetch(type) { :"#{type.name.split('::').last.downcase}?" }
+          [TYPE_TO_PREDICATE.fetch(type) { :"#{type.name.split('::').last.downcase}?" }]
         end
 
         # @api private
@@ -54,21 +60,21 @@ module Dry
           type = node[0]
           predicate = infer_predicate(type)
 
-          if registry.key?(predicate)
+          if registry.key?(predicate[0])
             predicate
           else
-            { type?: type }
+            [type?: type]
           end
         end
 
         # @api private
         def visit_hash(_)
-          :hash?
+          HASH
         end
 
         # @api private
         def visit_array(_)
-          :array?
+          ARRAY
         end
 
         # @api private
@@ -90,26 +96,73 @@ module Dry
 
         # @api private
         def visit_sum(node)
-          left, right = node
+          left_node, right_node, = node
+          left = visit(left_node)
+          right = visit(right_node)
 
-          predicates = [visit(left), visit(right)]
-
-          if predicates.first == :nil?
-            predicates[1..predicates.size - 1]
+          if left.eql?(NIL)
+            right
           else
-            predicates
+            [[left, right]]
           end
         end
 
         # @api private
         def visit_constrained(node)
-          other, * = node
-          visit(other)
+          other, rules = node
+          predicates = visit(rules)
+
+          if predicates.empty?
+            visit(other)
+          else
+            [*visit(other), *merge_predicates(predicates)]
+          end
         end
 
         # @api private
         def visit_any(_)
-          nil
+          EMPTY_ARRAY
+        end
+
+        # @api private
+        def visit_and(node)
+          left, right = node
+          visit(left) + visit(right)
+        end
+
+        # @api private
+        def visit_predicate(node)
+          pred, args = node
+
+          if pred.equal?(:type?)
+            EMPTY_ARRAY
+          elsif registry.key?(pred)
+            *curried, _ = args
+            values = curried.map { |_, v| v }
+
+            if values.empty?
+              [pred]
+            else
+              [pred => values[0]]
+            end
+          else
+            EMPTY_ARRAY
+          end
+        end
+
+        private
+
+        # @api private
+        def merge_predicates(nodes)
+          preds, merged = nodes.each_with_object([[], {}]) do |predicate, (ps, h)|
+            if predicate.is_a?(::Hash)
+              h.update(predicate)
+            else
+              ps << predicate
+            end
+          end
+
+          merged.empty? ? preds : [*preds, merged]
         end
       end
 
@@ -134,7 +187,7 @@ module Dry
           if predicates.is_a?(Hash)
             predicates
           else
-            Array(REDUCED_TYPES[predicates] || predicates).flatten
+            REDUCED_TYPES[predicates] || predicates
           end
         end
       end

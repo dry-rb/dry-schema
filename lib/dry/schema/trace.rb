@@ -29,33 +29,28 @@ module Dry
       end
 
       # @api private
-      def evaluate(*predicates, **opts)
-        pred_opts = opts.dup
-        pred_opts.delete(:type_spec)
-
-        predicates.each do |predicate|
-          if predicate.respond_to?(:call)
-            append(predicate)
-          elsif predicate.is_a?(::Hash)
-            evaluate_hash_predicates(predicate)
-          elsif predicate.is_a?(::Array)
-            append(predicate.map { |pred| __send__(pred) }.reduce(:|))
-          else
-            append(__send__(predicate))
-          end
+      def evaluate(*args, type_spec: ::Dry::Schema::Undefined, **opts)
+        predicates = opts.empty? ? args : args.push(opts)
+        evaluate_predicates(predicates).each do |rule|
+          append(rule)
         end
-
-        evaluate_hash_predicates(pred_opts)
 
         self
       end
 
       # @api private
-      def evaluate_hash_predicates(predicates)
-        predicates.each do |predicate, *args|
-          append(__send__(predicate, *args))
+      def evaluate_predicates(predicates)
+        predicates.flat_map do |predicate|
+          if predicate.respond_to?(:call)
+            predicate
+          elsif predicate.is_a?(::Array)
+            predicate.map { |pred| evaluate_predicates(pred).reduce(:&) }.reduce(:|)
+          elsif predicate.is_a?(::Hash)
+            predicate.map { |pred, *args| __send__(pred, *args) }
+          else
+            __send__(predicate)
+          end
         end
-        self
       end
 
       # @api private
