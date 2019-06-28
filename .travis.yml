@@ -15,6 +15,10 @@ rvm:
 env:
   global:
     - COVERAGE=true
+    - DRY_LOGIC_FROM_MASTER=false
+    - DRY_LOGIC_FROM_MASTER=true
+    - DRY_TYPES_FROM_MASTER=false
+    - DRY_TYPES_FROM_MASTER=true
 matrix:
   allow_failures:
     - rvm: jruby-9.2.7.0

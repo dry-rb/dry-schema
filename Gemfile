@@ -2,9 +2,12 @@
 
 source 'https://rubygems.org'
 
-git_source(:github) { |repo_name| "https://github.com/dry-rb/#{repo_name}" }
+git_source(:github) do |repo_name| "https://github.com/dry-rb/#{repo_name}" end
 
 gemspec
+
+gem 'dry-logic', github: 'dry-logic', branch: 'master' if ENV['DRY_LOGIC_FROM_MASTER'].eql?('true')
+gem 'dry-types', github: 'dry-types', branch: 'master' if ENV['DRY_TYPES_FROM_MASTER'].eql?('true')
 
 group :test do
   gem 'dry-monads', require: false
