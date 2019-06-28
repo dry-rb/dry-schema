@@ -15,6 +15,9 @@ rvm:
 env:
   global:
     - COVERAGE=true
+matrix:
+  allow_failures:
+    - rvm: jruby-9.2.7.0
 notifications:
   email: false
   webhooks:
