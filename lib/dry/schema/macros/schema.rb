@@ -11,10 +11,10 @@ module Dry
       class Schema < Value
         # @api private
         def call(*args, &block)
-          super(*args) unless args.empty?
+          super(*args, &nil) unless args.empty?
 
           if block
-            schema = define(&block)
+            schema = define(*args, &block)
             trace << schema.to_rule
           end
 
@@ -24,11 +24,17 @@ module Dry
         private
 
         # @api private
-        def define(&block)
+        def define(*args, &block)
           definition = schema_dsl.new(&block)
           schema = definition.call
-
-          type_schema = array? ? parent_type.of(definition.type_schema) : definition.type_schema
+          type_schema =
+            if array?
+              parent_type.of(definition.type_schema)
+            elsif redefined_schema?(args)
+              parent_type.schema(definition.types)
+            else
+              definition.type_schema
+            end
           final_type = optional? ? type_schema.optional : type_schema
 
           type(final_type)
@@ -53,6 +59,16 @@ module Dry
         # @api private
         def array?
           parent_type.respond_to?(:of)
+        end
+
+        # @api private
+        def schema?
+          parent_type.respond_to?(:schema)
+        end
+
+        # @api private
+        def redefined_schema?(args)
+          schema? && args.first.is_a?(Processor)
         end
       end
     end
