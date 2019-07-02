@@ -1,8 +1,8 @@
-# to-be-released
+# 1.3.0 2019-07-03
 
 ### Added
 
-- Automatic predicate inferring for constrained types! (flash-gordon)
+- Automatic predicate inferring for constrained types! (@flash-gordon)
 
   ```ruby
   Types::Name = Types::String.constrained(min_size: 1)
@@ -14,11 +14,13 @@
   schema.(name: '').errors.to_h # => { name: ["size cannot be less than 1"] }
   ```
 
+- Support for redefining re-used schemas (issue #43) (@skryukov)
+
 ### Fixed
 
 - Type container is passed down to nested schemas (@flash-gordon)
 
-[Compare v1.2.0...master](https://github.com/dry-rb/dry-schema/compare/v1.2.0...master)
+[Compare v1.2.0...v1.3.0](https://github.com/dry-rb/dry-schema/compare/v1.2.0...v1.3.0)
 
 # v1.2.0 2019-06-13
 
