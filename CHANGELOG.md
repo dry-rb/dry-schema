@@ -1,3 +1,11 @@
+# 1.3.1 2019-07-08
+
+### Fixed
+
+* `Result#error?` works correctly with nested hashes and arrays (@solnic)
+
+[Compare v1.3.0...v1.3.1](https://github.com/dry-rb/dry-schema/compare/v1.3.0...v1.3.1)
+
 # 1.3.0 2019-07-06
 
 ### Added
