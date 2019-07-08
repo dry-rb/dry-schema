@@ -61,8 +61,10 @@ RSpec.describe Dry::Schema::Result, '#error?' do
       Dry::Schema.Params do
         required(:user).hash do
           required(:address).hash do
-            required(:street).filled
+            required(:street).filled(:string)
+            optional(:zipcode).filled(:string)
           end
+          optional(:phone).filled(:string)
         end
         optional(:address).filled(:string)
       end
@@ -93,6 +95,30 @@ RSpec.describe Dry::Schema::Result, '#error?' do
 
       it 'returns false for dot notation spec' do
         expect(result.error?('user.address.street')).to be(false)
+      end
+    end
+
+    context 'when there are errors under keys from the same branch' do
+      let(:input) do
+        { user: { address: { street: '' }, phone: '' } }
+      end
+
+      it 'returns true for a hash spec' do
+        expect(result.error?(user: { address: :street })).to be(true)
+        expect(result.error?(user: :phone)).to be(true)
+      end
+
+      it 'returns true for dot notation spec' do
+        expect(result.error?('user.address.street')).to be(true)
+        expect(result.error?('user.phone')).to be(true)
+      end
+
+      it 'returns false for a hash spec on a valid key' do
+        expect(result.error?(user: :zipcode)).to be(false)
+      end
+
+      it 'returns false for dot notation spec on a valid key' do
+        expect(result.error?('user.address.zipcode')).to be(false)
       end
     end
 

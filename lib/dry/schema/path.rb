@@ -65,8 +65,10 @@ module Dry
       # @api private
       def include?(other)
         return false unless same_root?(other)
-        return false if index? && other.index? && !last.equal?(other.last)
-        self >= other
+        return last.equal?(other.last) if index? && other.index?
+        return self.class.new([*to_a[0..-2]]).include?(other) if index?
+
+        self >= other && !other.key_matches(self).include?(nil)
       end
 
       # @api private
@@ -75,12 +77,14 @@ module Dry
 
         return 0 if keys.eql?(other.keys)
 
-        res =
-          map { |key| (idx = other.index(key)) && keys[idx].equal?(key) }
-            .compact
-            .reject { |value| value.equal?(false) }
+        res = key_matches(other).compact.reject { |value| value.equal?(false) }
 
         res.size < count ? 1 : -1
+      end
+
+      # @api private
+      def key_matches(other)
+        map { |key| (idx = other.index(key)) && keys[idx].equal?(key) }
       end
 
       # @api private
