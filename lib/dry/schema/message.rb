@@ -60,7 +60,7 @@ module Dry
       #
       # If a string is passed, it will be compared with the text
       #
-      # @param [Message,String]
+      # @param other [Message,String]
       #
       # @return [Boolean]
       #
