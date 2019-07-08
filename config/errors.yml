@@ -73,7 +73,11 @@ en:
 
       max_size?: "size cannot be greater than %{num}"
 
+      max_bytesize?: "bytesize cannot be greater than %{num}"
+
       min_size?: "size cannot be less than %{num}"
+
+      min_bytesize?: "bytesize cannot be less than %{num}"
 
       nil?: "cannot be defined"
 
