@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Predicates: Size' do
+RSpec.describe 'Predicates: Bytesize' do
   context 'Range' do
     context 'with required' do
       subject(:schema) do
         Dry::Schema.Params do
-          required(:foo) { size?(2..3) }
+          required(:foo) { bytesize?(2..3) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { 'foo' => %w(1 2 3) } }
+        let(:input) { { 'foo' => 'abc' } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -21,7 +21,7 @@ RSpec.describe 'Predicates: Size' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
+          expect(result).to be_failing ['is missing', 'must be within 2 - 3 bytes long']
         end
       end
 
@@ -38,15 +38,15 @@ RSpec.describe 'Predicates: Size' do
 
         #see: https://github.com/dry-rb/dry-validation/issues/121
         it 'is not successful' do
-          expect(result).to be_failing ['length must be within 2 - 3']
+          expect(result).to be_failing ['must be within 2 - 3 bytes long']
         end
       end
 
       context 'with invalid input' do
-        let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+        let(:input) { { 'foo' => 'asdf' } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be within 2 - 3']
+          expect(result).to be_failing ['must be within 2 - 3 bytes long']
         end
       end
     end
@@ -54,12 +54,12 @@ RSpec.describe 'Predicates: Size' do
     context 'with optional' do
       subject(:schema) do
         Dry::Schema.Params do
-          optional(:foo) { size?(2..3) }
+          optional(:foo) { bytesize?(2..3) }
         end
       end
 
       context 'with valid input' do
-        let(:input) { { 'foo' => %w(1 2 3) } }
+        let(:input) { { 'foo' => 'abc' } }
 
         it 'is successful' do
           expect(result).to be_successful
@@ -87,15 +87,15 @@ RSpec.describe 'Predicates: Size' do
 
         #see: https://github.com/dry-rb/dry-validation/issues/121
         it 'is not successful' do
-          expect(result).to be_failing ['length must be within 2 - 3']
+          expect(result).to be_failing ['must be within 2 - 3 bytes long']
         end
       end
 
       context 'with invalid input' do
-        let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+        let(:input) { { 'foo' => 'asdf' } }
 
         it 'is not successful' do
-          expect(result).to be_failing ['size must be within 2 - 3']
+          expect(result).to be_failing ['must be within 2 - 3 bytes long']
         end
       end
     end
@@ -105,12 +105,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).value(size?: 2..3)
+              required(:foo).value(bytesize?: 2..3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'abc' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -121,7 +121,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
+              expect(result).to be_failing ['is missing', 'must be within 2 - 3 bytes long']
             end
           end
 
@@ -137,15 +137,15 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['length must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+            let(:input) { { 'foo' => 'asdf' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
         end
@@ -153,12 +153,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).filled(size?: 2..3)
+              required(:foo).filled(bytesize?: 2..3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'abc' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -169,7 +169,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'size must be within 2 - 3']
+              expect(result).to be_failing ['is missing', 'must be within 2 - 3 bytes long']
             end
           end
 
@@ -177,7 +177,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be within 2 - 3']
+              expect(result).to be_failing ['must be filled', 'must be within 2 - 3 bytes long']
             end
           end
 
@@ -185,15 +185,15 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be within 2 - 3']
+              expect(result).to be_failing ['must be filled', 'must be within 2 - 3 bytes long']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+            let(:input) { { 'foo' => 'asdf' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
         end
@@ -201,7 +201,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).maybe(:string, size?: 2..3)
+              required(:foo).maybe(:string, bytesize?: 2..3)
             end
           end
 
@@ -217,7 +217,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect(result).to be_failing ['is missing', 'must be a string', 'size must be within 2 - 3']
+              expect(result).to be_failing ['is missing', 'must be a string', 'must be within 2 - 3 bytes long']
             end
           end
 
@@ -238,10 +238,10 @@ RSpec.describe 'Predicates: Size' do
           end
 
           context 'with invalid input' do
-            let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+            let(:input) { { 'foo' => 'asdf' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be a string', 'size must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
         end
@@ -251,12 +251,12 @@ RSpec.describe 'Predicates: Size' do
         context 'with value' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo).value(size?: 2..3)
+              optional(:foo).value(bytesize?: 2..3)
             end
           end
 
           context 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => 'abc' } }
 
             it 'is successful' do
               expect(result).to be_successful
@@ -284,15 +284,15 @@ RSpec.describe 'Predicates: Size' do
 
             #see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
-              expect(result).to be_failing ['length must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+            let(:input) { { 'foo' => 'asdf' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['size must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
         end
@@ -300,7 +300,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with filled' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo).filled(:string, size?: 2..3)
+              optional(:foo).filled(:string, bytesize?: 2..3)
             end
           end
 
@@ -324,7 +324,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'size must be within 2 - 3']
+              expect(result).to be_failing ['must be filled', 'must be within 2 - 3 bytes long']
             end
           end
 
@@ -332,15 +332,15 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be filled', 'length must be within 2 - 3']
+              expect(result).to be_failing ['must be filled', 'must be within 2 - 3 bytes long']
             end
           end
 
           context 'with invalid input' do
-            let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+            let(:input) { { 'foo' => 'asdf' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['must be a string', 'size must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
         end
@@ -348,7 +348,7 @@ RSpec.describe 'Predicates: Size' do
         context 'with maybe' do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo).maybe(:string, size?: 2..3)
+              optional(:foo).maybe(:string, bytesize?: 2..3)
             end
           end
 
@@ -388,7 +388,7 @@ RSpec.describe 'Predicates: Size' do
             let(:input) { { 'foo' => 'barbar' } }
 
             it 'is not successful' do
-              expect(result).to be_failing ['length must be within 2 - 3']
+              expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
           end
         end
