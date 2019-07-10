@@ -7,3 +7,7 @@ end
 Dry::Schema.register_extension(:hints) do
   require 'dry/schema/extensions/hints'
 end
+
+Dry::Schema.register_extension(:open_api) do
+  require 'dry/schema/extensions/open_api'
+end
