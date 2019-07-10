@@ -28,6 +28,10 @@ RSpec.describe Dry::Schema::PredicateInferrer, '#[]' do
     expect(inferrer[type(:string)]).to eql([:str?])
   end
 
+  it 'returns str? for a string nominal type' do
+    expect(inferrer[type('nominal.string')]).to eql([:str?])
+  end
+
   it 'returns int? for a integer type' do
     expect(inferrer[type(:integer)]).to eql([:int?])
   end
