@@ -24,7 +24,7 @@ RSpec.describe Dry::Schema::Result do
 
         expect(monad).to be_a Dry::Monads::Result
         expect(monad).to be_success
-        expect(monad.value!).to be(result)
+        expect(monad.value!).to eq(result.output)
       end
     end
   end
@@ -33,12 +33,12 @@ RSpec.describe Dry::Schema::Result do
     let(:input) { { name: '' } }
 
     describe '#to_monad' do
-      it 'wraps Reuslt with Failure constructor' do
+      it 'wraps Result with Failure constructor' do
         monad = result.to_monad
 
         expect(monad).to be_a Dry::Monads::Result
         expect(monad).to be_failure
-        expect(monad.failure).to be(result)
+        expect(monad.failure).to eq(result.errors.to_h)
       end
     end
   end
