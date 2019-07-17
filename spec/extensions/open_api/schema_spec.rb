@@ -7,18 +7,39 @@ RSpec.describe Dry::Schema::JSON, '#to_open_api' do
     Dry::Schema.JSON do
       required(:email).filled(:string)
       required(:age).filled(:integer)
+      required(:address).hash do
+        required(:street).filled(:string)
+        required(:zipcode).filled(:string)
+        required(:city).filled(:string)
+      end
     end
   end
 
   let(:open_api_schema) do
-    { properties: {
+    {
+      properties: {
         email: {
           type: "string"
         },
         age: {
           type: "integer"
+        },
+        address: {
+          type: "object",
+          properties: {
+            street: {
+              type: "string"
+            },
+            zipcode: {
+              type: "string"
+            },
+            city: {
+              type: "string"
+            }
+          }
         }
-      } }
+      }
+    }
   end
 
   it 'returns an Open API properties hash' do

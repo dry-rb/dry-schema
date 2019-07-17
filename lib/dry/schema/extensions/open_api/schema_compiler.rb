@@ -11,7 +11,7 @@ module Dry
         }
 
         def initialize
-          @properties = {}
+          @properties = EMPTY_HASH.dup
         end
 
         def to_h
@@ -28,7 +28,13 @@ module Dry
         end
 
         def visit_set(node, opts = EMPTY_HASH)
-          node.map { |child| visit(child, opts) }
+          target = (prop = opts[:property]) ? self.class.new : self
+
+          node.map { |child| target.visit(child, opts) }
+
+          if prop
+            properties.update(prop => { type: "object", **target.to_h })
+          end
         end
 
         def visit_and(node, opts = EMPTY_HASH)
