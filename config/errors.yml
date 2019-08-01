@@ -73,7 +73,11 @@ en:
 
       max_size?: "size cannot be greater than %{num}"
 
+      max_bytesize?: "bytesize cannot be greater than %{num}"
+
       min_size?: "size cannot be less than %{num}"
+
+      min_bytesize?: "bytesize cannot be less than %{num}"
 
       nil?: "cannot be defined"
 
@@ -91,6 +95,11 @@ en:
             arg:
               default: "length must be %{size}"
               range: "length must be within %{size_left} - %{size_right}"
+
+      bytesize?:
+        arg:
+          default: "must be %{size} bytes long"
+          range: "must be within %{size_left} - %{size_right} bytes long"
 
       not:
         empty?: "cannot be empty"
