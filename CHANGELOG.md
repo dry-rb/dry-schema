@@ -1,3 +1,11 @@
+# 1.3.2 2019-08-01
+
+### Added
+
+* Support for new predicates: `bytesize?`, `min_bytesize?` and `max_bytesize?` (@bmalinconico)
+
+[Compare v1.3.1...v1.3.2](https://github.com/dry-rb/dry-schema/compare/v1.3.1...v1.3.2)
+
 # 1.3.1 2019-07-08
 
 ### Fixed
