@@ -10,12 +10,6 @@ module Dry
       #
       # @api private
       class Filled < Value
-        # @!attribute [r] primitive_inferrer
-        #   PrimitiveInferrer used to get a list of primitive classes from configured type
-        #   @return [PrimitiveInferrer]
-        #   @api private
-        option :primitive_inferrer, default: proc { PrimitiveInferrer.new }
-
         # @api private
         def call(*predicates, **opts, &block)
           ensure_valid_predicates(predicates)
