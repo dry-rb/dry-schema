@@ -219,18 +219,41 @@ RSpec.describe Dry::Schema, 'types specs' do
       end
     end
 
-    subject(:schema) do
-      trimmed_string = self.trimmed_string
-
-      Dry::Schema.define do
-        required(:name).maybe(trimmed_string)
+    shared_examples_for 'constructor type' do
+      it 'applies constructor to input' do
+        expect(schema.(name: ' John ').to_h).to eql(name: 'John')
+        expect(schema.(name: ' ').to_h).to eql(name: nil)
+        expect(schema.(name: nil).to_h).to eql(name: nil)
       end
     end
 
-    it 'applies constructor to input' do
-      expect(schema.(name: ' John ').to_h).to eql(name: 'John')
-      expect(schema.(name: ' ').to_h).to eql(name: nil)
-      expect(schema.(name: nil).to_h).to eql(name: nil)
+    context 'with type passed as object' do
+      include_examples 'constructor type' do
+        subject(:schema) do
+          trimmed_string = self.trimmed_string
+
+          Dry::Schema.define do
+            required(:name).maybe(trimmed_string)
+          end
+        end
+      end
+    end
+
+    context 'with type referenced by key' do
+      include_examples 'constructor type' do
+        subject(:schema) do
+          trimmed_string = self.trimmed_string
+
+          types = Dry::Schema::TypeContainer.new
+          types.register('trimmed_string', trimmed_string)
+
+          Dry::Schema.define do
+            config.types = types
+
+            required(:name).maybe(:trimmed_string)
+          end
+        end
+      end
     end
   end
 end

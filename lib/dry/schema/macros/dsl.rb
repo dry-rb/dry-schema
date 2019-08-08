@@ -198,9 +198,7 @@ module Dry
           predicates = Array(type_spec ? args[1..-1] : args)
 
           if type_spec
-            resolved_type = schema_dsl.resolve_type(
-              nullable ? optional(type_spec) : type_spec
-            )
+            resolved_type = resolve_type(type_spec, nullable)
 
             type(resolved_type) if set_type
 
@@ -215,11 +213,13 @@ module Dry
         end
 
         # @api private
-        def optional(type_spec)
-          if type_spec.is_a?(::Array) || type_spec.is_a?(::Dry::Types::Type) && type_spec.optional?
-            type_spec
+        def resolve_type(type_spec, nullable)
+          resolved = schema_dsl.resolve_type(type_spec)
+
+          if type_spec.is_a?(::Array) || !nullable || resolved.optional?
+            resolved
           else
-            [:nil, type_spec]
+            schema_dsl.resolve_type([:nil, resolved])
           end
         end
       end
