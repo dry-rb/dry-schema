@@ -28,6 +28,12 @@ module Dry
         #   @api private
         option :predicate_inferrer, default: proc { PredicateInferrer.new(compiler.predicates) }
 
+        # @!attribute [r] primitive_inferrer
+        #   PrimitiveInferrer used to get a list of primitive classes from configured type
+        #   @return [PrimitiveInferrer]
+        #   @api private
+        option :primitive_inferrer, default: proc { PrimitiveInferrer.new }
+
         # @overload value(*predicates, **predicate_opts)
         #   Set predicates without and with arguments
         #

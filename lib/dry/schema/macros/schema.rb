@@ -28,8 +28,8 @@ module Dry
           definition = schema_dsl.new(&block)
           schema = definition.call
           type_schema =
-            if array?
-              parent_type.of(definition.type_schema)
+            if array?(parent_type)
+              build_array_type(parent_type, definition.type_schema)
             elsif redefined_schema?(args)
               parent_type.schema(definition.types)
             else
@@ -54,11 +54,6 @@ module Dry
         # @api private
         def optional?
           parent_type.optional?
-        end
-
-        # @api private
-        def array?
-          parent_type.respond_to?(:of)
         end
 
         # @api private

@@ -274,4 +274,26 @@ RSpec.describe 'Macros #array' do
       expect(schema.(foo: [{ bar: '123' }])).to be_success
     end
   end
+
+  context 'primitive array type with nested schema' do
+    it 'is not allowed for chained macros' do
+      nominal_array = Dry::Types::Nominal.new(Array)
+      expect {
+        Dry::Schema.Params do
+          required(:values).value(nominal_array).each { hash {  } }
+        end
+      }.to raise_error(ArgumentError, /Types::Constructor/)
+    end
+
+    it 'is not allowed for schemas in parameters' do
+      nominal_array = Dry::Types::Nominal.new(Array)
+      schema = Dry::Schema.Params { required(:bar).value(:integer) }
+
+      expect {
+        Dry::Schema.Params do
+          required(:values).value(nominal_array, schema)
+        end
+      }.to raise_error(ArgumentError, /Types::Constructor/)
+    end
+  end
 end

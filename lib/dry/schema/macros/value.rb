@@ -17,8 +17,8 @@ module Dry
             current_type = schema_dsl.types[name]
 
             updated_type =
-              if current_type.respond_to?(:of)
-                current_type.of(schema.type_schema)
+              if array?(current_type)
+                build_array_type(current_type, schema.type_schema)
               else
                 schema.type_schema
               end
@@ -37,6 +37,25 @@ module Dry
           each(type_spec.type.member) if type_spec.respond_to?(:member)
 
           self
+        end
+
+        # @api private
+        def array?(type)
+          primitive_inferrer[type].eql?([::Array])
+        end
+
+        # @api private
+        def build_array_type(array_type, member)
+          if array_type.respond_to?(:of)
+            array_type.of(member)
+          else
+            raise ArgumentError, <<~ERROR.split("\n").join(' ')
+              Cannot define schema for a nominal array type.
+              Array types must be instances of Dry::Types::Array,
+              usually constructed with Types::Constructor(Array) { ... } or
+              Dry::Types['array'].constructor { ... }
+            ERROR
+          end
         end
 
         # @api private

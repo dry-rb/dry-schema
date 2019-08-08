@@ -27,6 +27,10 @@ RSpec.describe Dry::Schema::PrimitiveInferrer, '#[]' do
     expect(inferrer[type(:array)]).to eql([Array])
   end
 
+  it 'returns Array for a primitive array' do
+    expect(inferrer[Types.Constructor(Array)]).to eql([Array])
+  end
+
   it 'returns Hash for a string type' do
     expect(inferrer[type(:hash)]).to eql([Hash])
   end
