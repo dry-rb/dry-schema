@@ -64,6 +64,11 @@ module Dry
           base_paths = messages.rule_lookup_paths(tokens)
           base_paths.map { |key| key.gsub('dry_schema', "dry_schema.#{namespace}") } + base_paths
         end
+
+        # @api private
+        def cache_key(predicate, options)
+          messages.cache_key(predicate, options)
+        end
       end
     end
   end

@@ -79,6 +79,15 @@ module Dry
         self
       end
 
+      # @api private
+      def cache_key(predicate, options)
+        if options.key?(:locale)
+          super
+        else
+          [*super, I18n.locale]
+        end
+      end
+
       private
 
       # @api private

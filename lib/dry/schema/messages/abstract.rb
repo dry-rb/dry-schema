@@ -92,7 +92,7 @@ module Dry
         #
         # @api public
         def call(predicate, options)
-          cache.fetch_or_store([predicate, options.reject { |k,| k.equal?(:input) }]) do
+          cache.fetch_or_store(cache_key(predicate, options)) do
             text, meta = lookup(predicate, options)
             [Template[text], meta] if text
           end
@@ -165,6 +165,15 @@ module Dry
         # @api private
         def default_locale
           config.default_locale
+        end
+
+        # @api private
+        def cache_key(predicate, options)
+          if options.key?(:input)
+            [predicate, options.reject { |k,| k.equal?(:input) }]
+          else
+            [predicate, options]
+          end
         end
 
         private
