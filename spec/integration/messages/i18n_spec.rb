@@ -161,4 +161,20 @@ RSpec.describe Dry::Schema::Messages::I18n do
       end
     end
   end
+
+  describe '#cache_key' do
+    it "uses adds current locale when it's not passed or nil" do
+      expect(I18n.with_locale(:en) { messages.cache_key(:size?, {}) })
+        .to eql([:size?, {}, :en])
+      expect(I18n.with_locale(:pl) { messages.cache_key(:size?, {}) })
+        .to eql([:size?, {}, :pl])
+      expect(I18n.with_locale(:en) { messages.cache_key(:size?, locale: nil) })
+        .to eql([:size?, { locale: nil }, :en])
+    end
+
+    it "doesn't add current locale if it's passed explicitly" do
+      expect(I18n.with_locale(:en) { messages.cache_key(:size?, locale: :pl) })
+        .to eql([:size?, { locale: :pl }])
+    end
+  end
 end

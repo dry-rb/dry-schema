@@ -81,7 +81,7 @@ module Dry
 
       # @api private
       def cache_key(predicate, options)
-        if options.key?(:locale)
+        if options[:locale]
           super
         else
           [*super, I18n.locale]
