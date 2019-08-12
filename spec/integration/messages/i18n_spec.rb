@@ -150,5 +150,31 @@ RSpec.describe Dry::Schema::Messages::I18n do
         expect(template.(size_left: 1, size_right: 2)).to eql('size must be within 1 - 2')
       end
     end
+
+    context 'with dynamic locale' do
+      it 'uses current locale in cache key and returns different messages for different locales' do
+        template, = I18n.with_locale(:en) { messages[:filled?, path: :name] }
+        expect(template.()).to eql('must be filled')
+
+        template, = I18n.with_locale(:pl) { messages[:filled?, path: :name] }
+        expect(template.()).to eql('nie może być pusty')
+      end
+    end
+  end
+
+  describe '#cache_key' do
+    it "uses adds current locale when it's not passed or nil" do
+      expect(I18n.with_locale(:en) { messages.cache_key(:size?, {}) })
+        .to eql([:size?, {}, :en])
+      expect(I18n.with_locale(:pl) { messages.cache_key(:size?, {}) })
+        .to eql([:size?, {}, :pl])
+      expect(I18n.with_locale(:en) { messages.cache_key(:size?, locale: nil) })
+        .to eql([:size?, { locale: nil }, :en])
+    end
+
+    it "doesn't add current locale if it's passed explicitly" do
+      expect(I18n.with_locale(:en) { messages.cache_key(:size?, locale: :pl) })
+        .to eql([:size?, { locale: :pl }])
+    end
   end
 end
