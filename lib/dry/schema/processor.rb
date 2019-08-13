@@ -29,7 +29,7 @@ module Dry
       extend Dry::Configurable
 
       setting :key_map_type
-      setting :type_registry_namespace, :nominal
+      setting :type_registry_namespace, :strict
       setting :filter_empty_string, false
 
       option :steps, default: -> { EMPTY_ARRAY.dup }

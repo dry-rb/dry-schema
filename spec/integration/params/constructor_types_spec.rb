@@ -30,4 +30,17 @@ RSpec.describe 'Params / Constructor Types' do
       expect(result.to_h).to eql(nums: [])
     end
   end
+
+  context 'using Schema processor' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:name).maybe(Types::String.constructor(&:upcase))
+      end
+    end
+
+    it 'uses the constructor' do
+      expect(schema.(name: nil)[:name]).to be_nil
+      expect(schema.(name: 'John')[:name]).to eql('JOHN')
+    end
+  end
 end
