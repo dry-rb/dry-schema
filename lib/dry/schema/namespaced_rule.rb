@@ -29,9 +29,10 @@ module Dry
       end
 
       # @api private
-      def ast(input=Undefined)
+      def ast(input = Undefined)
         [:namespace, [namespace, rule.ast(input)]]
       end
+      alias_method :to_ast, :ast
     end
   end
 end
