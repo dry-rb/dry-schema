@@ -2,9 +2,10 @@
 
 ### Fixed
 
-* Reject attempts to build a nested schema for array types built on `Dry::Types::Nominal` (fixes #171) (@flash-gordon)
+* Reject attempts to build a nested schema for array types built on `Dry::Types::Nominal` (fixed #171) (@flash-gordon)
 * Current `I18n.locale` is now properly handled when caching message templates (@flash-gordon)
 * Default processor uses strict types by default, which fixes various cases when `maybe` is used with a constructor type (@flash-gordon)
+* Namespaced messages no longer causes a crash when used with nested schemas (fixed #176) (@solnic)
 
 [Compare v1.3.2...v1.3.3](https://github.com/dry-rb/dry-schema/compare/v1.3.2...v1.3.3)
 
