@@ -9,3 +9,5 @@ en:
         rules:
           post_body:
             filled?: "POST can't be blank"
+          comment_body:
+            filled?: "post comment must be filled"
