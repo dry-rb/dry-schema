@@ -17,7 +17,7 @@ module Dry
             current_type = schema_dsl.types[name]
 
             updated_type =
-              if array?(current_type)
+              if array_type?(current_type)
                 build_array_type(current_type, schema.type_schema)
               else
                 schema.type_schema
@@ -40,7 +40,7 @@ module Dry
         end
 
         # @api private
-        def array?(type)
+        def array_type?(type)
           primitive_inferrer[type].eql?([::Array])
         end
 

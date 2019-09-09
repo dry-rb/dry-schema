@@ -28,7 +28,7 @@ module Dry
           definition = schema_dsl.new(&block)
           schema = definition.call
           type_schema =
-            if array?(parent_type)
+            if array_type?(parent_type)
               build_array_type(parent_type, definition.type_schema)
             elsif redefined_schema?(args)
               parent_type.schema(definition.types)
