@@ -99,23 +99,27 @@ module Dry
         end
         alias_method :[], :call
 
+        # Retrieve an array of looked up paths
+        #
+        # @param [Symbol] predicate
+        # @param [Hash] options
+        #
+        # @return [String]
+        #
+        # @api public
+        def looked_up_paths(predicate, options)
+          tokens = lookup_tokens(predicate, options)
+          filled_lookup_paths(tokens)
+        end
+
         # Try to find a message for the given predicate and its options
         #
         # @api private
         #
         # rubocop:disable Metrics/AbcSize
         def lookup(predicate, options)
-          tokens = options.merge(
-            predicate: predicate,
-            root: options[:not] ? "#{root}.not" : root,
-            arg_type: config.arg_types[options[:arg_type]],
-            val_type: config.val_types[options[:val_type]],
-            message_type: options[:message_type] || :failure
-          )
-
           opts = options.reject { |k, _| config.lookup_options.include?(k) }
-
-          path = lookup_paths(tokens).detect { |key| key?(key, opts) }
+          path = lookup_paths(predicate, options).detect { |key| key?(key, opts) }
 
           return unless path
 
@@ -130,7 +134,13 @@ module Dry
         # rubocop:enable Metrics/AbcSize
 
         # @api private
-        def lookup_paths(tokens)
+        def lookup_paths(predicate, options)
+          tokens = lookup_tokens(predicate, options)
+          filled_lookup_paths(tokens)
+        end
+
+        # @api private
+        def filled_lookup_paths(tokens)
           config.lookup_paths.map { |path| path % tokens }
         end
 
@@ -177,6 +187,17 @@ module Dry
         end
 
         private
+
+        # @api private
+        def lookup_tokens(predicate, options)
+          options.merge(
+            predicate: predicate,
+            root: options[:not] ? "#{root}.not" : root,
+            arg_type: config.arg_types[options[:arg_type]],
+            val_type: config.val_types[options[:val_type]],
+            message_type: options[:message_type] || :failure
+          )
+        end
 
         # @api private
         def custom_top_namespace?(path)
