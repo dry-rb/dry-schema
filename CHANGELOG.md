@@ -1,3 +1,11 @@
+# 1.3.4 2019-09-11
+
+### Fixed
+
+* Fixed regression where using `array?` predicate within a block would crach (issue #186) (@skryukov)
+
+[Compare v1.3.3...v1.3.4](https://github.com/dry-rb/dry-schema/compare/v1.3.3...v1.3.4)
+
 # 1.3.3 2019-08-14
 
 ### Fixed
