@@ -144,4 +144,20 @@ RSpec.describe 'Predicates: Array' do
       end
     end
   end
+
+  context 'with block-based syntax' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:foo) { array? { each(:int?) } }
+      end
+    end
+
+    context 'with valid input' do
+      let(:input) { { foo: [3] } }
+
+      it 'is successful' do
+        expect(result).to be_successful
+      end
+    end
+  end
 end
