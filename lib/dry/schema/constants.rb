@@ -30,7 +30,7 @@ module Dry
         *rest, rule = path
         super(<<~STR)
           Message template for #{rule.inspect} under #{rest.join(DOT).inspect} was not found. Searched in:
-          #{paths.map { |path| "\"#{path}\"" }.join("\n")}
+          #{paths.map { |string| "\"#{string}\"" }.join("\n")}
         STR
       end
     end
