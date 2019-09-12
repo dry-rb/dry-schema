@@ -1,6 +1,6 @@
 [gem]: https://rubygems.org/gems/dry-schema
 [travis]: https://travis-ci.com/dry-rb/dry-schema
-[actions]: https://travis-ci.com/dry-rb/dry-schema/actions
+[actions]: https://github.com/dry-rb/dry-schema/actions
 [codeclimate]: https://codeclimate.com/github/dry-rb/dry-schema
 [chat]: https://dry-rb.zulipchat.com
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-schema
