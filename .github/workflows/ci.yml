@@ -34,6 +34,10 @@ jobs:
       image: jruby:9.2.8
     steps:
       - uses: actions/checkout@v1
+      - name: Install git
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends git
       - name: Run all tests
         env:
           DRY_LOGIC_FROM_MASTER: ${{matrix.dry_logic_from_master}}
