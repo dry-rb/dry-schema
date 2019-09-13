@@ -59,9 +59,6 @@ module Dry
       # @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
       option :processor_type, default: -> { Processor }
 
-      # @return [Hash] Steps for the processor
-      option :steps, default: -> { ProcessorSteps.new }
-
       # @return [Array] An array with macros defined within the DSL
       option :macros, default: -> { EMPTY_ARRAY.dup }
 
@@ -73,6 +70,9 @@ module Dry
 
       # @return [Config] Configuration object exposed via `#configure` method
       option :config, optional: true, default: proc { parent ? parent.config.dup : Config.new }
+
+      # @return [ProcessorSteps] Steps for the processor
+      option :steps, default: proc { parent ? parent.steps.dup : ProcessorSteps.new }
 
       # Build a new DSL object and evaluate provided block
       #
