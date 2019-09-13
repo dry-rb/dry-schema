@@ -55,7 +55,7 @@ module Dry
         end
 
         # @api private
-        def lookup_paths(tokens)
+        def filled_lookup_paths(tokens)
           super(tokens.merge(root: "#{tokens[:root]}.#{namespace}")) + super
         end
 

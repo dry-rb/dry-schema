@@ -52,7 +52,15 @@ RSpec.describe Dry::Schema::MessageCompiler, '#visit' do
 
     it 'raises MissingMessageError' do
       expect { result }.to raise_error(Dry::Schema::MissingMessageError, <<~STR)
-        Message template for :street under "user.address" was not found
+        Message template for :street under "user.address" was not found. Searched in:
+        "en.dry_schema.errors.rules.street.oops?.arg.default"
+        "en.dry_schema.errors.rules.street.oops?"
+        "en.dry_schema.errors.oops?.failure"
+        "en.dry_schema.errors.oops?.value.street"
+        "en.dry_schema.errors.oops?.value.string.arg.default"
+        "en.dry_schema.errors.oops?.value.string"
+        "en.dry_schema.errors.oops?.arg.default"
+        "en.dry_schema.errors.oops?"
       STR
     end
   end

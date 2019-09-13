@@ -68,6 +68,18 @@ module Dry
         @t = proc { |key, locale: default_locale| get("%<locale>s.#{key}", locale: locale) }
       end
 
+      # Get an array of looked up paths
+      #
+      # @param [Symbol] predicate
+      # @param [Hash] options
+      #
+      # @return [String]
+      #
+      # @api public
+      def looked_up_paths(predicate, options)
+        super.map { |path| path % { locale: options[:locale] || default_locale } }
+      end
+
       # Get a message for the given key and its options
       #
       # @param [Symbol] key

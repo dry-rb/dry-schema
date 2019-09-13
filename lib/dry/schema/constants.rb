@@ -26,10 +26,11 @@ module Dry
     # An error raised when a localized message cannot be found
     MissingMessageError = Class.new(StandardError) do
       # @api private
-      def initialize(path)
+      def initialize(path, paths = [])
         *rest, rule = path
         super(<<~STR)
-          Message template for #{rule.inspect} under #{rest.join(DOT).inspect} was not found
+          Message template for #{rule.inspect} under #{rest.join(DOT).inspect} was not found. Searched in:
+          #{paths.map { |string| "\"#{string}\"" }.join("\n")}
         STR
       end
     end
