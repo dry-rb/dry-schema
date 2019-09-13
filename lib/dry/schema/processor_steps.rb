@@ -1,0 +1,98 @@
+# frozen_string_literal: true
+
+require 'dry/initializer'
+
+module Dry
+  module Schema
+    # Steps for the Dry::Schema::Processor
+    #
+    # There are 4 main steps:
+    #
+    #   1. `key_coercer` – Prepare input hash using a key map
+    #   2. `filter_schema` – Apply pre-coercion filtering rules (optional step, used only when `filter` was used)
+    #   3. `value_coercer` – Apply value coercions based on type specifications
+    #   4. `rule_applier` – Apply rules
+    #
+    # @see Processor
+    #
+    # @api public
+    class ProcessorSteps
+      extend Dry::Initializer
+
+      STEPS_IN_ORDER = %i[key_coercer filter_schema value_coercer rule_applier].freeze
+
+      option :steps, default: -> { EMPTY_HASH.dup }
+      option :before_steps, default: -> { EMPTY_HASH.dup }
+      option :after_steps, default: -> { EMPTY_HASH.dup }
+
+      def call(result)
+        STEPS_IN_ORDER.each do |name|
+          process_step(before_steps[name], result)
+          process_step(steps[name], result)
+          process_step(after_steps[name], result)
+        end
+        result
+      end
+
+      # Return step by name
+      #
+      # @param [Symbol] name The step name
+      #
+      # @api public
+      def [](name)
+        steps[name]
+      end
+
+      # Sets step by name
+      #
+      # @param [Symbol] name The step name
+      #
+      # @api public
+      def []=(name, value)
+        validate_step_name(name)
+        steps[name] = value
+      end
+
+      # Add passed block before mentioned step
+      #
+      # @param [Symbol] name The step name
+      #
+      # @return [ProcessorSteps]
+      #
+      # @api public
+      def after(name, &block)
+        validate_step_name(name)
+        after_steps[name] = block.to_proc
+        self
+      end
+
+      # Add passed block before mentioned step
+      #
+      # @param [Symbol] name The step name
+      #
+      # @return [ProcessorSteps]
+      #
+      # @api public
+      def before(name, &block)
+        validate_step_name(name)
+        before_steps[name] = block.to_proc
+        self
+      end
+
+      # @api private
+      def process_step(step, result)
+        return unless step
+
+        output = step.(result)
+        result.replace(output) if output.is_a?(::Hash)
+      end
+
+      # @api private
+      def validate_step_name(name)
+        unless STEPS_IN_ORDER.include?(name)
+          raise ArgumentError, "Undefined step name #{name}. Available names: #{STEPS_IN_ORDER}"
+        end
+      end
+    end
+  end
+end

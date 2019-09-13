@@ -98,6 +98,27 @@ RSpec.describe Dry::Schema, '.define' do
     end
   end
 
+  context 'schema with hooks' do
+    subject(:schema) do
+      Dry::Schema.define do
+        optional(:date).maybe(:date?)
+
+        after(:rule_applier) do |result|
+          result.to_h.compact
+        end
+      end
+    end
+
+    it 'calls compact after rule_applier' do
+      expect(schema.(date: nil).to_h).to eq({})
+    end
+
+    it 'calls compact after rule_applier' do
+      expect(schema.(date: "1999-12-12").to_h).to eq({date: "1999-12-12"})
+    end
+
+  end
+
   context 'nested schema' do
     subject(:schema) do
       Dry::Schema.define do

@@ -5,6 +5,7 @@ require 'dry/initializer'
 
 require 'dry/schema/type_registry'
 require 'dry/schema/type_container'
+require 'dry/schema/processor_steps'
 require 'dry/schema/rule_applier'
 require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
@@ -12,14 +13,9 @@ require 'dry/schema/value_coercer'
 module Dry
   module Schema
     # Processes input data using objects configured within the DSL
+    # Processing is split into steps represented by `ProcessorSteps`.
     #
-    # Processing is split into 4 main steps:
-    #
-    #   1. Prepare input hash using a key map
-    #   2. Apply pre-coercion filtering rules (optional step, used only when `filter` was used)
-    #   3. Apply value coercions based on type specifications
-    #   4. Apply rules
-    #
+    # @see ProcessorSteps
     # @see Params
     # @see JSON
     #
@@ -32,7 +28,7 @@ module Dry
       setting :type_registry_namespace, :strict
       setting :filter_empty_string, false
 
-      option :steps, default: -> { EMPTY_ARRAY.dup }
+      option :steps, default: -> { ProcessorSteps.new }
 
       option :schema_dsl
 
@@ -86,10 +82,7 @@ module Dry
       # @api public
       def call(input)
         Result.new(input, message_compiler: message_compiler) do |result|
-          steps.each do |step|
-            output = step.(result)
-            result.replace(output) if output.is_a?(::Hash)
-          end
+          steps.call(result)
         end
       end
       alias_method :[], :call
@@ -109,7 +102,7 @@ module Dry
       #
       # @api public
       def key_map
-        @key_map ||= steps.detect { |s| s.is_a?(KeyCoercer) }.key_map
+        steps[:key_coercer].key_map
       end
 
       # Return string represntation
@@ -129,7 +122,7 @@ module Dry
       #
       # @api private
       def type_schema
-        @type_schema ||= steps.detect { |s| s.is_a?(ValueCoercer) }.type_schema
+        steps[:value_coercer].type_schema
       end
 
       # Return the rules config
@@ -170,7 +163,7 @@ module Dry
       #
       # @api private
       def rule_applier
-        @rule_applier ||= steps.last
+        steps[:rule_applier]
       end
       alias_method :to_rule, :rule_applier
 

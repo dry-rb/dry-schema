@@ -9,6 +9,7 @@ require 'dry/schema/types'
 require 'dry/schema/macros'
 
 require 'dry/schema/processor'
+require 'dry/schema/processor_steps'
 require 'dry/schema/key_map'
 require 'dry/schema/key_coercer'
 require 'dry/schema/value_coercer'
@@ -57,6 +58,9 @@ module Dry
 
       # @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
       option :processor_type, default: -> { Processor }
+
+      # @return [Hash] Steps for the processor
+      option :steps, default: -> { ProcessorSteps.new }
 
       # @return [Array] An array with macros defined within the DSL
       option :macros, default: -> { EMPTY_ARRAY.dup }
@@ -189,9 +193,10 @@ module Dry
       #
       # @api private
       def call
-        steps = [key_coercer]
-        steps << filter_schema.rule_applier if filter_rules?
-        steps << value_coercer << rule_applier
+        steps[:key_coercer] = key_coercer
+        steps[:value_coercer] = value_coercer
+        steps[:rule_applier] = rule_applier
+        steps[:filter_schema] = filter_schema.rule_applier if filter_rules?
 
         processor_type.new(schema_dsl: self, steps: steps)
       end
@@ -213,6 +218,36 @@ module Dry
       # @api public
       def array
         -> member_type { type_registry['array'].of(resolve_type(member_type)) }
+      end
+
+      # Method allows steps injection to the processor
+      #
+      # @example
+      #   before(:rule_applier) do |input|
+      #     input.compact
+      #   end
+      #
+      # @return [DSL]
+      #
+      # @api public
+      def before(key, &block)
+        steps.before(key, &block)
+        self
+      end
+
+      # Method allows steps injection to the processor
+      #
+      # @example
+      #   after(:rule_applier) do |input|
+      #     input.compact
+      #   end
+      #
+      # @return [DSL]
+      #
+      # @api public
+      def after(key, &block)
+        steps.after(key, &block)
+        self
       end
 
       # The parent (last from parents) which is used for copying non mergeable configuration
