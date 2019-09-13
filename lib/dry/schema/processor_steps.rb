@@ -89,9 +89,9 @@ module Dry
 
       # @api private
       def validate_step_name(name)
-        unless STEPS_IN_ORDER.include?(name)
-          raise ArgumentError, "Undefined step name #{name}. Available names: #{STEPS_IN_ORDER}"
-        end
+        return if STEPS_IN_ORDER.include?(name)
+
+        raise ArgumentError, "Undefined step name #{name}. Available names: #{STEPS_IN_ORDER}"
       end
     end
   end

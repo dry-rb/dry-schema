@@ -98,10 +98,15 @@ RSpec.describe Dry::Schema, '.define' do
     end
   end
 
-  context 'schema with hooks' do
+  context 'schema with callbacks' do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:date).maybe(:date?)
+        optional(:name).maybe(:str?)
+        required(:date).maybe(:date?)
+
+        before(:key_coercer) do |result|
+          { name: 'default' }.merge(result.to_h)
+        end
 
         after(:rule_applier) do |result|
           result.to_h.compact
@@ -109,14 +114,9 @@ RSpec.describe Dry::Schema, '.define' do
       end
     end
 
-    it 'calls compact after rule_applier' do
-      expect(schema.(date: nil).to_h).to eq({})
+    it 'calls callbacks' do
+      expect(schema.(date: nil).to_h).to eq(name: 'default')
     end
-
-    it 'calls compact after rule_applier' do
-      expect(schema.(date: "1999-12-12").to_h).to eq({date: "1999-12-12"})
-    end
-
   end
 
   context 'nested schema' do
