@@ -77,16 +77,6 @@ module Dry
         end
       end
 
-      # Append a step
-      #
-      # @return [Processor]
-      #
-      # @api private
-      def <<(step)
-        steps << step
-        self
-      end
-
       # Apply processing steps to the provided input
       #
       # @param [Hash] input
