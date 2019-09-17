@@ -17,13 +17,13 @@ module Dry
       #
       # @return [Array<Message>]
       attr_reader :messages
-      
+
       # An internal hash that is filled in with dumped messages
       # when a message set is coerced to a hash
       #
       # @return [Hash<Symbol=>[Array,Hash]>]
       attr_reader :placeholders
-      
+
       # Options hash
       #
       # @return [Hash]
@@ -98,7 +98,9 @@ module Dry
       #
       # @api public
       def empty?
-        @empty ||= messages.empty?
+        return instance_variable_get(:@empty) if instance_variable_defined?(:@empty)
+
+        @empty = messages.empty?
       end
 
       # @api private
