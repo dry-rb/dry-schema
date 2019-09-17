@@ -64,8 +64,8 @@ module Dry
       # @return [Compiler] A key=>type map defined within the DSL
       option :types, default: -> { EMPTY_HASH.dup }
 
-      # @return [DSL] An optional parent DSL object that will be used to merge keys and rules
-      option :parent, optional: true
+      # @return [Array] Optional parent DSL objects, that will be used to merge keys and rules
+      option :parent, Types::Coercible::Array, default: -> { EMPTY_ARRAY.dup }, as: :parents
 
       # @return [Config] Configuration object exposed via `#configure` method
       option :config, optional: true, default: proc { parent ? parent.config.dup : Config.new }
@@ -75,7 +75,7 @@ module Dry
       # @param [Hash] options
       # @option options [Class] :processor The processor type (`Params`, `JSON` or a custom sub-class)
       # @option options [Compiler] :compiler An instance of a rule compiler (must be compatible with `Schema::Compiler`) (optional)
-      # @option options [DSL] :parent An instance of the parent DSL (optional)
+      # @option options [Array[DSL]] :parent One or more instances of the parent DSL (optional)
       # @option options [Config] :config A configuration object (optional)
       #
       # @see Schema.define
@@ -215,14 +215,24 @@ module Dry
         -> member_type { type_registry['array'].of(resolve_type(member_type)) }
       end
 
+      # The parent (last from parents) which is used for copying non mergeable configuration
+      #
+      # @return DSL
+      #
+      # @api public
+      def parent
+        @parent ||= parents.last
+      end
+
       # Return type schema used by the value coercer
       #
       # @return [Dry::Types::Safe]
       #
       # @api private
       def type_schema
-        schema = type_registry['hash'].schema(types).lax
-        parent ? parent.type_schema.schema(schema.to_a) : schema
+        our_schema = type_registry['hash'].schema(types).lax
+        schemas = [*parents.map(&:type_schema), our_schema]
+        schemas.inject { |result, schema| result.schema(schema.to_a) }
       end
 
       # Return a new DSL instance using the same processor type
@@ -276,14 +286,18 @@ module Dry
       #
       # @api private
       def filter_schema_dsl
-        @filter_schema_dsl ||= new(parent: parent_filter_schema)
+        @filter_schema_dsl ||= new(parent: parent_filter_schemas)
       end
 
       # Check if any filter rules were defined
       #
       # @api private
       def filter_rules?
-        (instance_variable_defined?('@filter_schema_dsl') && !filter_schema_dsl.macros.empty?) || parent&.filter_rules?
+        if instance_variable_defined?('@filter_schema_dsl') && !filter_schema_dsl.macros.empty?
+          return true
+        end
+
+        parents.any?(&:filter_rules?)
       end
 
       protected
@@ -323,10 +337,8 @@ module Dry
       private
 
       # @api private
-      def parent_filter_schema
-        return unless parent
-
-        parent.filter_schema if parent.filter_rules?
+      def parent_filter_schemas
+        parents.select(&:filter_rules?).map(&:filter_schema)
       end
 
       # Build a key coercer
@@ -380,12 +392,12 @@ module Dry
 
       # @api private
       def parent_rules
-        parent&.rules || EMPTY_HASH
+        parents.reduce({}) { |rules, parent| rules.merge(parent.rules) }
       end
 
       # @api private
       def parent_key_map
-        parent&.key_map || EMPTY_ARRAY
+        parents.reduce([]) { |key_map, parent| parent.key_map + key_map }
       end
     end
   end
