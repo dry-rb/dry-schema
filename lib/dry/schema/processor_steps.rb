@@ -27,9 +27,9 @@ module Dry
 
       def call(result)
         STEPS_IN_ORDER.each do |name|
-          process_step(before_steps[name], result)
+          before_steps[name]&.each { |step| process_step(step, result) }
           process_step(steps[name], result)
-          process_step(after_steps[name], result)
+          after_steps[name]&.each { |step| process_step(step, result) }
         end
         result
       end
@@ -62,7 +62,8 @@ module Dry
       # @api public
       def after(name, &block)
         validate_step_name(name)
-        after_steps[name] = block.to_proc
+        after_steps[name] ||= EMPTY_ARRAY.dup
+        after_steps[name] << block.to_proc
         self
       end
 
@@ -75,7 +76,8 @@ module Dry
       # @api public
       def before(name, &block)
         validate_step_name(name)
-        before_steps[name] = block.to_proc
+        before_steps[name] ||= EMPTY_ARRAY.dup
+        before_steps[name] << block.to_proc
         self
       end
 

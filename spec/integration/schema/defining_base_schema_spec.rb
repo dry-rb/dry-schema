@@ -48,20 +48,24 @@ RSpec.describe 'Defining base schema class' do
   end
 
   it 'inherits callbacks' do
-    expect(schema.(age: 21).errors).to eql(email: ['is missing'])
+    result = schema.(age: 21)
+
+    expect(result.errors).to eql(email: ['is missing'])
+    expect(result.to_h).to eql(age: 21, name: 'default')
   end
 
   context 'when child schema defines callback' do
     subject(:schema) do
       Dry::Schema.define(parent: parent) do
-        required(:email).filled
-
-        before(:rule_applier, &:to_h)
+        before(:rule_applier) do |result|
+          hash = result.to_h
+          hash.merge(name: "new #{hash[:name]}")
+        end
       end
     end
 
-    it 'overrides callbacks' do
-      expect(schema.(age: 21).errors).to eql(email: ['is missing'], name: ['is missing'])
+    it 'stacks callbacks' do
+      expect(schema.({}).to_h).to eql(name: 'new default')
     end
   end
 end
