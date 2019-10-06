@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'dry/schema/primitive_inferrer'
 require 'dry/schema/macros/value'
 
 module Dry
