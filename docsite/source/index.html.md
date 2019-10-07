@@ -31,11 +31,11 @@ Main focus of this library is on:
 
 There are a few features of `dry-schema` that make it unique:
 
-* [docs::optional-keys-and-values](Structural validation) where key presence can be verified separately from values. This removes ambiguity related to "presence" validation where you don't know if value is indeed `nil` or if a key is missing in the input hash
-* [docs::advanced/filtering](Pre-coercion validation using filtering rules)
+* [Structural validation](docs::optional-keys-and-values) where key presence can be verified separately from values. This removes ambiguity related to "presence" validation where you don't know if value is indeed `nil` or if a key is missing in the input hash
+* [Pre-coercion validation using filtering rules](docs::advanced/filtering)
 * Explicit coercion logic - rather than implementing complex generic coercions, `dry-schema` uses coercion types from `dry-types` which are faster and more strict than generic coercions
-* Support for [docs::basics/macros#array](validating array elements) with convenient access to error messages
-* Powerful introspection - you have access to [docs::advanced/key-maps](key maps) and detailed [docs::advanced/rule-ast](Rule AST)
+* Support for [validating array elements](docs::basics/macros#array) with convenient access to error messages
+* Powerful introspection - you have access to [key maps](docs::advanced/key-maps) and detailed [Rule AST](docs::advanced/rule-ast)
 * Performance - multiple times faster than validations based on `ActiveModel` and `strong parameters`
 * Configurable, localized error messages with or *without* `I18n` gem
 
