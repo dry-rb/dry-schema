@@ -8,10 +8,11 @@ module Dry
     #
     # There are 4 main steps:
     #
-    #   1. `key_coercer` – Prepare input hash using a key map
-    #   2. `filter_schema` – Apply pre-coercion filtering rules (optional step, used only when `filter` was used)
-    #   3. `value_coercer` – Apply value coercions based on type specifications
-    #   4. `rule_applier` – Apply rules
+    #   1. `key_coercer` - Prepare input hash using a key map
+    #   2. `filter_schema` - Apply pre-coercion filtering rules
+    #      (optional step, used only when `filter` was used)
+    #   3. `value_coercer` - Apply value coercions based on type specifications
+    #   4. `rule_applier` - Apply rules
     #
     # @see Processor
     #
