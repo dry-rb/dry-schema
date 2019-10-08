@@ -16,6 +16,10 @@ RSpec.describe 'Defining base schema class' do
 
       optional(:email).filled
       required(:name).filled
+
+      before(:rule_applier) do |result|
+        { name: 'default' }.merge(result.to_h)
+      end
     end
   end
 
@@ -40,6 +44,28 @@ RSpec.describe 'Defining base schema class' do
 
     it 'overrides parent config' do
       expect(schema.config.messages.backend).to eql(:yaml)
+    end
+  end
+
+  it 'inherits callbacks' do
+    result = schema.(age: 21)
+
+    expect(result.errors).to eql(email: ['is missing'])
+    expect(result.to_h).to eql(age: 21, name: 'default')
+  end
+
+  context 'when child schema defines callback' do
+    subject(:schema) do
+      Dry::Schema.define(parent: parent) do
+        before(:rule_applier) do |result|
+          hash = result.to_h
+          hash.merge(name: "new #{hash[:name]}")
+        end
+      end
+    end
+
+    it 'stacks callbacks' do
+      expect(schema.({}).to_h).to eql(name: 'new default')
     end
   end
 end
