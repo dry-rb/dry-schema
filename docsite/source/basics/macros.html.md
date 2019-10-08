@@ -8,7 +8,7 @@ Defining rules using blocks is very flexible and powerful; however, in most comm
 
 This document describes available built-in macros.
 
-### `value`
+### value
 
 Use it to quickly provide a list of all predicates that will be `AND`-ed automatically:
 
@@ -19,7 +19,7 @@ Dry::Schema.Params do
 end
 ```
 
-### `filled`
+### filled
 
 Use it when a value is expected to be filled. "filled" means that the value is non-nil and, in the case of a `String`, `Hash`, or `Array` value, that the value is not `.empty?`.
 
@@ -37,7 +37,7 @@ Dry::Schema.Params do
 end
 ```
 
-### `maybe`
+### maybe
 
 Use it when a value can be nil.
 
@@ -50,7 +50,7 @@ Dry::Schema.Params do
 end
 ```
 
-### `hash`
+### hash
 
 Use it when a value is expected to be a hash:
 
@@ -63,7 +63,7 @@ Dry::Schema.Params do
 end
 ```
 
-### `schema`
+### schema
 
 This works like `hash` but does not prepend `hash?` predicate. It's a simpler building block for checking nested hashes. Use it when *you* want to provide base checks prior applying rules to values.
 
@@ -76,7 +76,7 @@ Dry::Schema.Params do
 end
 ```
 
-### `array`
+### array
 
 Use it to apply predicates to every element in a value that is expected to be an array.
 
@@ -98,7 +98,7 @@ Dry::Schema.Params do
 end
 ```
 
-### `each`
+### each
 
 This works like `array` but does not prepend `array?` predicate. It's a simpler building block for checking each element of an array. Use it when *you* want to provide base checks prior applying rules to elements.
 
