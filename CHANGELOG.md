@@ -1,14 +1,14 @@
-# 1.4.0 unreleased
+# 1.4.0 2019-10-08
 
 ### Added
 
 - Support for passing multiple parent schemas. They are inherited from left to right (@ianwhite)
 
-  ```ruby
-  Dry::Schema.define(parent: [parent_a, parent_b, parent_c]) do
-    ...
-  end
-  ```
+	```ruby
+	Dry::Schema.define(parent: [parent_a, parent_b, parent_c]) do
+		...
+	end
+	```
 
 - Improved error messages about missing translations (@skryukov)
 
@@ -16,7 +16,7 @@
 
 - Added/fixed support for custom optional types (@flash-gordon)
 
-[Compare v1.3.4...master](https://github.com/dry-rb/dry-schema/compare/v1.3.4...master)
+[Compare v1.3.4...v1.4.0](https://github.com/dry-rb/dry-schema/compare/v1.3.4...v1.4.0)
 
 # 1.3.4 2019-09-11
 
@@ -60,15 +60,15 @@
 
 - Automatic predicate inferring for constrained types! (@flash-gordon)
 
-  ```ruby
-  Types::Name = Types::String.constrained(min_size: 1)
+	```ruby
+	Types::Name = Types::String.constrained(min_size: 1)
 
-  schema = Dry::Schema.define do
-    required(:name).value(Types::Name)
-  end
+	schema = Dry::Schema.define do
+		required(:name).value(Types::Name)
+	end
 
-  schema.(name: '').errors.to_h # => { name: ["size cannot be less than 1"] }
-  ```
+	schema.(name: '').errors.to_h # => { name: ["size cannot be less than 1"] }
+	```
 
 - Support for redefining re-used schemas (issue #43) (@skryukov)
 
@@ -84,19 +84,19 @@
 
 - Ability to configure your own type container (@Morozzzko)
 
-  ```ruby
-  types = Dry::Schema::TypeContainer.new
-  types.register(
-    'params.trimmed_string',
-    Types::String.constructor(&:strip).constructor(&:downcase)
-  )
+	```ruby
+	types = Dry::Schema::TypeContainer.new
+	types.register(
+		'params.trimmed_string',
+		Types::String.constructor(&:strip).constructor(&:downcase)
+	)
 
-  Dry::Schema.Params do
-    config.types = types
+	Dry::Schema.Params do
+		config.types = types
 
-    require(:name).value(:trimmed_string)
-  end
-  ```
+		require(:name).value(:trimmed_string)
+	end
+	```
 
 ### Fixed
 
@@ -196,28 +196,28 @@
 
 - Support for arbitrary meta-data in messages, ie:
 
-  ```yaml
-  en:
-    dry_schema:
-      errors:
-        filled?:
-          text: "cannot be blank"
-          code: 123
-  ```
+	```yaml
+	en:
+		dry_schema:
+			errors:
+				filled?:
+					text: "cannot be blank"
+					code: 123
+	```
 
-  Now your error hash will include `{ foo: [{ text: 'cannot be blank', code: 123 }] }` (@solnic + @flash-gordon)
+	Now your error hash will include `{ foo: [{ text: 'cannot be blank', code: 123 }] }` (@solnic + @flash-gordon)
 
 - Support for type specs in `array` macro, ie `required(:tags).array(:integer)` (@solnic)
 - Support for type specs in `each` macro, ie `required(:tags).each(:integer)` (@solnic)
 - Shortcut for defining an array with hash as its member, ie:
 
-  ```ruby
-  Dry::Schema.Params do
-    required(:tags).array(:hash) do
-      required(:name).filled(:string)
-    end
-  end
-  ```
+	```ruby
+	Dry::Schema.Params do
+		required(:tags).array(:hash) do
+			required(:name).filled(:string)
+		end
+	end
+	```
 
 ### Fixed
 
@@ -253,10 +253,10 @@
 - [BREAKING] `Messages` backend classes no longer use global configuration (@solnic)
 - [BREAKING] Passing a non-symbol key name in the DSL will raise `ArgumentError` (issue #29) (@solnic)
 - [BREAKING] Configuration for message backends is now nested under `messages` key with following settings:
-  - `messages.backend` - previously `messages`
-  - `messages.load_paths` - previously `messages_path`
-  - `messages.namespace` - previously `namespace`
-  - `messages.top_namespace` - **new setting** see above
+	- `messages.backend` - previously `messages`
+	- `messages.load_paths` - previously `messages_path`
+	- `messages.namespace` - previously `namespace`
+	- `messages.top_namespace` - **new setting** see above
 - [BREAKING] `Messages::I18n` uses `I18.store_translations` instead of messing with `I18n.load_path` (@solnic)
 - Schemas (`Params` and `JSON`) have nicer inspect (@solnic)
 
