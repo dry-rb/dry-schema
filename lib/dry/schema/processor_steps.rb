@@ -26,6 +26,13 @@ module Dry
       option :before_steps, default: -> { EMPTY_HASH.dup }
       option :after_steps, default: -> { EMPTY_HASH.dup }
 
+      # Executes steps and callbacks in order
+      #
+      # @param [Result] result
+      #
+      # @return [Result]
+      #
+      # @api public
       def call(result)
         STEPS_IN_ORDER.each do |name|
           before_steps[name]&.each { |step| process_step(step, result) }
@@ -35,7 +42,7 @@ module Dry
         result
       end
 
-      # Return step by name
+      # Returns step by name
       #
       # @param [Symbol] name The step name
       #
@@ -95,6 +102,14 @@ module Dry
         return if STEPS_IN_ORDER.include?(name)
 
         raise ArgumentError, "Undefined step name #{name}. Available names: #{STEPS_IN_ORDER}"
+      end
+
+      # @api private
+      def initialize_copy(source)
+        super
+        @steps = source.steps.dup
+        @before_steps = source.before_steps.dup
+        @after_steps = source.after_steps.dup
       end
     end
   end

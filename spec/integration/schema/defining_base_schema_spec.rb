@@ -54,6 +54,12 @@ RSpec.describe 'Defining base schema class' do
     expect(result.to_h).to eql(age: 21, name: 'default')
   end
 
+  it 'does not mutate parent' do
+    schema
+
+    expect(parent.(name: 'Jane')).to be_success
+  end
+
   context 'when child schema defines callback' do
     subject(:schema) do
       Dry::Schema.define(parent: parent) do
