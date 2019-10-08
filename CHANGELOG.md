@@ -11,6 +11,7 @@
 	```
 
 - Improved error messages about missing translations (@skryukov)
+- [experimental] before/after callbacks for schema steps (@skryukov)
 
 ### Fixed
 
