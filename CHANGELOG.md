@@ -1,3 +1,11 @@
+# 1.4.1 2019-10-08
+
+### Fixed
+
+- Child schemas no longer mutate processing steps of their parent classes (@skryukov)
+
+[Compare v1.4.0...v1.4.1](https://github.com/dry-rb/dry-schema/compare/v1.4.0...v1.4.1)
+
 # 1.4.0 2019-10-08
 
 ### Added
