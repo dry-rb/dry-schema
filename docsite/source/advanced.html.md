@@ -8,6 +8,7 @@ sections:
   - key-maps
   - rule-ast
   - custom-types
+  - processor-steps
 ---
 
 - [Predicate Logic](/gems/dry-schema/advanced/predicate-logic)
