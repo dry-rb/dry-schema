@@ -13,6 +13,17 @@
 - Improved error messages about missing translations (@skryukov)
 - [experimental] before/after callbacks for schema steps (@skryukov)
 
+  ```ruby
+  Dry::Schema.Params do
+    required(:name).value(:string)
+    optional(:age).value(:integer)
+
+    before(:value_coercer) do |result|
+      result.to_h.compact
+    end
+  end
+  ```
+
 ### Fixed
 
 - Added/fixed support for custom optional types (@flash-gordon)
