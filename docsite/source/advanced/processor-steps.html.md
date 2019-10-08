@@ -4,7 +4,7 @@ layout: gem-single
 name: dry-schema
 ---
 
-^WARN
+^WARNING
 This feature is experimental. It should become stable in version 2.0.0.
 ^
 
