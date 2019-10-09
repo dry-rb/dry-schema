@@ -104,12 +104,25 @@ module Dry
         raise ArgumentError, "Undefined step name #{name}. Available names: #{STEPS_IN_ORDER}"
       end
 
+      # Stacks callback steps and returns new ProcessorSteps instance
+      #
+      # @param [ProcessorSteps] other
+      #
+      # @return [ProcessorSteps]
+      #
+      # @api public
+      def merge(other)
+        ProcessorSteps.new(
+          before_steps: merge_callbacks(before_steps, other.before_steps),
+          after_steps: merge_callbacks(after_steps, other.after_steps)
+        )
+      end
+
       # @api private
-      def initialize_copy(source)
-        super
-        @steps = source.steps.dup
-        @before_steps = source.before_steps.dup
-        @after_steps = source.after_steps.dup
+      def merge_callbacks(left, right)
+        left.merge(right) do |_key, oldval, newval|
+          oldval + newval
+        end
       end
     end
   end
