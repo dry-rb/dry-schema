@@ -72,7 +72,7 @@ module Dry
       option :config, optional: true, default: proc { parent ? parent.config.dup : Config.new }
 
       # @return [ProcessorSteps] Steps for the processor
-      option :steps, default: proc { parent ? parent.steps.dup : ProcessorSteps.new }
+      option :steps, default: proc { ProcessorSteps.new }
 
       # Build a new DSL object and evaluate provided block
       #
@@ -193,12 +193,14 @@ module Dry
       #
       # @api private
       def call
-        steps[:key_coercer] = key_coercer
-        steps[:value_coercer] = value_coercer
-        steps[:rule_applier] = rule_applier
-        steps[:filter_schema] = filter_schema.rule_applier if filter_rules?
+        all_steps = parents.map(&:steps) + [steps]
+        result_steps = all_steps.inject { |result, steps| result.merge(steps) }
+        result_steps[:key_coercer] = key_coercer
+        result_steps[:value_coercer] = value_coercer
+        result_steps[:rule_applier] = rule_applier
+        result_steps[:filter_schema] = filter_schema.rule_applier if filter_rules?
 
-        processor_type.new(schema_dsl: self, steps: steps)
+        processor_type.new(schema_dsl: self, steps: result_steps)
       end
 
       # Cast this DSL into a rule object
