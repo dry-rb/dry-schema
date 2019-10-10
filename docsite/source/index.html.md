@@ -16,8 +16,6 @@ sections:
   - extensions
 ---
 
-ossy test 4
-
 `dry-schema` is a validation library for **data structures**. It ships with a set of many built-in predicates and powerful macros that allow you to define even complex validation logic with very concise syntax.
 
 Main focus of this library is on:
