@@ -44,4 +44,4 @@ result.messages.to_h
 
 ### Learn more
 
-- [Customizing messages](/gems/dry-schema/error-messages)
+- [Customizing messages](docs::error-messages)
