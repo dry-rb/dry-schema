@@ -11,5 +11,5 @@ sections:
 
 Available extensions:
 
-- [Hints](/gems/dry-schema/extensions/hints)
-- [Monads](/gems/dry-schema/extensions/monads)
+- [Hints](docs::extensions/hints)
+- [Monads](docs::extensions/monads)

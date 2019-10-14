@@ -38,7 +38,7 @@ end
 
 `:age` rule is successful when `filled?` returns `false`, or when both predicates return `true`.
 
-> [Optional keys](/gems/dry-schema/optional-keys-and-values) are defined using `implication`, that's why a missing key will not cause its rules to be applied and the whole key rule will be successful
+> [Optional keys](docs::optional-keys-and-values) are defined using `implication`, that's why a missing key will not cause its rules to be applied and the whole key rule will be successful
 
 ### Exclusive Disjunction (xor)
 
