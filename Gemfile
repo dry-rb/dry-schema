@@ -22,6 +22,7 @@ group :tools do
   gem 'pry'
   gem 'pry-byebug', platform: :mri
   gem 'redcarpet', platform: :mri
+  gem 'ossy', github: 'solnic/ossy', branch: 'master'
 end
 
 group :benchmarks do
