@@ -41,7 +41,7 @@ When you apply this schema to an input, 3 things happen:
 
 ### Learn more
 
-- [Macros](/gems/dry-schema/basics/macros)
-- [Type specs](/gems/dry-schema/basics/type-specs)
-- [Built-in predicates](/gems/dry-schema/basics/built-in-predicates)
-- [Working with schemas](/gems/dry-schema/basics/working-with-schemas)
+- [Macros](docs::basics/macros)
+- [Type specs](docs::basics/type-specs)
+- [Built-in predicates](docs::basics/built-in-predicates)
+- [Working with schemas](docs::basics/working-with-schemas)

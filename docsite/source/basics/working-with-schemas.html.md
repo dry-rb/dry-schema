@@ -108,5 +108,5 @@ result.error?([:tags, 1])
 
 ### Learn more
 
-- [Customizing messages](/gems/dry-schema/error-messages)
-- [Validation hints](/gems/dry-schema/extensions/hints)
+- [Customizing messages](docs::error-messages)
+- [Validation hints](docs::extensions/hints)
