@@ -43,9 +43,7 @@ Metrics/AbcSize:
   Max: 20
 
 Metrics/BlockLength:
-  Enabled: true
-  Exclude:
-    - "spec/**/*_spec.rb"
+  Enabled: false
 
 Metrics/CyclomaticComplexity:
   Enabled: true
