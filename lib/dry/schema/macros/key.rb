@@ -30,6 +30,7 @@ module Dry
           (filter_schema_dsl[name] || filter_schema_dsl.optional(name)).value(*args, &block)
           self
         end
+        ruby2_keywords(:filter) if respond_to?(:ruby2_keywords, true)
 
         # @overload value(type_spec, *predicates, **predicate_opts)
         #   Set type specification and predicates

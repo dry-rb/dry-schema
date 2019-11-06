@@ -41,7 +41,7 @@ module Dry
       attr_reader :default_lookup_options
 
       # @api private
-      def initialize(messages, options = EMPTY_HASH)
+      def initialize(messages, **options)
         super
         @options = options
         @default_lookup_options = options[:locale] ? { locale: locale } : EMPTY_HASH
@@ -55,7 +55,7 @@ module Dry
 
         return self if updated_opts.eql?(options)
 
-        self.class.new(messages, updated_opts)
+        self.class.new(messages, **updated_opts)
       end
 
       # @api private
@@ -105,7 +105,7 @@ module Dry
         left, right = node.map { |n| visit(n, opts) }
 
         if [left, right].flatten.map(&:path).uniq.size == 1
-          Message::Or.new(left, right, proc { |k| messages.translate(k, default_lookup_options) })
+          Message::Or.new(left, right, proc { |k| messages.translate(k, **default_lookup_options) })
         elsif right.is_a?(Array)
           right
         else
@@ -116,7 +116,7 @@ module Dry
       # @api private
       def visit_namespace(node, opts)
         ns, rest = node
-        self.class.new(messages.namespaced(ns), options).visit(rest, opts)
+        self.class.new(messages.namespaced(ns), **options).visit(rest, opts)
       end
 
       # @api private

@@ -28,8 +28,8 @@ module Dry
         option :schema_dsl, optional: true
 
         # @api private
-        def new(options = EMPTY_HASH)
-          self.class.new({ name: name, compiler: compiler, schema_dsl: schema_dsl }.merge(options))
+        def new(**options)
+          self.class.new(name: name, compiler: compiler, schema_dsl: schema_dsl, **options)
         end
 
         # @api private

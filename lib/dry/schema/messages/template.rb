@@ -59,7 +59,7 @@ module Dry
 
         # @api private
         def call(data = EMPTY_HASH)
-          data.empty? ? evaluator.() : evaluator.(data)
+          data.empty? ? evaluator.() : evaluator.(**data)
         end
         alias_method :[], :call
       end

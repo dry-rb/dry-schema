@@ -62,7 +62,7 @@ module Dry
         # @api public
         def new(options = nil, &block)
           if options || block
-            processor = super
+            processor = super(**(options || EMPTY_HASH))
             yield(processor) if block
             processor
           elsif definition

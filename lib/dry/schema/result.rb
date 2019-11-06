@@ -32,7 +32,7 @@ module Dry
       option :message_compiler
 
       # @api private
-      def self.new(*args)
+      def self.new(*, **)
         result = super
         yield(result)
         result.freeze
