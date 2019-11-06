@@ -3,8 +3,11 @@ name: ci
 on:
   push:
     paths:
+      - .github/workflows/custom_ci.yml
       - lib/**
       - spec/**
+      - Gemfile
+      - "*.gemspec"
     pull_requests:
 
 jobs:
