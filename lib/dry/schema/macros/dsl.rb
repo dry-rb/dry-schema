@@ -57,11 +57,12 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def value(*predicates, **opts, &block)
+        def value(*predicates, &block)
           append_macro(Macros::Value) do |macro|
-            macro.call(*predicates, **opts, &block)
+            macro.call(*predicates, &block)
           end
         end
+        ruby2_keywords :value if respond_to?(:ruby2_keywords, true)
 
         # Prepends `:filled?` predicate
         #
@@ -74,11 +75,12 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def filled(*args, **opts, &block)
+        def filled(*args, &block)
           append_macro(Macros::Filled) do |macro|
-            macro.call(*args, **opts, &block)
+            macro.call(*args, &block)
           end
         end
+        ruby2_keywords :filled if respond_to?(:ruby2_keywords, true)
 
         # Specify a nested hash without enforced `hash?` type-check
         #
@@ -99,6 +101,7 @@ module Dry
             macro.call(*args, &block)
           end
         end
+        ruby2_keywords :schema if respond_to?(:ruby2_keywords, true)
 
         # Specify a nested hash with enforced `hash?` type-check
         #
@@ -113,6 +116,7 @@ module Dry
             macro.call(*args, &block)
           end
         end
+        ruby2_keywords :hash if respond_to?(:ruby2_keywords, true)
 
         # Specify predicates that should be applied to each element of an array
         #
@@ -136,6 +140,7 @@ module Dry
             macro.value(*args, &block)
           end
         end
+        ruby2_keywords :each if respond_to?(:ruby2_keywords, true)
 
         # Like `each` but sets `array?` type-check
         #
@@ -155,6 +160,7 @@ module Dry
             macro.value(*args, &block)
           end
         end
+        ruby2_keywords :array if respond_to?(:ruby2_keywords, true)
 
         # Set type spec
         #

@@ -19,7 +19,7 @@ module Dry
           attr_reader :hints
 
           # @api private
-          def initialize(*args)
+          def initialize(*, **)
             super
             @hints = @options.fetch(:hints, true)
           end

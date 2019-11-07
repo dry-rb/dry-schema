@@ -27,8 +27,8 @@ module Dry
       end
 
       # @api private
-      def self.new(*args)
-        fetch_or_store(*args) { super }
+      def self.new(*args, **kwargs)
+        fetch_or_store(args, kwargs) { super }
       end
 
       # @api private
@@ -65,8 +65,8 @@ module Dry
       end
 
       # @api private
-      def new(new_opts = EMPTY_HASH)
-        self.class.new(id, { name: name, coercer: coercer }.merge(new_opts))
+      def new(**new_opts)
+        self.class.new(id, name: name, coercer: coercer, **new_opts)
       end
 
       # @api private

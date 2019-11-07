@@ -30,7 +30,7 @@ module Dry
     #
     # @api public
     def self.define(**options, &block)
-      DSL.new(options, &block).call
+      DSL.new(**options, &block).call
     end
 
     # Define a schema suitable for HTTP params
