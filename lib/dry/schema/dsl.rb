@@ -51,8 +51,6 @@ module Dry
 
       extend Dry::Initializer
 
-      include ::Dry::Equalizer(:options)
-
       # @return [Compiler] The rule compiler object
       option :compiler, default: -> { Compiler.new }
 
