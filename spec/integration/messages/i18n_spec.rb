@@ -149,6 +149,41 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
         expect(template.(size_left: 1, size_right: 2)).to eql('size must be within 1 - 2')
       end
+
+      context 'with meta-data' do
+        def store_translation(translation)
+          I18n.backend.store_translations(
+            :en,
+            messages.config.top_namespace => {
+              errors: {
+                predicate_with_meta: translation
+              }
+            }
+          )
+        end
+
+        it 'finds the meta-data' do
+          store_translation(text: 'text', code: 123)
+
+          template, meta = messages[:predicate_with_meta, path: :path]
+
+          aggregate_failures do
+            expect(template.()).to eq('text')
+            expect(meta).to eq(code: 123)
+          end
+        end
+
+        it 'correctly handles the proc form' do
+          store_translation(text: ->(*) { 'text' }, code: ->(*) { 123 })
+
+          template, meta = messages[:predicate_with_meta, path: :path]
+
+          aggregate_failures do
+            expect(template.()).to eq('text')
+            expect(meta).to eq(code: 123)
+          end
+        end
+      end
     end
 
     context 'with dynamic locale' do

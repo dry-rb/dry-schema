@@ -29,7 +29,22 @@ module Dry
       #
       # @api public
       def get(key, options = EMPTY_HASH)
-        t.(key, locale: options.fetch(:locale, default_locale)) if key
+        return unless key
+
+        opts = { locale: options.fetch(:locale, default_locale) }
+
+        text = t.(key, opts)
+        text_key = "#{key}.text"
+
+        return { text: text, meta: EMPTY_HASH } if !text.is_a?(Hash) || !key?(text_key, opts)
+
+        {
+          text: t.(text_key, opts),
+          meta: text.keys.each_with_object({}) do |k, meta|
+            meta_key = "#{key}.#{k}"
+            meta[k] = t.(meta_key, opts) if k != :text && key?(meta_key, opts)
+          end
+        }
       end
 
       # Check if given key is defined

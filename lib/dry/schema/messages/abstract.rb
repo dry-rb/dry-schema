@@ -123,13 +123,7 @@ module Dry
 
           return unless path
 
-          text = get(path, opts)
-
-          if text.is_a?(Hash)
-            text.values_at(:text, :meta)
-          else
-            [text, EMPTY_HASH]
-          end
+          get(path, opts).values_at(:text, :meta)
         end
         # rubocop:enable Metrics/AbcSize
 
