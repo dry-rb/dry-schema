@@ -39,18 +39,34 @@ RSpec.describe Dry::Schema, 'types specs' do
   end
 
   context 'single type spec with an array with a member' do
-    subject(:schema) do
-      Dry::Schema.Params do
-        required(:nums).value(array[:integer])
+    shared_examples 'array with member' do
+      it 'uses params coercion' do
+        expect(schema.(nums: %w(1 2 3)).to_h).to eql(nums: [1, 2, 3])
+      end
+
+      it 'infers array? + each(:integer?)' do
+        expect(schema.(nums: %w(1 oops 3)).errors.to_h).to eql(nums: { 1 => ['must be an integer'] })
       end
     end
 
-    it 'uses params coercion' do
-      expect(schema.(nums: %w(1 2 3)).to_h).to eql(nums: [1, 2, 3])
+    context 'with `value`' do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:nums).value(array[:integer])
+        end
+      end
+
+      include_examples 'array with member'
     end
 
-    it 'infers array? + each(:integer?)' do
-      expect(schema.(nums: %w(1 oops 3)).errors.to_h).to eql(nums: { 1 => ['must be an integer'] })
+    context 'with `maybe`' do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:nums).maybe(array[:integer])
+        end
+      end
+
+      include_examples 'array with member'
     end
   end
 
