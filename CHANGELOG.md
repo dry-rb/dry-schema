@@ -1,3 +1,13 @@
+# 1.4.2 2019-12-19
+
+### Fixed
+
+* `I18n` messages backend supports procs as text properly (issue #208) (@robhanlon22)
+* `I18n` messages backend supports message meta-data (issue #210) (@robhanlon22)
+* Fixed keyword warnings from MRI 2.7.0 (@flash-gordon)
+
+[Compare v1.4.1...v1.4.2](https://github.com/dry-rb/dry-schema/compare/v1.4.1...v1.4.2)
+
 # 1.4.1 2019-10-08
 
 ### Fixed
