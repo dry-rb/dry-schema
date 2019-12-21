@@ -247,4 +247,40 @@ RSpec.describe Dry::Schema, '.define' do
       end
     end
   end
+
+  context 'with ast errors' do
+    subject(:schema) do
+      Dry::Schema.define do
+        config.error_compiler = :ast
+
+        required(:email).value(:str?)
+        optional(:age).value(:int?, gt?: 18)
+      end
+    end
+
+    it 'passes when input is valid' do
+      expect(schema.(email: 'jane@doe')).to be_success
+    end
+
+    it 'fails when input is not valid' do
+      expect(schema.(age: 12)).to be_failure
+    end
+
+    it 'produces ast errors' do
+      result = schema.(email: 1, age: 12)
+
+      expect(result.errors.to_h).to eq(
+        [
+          [
+            :key,
+            [:email, [:predicate, [:str?, [[:input, 1]]]]]
+          ],
+          [
+            :failure,
+            [:age, [:key, [:age, [:predicate, [:gt?, [[:num, 18], [:input, 12]]]]]]]
+          ]
+        ]
+      )
+    end
+  end
 end
