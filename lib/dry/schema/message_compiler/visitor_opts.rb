@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require 'dry/schema/error_compiler'
 require 'dry/schema/constants'
 require 'dry/schema/message'
 
 module Dry
   module Schema
     # @api private
-    class MessageCompiler
+    class MessageCompiler < ErrorCompiler
       # Optimized option hash used by visitor methods in message compiler
       #
       # @api private

@@ -19,9 +19,9 @@ module Dry
           attr_reader :failures
 
           # @api private
-          def initialize(messages, options = EMPTY_HASH)
+          def initialize(errors, options = EMPTY_HASH)
             super
-            @hints = messages.select(&:hint?)
+            @hints = errors.select(&:hint?)
             @failures = options.fetch(:failures, true)
           end
 
@@ -34,7 +34,7 @@ module Dry
           #
           # @api public
           def to_h
-            @to_h ||= failures ? messages_map : messages_map(hints)
+            @to_h ||= failures ? errors_map : errors_map(hints)
           end
           alias_method :to_hash, :to_h
 
@@ -42,14 +42,15 @@ module Dry
 
           # @api private
           def unique_paths
-            messages.uniq(&:path).map(&:path)
+            errors.uniq(&:path).map(&:path)
           end
 
           # @api private
-          def messages_map(messages = self.messages)
+          def errors_map(errors = self.errors)
             return EMPTY_HASH if empty?
 
-            messages.reduce(placeholders) { |hash, msg|
+            initialize_placeholders!
+            errors.reduce(placeholders) { |hash, msg|
               node = msg.path.reduce(hash) { |a, e| a.is_a?(Hash) ? a[e] : a.last[e] }
               (node[0].is_a?(::Array) ? node[0] : node) << msg.dump
               hash
@@ -61,7 +62,7 @@ module Dry
           # rubocop:disable Metrics/AbcSize
           # rubocop:disable Metrics/PerceivedComplexity
           def initialize_placeholders!
-            @placeholders = unique_paths.each_with_object(EMPTY_HASH.dup) { |path, hash|
+            @placeholders ||= unique_paths.each_with_object(EMPTY_HASH.dup) { |path, hash|
               curr_idx = 0
               last_idx = path.size - 1
               node = hash

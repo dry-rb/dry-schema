@@ -2,6 +2,7 @@
 
 require 'dry/initializer'
 
+require 'dry/schema/error_compiler'
 require 'dry/schema/constants'
 require 'dry/schema/message'
 require 'dry/schema/message_set'
@@ -12,7 +13,7 @@ module Dry
     # Compiles rule results AST into human-readable format
     #
     # @api private
-    class MessageCompiler
+    class MessageCompiler < ErrorCompiler
       extend Dry::Initializer
 
       resolve_key_predicate = proc { |node, opts|
@@ -65,7 +66,7 @@ module Dry
         current_messages = EMPTY_ARRAY.dup
         compiled_messages = ast.map { |node| visit(node, EMPTY_OPTS.dup(current_messages)) }
 
-        MessageSet[compiled_messages, failures: options.fetch(:failures, true)]
+        MessageSet[compiled_messages.flatten, failures: options.fetch(:failures, true)]
       end
 
       # @api private

@@ -36,6 +36,16 @@ module Dry
       # @api public
       setting(:types, Dry::Types)
 
+      # @!method error_compiler
+      #
+      # Return configured error_compiler
+      #
+      # @return [Dry::Schema::ErrorCompiler]
+      #
+      # @api public
+      setting(:error_compiler, :message)
+
+
       # @!method messages
       #
       # Return configuration for message backend
