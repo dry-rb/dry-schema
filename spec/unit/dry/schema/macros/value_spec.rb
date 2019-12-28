@@ -31,4 +31,29 @@ RSpec.describe Dry::Schema::Macros::Value do
       expect { macro.not_here }.to raise_error(NoMethodError, /not_here/)
     end
   end
+
+  context 'with a nested hash' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:song).value(:hash) do
+          required(:title).filled
+          required(:author).filled
+        end
+      end
+    end
+
+    it 'passes when valid' do
+      song = { title: 'World', author: 'Joe' }
+
+      expect(schema.(song: song)).to be_success
+    end
+
+    it 'fails when not valid' do
+      song = { title: nil, author: 'Jane' }
+
+      expect(schema.(song: song).messages).to eql(
+        song: { title: ['must be filled'] }
+      )
+    end
+  end
 end

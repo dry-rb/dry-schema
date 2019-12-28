@@ -27,13 +27,18 @@ module Dry
           end
 
           trace.evaluate(*predicates, **opts)
-          trace.append(new(chain: false).instance_exec(&block)) if block
+
+          type_spec = opts[:type_spec]
+          if block && type_spec.equal?(:hash)
+            hash(&block)
+          elsif block
+            trace.append(new(chain: false).instance_exec(&block))
+          end
 
           if trace.captures.empty?
             raise ArgumentError, 'wrong number of arguments (given 0, expected at least 1)'
           end
 
-          type_spec = opts[:type_spec]
           each(type_spec.type.member) if type_spec.respond_to?(:member)
 
           self
