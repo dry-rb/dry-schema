@@ -38,20 +38,28 @@ puts errors.to_h.inspect
 # }
 ```
 
+It is equivalent to call `value` macro with `:hash` predicate and a block:
+
+```ruby
+schema = Dry::Schema.Params do
+  required(:address).value(:hash) do
+    # ...
+  end
+end
+```
+
 ### Nested Maybe `Hash`
 
 If a nested hash could be `nil`, simply use `maybe` macro with a block:
 
 ```ruby
 schema = Dry::Schema.Params do
-  required(:address).maybe do
-    hash do
-      required(:city).filled(:string, min_size?: 3)
-      required(:street).filled(:string)
-      required(:country).hash do
-        required(:name).filled(:string)
-        required(:code).filled(:string)
-      end
+  required(:address).maybe(:hash) do
+    required(:city).filled(:string, min_size?: 3)
+    required(:street).filled(:string)
+    required(:country).hash do
+      required(:name).filled(:string)
+      required(:code).filled(:string)
     end
   end
 end
