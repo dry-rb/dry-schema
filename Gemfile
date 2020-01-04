@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-git_source(:github) do |repo_name| "https://github.com/#{repo_name}" end
+eval_gemfile 'Gemfile.devtools'
 
 gemspec
 
@@ -13,7 +13,6 @@ gem 'dry-types', github: 'dry-rb/dry-types', branch: 'master' if ENV['DRY_TYPES_
 group :test do
   gem 'dry-monads', require: false
   gem 'i18n', require: false
-  gem 'simplecov', require: false, platform: :mri
   gem 'transproc'
 end
 
@@ -21,7 +20,6 @@ group :tools do
   gem 'pry'
   gem 'pry-byebug', platform: :mri
   gem 'redcarpet', platform: :mri
-  gem 'ossy', github: 'solnic/ossy', branch: 'master', platform: :mri
 end
 
 group :benchmarks do
