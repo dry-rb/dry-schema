@@ -1,6 +1,6 @@
 [gem]: https://rubygems.org/gems/dry-schema
 [actions]: https://github.com/dry-rb/dry-schema/actions
-[codeclimate]: https://codeclimate.com/github/dry-rb/dry-schema
+[codacy]: https://www.codacy.com/gh/dry-rb/dry-schema
 [chat]: https://dry-rb.zulipchat.com
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-schema
 
@@ -8,8 +8,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/dry-schema.svg)][gem]
 [![CI Status](https://github.com/dry-rb/dry-schema/workflows/ci/badge.svg)][actions]
-[![Code Climate](https://codeclimate.com/github/dry-rb/dry-schema/badges/gpa.svg)][codeclimate]
-[![Test Coverage](https://codeclimate.com/github/dry-rb/dry-schema/badges/coverage.svg)][codeclimate]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-schema.svg?branch=master)][inchpages]
 
 ## Links
@@ -19,7 +19,7 @@
 
 ## Supported Ruby versions
 
-This library officially supports following Ruby versions:
+This library officially supports the following Ruby versions:
 
 * MRI >= `2.4`
 * jruby >= `9.2`
