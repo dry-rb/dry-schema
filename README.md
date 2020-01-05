@@ -8,8 +8,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/dry-schema.svg)][gem]
 [![CI Status](https://github.com/dry-rb/dry-schema/workflows/ci/badge.svg)][actions]
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/961f5c776f1d49218b2cede3745e059c)][codacy]
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/961f5c776f1d49218b2cede3745e059c)][codacy]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-schema.svg?branch=master)][inchpages]
 
 ## Links
