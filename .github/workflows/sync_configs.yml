@@ -16,7 +16,9 @@ jobs:
         with:
           ruby-version: 2.6
       - name: Install latest bundler
-        run: gem install bundler
+        run: |
+          gem install bundler
+          bundle config set without 'tools benchmarks docs'
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3 --without tools test benchmarks docs
       - name: Symlink ossy
