@@ -3,6 +3,10 @@
 name: sync_configs
 
 on:
+  push:
+    paths:
+      - .github/workflows/sync_configs.yml
+
   repository_dispatch:
 
 jobs:
