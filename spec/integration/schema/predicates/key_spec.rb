@@ -17,18 +17,22 @@ RSpec.describe 'Predicates: Key' do
 
   context 'with required' do
     it 'should raise error' do
-      expect { Dry::Schema.define do
-        required(:foo) { key? }
-      end }.to raise_error Dry::Schema::InvalidSchemaError
+      expect {
+        Dry::Schema.define do
+          required(:foo) { key? }
+        end
+      } .to raise_error Dry::Schema::InvalidSchemaError
     end
   end
 
   context 'with optional' do
     subject(:schema) do
       it 'should raise error' do
-        expect { Dry::Schema.define do
-          optional(:foo) { key? }
-        end }.to raise_error Dry::Schema::InvalidSchemaError
+        expect {
+          Dry::Schema.define do
+            optional(:foo) { key? }
+          end
+        } .to raise_error Dry::Schema::InvalidSchemaError
       end
     end
   end
@@ -37,25 +41,31 @@ RSpec.describe 'Predicates: Key' do
     context 'with required' do
       context 'with value' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            required(:foo).value(:key?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              required(:foo).value(:key?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with filled' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            required(:foo).filled(:key?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              required(:foo).filled(:key?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with maybe' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            required(:foo).maybe(:key?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              required(:foo).maybe(:key?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end
@@ -63,25 +73,31 @@ RSpec.describe 'Predicates: Key' do
     context 'with optional' do
       context 'with value' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            optional(:foo).value(:key?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              optional(:foo).value(:key?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with filled' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            optional(:foo).filled(:key?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              optional(:foo).filled(:key?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with maybe' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            optional(:foo).maybe(:key?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              optional(:foo).maybe(:key?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end

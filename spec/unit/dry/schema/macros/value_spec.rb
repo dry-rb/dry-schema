@@ -15,7 +15,7 @@ RSpec.describe Dry::Schema::Macros::Value do
 
       expect(rule.('foobar')).to be_success
       expect(rule.('f')).to be_failure
-      expect(rule.('foo'*20)).to be_failure
+      expect(rule.('foo' * 20)).to be_failure
     end
   end
 

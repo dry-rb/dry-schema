@@ -22,7 +22,7 @@ RSpec.describe Dry::Schema::Macros::Required do
 
       expect(rule.(imejl: 'jane@doe.org')).to be_failure
       expect(rule.(email: 'j')).to be_failure
-      expect(rule.(email: 'jane@doe.org'*2)).to be_failure
+      expect(rule.(email: 'jane@doe.org' * 2)).to be_failure
     end
 
     it 'builds a valid rule with predicates defined in a block' do
@@ -32,7 +32,7 @@ RSpec.describe Dry::Schema::Macros::Required do
 
       expect(rule.(imejl: 'jane@doe.org')).to be_failure
       expect(rule.(email: 'j')).to be_failure
-      expect(rule.(email: 'jane@doe.org'*2)).to be_failure
+      expect(rule.(email: 'jane@doe.org' * 2)).to be_failure
     end
   end
 

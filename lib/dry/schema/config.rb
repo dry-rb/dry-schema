@@ -58,7 +58,7 @@ module Dry
 
       # @api private
       def inspect
-        "#<#{self.class} #{to_h.map { |k,v| ["#{k}=", v.inspect] }.map(&:join).join(' ')}>"
+        "#<#{self.class} #{to_h.map { |k, v| ["#{k}=", v.inspect] }.map(&:join).join(' ')}>"
       end
 
       private

@@ -5,7 +5,6 @@ require_relative 'support/coverage'
 begin
   require 'pry-byebug'
 rescue LoadError; end
-
 SPEC_ROOT = Pathname(__dir__)
 
 Dir[SPEC_ROOT.join('shared/**/*.rb')].each(&method(:require))

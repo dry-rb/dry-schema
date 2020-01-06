@@ -52,9 +52,9 @@ RSpec.describe 'Macros #value' do
     end
 
     it 'infers int? rule and applies it before other rules' do
-      expect(schema.(age: nil).errors).to eql( age: ['must be an integer'])
-      expect(schema.(age: 19).errors).to eql( age: ['must be even'])
-      expect(schema.(age: 18).errors).to eql( age: ['must be greater than 18'])
+      expect(schema.(age: nil).errors).to eql(age: ['must be an integer'])
+      expect(schema.(age: 19).errors).to eql(age: ['must be even'])
+      expect(schema.(age: 18).errors).to eql(age: ['must be greater than 18'])
     end
   end
 

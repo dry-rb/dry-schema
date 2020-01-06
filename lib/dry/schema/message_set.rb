@@ -17,13 +17,13 @@ module Dry
       #
       # @return [Array<Message>]
       attr_reader :messages
-      
+
       # An internal hash that is filled in with dumped messages
       # when a message set is coerced to a hash
       #
       # @return [Hash<Symbol=>[Array,Hash]>]
       attr_reader :placeholders
-      
+
       # Options hash
       #
       # @return [Hash]

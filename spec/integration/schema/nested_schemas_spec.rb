@@ -17,25 +17,25 @@ RSpec.describe Dry::Schema, 'nested schemas' do
     end
 
     it 'passes when input is valid' do
-      input = {content: {meta: {version: '1.0'}, data: {city: 'Canberra'}}}
+      input = { content: { meta: { version: '1.0' }, data: { city: 'Canberra' } } }
       expect(schema.(input)).to be_success
     end
 
     it 'fails when one sub-key is missing' do
-      input = {content: {data: {city: 'Canberra'}}}
-      expect(schema.(input).messages).to eql(content: {meta: ['is missing', 'must be a hash']})
+      input = { content: { data: { city: 'Canberra' } } }
+      expect(schema.(input).messages).to eql(content: { meta: ['is missing', 'must be a hash'] })
     end
 
     it 'fails when both sub-keys are missing' do
-      input = {content: {}}
-      expect(schema.(input).messages).to eql(content: {meta: ['is missing', 'must be a hash'], data: ['is missing', 'must be a hash']})
+      input = { content: {} }
+      expect(schema.(input).messages).to eql(content: { meta: ['is missing', 'must be a hash'], data: ['is missing', 'must be a hash'] })
     end
 
     it 'fails when the deeply nested keys are invalid' do
-      input = {content: {meta: {version: ''}, data: {city: ''}}}
+      input = { content: { meta: { version: '' }, data: { city: '' } } }
 
       expect(schema.(input).messages).to eql(
-        content: {meta: {version: ['must be filled']}, data: {city: ['must be filled']}}
+        content: { meta: { version: ['must be filled'] }, data: { city: ['must be filled'] } }
       )
     end
   end
@@ -53,7 +53,7 @@ RSpec.describe Dry::Schema, 'nested schemas' do
     end
 
     it 'passes when input is valid' do
-      expect(schema.(meta: { info: { details: 'Krakow', meta: 'foo' }})).to be_success
+      expect(schema.(meta: { info: { details: 'Krakow', meta: 'foo' } })).to be_success
     end
 
     it 'fails when root key is missing' do
@@ -197,7 +197,7 @@ RSpec.describe Dry::Schema, 'nested schemas' do
     end
 
     it 'fails when 1-level key has value with an incorrect type' do
-      expect(schema.(meta: { data: [{ info: ''}] }).messages).to eql(
+      expect(schema.(meta: { data: [{ info: '' }] }).messages).to eql(
         meta: { data: { 0 => { info: ['must be a hash'] } } }
       )
     end

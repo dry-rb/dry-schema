@@ -173,17 +173,21 @@ RSpec.describe 'Predicates: Empty' do
 
       context 'with filled' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            required(:foo).filled(:empty?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              required(:foo).filled(:empty?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with maybe' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            required(:foo).maybe(:empty?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              required(:foo).maybe(:empty?)
+            end
+          }          .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end
@@ -247,17 +251,21 @@ RSpec.describe 'Predicates: Empty' do
 
       context 'with filled' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            optional(:foo).filled(:empty?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              optional(:foo).filled(:empty?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
 
       context 'with maybe' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            optional(:foo).maybe(:empty?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              optional(:foo).maybe(:empty?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end

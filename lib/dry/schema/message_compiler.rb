@@ -131,7 +131,7 @@ module Dry
         ).to_h
 
         template, meta = messages[predicate, options] ||
-          raise(MissingMessageError.new(path, messages.looked_up_paths(predicate, options)))
+                         raise(MissingMessageError.new(path, messages.looked_up_paths(predicate, options)))
 
         text = message_text(template, tokens, options)
 

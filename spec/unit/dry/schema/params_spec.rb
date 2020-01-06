@@ -20,8 +20,8 @@ RSpec.describe Dry::Schema::Params do
     end
 
     it 'raises exception when definition is missing' do
-      expect { Class.new(Dry::Schema::Params).new }.
-        to raise_error(ArgumentError, 'Cannot create a schema without a definition')
+      expect { Class.new(Dry::Schema::Params).new }
+        .to raise_error(ArgumentError, 'Cannot create a schema without a definition')
     end
   end
 
@@ -41,8 +41,8 @@ RSpec.describe Dry::Schema::Params do
     end
 
     it 'raises exception when definition is missing' do
-      expect { Class.new(Dry::Schema::Params).new }.
-        to raise_error(ArgumentError, 'Cannot create a schema without a definition')
+      expect { Class.new(Dry::Schema::Params).new }
+        .to raise_error(ArgumentError, 'Cannot create a schema without a definition')
     end
   end
 

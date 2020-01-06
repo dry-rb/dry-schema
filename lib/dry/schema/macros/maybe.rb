@@ -30,8 +30,7 @@ module Dry
            [
              [:not, [:predicate, [:nil?, [[:input, Undefined]]]]],
              trace.to_rule.to_ast
-           ]
-          ]
+           ]]
         end
       end
     end

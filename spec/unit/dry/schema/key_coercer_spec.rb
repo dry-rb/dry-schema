@@ -8,7 +8,6 @@ RSpec.describe Dry::Schema::KeyCoercer do
 
   let(:coercer) { :to_s.to_proc }
 
-
   context 'with a flat key map' do
     let(:key_map) { Dry::Schema::KeyMap[:a, :b] }
 

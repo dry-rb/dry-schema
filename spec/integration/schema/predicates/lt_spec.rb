@@ -16,7 +16,6 @@ RSpec.describe 'Predicates: Lt' do
       end
     end
 
-
     context 'with missing input' do
       let(:input) { {} }
 

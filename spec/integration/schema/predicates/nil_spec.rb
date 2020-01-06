@@ -163,12 +163,14 @@ RSpec.describe 'Predicates: None' do
         end
       end
 
-      #makes no sense see: #134
+      # makes no sense see: #134
       context 'with maybe' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            required(:foo).maybe(:nil?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              required(:foo).maybe(:nil?)
+            end
+          }          .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end
@@ -254,12 +256,14 @@ RSpec.describe 'Predicates: None' do
         end
       end
 
-      #makes no sense see: #134
+      # makes no sense see: #134
       context 'with maybe' do
         it 'should raise error' do
-          expect { Dry::Schema.define do
-            optional(:foo).maybe(:nil?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.define do
+              optional(:foo).maybe(:nil?)
+            end
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end

@@ -22,7 +22,7 @@ module Dry
       # @return [Hash]
       attr_reader :data
 
-      # Translation function     
+      # Translation function
       #
       # @return [Proc]
       attr_reader :t

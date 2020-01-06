@@ -173,9 +173,11 @@ RSpec.describe 'Predicates: Filled' do
 
       context 'with filled' do
         it 'should raise error' do
-          expect { Dry::Schema.Params do
-            required(:foo).filled(:filled?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.Params do
+              required(:foo).filled(:filled?)
+            end
+          }          .to raise_error Dry::Schema::InvalidSchemaError
         end
 
         subject(:schema) do
@@ -349,9 +351,11 @@ RSpec.describe 'Predicates: Filled' do
 
       context 'with filled' do
         it 'should raise error' do
-          expect { Dry::Schema.Params do
-            optional(:foo).filled(:filled?)
-          end }.to raise_error Dry::Schema::InvalidSchemaError
+          expect {
+            Dry::Schema.Params do
+              optional(:foo).filled(:filled?)
+            end
+          }          .to raise_error Dry::Schema::InvalidSchemaError
         end
 
         subject(:schema) do

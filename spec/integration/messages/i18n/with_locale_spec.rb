@@ -22,12 +22,10 @@ RSpec.describe 'I18n validation messages / using I18n.with_locale' do
 
     around do |example|
       I18n.backend.store_translations(:en,
-        dry_schema: { errors: { user: { rules: { name: { filled?: 'must be filled' } } } } }
-      )
+                                      dry_schema: { errors: { user: { rules: { name: { filled?: 'must be filled' } } } } })
 
       I18n.backend.store_translations(:ru,
-        dry_schema: { errors: { user: { rules: { name: { filled?: 'заполните это поле' } } } } }
-      )
+                                      dry_schema: { errors: { user: { rules: { name: { filled?: 'заполните это поле' } } } } })
 
       I18n.with_locale(:ru) { example.run }
     end
@@ -75,12 +73,10 @@ RSpec.describe 'I18n validation messages / using I18n.with_locale' do
 
       before do
         I18n.backend.store_translations(:en,
-          dry_schema: { errors: { rules: { name: { filled?: 'must be filled' } } } }
-        )
+                                        dry_schema: { errors: { rules: { name: { filled?: 'must be filled' } } } })
 
         I18n.backend.store_translations(:ru,
-          dry_schema: { errors: { rules: { name: { filled?: 'заполните это поле' } } } }
-        )
+                                        dry_schema: { errors: { rules: { name: { filled?: 'заполните это поле' } } } })
       end
 
       include_examples 'caching behavior'
@@ -98,12 +94,10 @@ RSpec.describe 'I18n validation messages / using I18n.with_locale' do
 
       before do
         I18n.backend.store_translations(:en,
-          dry_schema: { errors: { user: { rules: { name: { filled?: 'must be filled' } } } } }
-        )
+                                        dry_schema: { errors: { user: { rules: { name: { filled?: 'must be filled' } } } } })
 
         I18n.backend.store_translations(:ru,
-          dry_schema: { errors: { user: { rules: { name: { filled?: 'заполните это поле' } } } } }
-        )
+                                        dry_schema: { errors: { user: { rules: { name: { filled?: 'заполните это поле' } } } } })
       end
 
       include_examples 'caching behavior'

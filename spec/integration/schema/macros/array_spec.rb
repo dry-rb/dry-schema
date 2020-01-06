@@ -280,7 +280,7 @@ RSpec.describe 'Macros #array' do
       nominal_array = Dry::Types::Nominal.new(Array)
       expect {
         Dry::Schema.Params do
-          required(:values).value(nominal_array).each { hash {  } }
+          required(:values).value(nominal_array).each { hash {} }
         end
       }.to raise_error(ArgumentError, /Types::Constructor/)
     end

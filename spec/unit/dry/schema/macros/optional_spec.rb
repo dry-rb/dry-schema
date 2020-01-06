@@ -15,7 +15,7 @@ RSpec.describe Dry::Schema::Macros::Optional do
       expect(rule.(email: 'jane@doe.org')).to be_success
 
       expect(rule.(email: 'j')).to be_failure
-      expect(rule.(email: 'jane@doe.org'*2)).to be_failure
+      expect(rule.(email: 'jane@doe.org' * 2)).to be_failure
     end
   end
 

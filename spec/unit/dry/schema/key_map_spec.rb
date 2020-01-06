@@ -38,7 +38,7 @@ RSpec.describe Dry::Schema::KeyMap do
     describe '#stringified' do
       it 'returns a key map with stringified keys' do
         result = []
-        hash = {'id' => 1, 'name' => 'Jane', 'email' => 'jade@doe.org'}
+        hash = { 'id' => 1, 'name' => 'Jane', 'email' => 'jade@doe.org' }
 
         key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
@@ -67,7 +67,7 @@ RSpec.describe Dry::Schema::KeyMap do
   end
 
   context 'with a nested hash' do
-    let(:keys) { [:id, :name, {contact: %i[email phone]}] }
+    let(:keys) { [:id, :name, { contact: %i[email phone] }] }
 
     describe '#each' do
       it 'yields each key and nested key map' do
@@ -88,14 +88,14 @@ RSpec.describe Dry::Schema::KeyMap do
         result = []
 
         hash = {
-          'id'      => 1,
-          'name'    => 'Jane',
-          'contact' => {'email' => 'jade@doe.org', 'phone' => 123}
+          'id' => 1,
+          'name' => 'Jane',
+          'contact' => { 'email' => 'jade@doe.org', 'phone' => 123 }
         }
 
         key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
-        expect(result).to eql([1, 'Jane', {'email' => 'jade@doe.org', 'phone' => 123}])
+        expect(result).to eql([1, 'Jane', { 'email' => 'jade@doe.org', 'phone' => 123 }])
       end
     end
 
@@ -129,12 +129,12 @@ RSpec.describe Dry::Schema::KeyMap do
 
         hash = {
           'title' => 'Bohemian Rhapsody',
-          'tags'  => [{'name' => 'queen'}, {'name' => 'classic'}]
+          'tags' => [{ 'name' => 'queen' }, { 'name' => 'classic' }]
         }
 
         key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
-        expect(result).to eql(['Bohemian Rhapsody', [{'name' => 'queen'}, {'name' => 'classic'}]])
+        expect(result).to eql(['Bohemian Rhapsody', [{ 'name' => 'queen' }, { 'name' => 'classic' }]])
       end
     end
 

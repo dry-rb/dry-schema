@@ -160,13 +160,13 @@ RSpec.describe Dry::Schema, 'types specs' do
       }
 
       expect(schema.(input).to_h).to eql(
-        user:  {
+        user: {
           email: 'jane@doe.org',
           age: 21,
           address: {
             street: 'Street 1',
             city: 'NYC',
-            zipcode:  '1234',
+            zipcode: '1234',
             location: { lat: 1.23, lng: 4.56 }
           }
         }

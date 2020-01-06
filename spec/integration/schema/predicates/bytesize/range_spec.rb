@@ -280,7 +280,7 @@ RSpec.describe 'Predicates: Bytesize' do
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            #see: https://github.com/dry-rb/dry-validation/issues/121
+            # see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
               expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end
@@ -377,7 +377,7 @@ RSpec.describe 'Predicates: Bytesize' do
           context 'with blank input' do
             let(:input) { { foo: '' } }
 
-            #see: https://github.com/dry-rb/dry-validation/issues/121
+            # see: https://github.com/dry-rb/dry-validation/issues/121
             it 'is not successful' do
               expect(result).to be_failing ['must be within 2 - 3 bytes long']
             end

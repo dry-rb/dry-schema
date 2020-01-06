@@ -8,7 +8,7 @@ RSpec.describe Dry::Schema::MessageCompiler do
   include_context 'predicate helper'
 
   let(:messages) do
-   Dry::Schema::Messages::YAML.build.merge(
+    Dry::Schema::Messages::YAML.build.merge(
       en: {
         dry_schema: {
           errors: {
@@ -187,7 +187,7 @@ RSpec.describe Dry::Schema::MessageCompiler do
     describe ':array?' do
       it 'returns valid message' do
         msg = message_compiler.visit(
-          [:failure, [:phone_numbers, [:key, [:phone, p(:array?,'')]]]]
+          [:failure, [:phone_numbers, [:key, [:phone, p(:array?, '')]]]]
         )
 
         expect(msg).to eql('must be an array')
