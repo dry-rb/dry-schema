@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'support/coverage'
+require_relative 'support/warnings'
+
+Warning.ignore(%r{gems/i18n})
 
 begin
   require 'pry-byebug'

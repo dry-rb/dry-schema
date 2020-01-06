@@ -33,7 +33,7 @@ module Dry
 
         opts = { locale: options.fetch(:locale, default_locale) }
 
-        translation = t.(key, opts)
+        translation = t.(key, **opts)
         text_key = "#{key}.text"
 
         if !translation.is_a?(Hash) || !key?(text_key, opts)
@@ -44,7 +44,7 @@ module Dry
         end
 
         {
-          text: t.(text_key, opts),
+          text: t.(text_key, **opts),
           meta: extract_meta(key, translation, opts)
         }
       end
@@ -121,7 +121,7 @@ module Dry
       def extract_meta(parent_key, translation, options)
         translation.keys.each_with_object({}) do |k, meta|
           meta_key = "#{parent_key}.#{k}"
-          meta[k] = t.(meta_key, options) if k != :text && key?(meta_key, options)
+          meta[k] = t.(meta_key, **options) if k != :text && key?(meta_key, options)
         end
       end
     end
