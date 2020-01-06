@@ -11,7 +11,7 @@ RSpec.describe 'Params / Macros / array' do
     end
 
     it 'coerces an empty string to an array' do
-      result = schema.("songs" => "")
+      result = schema.('songs' => '')
 
       expect(result).to be_success
       expect(result.to_h).to eq(songs: [])

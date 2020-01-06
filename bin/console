@@ -24,4 +24,4 @@ class Context
   end
 end
 
-Pry.start(Context.new, prompt: [proc { "dry-schema> " }, proc { "dry-schema*> " }])
+Pry.start(Context.new, prompt: [proc { 'dry-schema> ' }, proc { 'dry-schema*> ' }])
