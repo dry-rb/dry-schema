@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Macros #filled' do
   describe 'with a constructor type' do
     subject(:schema) do

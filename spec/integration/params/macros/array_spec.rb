@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Params / Macros / array' do
   context 'array of hashes' do
     subject(:schema) do
