@@ -136,6 +136,15 @@ module Dry
         "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect}>"
       end
 
+      if RUBY_VERSION >= '2.7'
+        # Pattern matching support
+        #
+        # @api private
+        def deconstruct_keys(_)
+          output
+        end
+      end
+
       private
 
       # A list of failure ASTs produced by rule result objects

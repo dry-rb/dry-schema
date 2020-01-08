@@ -1,3 +1,11 @@
+# unreleased
+
+### Added
+
+* Pattern matching for `Dry::Schema::Result` objects (@flash-gordon)
+
+[Compare v1.4.2...master](https://github.com/dry-rb/dry-schema/compare/v1.4.2...master)
+
 # 1.4.2 2019-12-19
 
 ### Fixed
