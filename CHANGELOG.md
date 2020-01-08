@@ -1,10 +1,30 @@
-# unreleased
+# 1.4.3 2020-01-08
 
 ### Added
 
 * Pattern matching for `Dry::Schema::Result` objects (@flash-gordon)
+	```ruby
+	schema = Dry::Schema::Params { required(:name).filled }
+	case schema.('name' => 'John')
+	in name:
+		name # => 'John'
+	end
+	```
+	Try it with monads!
+* Shortcut for nested schemas in `value` and `maybe` macros (@waiting-for-dev)
+	```ruby
+	Dry::Schema.Params do
+		required(:address).value(:hash) do
+			required(:city).filled
+		end
+	end
+	```
 
-[Compare v1.4.2...master](https://github.com/dry-rb/dry-schema/compare/v1.4.2...master)
+### Fixed
+
+* Some keyword warnings that slipped into the previous release (@flash-gordon)
+
+[Compare v1.4.2...v1.4.3](https://github.com/dry-rb/dry-schema/compare/v1.4.2...v1.4.3)
 
 # 1.4.2 2019-12-19
 
