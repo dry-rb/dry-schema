@@ -167,10 +167,8 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
           template, meta = messages[:predicate_with_meta, path: :path]
 
-          aggregate_failures do
-            expect(template.()).to eq('text')
-            expect(meta).to eq(code: 123)
-          end
+          expect(template.()).to eq('text')
+          expect(meta).to eq(code: 123)
         end
 
         it 'correctly handles the proc form' do
@@ -178,10 +176,8 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
           template, meta = messages[:predicate_with_meta, path: :path]
 
-          aggregate_failures do
-            expect(template.()).to eq('text')
-            expect(meta).to eq(code: 123)
-          end
+          expect(template.()).to eq('text')
+          expect(meta).to eq(code: 123)
         end
       end
     end

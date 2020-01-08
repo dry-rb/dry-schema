@@ -56,7 +56,6 @@ RSpec.configure do |config|
     config.exclude_pattern = '**/pattern_matching_spec.rb'
   end
   config.disable_monkey_patching!
-  config.warnings = true
   config.filter_run_when_matching :focus
 
   config.include PredicatesIntegration
@@ -67,17 +66,10 @@ RSpec.configure do |config|
   end
 
   config.before do
-    module Test
-      def self.remove_constants
-        constants.each { |const| remove_const(const) }
-        self
-      end
-    end
+    stub_const('Test', Module.new)
   end
 
   config.after do
-    Object.send(:remove_const, Test.remove_constants.name)
-
     I18n.load_path = [Dry::Schema::DEFAULT_MESSAGES_PATH]
     I18n.locale = :en
     I18n.reload!
