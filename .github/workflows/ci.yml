@@ -29,6 +29,12 @@ jobs:
         include:
         - ruby: '2.6'
           coverage: 'true'
+        dry_logic_from_master:
+        - 'false'
+        - 'true'
+        dry_types_from_master:
+        - 'false'
+        - 'true'
     steps:
     - uses: actions/checkout@v1
     - name: Set up Ruby
@@ -47,15 +53,6 @@ jobs:
         CODACY_RUN_LOCAL: true
         CODACY_PROJECT_TOKEN: "${{secrets.CODACY_PROJECT_TOKEN}}"
       run: bundle exec rake
-  tests-mri:
-    strategy:
-      matrix:
-        dry_logic_from_master:
-        - 'false'
-        - 'true'
-        dry_types_from_master:
-        - 'false'
-        - 'true'
     env:
       DRY_LOGIC_FROM_MASTER: "${{matrix.dry_logic_from_master}}"
       DRY_TYPES_FROM_MASTER: "${{matrix.dry_types_from_master}}"
