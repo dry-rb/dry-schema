@@ -1,5 +1,5 @@
 jobs:
-  tests-mri:
+  tests:
     strategy:
       matrix:
         dry_logic_from_master: ["false", "true"]
