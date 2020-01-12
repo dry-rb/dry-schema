@@ -4,6 +4,10 @@ layout: gem-single
 name: dry-schema
 ---
 
+^WARNING
+Starting from dry-schema 2.0 type specs will be obligatory arguments
+^
+
 To define what the expected type of a value is, you should use type specs. All macros support type specs as the first argument, whenever you pass a symbol that doesn't end with a question mark, or you explicitly pass in an instance of a `Dry::Types::Type` object, it will be set as the type.
 
 > Whenever you define a type spec, `dry-schema` will infer a type-check predicate. ie:
