@@ -16,7 +16,7 @@ sections:
   - extensions
 ---
 
-`dry-schema` is a validation library for **data structures**. It ships with a set of many built-in predicates and powerful macros that allow you to define even complex validation logic with very concise syntax.
+`dry-schema` is a validation library for **data structures**. It ships with a set of many built-in predicates and powerful DSL to define even complex data validations with very concise syntax.
 
 Main focus of this library is on:
 
@@ -24,7 +24,7 @@ Main focus of this library is on:
 - Value **types** validation
 
 ^INFO
-`dry-schema` is also used as the schema engine in [dry-validation](/gems/dry-validation)
+`dry-schema` is used as the schema engine in [dry-validation](/gems/dry-validation) which is the recommended solution for business domain validations
 ^
 
 ### Unique features
