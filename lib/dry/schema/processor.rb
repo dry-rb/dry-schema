@@ -81,7 +81,9 @@ module Dry
       #
       # @api public
       def call(input)
-        Result.new(input, message_compiler: message_compiler) do |result|
+        result_input = schema_dsl.with_root? ? { __root__: input } : input
+        crop_path = schema_dsl.with_root? ? [:__root__] : []
+        Result.new(result_input, message_compiler: message_compiler, crop_path: crop_path) do |result|
           steps.call(result)
         end
       end

@@ -32,6 +32,9 @@ module Dry
       option :message_compiler
 
       # @api private
+      option :crop_path, default: -> { EMPTY_ARRAY.dup }
+
+      # @api private
       def self.new(*, **)
         result = super
         yield(result)
@@ -124,6 +127,7 @@ module Dry
       #
       # @api public
       def message_set(options = EMPTY_HASH)
+        options = options.merge(crop_path: crop_path)
         message_compiler.with(options).(result_ast)
       end
 

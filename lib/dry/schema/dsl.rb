@@ -160,6 +160,32 @@ module Dry
         key(name, macro: Macros::Optional, &block)
       end
 
+      # Define an array
+      #
+      # @see DSL#required
+      #
+      # @example
+      #   each(:integer, gt?: 0)
+      #
+      #   each do
+      #    schema do
+      #      required(:method).filled(:str?)
+      #      required(:amount).filled(:float?)
+      #    end
+      #  end
+      #
+      # @return [Macros::Required]
+      #
+      # @api public
+      def each(*args, **opts, &block)
+        @__root__ = true
+        required(:__root__).array(*args, **opts, &block)
+      end
+
+      def with_root?
+        instance_variable_defined?('@__root__')
+      end
+
       # A generic method for defining keys
       #
       # @param [Symbol] name The key name

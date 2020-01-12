@@ -34,6 +34,7 @@ module Dry
 
       option :full, default: -> { false }
       option :locale, default: -> { :en }
+      option :crop_path, default: -> { EMPTY_ARRAY.dup }
       option :predicate_resolvers, default: -> { DEFAULT_PREDICATE_RESOLVERS }
 
       attr_reader :options
@@ -125,7 +126,7 @@ module Dry
 
         tokens = message_tokens(args)
         path, *arg_vals, input = predicate_resolvers[predicate].(args, opts)
-
+        path = path[crop_path.size..-1] if crop_path.any? && path[0..(crop_path.size - 1)] == crop_path
         options = opts.dup.update(
           path: path.last, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
         ).to_h
