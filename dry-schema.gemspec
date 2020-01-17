@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
     (with or without I18n gem). It's also used as the schema engine in dry-validation.
   TEXT
   spec.homepage      = 'https://dry-rb.org/gems/dry-schema'
-  spec.files         = Dir['CHANGELOG.md', 'LICENSE', 'README.md', 'dry-schema.gemspec', 'lib/**/*']
+  spec.files         = Dir["CHANGELOG.md", "LICENSE", "README.md", "dry-schema.gemspec", "lib/**/*"]
   spec.require_paths = ['lib']
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
