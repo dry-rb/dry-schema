@@ -25,6 +25,7 @@
 
 - Some keyword warnings that slipped into the previous release (@flash-gordon)
 
+
 [Compare v1.4.2...v1.4.3](https://github.com/dry-rb/dry-schema/compare/v1.4.2...v1.4.3)
 
 ## 1.4.2 2019-12-19
@@ -37,6 +38,7 @@
 - Fixed keyword warnings from MRI 2.7.0 (@flash-gordon)
 - Array with a member works correctly with `maybe` (issue #206) (@solnic)
 
+
 [Compare v1.4.1...v1.4.2](https://github.com/dry-rb/dry-schema/compare/v1.4.1...v1.4.2)
 
 ## 1.4.1 2019-10-08
@@ -45,6 +47,7 @@
 ### Fixed
 
 - Child schemas no longer mutate processing steps of their parent classes (@skryukov)
+
 
 [Compare v1.4.0...v1.4.1](https://github.com/dry-rb/dry-schema/compare/v1.4.0...v1.4.1)
 
@@ -78,6 +81,7 @@
 
 - Added/fixed support for custom optional types (@flash-gordon)
 
+
 [Compare v1.3.4...v1.4.0](https://github.com/dry-rb/dry-schema/compare/v1.3.4...v1.4.0)
 
 ## 1.3.4 2019-09-11
@@ -86,6 +90,7 @@
 ### Fixed
 
 - Fixed regression where using `array?` predicate within a block would crach (issue #186) (@skryukov)
+
 
 [Compare v1.3.3...v1.3.4](https://github.com/dry-rb/dry-schema/compare/v1.3.3...v1.3.4)
 
@@ -99,6 +104,7 @@
 - Default processor uses strict types by default, which fixes various cases when `maybe` is used with a constructor type (@flash-gordon)
 - Namespaced messages no longer causes a crash when used with nested schemas (fixed #176) (@solnic)
 
+
 [Compare v1.3.2...v1.3.3](https://github.com/dry-rb/dry-schema/compare/v1.3.2...v1.3.3)
 
 ## 1.3.2 2019-08-01
@@ -107,6 +113,7 @@
 ### Added
 
 - Support for new predicates: `bytesize?`, `min_bytesize?` and `max_bytesize?` (@bmalinconico)
+
 
 [Compare v1.3.1...v1.3.2](https://github.com/dry-rb/dry-schema/compare/v1.3.1...v1.3.2)
 
@@ -117,6 +124,7 @@
 
 - `Result#error?` works correctly with nested hashes and arrays (@solnic)
 - `:hints` extension no longer causes a crash where base messages are generated too (issue #165) (@solnic)
+
 
 [Compare v1.3.0...v1.3.1](https://github.com/dry-rb/dry-schema/compare/v1.3.0...v1.3.1)
 
@@ -141,6 +149,7 @@
 ### Fixed
 
 - Type container is passed down to nested schemas (@flash-gordon)
+
 
 [Compare v1.2.0...v1.3.0](https://github.com/dry-rb/dry-schema/compare/v1.2.0...v1.3.0)
 
@@ -178,6 +187,7 @@
 
 - Fixes related to `filled` restored pre-1.1.0 behavior of `:hints` which are again included (@solnic)
 - `filled` no longer uses filter rules to handle empty strings in `Params` (@solnic)
+
 [Compare v1.1.0...v1.2.0](https://github.com/dry-rb/dry-schema/compare/v1.1.0...v1.2.0)
 
 ## 1.1.0 2019-05-30
@@ -198,6 +208,7 @@
 - `Config#eql?` works as expected (@solnic)
 - Predicates are properly inferred from array with a member type spec, ie `array[:integer]` results in `array? + each(:integer?)` (issue #140) (@solnic)
 
+
 [Compare v1.0.3...v1.1.0](https://github.com/dry-rb/dry-schema/compare/v1.0.3...v1.1.0)
 
 ## 1.0.3 2019-05-21
@@ -209,6 +220,7 @@
 - Predicate arguments are used again for template cache keys (@solnic)
 - `I18n` messages backend no longer evaluates templates twice (@solnic)
 
+
 [Compare v1.0.2...v1.0.3](https://github.com/dry-rb/dry-schema/compare/v1.0.2...v1.0.3)
 
 ## 1.0.2 2019-05-12
@@ -218,6 +230,7 @@
 
 - Caching message templates uses restricted set of known keys to calculate cache keys (issue #132) (@solnic)
 
+
 [Compare v1.0.1...v1.0.2](https://github.com/dry-rb/dry-schema/compare/v1.0.1...v1.0.2)
 
 ## 1.0.1 2019-05-08
@@ -226,6 +239,7 @@
 ### Fixed
 
 - Applying `key?` predicate no longer causes recursive calls to `Result#errors` (issue #130) (@solnic)
+
 
 [Compare v1.0.0...v1.0.1](https://github.com/dry-rb/dry-schema/compare/v1.0.0...v1.0.1)
 
@@ -240,6 +254,7 @@
 ### Changed
 
 - [BREAKING] `Result#to_hash` was removed (@solnic)
+
 [Compare v0.6.0...v1.0.0](https://github.com/dry-rb/dry-schema/compare/v0.6.0...v1.0.0)
 
 ## 0.6.0 2019-04-24
@@ -250,6 +265,7 @@
 - Dependency on `dry-types` was bumped to `~> 1.0` (@solnic)
 - Dependency on `dry-logic` was bumped to `~> 1.0` (@solnic)
 - Dependency on `dry-initializer` was bumped to `~> 3.0` (@solnic)
+
 [Compare v0.5.1...v0.6.0](https://github.com/dry-rb/dry-schema/compare/v0.5.1...v0.6.0)
 
 ## 0.5.1 2019-04-17
@@ -258,6 +274,7 @@
 ### Fixed
 
 - Key map no longer crashes on unexpected input (issue #118) (@solnic)
+
 
 [Compare v0.5.0...v0.5.1](https://github.com/dry-rb/dry-schema/compare/v0.5.0...v0.5.1)
 
@@ -299,6 +316,7 @@
 
 - [BREAKING] `:monads` extension wraps entire result objects in `Success` or `Failure` (@flash-gordon)
 - When `:hints` are disabled, result AST will not include hint nodes (@solnic)
+
 [Compare v0.4.0...v0.5.0](https://github.com/dry-rb/dry-schema/compare/v0.4.0...v0.5.0)
 
 ## 0.4.0 2019-03-26
@@ -330,6 +348,7 @@
   - `messages.top_namespace` - **new setting** see above
 - [BREAKING] `Messages::I18n` uses `I18.store_translations` instead of messing with `I18n.load_path` (@solnic)
 - Schemas (`Params` and `JSON`) have nicer inspect (@solnic)
+
 [Compare v0.3.0...v0.4.0](https://github.com/dry-rb/dry-schema/compare/v0.3.0...v0.4.0)
 
 ## 0.3.0 2018-03-04
@@ -347,6 +366,7 @@
 ### Changed
 
 - Required ruby version was removed from gemspec for people who are stuck on MRI 2.3.x (@solnic)
+
 [Compare v0.2.0...v0.3.0](https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.3.0)
 
 ## 0.2.0 2019-02-26
@@ -376,6 +396,7 @@
 - [BREAKING] Hints generation was improved in general, output of `Result#messages` and `Result#hints` changed in some cases (@solnic)
 - [BREAKING] `schema` macro no longer prepends `hash?` check, for this behavior use the new `hash` macro (see #31) (@solnic)
 - [BREAKING] Support for MRI < 2.4 was dropped (@solnic)
+
 [Compare v0.1.1...v0.2.0](https://github.com/dry-rb/dry-schema/compare/v0.1.1...v0.2.0)
 
 ## 0.1.1 2019-02-17
@@ -389,6 +410,7 @@
 
 - Fix issues with templates and invalid tokens (issue #27) (@solnic)
 - Fix Ruby warnings (@flash-gordon)
+
 
 [Compare v0.1.0...v0.1.1](https://github.com/dry-rb/dry-schema/compare/v0.1.0...v0.1.1)
 
