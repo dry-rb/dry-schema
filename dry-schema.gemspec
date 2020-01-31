@@ -20,6 +20,8 @@ Gem::Specification.new do |spec|
   TEXT
   spec.homepage      = 'https://dry-rb.org/gems/dry-schema'
   spec.files         = Dir["CHANGELOG.md", "LICENSE", "README.md", "dry-schema.gemspec", "lib/**/*", "config/*.yml"]
+  spec.bindir        = 'bin'
+  spec.executables   = []
   spec.require_paths = ['lib']
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
