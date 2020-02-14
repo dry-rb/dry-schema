@@ -2,6 +2,7 @@
 
 RSpec.describe 'Registering custom types' do
   let(:container_without_types) { Dry::Schema::TypeContainer.new }
+
   let(:container_with_types) do
     Dry::Schema::TypeContainer.new
   end
