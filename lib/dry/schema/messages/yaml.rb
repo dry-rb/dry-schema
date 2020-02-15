@@ -150,27 +150,24 @@ module Dry
 
       # @api private
       def interpolate(input, data)
+        return input unless input.is_a?(String)
+
         tokens, evaluator = cache.fetch_or_store(input) do
-          if input.is_a?(String)
-            tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
-            text = input.gsub('%', '#')
+          tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
+          text = input.gsub('%', '#')
 
-            ruby = <<-RUBY.strip
-              -> (#{tokens.map { |token| "#{token}:" }.join(', ')}) { "#{text}" }
-            RUBY
+          ruby = <<-RUBY.strip
+            -> (#{tokens.map { |token| "#{token}:" }.join(', ')}) { "#{text}" }
+          RUBY
 
-            # rubocop:disable Security/Eval
-            evaluator = eval(ruby, binding, __FILE__, __LINE__ - 4)
-            # rubocop:enable Security/Eval
+          # rubocop:disable Security/Eval
+          evaluator = eval(ruby, binding, __FILE__, __LINE__ - 4)
+          # rubocop:enable Security/Eval
 
-            [tokens, evaluator]
-          else
-            [{}, -> { input }]
-          end
+          [tokens, evaluator]
         end
 
         pruned = data.select { |k,| tokens.include?(k) }
-
         pruned.empty? ? evaluator.() : evaluator.(**pruned)
       end
 
