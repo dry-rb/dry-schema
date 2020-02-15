@@ -124,7 +124,7 @@ module Dry
 
       # @api private
       def prepare
-        @data = config.load_paths.map { |path| load_translations(path) }.reduce(:merge)
+        @data = config.load_paths.map { |path| load_translations(path) }.reduce({}, :merge)
         self
       end
 

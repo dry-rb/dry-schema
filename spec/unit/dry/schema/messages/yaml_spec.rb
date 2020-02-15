@@ -29,6 +29,19 @@ RSpec.describe Dry::Schema::Messages::YAML do
         expect(meta).to eql({})
       end
     end
+
+    context 'with no load paths' do
+      subject(:messages) do
+        Dry::Schema::Messages::YAML.build(load_paths: [])
+      end
+
+      it 'does not cause data to be nil, leading to a NoMethodError' do
+        template, meta = messages[:filled?, path: [:name]]
+
+        expect(template).to be_nil
+        expect(meta).to be_nil
+      end
+    end
   end
 
   describe '#merge' do
