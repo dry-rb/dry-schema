@@ -159,7 +159,11 @@ module Dry
               -> (#{tokens.map { |token| "#{token}:" }.join(', ')}) { "#{text}" }
             RUBY
 
-            [tokens, eval(ruby, binding, __FILE__, __LINE__ - 3)]
+            # rubocop:disable Security/Eval
+            evaluator = eval(ruby, binding, __FILE__, __LINE__ - 4)
+            # rubocop:enable Security/Eval
+
+            [tokens, evaluator]
           else
             [{}, -> { input }]
           end
