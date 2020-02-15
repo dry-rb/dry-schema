@@ -8,6 +8,7 @@ gemspec
 
 gem 'dry-logic', github: 'dry-rb/dry-logic', branch: 'master' if ENV['DRY_LOGIC_FROM_MASTER'].eql?('true')
 gem 'dry-types', github: 'dry-rb/dry-types', branch: 'master' if ENV['DRY_TYPES_FROM_MASTER'].eql?('true')
+gem 'dry-configurable', github: 'dry-rb/dry-configurable', branch: 'master' if ENV['DRY_CONFIGURABLE_FROM_MASTER'].eql?('true')
 
 group :test do
   gem 'dry-monads', require: false

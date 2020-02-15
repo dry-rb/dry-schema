@@ -4,6 +4,8 @@ jobs:
       matrix:
         dry_logic_from_master: ["false", "true"]
         dry_types_from_master: ["false", "true"]
+        dry_configurable_from_master: ["false", "true"]
     env:
       DRY_LOGIC_FROM_MASTER: ${{matrix.dry_logic_from_master}}
       DRY_TYPES_FROM_MASTER: ${{matrix.dry_types_from_master}}
+      DRY_CONFIGURABLE_FROM_MASTER: ${{matrix.dry_configurable_from_master}}
