@@ -48,7 +48,7 @@ RSpec.describe Dry::Schema::Config do
 
   describe '#inspect' do
     it 'returns true when configs are the same' do
-      expect(config.inspect).to include('#<Dry::Schema::Config predicates=#<Dry::Schema::PredicateRegistry')
+      expect(config.inspect).to include('#<Dry::Schema::Config ')
     end
   end
 
