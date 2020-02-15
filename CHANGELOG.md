@@ -1,3 +1,13 @@
+## unreleased 
+
+
+### Fixed
+
+- YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
+
+
+[Compare v1.4.3...master](https://github.com/dry-rb/dry-schema/compare/v1.4.3...master)
+
 ## 1.4.3 2020-01-08
 
 
