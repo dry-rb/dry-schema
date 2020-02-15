@@ -1,4 +1,11 @@
 ---
+- version: unreleased
+  summary: 
+  date: 
+  fixed:
+  - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
+  added: 
+  changed: 
 - version: 1.4.3
   date: '2020-01-08'
   added:
