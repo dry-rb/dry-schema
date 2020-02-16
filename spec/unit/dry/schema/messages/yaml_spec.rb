@@ -45,6 +45,43 @@ RSpec.describe Dry::Schema::Messages::YAML do
         expect(result).to be_nil
       end
     end
+
+    context 'interpolation' do
+      subject(:messages) do
+        Dry::Schema::Messages::YAML.build.merge(
+          stringify_keys(
+            en: {
+              dry_schema: {
+                errors: {
+                  format?: {
+                    text: '%{input} looks weird',
+                    code: '%{code} is bad'
+                  }
+                }
+              }
+            }
+          )
+        )
+      end
+
+      it 'interpolates into text and meta' do
+        result = messages.lookup(
+          :format?,
+          {
+            input: 'it really',
+            code: 'this error'
+          },
+          path: [:name]
+        )
+
+        expect(result).to eq(
+          text: 'it really looks weird',
+          meta: {
+            code: 'this error is bad'
+          }
+        )
+      end
+    end
   end
 
   describe '#merge' do

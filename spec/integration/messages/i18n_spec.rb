@@ -16,6 +16,17 @@ RSpec.describe Dry::Schema::Messages::I18n do
     I18n.reload!
   end
 
+  def store_translations(**translations)
+    I18n.backend.store_translations(
+      :en,
+      messages.config.top_namespace => translations
+    )
+  end
+
+  def store_errors(**errors)
+    store_translations(errors: errors)
+  end
+
   describe '#lookup' do
     context 'when config.default_locale is set' do
       let(:options) do
@@ -114,6 +125,16 @@ RSpec.describe Dry::Schema::Messages::I18n do
         it 'returns rule name using provided locale within a namespace' do
           expect(messages.namespaced(:company).rule(:email, locale: :en)).to eql('Company email')
         end
+
+        it 'can use a proc for a rule value' do
+          store_translations(
+            rules: {
+              rule_proc: ->(*) { 'Called' }
+            }
+          )
+
+          expect(messages.rule(:rule_proc, locale: :en)).to eql('Called')
+        end
       end
 
       describe 'fallbacking to I18n.default_locale with fallback backend config' do
@@ -181,20 +202,29 @@ RSpec.describe Dry::Schema::Messages::I18n do
         )
       end
 
+      it 'can use a proc for a message' do
+        store_errors(
+          predicate_proc: ->(_path, opts) { opts[:text] }
+        )
+
+        result = messages.lookup(
+          :predicate_proc, { text: 'text' }, path: :path
+        )
+
+        expect(result).to eq(
+          text: 'text',
+          meta: {}
+        )
+      end
+
       context 'with meta-data' do
-        def store_translation(translation)
-          I18n.backend.store_translations(
-            :en,
-            messages.config.top_namespace => {
-              errors: {
-                predicate_with_meta: translation
-              }
+        it 'finds the meta-data' do
+          store_errors(
+            predicate_with_meta: {
+              text: 'text',
+              code: 123
             }
           )
-        end
-
-        it 'finds the meta-data' do
-          store_translation(text: 'text', code: 123)
 
           result = messages.lookup(:predicate_with_meta, {}, path: :path)
 
@@ -204,10 +234,19 @@ RSpec.describe Dry::Schema::Messages::I18n do
           )
         end
 
-        it 'correctly handles the proc form' do
-          store_translation(text: ->(*) { 'text' }, code: ->(*) { 123 })
+        it 'handles procs as meta-data' do
+          store_errors(
+            predicate_with_meta_proc: {
+              text: 'text',
+              code: ->(_path, opts) { opts[:code] }
+            }
+          )
 
-          result = messages.lookup(:predicate_with_meta, {}, path: :path)
+          result = messages.lookup(
+            :predicate_with_meta_proc,
+            { code: 123 },
+            path: :path
+          )
 
           expect(result).to eq(
             text: 'text',
