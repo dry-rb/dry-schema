@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'dry/logic/operators'
-require 'dry/types/predicate_inferrer'
 require 'dry/types/primitive_inferrer'
 
+require 'dry/types/predicate_inferrer'
 require 'dry/schema/macros/core'
 
 module Dry

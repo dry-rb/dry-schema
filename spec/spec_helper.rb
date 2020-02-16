@@ -17,9 +17,7 @@ Dir[SPEC_ROOT.join('support/**/*.rb')].each(&method(:require))
 require 'dry/schema'
 require 'dry/types'
 
-module Types
-  include Dry.Types
-end
+Types = Dry.Types
 
 Undefined = Dry::Core::Constants::Undefined
 

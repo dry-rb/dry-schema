@@ -217,5 +217,24 @@ RSpec.describe 'Macros #value' do
         expect(schema.(data: { num: '11' })).to be_success
       end
     end
+
+    context 'with a hash type' do
+      let(:type) do
+        Types::Hash.schema(name: 'string')
+      end
+
+      subject(:schema) do
+        env = self
+        Dry::Schema.define do
+          required(:data).value(env.type)
+        end
+      end
+
+      it 'unpacks type' do
+        expect(schema.(data: { name: nil }).messages).to eql(
+          data: { name: ['must be a string'] }
+        )
+      end
+    end
   end
 end
