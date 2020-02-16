@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'dry/schema/messages/template'
 require 'dry/schema/messages/i18n'
 
 RSpec.describe Dry::Schema::Messages::I18n do
@@ -12,21 +11,24 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
   before do
     I18n.config.available_locales = [:en, :pl]
-    I18n.load_path.concat(%w(en pl).map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
+    I18n.load_path.concat(%w[en pl].map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") })
     I18n.backend.load_translations
     I18n.reload!
   end
 
-  describe '#[]' do
+  describe '#lookup' do
     context 'when config.default_locale is set' do
       let(:options) do
         { default_locale: :pl }
       end
 
-      it 'returns a message template' do
-        template, = messages[:size?, path: :age, size: 10]
+      it 'returns a message' do
+        result = messages.lookup(:size?, { size: 3 }, path: :age, size: 10)
 
-        expect(template).to eql(Dry::Schema::Messages::Template['wielkość musi być równa %{size}'])
+        expect(result).to eql(
+          text: 'wielkość musi być równa 3',
+          meta: {}
+        )
       end
     end
 
@@ -36,49 +38,57 @@ RSpec.describe Dry::Schema::Messages::I18n do
       end
 
       it 'returns nil when message is not defined' do
-        expect(messages[:not_here, path: :srsly]).to be(nil)
-      end
-
-      it 'returns a message template' do
-        template, = messages[:size?, path: :age, size: 10]
-
-        expect(template).to eql(Dry::Schema::Messages::Template['wielkość musi być równa %{size}'])
-      end
-
-      it 'caches message templates' do
-        template, = messages[:size?, path: :age, size: 10]
-
-        expect(messages[:size?, path: :age, size: 10][0]).to be(template)
+        expect(messages.lookup(:not_here, {}, path: :srsly)).to be(nil)
       end
 
       it 'returns a message for a predicate' do
-        template, = messages[:filled?, path: :name]
+        result = messages.lookup(:filled?, {}, path: :name)
 
-        expect(template.()).to eql('nie może być pusty')
+        expect(result).to eql(
+          text: 'nie może być pusty',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific rule' do
-        template, = messages[:filled?, path: :email]
+        result = messages.lookup(:filled?, {}, path: :email)
 
-        expect(template.()).to eql('Proszę podać adres email')
+        expect(result).to eql(
+          text: 'Proszę podać adres email',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific val type' do
-        template, = messages[:size?, path: :pages, val_type: String]
+        result = messages.lookup(:size?, { size: 2 }, path: :pages, val_type: String)
 
-        expect(template.(size: 2)).to eql('wielkość musi być równa 2')
+        expect(result).to eql(
+          text: 'wielkość musi być równa 2',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific rule and its default arg type' do
-        template, = messages[:size?, path: :pages]
+        result = messages.lookup(:size?, { size: 2 }, path: :pages)
 
-        expect(template.(size: 2)).to eql('wielkość musi być równa 2')
+        expect(result).to eql(
+          text: 'wielkość musi być równa 2',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific rule and its arg type' do
-        template, = messages[:size?, path: :pages, arg_type: Range]
+        result = messages.lookup(
+          :size?,
+          { size_left: 1, size_right: 2 },
+          path: :pages,
+          arg_type: Range
+        )
 
-        expect(template.(size_left: 1, size_right: 2)).to eql('wielkość musi być między 1 a 2')
+        expect(result).to eql(
+          text: 'wielkość musi być między 1 a 2',
+          meta: {}
+        )
       end
 
       describe '#translate' do
@@ -117,37 +127,58 @@ RSpec.describe Dry::Schema::Messages::I18n do
         end
 
         it 'returns a message for a predicate in the default_locale' do
-          template, = messages[:even?, path: :some_number]
+          result = messages.lookup(:even?, {}, path: :some_number)
 
           expect(I18n.locale).to eql(:pl)
-          expect(template.()).to eql('must be even')
+          expect(result).to eql(
+            text: 'must be even',
+            meta: {}
+          )
         end
       end
     end
 
     context 'with a different locale' do
       it 'returns a message for a predicate' do
-        template, = messages[:filled?, path: :name, locale: :en]
+        result = messages.lookup(:filled?, {}, path: :name, locale: :en)
 
-        expect(template.()).to eql('must be filled')
+        expect(result).to eql(
+          text: 'must be filled',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific rule' do
-        template, = messages[:filled?, path: :email, locale: :en]
+        result = messages.lookup(:filled?, {}, path: :email, locale: :en)
 
-        expect(template.()).to eql('Please provide your email')
+        expect(result).to eql(
+          text: 'Please provide your email',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific rule and its default arg type' do
-        template, = messages[:size?, path: :pages, locale: :en]
+        result = messages.lookup(:size?, { size: 2 }, path: :pages, locale: :en)
 
-        expect(template.(size: 2)).to eql('size must be 2')
+        expect(result).to eql(
+          text: 'size must be 2',
+          meta: {}
+        )
       end
 
       it 'returns a message for a specific rule and its arg type' do
-        template, = messages[:size?, path: :pages, arg_type: Range, locale: :en]
+        result = messages.lookup(
+          :size?,
+          { size_left: 1, size_right: 2 },
+          path: :pages,
+          arg_type: Range,
+          locale: :en
+        )
 
-        expect(template.(size_left: 1, size_right: 2)).to eql('size must be within 1 - 2')
+        expect(result).to eql(
+          text: 'size must be within 1 - 2',
+          meta: {}
+        )
       end
 
       context 'with meta-data' do
@@ -165,47 +196,39 @@ RSpec.describe Dry::Schema::Messages::I18n do
         it 'finds the meta-data' do
           store_translation(text: 'text', code: 123)
 
-          template, meta = messages[:predicate_with_meta, path: :path]
+          result = messages.lookup(:predicate_with_meta, {}, path: :path)
 
-          expect(template.()).to eq('text')
-          expect(meta).to eq(code: 123)
+          expect(result).to eq(
+            text: 'text',
+            meta: { code: 123 }
+          )
         end
 
         it 'correctly handles the proc form' do
           store_translation(text: ->(*) { 'text' }, code: ->(*) { 123 })
 
-          template, meta = messages[:predicate_with_meta, path: :path]
+          result = messages.lookup(:predicate_with_meta, {}, path: :path)
 
-          expect(template.()).to eq('text')
-          expect(meta).to eq(code: 123)
+          expect(result).to eq(
+            text: 'text',
+            meta: { code: 123 }
+          )
         end
       end
     end
 
     context 'with dynamic locale' do
       it 'uses current locale in cache key and returns different messages for different locales' do
-        template, = I18n.with_locale(:en) { messages[:filled?, path: :name] }
-        expect(template.()).to eql('must be filled')
+        expect(I18n.with_locale(:en) { messages.lookup(:filled?, {}, path: :name) }).to eql(
+          text: 'must be filled',
+          meta: {}
+        )
 
-        template, = I18n.with_locale(:pl) { messages[:filled?, path: :name] }
-        expect(template.()).to eql('nie może być pusty')
+        expect(I18n.with_locale(:pl) { messages.lookup(:filled?, {}, path: :name) }).to eql(
+          text: 'nie może być pusty',
+          meta: {}
+        )
       end
-    end
-  end
-
-  describe '#cache_key' do
-    it "uses adds current locale when it's not passed or nil" do
-      expect(I18n.with_locale(:en) { messages.cache_key(:size?, {}) })
-        .to eql([:size?, {}, :en])
-      expect(I18n.with_locale(:pl) { messages.cache_key(:size?, {}) })
-        .to eql([:size?, {}, :pl])
-      expect(I18n.with_locale(:en) { messages.cache_key(:size?, locale: nil) })
-        .to eql([:size?, { locale: nil }, :en])
-    end
-
-    it "doesn't add current locale if it's passed explicitly" do
-      expect(I18n.with_locale(:en) { messages.cache_key(:size?, locale: :pl) })
-        .to eql([:size?, { locale: :pl }])
     end
   end
 end

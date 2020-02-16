@@ -7,13 +7,15 @@ RSpec.describe Dry::Schema::Messages::YAML do
     Dry::Schema::Messages::YAML.build
   end
 
-  describe '#[]' do
+  describe '#lookup' do
     context 'with default config' do
-      it 'returns message template and optional meta' do
-        template, meta = messages[:filled?, path: [:name]]
+      it 'returns text and optional meta' do
+        result = messages.lookup(:filled?, {}, path: [:name])
 
-        expect(template.()).to eql('must be filled')
-        expect(meta).to eql({})
+        expect(result).to eql(
+          text: 'must be filled',
+          meta: {}
+        )
       end
     end
 
@@ -22,11 +24,13 @@ RSpec.describe Dry::Schema::Messages::YAML do
         Dry::Schema::Messages::YAML.build(top_namespace: 'my_app')
       end
 
-      it 'returns message template and optional meta' do
-        template, meta = messages[:filled?, path: [:name]]
+      it 'returns text and optional meta' do
+        result = messages.lookup(:filled?, {}, path: [:name])
 
-        expect(template.()).to eql('must be filled')
-        expect(meta).to eql({})
+        expect(result).to eql(
+          text: 'must be filled',
+          meta: {}
+        )
       end
     end
 
@@ -36,10 +40,9 @@ RSpec.describe Dry::Schema::Messages::YAML do
       end
 
       it 'does not cause data to be nil, leading to a NoMethodError' do
-        template, meta = messages[:filled?, path: [:name]]
+        result = messages.lookup(:filled?, {}, path: [:name])
 
-        expect(template).to be_nil
-        expect(meta).to be_nil
+        expect(result).to be_nil
       end
     end
   end

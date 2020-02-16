@@ -6,7 +6,6 @@ require 'dry/equalizer'
 require 'dry/configurable'
 
 require 'dry/schema/constants'
-require 'dry/schema/messages/template'
 
 module Dry
   module Schema
@@ -47,11 +46,6 @@ module Dry
         )
 
         # @api private
-        def self.cache
-          @cache ||= Concurrent::Map.new { |h, k| h[k] = Concurrent::Map.new }
-        end
-
-        # @api private
         def self.build(options = EMPTY_HASH)
           messages = new
 
@@ -82,22 +76,9 @@ module Dry
           tokens = { name: name, locale: options.fetch(:locale, default_locale) }
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
 
-          rule = get(path, options) if path
+          rule = get(path, {}, options) if path
           rule.is_a?(Hash) ? rule[:text] : rule
         end
-
-        # Retrieve a message template
-        #
-        # @return [Template]
-        #
-        # @api public
-        def call(predicate, options)
-          cache.fetch_or_store(cache_key(predicate, options)) do
-            text, meta = lookup(predicate, options)
-            [Template[text], meta] if text
-          end
-        end
-        alias_method :[], :call
 
         # Retrieve an array of looked up paths
         #
@@ -117,13 +98,13 @@ module Dry
         # @api private
         #
         # rubocop:disable Metrics/AbcSize
-        def lookup(predicate, options)
+        def lookup(predicate, tokens, options)
           opts = options.reject { |k, _| config.lookup_options.include?(k) }
           path = lookup_paths(predicate, options).detect { |key| key?(key, opts) }
 
           return unless path
 
-          get(path, opts).values_at(:text, :meta)
+          get(path, tokens, opts)
         end
         # rubocop:enable Metrics/AbcSize
 
@@ -162,22 +143,8 @@ module Dry
         end
 
         # @api private
-        def cache
-          @cache ||= self.class.cache[self]
-        end
-
-        # @api private
         def default_locale
           config.default_locale
-        end
-
-        # @api private
-        def cache_key(predicate, options)
-          if options.key?(:input)
-            [predicate, options.reject { |k,| k.equal?(:input) }]
-          else
-            [predicate, options]
-          end
         end
 
         private

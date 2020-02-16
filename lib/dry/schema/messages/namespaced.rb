@@ -35,8 +35,8 @@ module Dry
         # @return [String]
         #
         # @api public
-        def get(key, options = {})
-          messages.get(key, options)
+        def get(key, data, options = {})
+          messages.get(key, data, options)
         end
 
         # @api public

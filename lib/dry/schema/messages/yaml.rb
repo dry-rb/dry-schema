@@ -14,6 +14,7 @@ module Dry
     # @api public
     class Messages::YAML < Messages::Abstract
       LOCALE_TOKEN = '%<locale>s'
+      TOKEN_REGEXP = /%{(\w*)}/.freeze
 
       include Dry::Equalizer(:data)
 
@@ -61,6 +62,11 @@ module Dry
       end
 
       # @api private
+      def self.cache
+        @cache ||= Concurrent::Map.new { |h, k| h[k] = Concurrent::Map.new }
+      end
+
+      # @api private
       def initialize(data: EMPTY_HASH, config: nil)
         super()
         @data = data
@@ -88,8 +94,15 @@ module Dry
       # @return [String]
       #
       # @api public
-      def get(key, options = EMPTY_HASH)
-        data[evaluated_key(key, options)]
+      def get(key, tokens, options = EMPTY_HASH)
+        result = data[evaluated_key(key, options)]
+
+        {
+          text: interpolate(result[:text], tokens),
+          meta: result[:meta].transform_values do |value|
+            interpolate(value, tokens)
+          end
+        }
       end
 
       # Check if given key is defined
@@ -123,12 +136,40 @@ module Dry
       end
 
       # @api private
+      def cache
+        @cache ||= self.class.cache[self]
+      end
+
+      # @api private
       def prepare
         @data = config.load_paths.map { |path| load_translations(path) }.reduce({}, :merge)
         self
       end
 
       private
+
+      # @api private
+      def interpolate(input, data)
+        return input unless input.is_a?(String)
+
+        tokens, evaluator = cache.fetch_or_store(input) do
+          tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
+          text = input.gsub('%', '#')
+
+          ruby = <<-RUBY.strip
+            -> (#{tokens.map { |token| "#{token}:" }.join(', ')}) { "#{text}" }
+          RUBY
+
+          # rubocop:disable Security/Eval
+          evaluator = eval(ruby, binding, __FILE__, __LINE__ - 4)
+          # rubocop:enable Security/Eval
+
+          [tokens, evaluator]
+        end
+
+        pruned = data.select { |k,| tokens.include?(k) }
+        pruned.empty? ? evaluator.() : evaluator.(**pruned)
+      end
 
       # @api private
       def load_translations(path)

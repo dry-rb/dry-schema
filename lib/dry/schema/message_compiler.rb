@@ -130,16 +130,18 @@ module Dry
           path: path.last, **tokens, **lookup_options(arg_vals: arg_vals, input: input)
         ).to_h
 
-        template, meta = messages[predicate, options]
+        result = message_text(predicate, tokens, options)
 
-        unless template
-          raise(MissingMessageError.new(path, messages.looked_up_paths(predicate, options)))
+        unless result
+          raise MissingMessageError.new(path, messages.looked_up_paths(predicate, options))
         end
 
-        text = message_text(template, tokens, options)
-
         message_type(options).new(
-          text: text, path: path, predicate: predicate, args: arg_vals, input: input, meta: meta
+          **result,
+          path: path,
+          predicate: predicate,
+          args: arg_vals,
+          input: input
         )
       end
 
@@ -180,13 +182,16 @@ module Dry
       end
 
       # @api private
-      def message_text(template, tokens, options)
-        text = template[template.data(tokens)]
+      def message_text(predicate, tokens, options)
+        result = messages.lookup(predicate, tokens, options)
 
-        return text unless full
+        return result if !result || !full
 
         rule = options[:path]
-        "#{messages.rule(rule, options) || rule} #{text}"
+        {
+          **result,
+          text: "#{messages.rule(rule, options) || rule} #{result[:text]}"
+        }
       end
 
       # @api private
