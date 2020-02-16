@@ -69,6 +69,10 @@ RSpec.configure do |config|
     stub_const('Test', Module.new)
   end
 
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
+  end
+
   config.after do
     I18n.load_path = [Dry::Schema::DEFAULT_MESSAGES_PATH]
     I18n.locale = :en

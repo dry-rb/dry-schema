@@ -28,18 +28,34 @@ RSpec.describe Dry::Schema do
   end
 
   context 'i18n' do
-    context 'with custom messages set globally' do
-      before do
-        I18n.load_path << SPEC_ROOT.join('fixtures/locales/en.yml')
-        I18n.backend.load_translations
-      end
+    before do
+      I18n.load_path << SPEC_ROOT.join('fixtures/locales/en.yml')
+      I18n.backend.load_translations
+    end
 
+    context 'with custom messages set globally' do
       subject(:schema) do
         Dry::Schema.define do
           configure do
             config.messages.backend = :i18n
           end
 
+          required(:email).value(:filled?)
+        end
+      end
+
+      include_context 'schema with customized messages'
+    end
+
+    context 'with global configuration' do
+      before do
+        config = Dry::Schema::Config.new
+        config.messages.backend = :i18n
+        allow(Dry::Schema).to receive(:config).and_return(config)
+      end
+
+      subject(:schema) do
+        Dry::Schema.define do
           required(:email).value(:filled?)
         end
       end

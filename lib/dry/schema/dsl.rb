@@ -67,7 +67,7 @@ module Dry
       option :parent, Types::Coercible::Array, default: -> { EMPTY_ARRAY.dup }, as: :parents
 
       # @return [Config] Configuration object exposed via `#configure` method
-      option :config, optional: true, default: proc { parent ? parent.config.dup : Config.new }
+      option :config, optional: true, default: proc { (parent || Schema).config.dup }
 
       # @return [ProcessorSteps] Steps for the processor
       option :steps, default: proc { parent ? parent.steps.dup : ProcessorSteps.new }

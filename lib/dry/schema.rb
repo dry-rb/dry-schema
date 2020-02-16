@@ -14,6 +14,18 @@ module Dry
   module Schema
     extend Dry::Core::Extensions
 
+    # Configuration
+    #
+    # @example
+    #   Dry::Schema.config.messages.backend = :i18n
+    #
+    # @return [Config]
+    #
+    # @api public
+    def self.config
+      @config ||= Config.new
+    end
+
     # Define a schema
     #
     # @example
