@@ -1,14 +1,15 @@
 ---
 - version: unreleased
-  summary: 
-  date: 
+  summary:
+  date:
   fixed:
   - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
-  added: 
+  added:
   changed:
   - "`:i18n` message backend delegates interpolation and caching to `I18n` (issue
     #211) (@robhanlon22)"
   - "(internal) `:yaml` message backend no longer uses template objects (@robhanlon22)"
+  - "(internal) `PrediateInferrer` was removed. `Dry::Types::PredicateInferrer` is a drop-in replacement (@flash-gordon)"
 - version: 1.4.3
   date: '2020-01-08'
   added:
