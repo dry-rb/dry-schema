@@ -34,4 +34,38 @@ RSpec.describe Dry::Schema::DSL do
       expect(rules[:user].(user: { name: '' })).to be_failure
     end
   end
+
+  describe '#config' do
+    let(:namespace) { :test_namespace }
+    let(:replacement_namespace) { :replacement_test_namespace }
+
+    context 'when a parent is present' do
+      it "uses a dup of the parent's config" do
+        config = Dry::Schema::Config.new.tap do |c|
+          c.messages.namespace = namespace
+        end
+        parent = Dry::Schema::DSL.new(config: config)
+        dsl = Dry::Schema::DSL.new(parent: parent)
+
+        aggregate_failures do
+          expect(dsl.config.messages.namespace).to eq(namespace)
+
+          parent.config.messages.namespace = replacement_namespace
+          expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
+        end
+      end
+    end
+
+    context 'when no parent is present' do
+      it 'uses a dup of the global config' do
+        aggregate_failures do
+          Dry::Schema.config.messages.namespace = namespace
+          expect(dsl.config.messages.namespace).to eq(namespace)
+
+          Dry::Schema.config.messages.namespace = replacement_namespace
+          expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
+        end
+      end
+    end
+  end
 end
