@@ -2,6 +2,7 @@
 
 require 'dry/core/extensions'
 
+require 'dry/schema/config'
 require 'dry/schema/constants'
 require 'dry/schema/dsl'
 require 'dry/schema/params'

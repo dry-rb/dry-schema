@@ -36,10 +36,4 @@ RSpec.describe Dry::Schema do
       end
     end
   end
-
-  describe '.config' do
-    it 'returns an instance of Config' do
-      expect(Dry::Schema.config).to be_instance_of(Dry::Schema::Config)
-    end
-  end
 end

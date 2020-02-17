@@ -36,6 +36,11 @@ module MessageSetSupport
   end
 end
 
+require 'dry/configurable/test_interface'
+require 'dry/schema/config'
+
+Dry::Schema.config.enable_test_interface
+
 module Coercions
   extend Transproc::Registry
 
@@ -69,8 +74,12 @@ RSpec.configure do |config|
     stub_const('Test', Module.new)
   end
 
-  config.mock_with :rspec do |mocks|
-    mocks.verify_partial_doubles = true
+  config.before(:all) do
+    Dry::Schema.config.reset_config
+  end
+
+  config.before do
+    Dry::Schema.config.reset_config
   end
 
   config.after do
