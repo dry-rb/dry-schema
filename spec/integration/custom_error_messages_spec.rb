@@ -49,9 +49,7 @@ RSpec.describe Dry::Schema do
 
     context 'with global configuration' do
       before do
-        config = Dry::Schema::Config.new
-        config.messages.backend = :i18n
-        allow(Dry::Schema).to receive(:config).and_return(config)
+        Dry::Schema.config.messages.backend = :i18n
       end
 
       subject(:schema) do
