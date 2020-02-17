@@ -40,9 +40,7 @@ RSpec.describe Dry::Schema::DSL do
     let(:replacement_namespace) { :replacement_test_namespace }
 
     it "uses a dup of the parent's config when a parent is present" do
-      config = Dry::Schema::Config.new.tap do |c|
-        c.messages.namespace = namespace
-      end
+      config = Dry::Schema::Config.new.tap { |c| c.messages.namespace = namespace }
       parent = Dry::Schema::DSL.new(config: config)
       dsl = Dry::Schema::DSL.new(parent: parent)
 
