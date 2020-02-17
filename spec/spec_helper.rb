@@ -37,7 +37,6 @@ module MessageSetSupport
 end
 
 require 'dry/configurable/test_interface'
-require 'dry/schema/config'
 
 Dry::Schema.config.enable_test_interface
 
