@@ -44,22 +44,18 @@ RSpec.describe Dry::Schema::DSL do
       parent = Dry::Schema::DSL.new(config: config)
       dsl = Dry::Schema::DSL.new(parent: parent)
 
-      aggregate_failures do
-        expect(dsl.config.messages.namespace).to eq(namespace)
+      expect(dsl.config.messages.namespace).to eq(namespace)
 
-        parent.config.messages.namespace = replacement_namespace
-        expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
-      end
+      parent.config.messages.namespace = replacement_namespace
+      expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
     end
 
     it 'uses a dup of the global config when no parent is present' do
-      aggregate_failures do
-        Dry::Schema.config.messages.namespace = namespace
-        expect(dsl.config.messages.namespace).to eq(namespace)
+      Dry::Schema.config.messages.namespace = namespace
+      expect(dsl.config.messages.namespace).to eq(namespace)
 
-        Dry::Schema.config.messages.namespace = replacement_namespace
-        expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
-      end
+      Dry::Schema.config.messages.namespace = replacement_namespace
+      expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
     end
   end
 end
