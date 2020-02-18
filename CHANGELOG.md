@@ -1,6 +1,10 @@
 ## unreleased 
 
 
+### Added
+
+- You can now set global config via `Dry::Schema.config` (issue #205) (@robhanlon22)
+
 ### Fixed
 
 - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
