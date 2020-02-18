@@ -2,6 +2,7 @@
 
 require 'dry/core/extensions'
 
+require 'dry/schema/config'
 require 'dry/schema/constants'
 require 'dry/schema/dsl'
 require 'dry/schema/params'
@@ -13,6 +14,18 @@ module Dry
   # @api public
   module Schema
     extend Dry::Core::Extensions
+
+    # Configuration
+    #
+    # @example
+    #   Dry::Schema.config.messages.backend = :i18n
+    #
+    # @return [Config]
+    #
+    # @api public
+    def self.config
+      @config ||= Config.new
+    end
 
     # Define a schema
     #

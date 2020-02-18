@@ -2,6 +2,7 @@
 
 require 'dry/initializer'
 
+require 'dry/schema'
 require 'dry/schema/constants'
 require 'dry/schema/config'
 require 'dry/schema/result'
@@ -20,7 +21,7 @@ module Dry
       param :rules
 
       # @api private
-      option :config, default: -> { Config.new }
+      option :config, default: -> { Schema.config.dup }
 
       # @api private
       option :message_compiler, default: -> { MessageCompiler.new(Messages.setup(config.messages)) }

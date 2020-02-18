@@ -25,7 +25,6 @@ Undefined = Dry::Core::Constants::Undefined
 Dry::Schema.load_extensions(:hints)
 
 require 'i18n'
-require 'transproc/all'
 
 require 'dry/schema/messages/i18n'
 require 'dry/schema/message_set'
@@ -35,6 +34,10 @@ module MessageSetSupport
     to_h.eql?(other)
   end
 end
+
+Dry::Schema::MessageSet.include(MessageSetSupport)
+
+require 'transproc/all'
 
 module Coercions
   extend Transproc::Registry
@@ -49,7 +52,9 @@ module Coercions
   end
 end
 
-Dry::Schema::MessageSet.include(MessageSetSupport)
+require 'dry/configurable/test_interface'
+
+Dry::Schema.config.enable_test_interface
 
 RSpec.configure do |config|
   unless RUBY_VERSION >= '2.7'
@@ -67,6 +72,14 @@ RSpec.configure do |config|
 
   config.before do
     stub_const('Test', Module.new)
+  end
+
+  config.before(:all) do
+    Dry::Schema.config.reset_config
+  end
+
+  config.before do
+    Dry::Schema.config.reset_config
   end
 
   config.after do
