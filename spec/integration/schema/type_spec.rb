@@ -70,6 +70,32 @@ RSpec.describe Dry::Schema, 'types specs' do
     end
   end
 
+  context 'sum with a member-array' do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:nums).value([:integer, array[:integer]])
+      end
+    end
+
+    it 'infers int? | (array? & each(int?))' do
+      expect(schema.(nums: 1)).to be_success
+      expect(schema.(nums: [3, 1, 2])).to be_success
+
+      expect(schema.(nums: 1)).to be_success
+      expect(schema.(nums: '1')).to be_success
+      expect(schema.(nums: [])).to be_success
+      expect(schema.(nums: %w[3 1 2])).to be_success
+
+      expect(schema.(nums: nil).errors.to_h).to eql(
+        nums: ['must be an integer or must be an array']
+      )
+
+      expect(schema.(nums: ['3', nil, 2]).errors.to_h).to eql(
+        nums: { 1 => ['must be an integer'] }
+      )
+    end
+  end
+
   context 'sum type spec without rules' do
     subject(:schema) do
       Dry::Schema.Params do

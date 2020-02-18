@@ -198,20 +198,29 @@ module Dry
           type_spec = args[0] unless schema_or_predicate?(args[0])
 
           predicates = Array(type_spec ? args[1..-1] : args)
+          type_rule = nil
 
           if type_spec
             resolved_type = resolve_type(type_spec, nullable)
 
-            type(resolved_type) if set_type
+            if type_spec.is_a?(::Array)
+              type_rule = type_spec.map { |ts| new(chain: false).value(ts) }.reduce(:|)
+            else
+              type_predicates = predicate_inferrer[resolved_type]
 
-            type_predicates = predicate_inferrer[resolved_type]
+              predicates.replace(type_predicates + predicates) unless type_predicates.empty?
 
-            predicates.replace(type_predicates + predicates) unless type_predicates.empty?
-
-            return self if predicates.empty?
+              return self if predicates.empty?
+            end
           end
 
-          yield(*predicates, type_spec: type_spec)
+          type(resolved_type) if set_type && resolved_type
+
+          if type_rule
+            yield(*predicates, type_spec: nil, type_rule: type_rule)
+          else
+            yield(*predicates, type_spec: type_spec, type_rule: nil)
+          end
         end
 
         # @api private

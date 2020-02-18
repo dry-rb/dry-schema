@@ -15,6 +15,8 @@ module Dry
 
           if opts[:type_spec] && !filter_empty_string?
             value(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
+          elsif opts[:type_rule]
+            value(:filled?).value(*predicates, **opts, &block)
           else
             value(:filled?, *predicates, **opts, &block)
           end

@@ -26,13 +26,19 @@ module Dry
             schema_dsl.set_type(name, updated_type)
           end
 
-          trace.evaluate(*predicates, **opts)
+          if (type_rule = opts[:type_rule])
+            trace.append(type_rule).evaluate(*predicates, **opts)
+            trace.append(new(chain: false).instance_exec(&block)) if block
+          else
+            trace.evaluate(*predicates, **opts)
 
-          type_spec = opts[:type_spec]
-          if block && type_spec.equal?(:hash)
-            hash(&block)
-          elsif block
-            trace.append(new(chain: false).instance_exec(&block))
+            type_spec = opts[:type_spec]
+
+            if block && type_spec.equal?(:hash)
+              hash(&block)
+            elsif block
+              trace.append(new(chain: false).instance_exec(&block))
+            end
           end
 
           if trace.captures.empty?
