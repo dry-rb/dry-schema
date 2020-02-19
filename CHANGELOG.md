@@ -3,6 +3,7 @@
 
 ### Added
 
+- Support for complex sum types ie `value([:integer, array[:integer])` (issue #214) (@solnic)
 - You can now set global config via `Dry::Schema.config` (issue #205) (@robhanlon22)
 - Default error message for `:uuid_v4?` predicate (isssue #230) (@solnic)
 
