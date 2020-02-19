@@ -195,13 +195,7 @@ module Dry
 
         # @api private
         def extract_type_spec(*args, nullable: false, set_type: true)
-          type_spec = args[0]
-
-          is_type_spec = type_spec.is_a?(Dry::Schema::Processor) ||
-                         type_spec.is_a?(Symbol) &&
-                         type_spec.to_s.end_with?(QUESTION_MARK)
-
-          type_spec = nil if is_type_spec
+          type_spec = args[0] unless schema_or_predicate?(args[0])
 
           predicates = Array(type_spec ? args[1..-1] : args)
 
@@ -229,6 +223,13 @@ module Dry
           else
             schema_dsl.resolve_type([:nil, resolved])
           end
+        end
+
+        # @api private
+        def schema_or_predicate?(arg)
+          arg.is_a?(Dry::Schema::Processor) ||
+            arg.is_a?(Symbol) &&
+              arg.to_s.end_with?(QUESTION_MARK)
         end
       end
     end
