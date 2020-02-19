@@ -4,6 +4,7 @@
 ### Added
 
 - You can now set global config via `Dry::Schema.config` (issue #205) (@robhanlon22)
+- Default error message for `:uuid_v4?` predicate (isssue #230) (@solnic)
 
 ### Fixed
 
