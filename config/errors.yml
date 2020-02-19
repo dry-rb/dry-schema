@@ -101,5 +101,7 @@ en:
           default: "must be %{size} bytes long"
           range: "must be within %{size_left} - %{size_right} bytes long"
 
+      uuid_v4?: "is not a valid UUID"
+
       not:
         empty?: "cannot be empty"
