@@ -82,6 +82,13 @@ module Dry
         other.is_a?(String) ? text == other : super
       end
 
+      # @api private
+      def to_or(root)
+        clone = dup
+        clone.instance_variable_set('@path', path - root)
+        clone
+      end
+
       # See which message is higher in the hierarchy
       #
       # @api private

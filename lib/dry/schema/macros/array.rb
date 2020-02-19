@@ -25,7 +25,17 @@ module Dry
               )
             end
 
-            hash(&block) if is_hash_block
+            is_op = args.size.equal?(2) && args[1].is_a?(Logic::Operations::Abstract)
+
+            if is_hash_block && !is_op
+              hash(&block)
+            elsif is_op
+              hash = Value.new(schema_dsl: schema_dsl.new, name: name).hash(args[1])
+
+              trace.captures.concat(hash.trace.captures)
+
+              type(schema_dsl.types[name].of(hash.schema_dsl.types[name]))
+            end
           end
 
           self
