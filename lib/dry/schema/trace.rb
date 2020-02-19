@@ -29,8 +29,9 @@ module Dry
       end
 
       # @api private
-      def evaluate(*args, type_spec: ::Dry::Schema::Undefined, **opts)
+      def evaluate(*args, **opts)
         predicates = opts.empty? ? args : args.push(opts)
+
         evaluate_predicates(predicates).each do |rule|
           append(rule)
         end

@@ -54,8 +54,8 @@ module Dry
         #
         # @api public
         def value(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:|
-            super(*predicates, type_spec: type_spec, **opts, &block)
+          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+            super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
           end
         end
 
@@ -70,8 +70,8 @@ module Dry
         #
         # @api public
         def filled(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:|
-            super(*predicates, type_spec: type_spec, **opts, &block)
+          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+            super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
           end
         end
 
@@ -86,9 +86,9 @@ module Dry
         #
         # @api public
         def maybe(*args, **opts, &block)
-          extract_type_spec(*args, nullable: true) do |*predicates, type_spec:|
+          extract_type_spec(*args, nullable: true) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Maybe) do |macro|
-              macro.call(*predicates, type_spec: type_spec, **opts, &block)
+              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end
           end
         end

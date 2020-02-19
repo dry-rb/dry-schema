@@ -13,13 +13,16 @@ module Dry
         def value(*args, **opts, &block)
           type(:array)
 
-          extract_type_spec(*args, set_type: false) do |*predicates, type_spec:|
+          extract_type_spec(*args, set_type: false) do |*predicates, type_spec:, type_rule:|
             type(schema_dsl.array[type_spec]) if type_spec
 
             is_hash_block = type_spec.equal?(:hash)
 
             if predicates.any? || opts.any? || !is_hash_block
-              super(*predicates, type_spec: type_spec, **opts, &(is_hash_block ? nil : block))
+              super(
+                *predicates, type_spec: type_spec, type_rule: type_rule, **opts,
+                &(is_hash_block ? nil : block)
+              )
             end
 
             hash(&block) if is_hash_block
