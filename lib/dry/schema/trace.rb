@@ -29,7 +29,7 @@ module Dry
       end
 
       # @api private
-      def evaluate(*args, type_rule: ::Dry::Schema::Undefined, type_spec: ::Dry::Schema::Undefined, **opts)
+      def evaluate(*args, **opts)
         predicates = opts.empty? ? args : args.push(opts)
 
         evaluate_predicates(predicates).each do |rule|
