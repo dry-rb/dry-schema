@@ -56,6 +56,19 @@ module Dry
       end
       alias to_s dump
 
+      # Dump the message into a hash
+      #
+      # The hash will be deeply nested if the path's size is greater than 1
+      #
+      # @see Message#to_h
+      #
+      # @return [Hash]
+      #
+      # @api public
+      def to_h
+        @to_h ||= _path.to_h(dump)
+      end
+
       # See if another message is the same
       #
       # If a string is passed, it will be compared with the text
@@ -73,14 +86,19 @@ module Dry
       #
       # @api private
       def <=>(other)
-        l_path = Path[path]
-        r_path = Path[other.path]
+        l_path = _path
+        r_path = other._path
 
         unless l_path.same_root?(r_path)
           raise ArgumentError, 'Cannot compare messages from different root paths'
         end
 
         l_path <=> r_path
+      end
+
+      # @api private
+      def _path
+        @_path ||= Path[path]
       end
     end
   end

@@ -103,14 +103,12 @@ module Dry
       # @api private
       def visit_or(node, opts)
         left, right = node.map { |n| visit(n, opts) }
+        Message::Or[left, right, or_translator]
+      end
 
-        if [left, right].flatten.map(&:path).uniq.size == 1
-          Message::Or.new(left, right, proc { |k| messages.translate(k, **default_lookup_options) })
-        elsif right.is_a?(Array)
-          right
-        else
-          [left, right].flatten.max
-        end
+      # @api private
+      def or_translator
+        @or_translator ||= proc { |k| messages.translate(k, **default_lookup_options) }
       end
 
       # @api private
