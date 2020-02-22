@@ -7,6 +7,17 @@ RSpec.describe Dry::Schema::Messages::YAML do
     Dry::Schema::Messages::YAML.build
   end
 
+  describe '#[]' do
+    it 'returns text and optional meta' do
+      result = messages[:size?, path: [:name], size: 312]
+
+      expect(result).to eql(
+        text: 'size must be 312',
+        meta: {}
+      )
+    end
+  end
+
   describe '#lookup' do
     context 'with default config' do
       it 'returns text and optional meta' do

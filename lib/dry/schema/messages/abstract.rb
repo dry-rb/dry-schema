@@ -80,6 +80,20 @@ module Dry
           rule.is_a?(Hash) ? rule[:text] : rule
         end
 
+        # Retrieve a message template
+        #
+        # @return [Hash]
+        #
+        # @api public
+        def call(predicate, options)
+          tokens = options.reject { |key, _|
+            key.equal?(:locale) || config.lookup_options.include?(key)
+          }
+
+          lookup(predicate, tokens, options)
+        end
+        alias [] call
+
         # Retrieve an array of looked up paths
         #
         # @param [Symbol] predicate
