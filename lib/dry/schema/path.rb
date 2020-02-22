@@ -8,6 +8,7 @@ module Dry
     #
     # @api private
     class Path
+      include Dry.Equalizer(:keys)
       include Comparable
       include Enumerable
 
@@ -23,7 +24,7 @@ module Dry
       # @return [Path]
       #
       # @api private
-      def self.[](spec)
+      def self.call(spec)
         case spec
         when Symbol, Array
           new(Array[*spec])
@@ -38,6 +39,11 @@ module Dry
         end
       end
 
+      # @api private
+      def self.[](spec)
+        call(spec)
+      end
+
       # Extract a list of keys from a hash
       #
       # @api private
@@ -50,6 +56,21 @@ module Dry
       # @api private
       def initialize(keys)
         @keys = keys
+      end
+
+      # @api private
+      def to_h(value = EMPTY_ARRAY.dup)
+        curr_idx = 0
+        last_idx = keys.size - 1
+        hash = EMPTY_HASH.dup
+        node = hash
+
+        while curr_idx <= last_idx
+          (node = node[keys[curr_idx]] = (curr_idx.eql?(last_idx) ? Array(value) : EMPTY_HASH.dup))
+          curr_idx += 1
+        end
+
+        hash
       end
 
       # @api private

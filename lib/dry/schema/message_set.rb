@@ -38,7 +38,6 @@ module Dry
       def initialize(messages, options = EMPTY_HASH)
         @messages = messages
         @options = options
-        initialize_placeholders!
       end
 
       # Iterate over messages
@@ -114,40 +113,21 @@ module Dry
       def messages_map(messages = self.messages)
         return EMPTY_HASH if empty?
 
-        messages.group_by(&:path).reduce(placeholders) do |hash, (path, msgs)|
-          node = path.reduce(hash) { |a, e| a[e] }
-
-          msgs.each do |msg|
-            node << msg
-          end
-
-          node.map!(&:dump)
-
-          hash
-        end
+        messages
+          .map(&:to_h)
+          .reduce(EMPTY_HASH.dup) { |a, e| deep_merge(a, e) }
       end
 
       # @api private
-      def paths
-        @paths ||= messages.map(&:path).uniq
-      end
-
-      # @api private
-      def initialize_placeholders!
-        return @placeholders = EMPTY_HASH if empty?
-
-        @placeholders = paths.reduce(EMPTY_HASH.dup) do |hash, path|
-          curr_idx = 0
-          last_idx = path.size - 1
-          node = hash
-
-          while curr_idx <= last_idx
-            key = path[curr_idx]
-            node = (node[key] || node[key] = curr_idx < last_idx ? {} : [])
-            curr_idx += 1
+      def deep_merge(h1, h2, &block)
+        h1.merge(h2) do |_, val1, val2|
+          if val1.is_a?(Hash) && val2.is_a?(Hash)
+            deep_merge(val1, val2, &block)
+          elsif val1.is_a?(Array) && val2.is_a?(Array)
+            val1 + val2
+          else
+            [val1, val2]
           end
-
-          hash
         end
       end
     end
