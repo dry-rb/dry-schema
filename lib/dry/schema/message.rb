@@ -85,7 +85,8 @@ module Dry
       # @api private
       def to_or(root)
         clone = dup
-        clone.instance_variable_set('@path', path - root)
+        clone.instance_variable_set('@path', path - root.to_a)
+        clone.instance_variable_set('@_path', nil)
         clone
       end
 

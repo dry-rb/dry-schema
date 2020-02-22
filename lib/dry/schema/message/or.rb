@@ -2,6 +2,8 @@
 
 require 'dry/equalizer'
 
+require 'dry/schema/path'
+
 module Dry
   module Schema
     # Message objects used by message sets
@@ -104,7 +106,7 @@ module Dry
           # @api private
           def initialize(*args)
             super
-            @root = [left, right].flatten.map(&:path).reduce(:&)
+            @root = [left, right].flatten.map(&:_path).reduce(:&)
             @left = left.map { |msg| msg.to_or(root) }
             @right = right.map { |msg| msg.to_or(root) }
           end

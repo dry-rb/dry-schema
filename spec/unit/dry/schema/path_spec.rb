@@ -53,4 +53,23 @@ RSpec.describe Dry::Schema::Path do
       expect(path.include?(other)).to be(false)
     end
   end
+
+  describe '#&' do
+    let(:segments) do
+      %i[user address street]
+    end
+
+    it 'returns a new path with the common segment as the root' do
+      other = Dry::Schema::Path.new(%i[user address city])
+      root = Dry::Schema::Path.new(%i[user address])
+
+      expect(path & other).to eql(root)
+    end
+
+    it 'raises if other is not included in the source' do
+      other = Dry::Schema::Path.new(%i[foo baz qux])
+
+      expect { path & other }.to raise_error(ArgumentError, /doesn't have the same root/)
+    end
+  end
 end

@@ -111,8 +111,19 @@ module Dry
       end
 
       # @api private
-      def key_matches(other)
-        map { |key| (idx = other.index(key)) && keys[idx].equal?(key) }
+      def &(other)
+        unless same_root?(other)
+          raise ArgumentError, "#{other.inspect} doesn't have the same root #{inspect}"
+        end
+
+        self.class.new(
+          key_matches(other, :select).compact.reject { |value| value.equal?(false) }
+        )
+      end
+
+      # @api private
+      def key_matches(other, meth = :map)
+        public_send(meth) { |key| (idx = other.index(key)) && keys[idx].equal?(key) }
       end
 
       # @api private
