@@ -15,6 +15,11 @@ module Dry
     class Messages::YAML < Messages::Abstract
       LOCALE_TOKEN = '%<locale>s'
       TOKEN_REGEXP = /%{(\w*)}/.freeze
+      EMPTY_CONTEXT = Object.new.tap { |ctx|
+        def ctx.context
+          binding
+        end
+      }.freeze.context
 
       include Dry::Equalizer(:data)
 
@@ -156,12 +161,10 @@ module Dry
           tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
           text = input.gsub('%', '#')
 
-          ruby = <<-RUBY.strip
+          # rubocop:disable Security/Eval
+          evaluator = eval(<<~RUBY, EMPTY_CONTEXT, __FILE__, __LINE__)
             -> (#{tokens.map { |token| "#{token}:" }.join(', ')}) { "#{text}" }
           RUBY
-
-          # rubocop:disable Security/Eval
-          evaluator = eval(ruby, binding, __FILE__, __LINE__ - 4)
           # rubocop:enable Security/Eval
 
           [tokens, evaluator]
