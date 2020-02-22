@@ -4,6 +4,7 @@ require_relative 'support/coverage'
 require_relative 'support/warnings'
 
 Warning.ignore(%r{gems/i18n})
+Warning.process { |w| raise RuntimeError, w }
 
 begin
   require 'pry-byebug'

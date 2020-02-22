@@ -29,7 +29,7 @@ module Dry
           trace_opts = opts.reject { |key, _| key == :type_spec || key == :type_rule }
 
           if (type_rule = opts[:type_rule])
-            trace.append(type_rule).evaluate(*predicates, trace_opts)
+            trace.append(type_rule).evaluate(*predicates, **trace_opts)
             trace.append(new(chain: false).instance_exec(&block)) if block
           else
             trace.evaluate(*predicates, **trace_opts)
