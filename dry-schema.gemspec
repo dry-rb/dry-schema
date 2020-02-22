@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-equalizer", "~> 0.2"
   spec.add_runtime_dependency "dry-initializer", "~> 3.0"
   spec.add_runtime_dependency "dry-logic", "~> 1.0"
-  spec.add_runtime_dependency "dry-types", "~> 1.2"
+  spec.add_runtime_dependency "dry-types", "~> 1.3", ">= 1.3.1"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
