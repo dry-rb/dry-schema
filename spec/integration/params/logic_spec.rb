@@ -115,6 +115,39 @@ RSpec.describe Dry::Schema::Params do
           expect(result[:sites][1]).to eql(login: 'john', age: 25)
         end
       end
+
+      context 'with invalid values' do
+        let(:input) do
+          { sites: [
+            { login: 'jane', age: '' },
+            { name: '' },
+            { login: '', age: '25' }
+          ] }
+        end
+
+        it 'builds a deeply nested error hash' do
+          expect(result.errors[:sites]).to eql(
+            0 => {
+              or: [
+                { age: ['must be an integer'] },
+                { name: ['is missing'] }
+              ]
+            },
+            1 => {
+              or: [
+                { age: ['is missing'], login: ['is missing'] },
+                { name: ['must be filled'] }
+              ]
+            },
+            2 => {
+              or: [
+                { login: ['must be filled'] },
+                { name: ['is missing'] }
+              ]
+            }
+          )
+        end
+      end
     end
   end
 
