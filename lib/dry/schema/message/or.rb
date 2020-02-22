@@ -114,28 +114,8 @@ module Dry
           # @api public
           def to_h
             @to_h ||= Path[[*root, :or]].to_h(
-              [merge(left.map(&:to_h)), merge(right.map(&:to_h))]
+              [left.map(&:to_h).reduce(:merge), right.map(&:to_h).reduce(:merge)]
             )
-          end
-
-          private
-
-          # @api private
-          def merge(messages)
-            messages.reduce(EMPTY_HASH.dup) { |a, e| deep_merge(a, e) }
-          end
-
-          # @api private
-          def deep_merge(h1, h2, &block)
-            h1.merge(h2) do |_, val1, val2|
-              if val1.is_a?(Hash) && val2.is_a?(Hash)
-                deep_merge(val1, val2, &block)
-              elsif val1.is_a?(Array) && val2.is_a?(Array)
-                val1 + val2
-              else
-                [val1, val2]
-              end
-            end
           end
         end
       end
