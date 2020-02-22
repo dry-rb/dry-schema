@@ -77,7 +77,7 @@ module Dry
           #
           # @api public
           def dump
-            "#{left.dump} #{messages[:or][:text]} #{right.dump}"
+            @dump ||= "#{left.dump} #{messages[:or][:text]} #{right.dump}"
           end
           alias_method :to_s, :dump
 
@@ -89,12 +89,12 @@ module Dry
           #
           # @api public
           def to_h
-            _path.to_h(dump)
+            @to_h ||= _path.to_h(dump)
           end
 
           # @api private
           def to_a
-            [left, right]
+            @to_a ||= [left, right]
           end
         end
 
@@ -113,7 +113,9 @@ module Dry
 
           # @api public
           def to_h
-            Path[[*root, :or]].to_h([merge(left.map(&:to_h)), merge(right.map(&:to_h))])
+            @to_h ||= Path[[*root, :or]].to_h(
+              [merge(left.map(&:to_h)), merge(right.map(&:to_h))]
+            )
           end
 
           private
