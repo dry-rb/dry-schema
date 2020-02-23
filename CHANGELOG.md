@@ -10,6 +10,7 @@
 ### Fixed
 
 - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
+- Callbacks can now be inherited from multiple parents (@skryukov)
 
 ### Changed
 
