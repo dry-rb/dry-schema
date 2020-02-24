@@ -41,7 +41,11 @@ module Dry
             elsif type_spec.respond_to?(:keys)
               hash do
                 type_spec.each do |key|
-                  required(key.name).value(key.type)
+                  if key.required?
+                    required(key.name).value(key.type)
+                  else
+                    optional(key.name).value(key.type)
+                  end
                 end
               end
             elsif block
