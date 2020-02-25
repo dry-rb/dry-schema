@@ -18,12 +18,6 @@ module Dry
       # @return [Array<Message>]
       attr_reader :messages
 
-      # An internal hash that is filled in with dumped messages
-      # when a message set is coerced to a hash
-      #
-      # @return [Hash<Symbol=>[Array,Hash]>]
-      attr_reader :placeholders
-
       # Options hash
       #
       # @return [Hash]
@@ -111,24 +105,39 @@ module Dry
 
       # @api private
       def messages_map(messages = self.messages)
-        return EMPTY_HASH if empty?
-
-        messages
-          .map(&:to_h)
-          .reduce(EMPTY_HASH.dup) { |a, e| deep_merge(a, e) }
+        combine_message_hashes(messages.map(&:to_h))
       end
 
       # @api private
-      def deep_merge(h1, h2, &block)
-        h1.merge(h2) do |_, val1, val2|
-          if val1.is_a?(Hash) && val2.is_a?(Hash)
-            deep_merge(val1, val2, &block)
-          elsif val1.is_a?(Array) && val2.is_a?(Array)
-            val1 + val2
-          else
-            [val1, val2]
+      def combine_message_hashes(hashes)
+        hashes.reduce(EMPTY_HASH.dup) do |a, e|
+          a.merge(e) do |_, *values|
+            combine_message_values(values)
           end
         end
+      end
+
+      # @api private
+      def combine_message_values(values)
+        hashes, other = partition_message_values(values)
+        combined = combine_message_hashes(hashes)
+        flattened = other.flatten
+
+        if flattened.empty?
+          combined
+        elsif combined.empty?
+          flattened
+        else
+          [flattened, combined]
+        end
+      end
+
+      # @api private
+      def partition_message_values(values)
+        values
+          .map { |value| value.is_a?(Array) ? value : [value] }
+          .reduce(EMPTY_ARRAY.dup, :+)
+          .partition { |value| value.is_a?(Hash) && !value[:text].is_a?(String) }
       end
     end
   end
