@@ -66,7 +66,14 @@ module Dry
         node = hash
 
         while curr_idx <= last_idx
-          (node = node[keys[curr_idx]] = (curr_idx.eql?(last_idx) ? Array(value) : EMPTY_HASH.dup))
+          node =
+            node[keys[curr_idx]] =
+              if curr_idx == last_idx
+                value.is_a?(Array) ? value : [value]
+              else
+                EMPTY_HASH.dup
+              end
+
           curr_idx += 1
         end
 
