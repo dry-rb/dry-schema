@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/initializer'
+
 require 'dry/schema/constants'
 
 module Dry
