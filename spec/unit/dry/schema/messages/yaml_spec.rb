@@ -7,26 +7,13 @@ RSpec.describe Dry::Schema::Messages::YAML do
     Dry::Schema::Messages::YAML.build
   end
 
-  describe '#[]' do
-    it 'returns text and optional meta' do
-      result = messages[:size?, path: [:name], size: 312]
-
-      expect(result).to eql(
-        text: 'size must be 312',
-        meta: {}
-      )
-    end
-  end
-
   describe '#lookup' do
     context 'with default config' do
       it 'returns text and optional meta' do
-        result = messages.lookup(:filled?, {}, path: [:name])
+        template, meta = messages[:filled?, path: [:name]]
 
-        expect(result).to eql(
-          text: 'must be filled',
-          meta: {}
-        )
+        expect(template.()).to eql('must be filled')
+        expect(meta).to eql({})
       end
     end
 
@@ -36,12 +23,10 @@ RSpec.describe Dry::Schema::Messages::YAML do
       end
 
       it 'returns text and optional meta' do
-        result = messages.lookup(:filled?, {}, path: [:name])
+        template, meta = messages[:filled?, path: [:name]]
 
-        expect(result).to eql(
-          text: 'must be filled',
-          meta: {}
-        )
+        expect(template.()).to eql('must be filled')
+        expect(meta).to eql({})
       end
     end
 
@@ -51,7 +36,7 @@ RSpec.describe Dry::Schema::Messages::YAML do
       end
 
       it 'does not cause data to be nil, leading to a NoMethodError' do
-        result = messages.lookup(:filled?, {}, path: [:name])
+        result = messages[:filled?, path: [:name]]
 
         expect(result).to be_nil
       end
@@ -66,7 +51,7 @@ RSpec.describe Dry::Schema::Messages::YAML do
                 errors: {
                   format?: {
                     text: '%{input} looks weird',
-                    code: '%{code} is bad'
+                    code: 'bad'
                   }
                 }
               }
@@ -75,22 +60,11 @@ RSpec.describe Dry::Schema::Messages::YAML do
         )
       end
 
-      it 'interpolates into text and meta' do
-        result = messages.lookup(
-          :format?,
-          {
-            input: 'it really',
-            code: 'this error'
-          },
-          path: [:name]
-        )
+      it 'interpolates into text' do
+        template, meta = messages[:format?, path: [:name]]
 
-        expect(result).to eq(
-          text: 'it really looks weird',
-          meta: {
-            code: 'this error is bad'
-          }
-        )
+        expect(template.(input: 'it really')).to eql('it really looks weird')
+        expect(meta).to eql(code: 'bad')
       end
     end
   end
