@@ -99,15 +99,8 @@ module Dry
       # @return [String]
       #
       # @api public
-      def get(key, tokens, options = EMPTY_HASH)
-        result = data[evaluated_key(key, options)]
-
-        {
-          text: interpolate(result[:text], tokens),
-          meta: result[:meta].transform_values do |value|
-            interpolate(value, tokens)
-          end
-        }
+      def get(key, options = EMPTY_HASH)
+        data[evaluated_key(key, options)]
       end
 
       # Check if given key is defined
@@ -151,15 +144,24 @@ module Dry
         self
       end
 
-      private
+      # @api private
+      def pruned_data(template, **input)
+        tokens, = evaluation_context(template)
+        input.select { |k,| tokens.include?(k) }
+      end
 
       # @api private
-      def interpolate(input, data)
-        return input unless input.is_a?(String)
+      def interpolate(template, **data)
+        _, evaluator = evaluation_context(template)
+        data.empty? ? evaluator.() : evaluator.(**data)
+      end
 
-        tokens, evaluator = cache.fetch_or_store(input) do
-          tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
-          text = input.gsub('%', '#')
+      private
+
+      def evaluation_context(template)
+        cache.fetch_or_store(template.text) do
+          tokens = template.text.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
+          text = template.text.gsub('%', '#')
 
           # rubocop:disable Security/Eval
           evaluator = eval(<<~RUBY, EMPTY_CONTEXT, __FILE__, __LINE__)
@@ -169,9 +171,6 @@ module Dry
 
           [tokens, evaluator]
         end
-
-        pruned = data.select { |k,| tokens.include?(k) }
-        pruned.empty? ? evaluator.() : evaluator.(**pruned)
       end
 
       # @api private

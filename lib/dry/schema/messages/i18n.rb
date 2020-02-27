@@ -28,23 +28,21 @@ module Dry
       # @return [String]
       #
       # @api public
-      def get(key, data, options = EMPTY_HASH)
+      def get(key, options = EMPTY_HASH)
         return unless key
 
-        opts = { **data, locale: options.fetch(:locale, default_locale) }
+        result = t.(key, locale: options.fetch(:locale, default_locale))
 
-        text_key = "#{key}.text"
-
-        if key?(text_key, opts)
-          resolved_key = text_key
-          meta = extract_meta(key, opts)
+        if result.is_a?(Hash)
+          text = result[:text]
+          meta = result.dup.tap { |h| h.delete(:text) }
         else
-          resolved_key = key
-          meta = EMPTY_HASH
+          text = result
+          meta = EMPTY_HASH.dup
         end
 
         {
-          text: t.(resolved_key, **opts),
+          text: text,
           meta: meta
         }
       end
@@ -96,6 +94,26 @@ module Dry
         self
       end
 
+      # @api private
+      def pruned_data(_template, **input)
+        input
+      end
+
+      # @api private
+      def interpolate(template, **data)
+        text_key = "#{template.key}.text"
+
+        opts = {
+          locale: default_locale,
+          **template.options,
+          **data
+        }
+
+        key = key?(text_key, opts) ? text_key : template.key
+
+        t.(key, **opts)
+      end
+
       private
 
       # @api private
@@ -106,15 +124,6 @@ module Dry
 
         locales.each do |locale|
           I18n.backend.store_translations(locale, data[locale.to_s])
-        end
-      end
-
-      def extract_meta(parent_key, options)
-        t.(parent_key, **options).each_with_object({}) do |(key, _), meta|
-          unless key.to_sym == :text
-            meta_key = "#{parent_key}.#{key}"
-            meta[key] = t.(meta_key, **options) if key?(meta_key, options)
-          end
         end
       end
     end

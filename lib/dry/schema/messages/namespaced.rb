@@ -35,8 +35,8 @@ module Dry
         # @return [String]
         #
         # @api public
-        def get(key, data, options = {})
-          messages.get(key, data, options)
+        def get(key, options = {})
+          messages.get(key, options)
         end
 
         # @api public
@@ -68,6 +68,16 @@ module Dry
         # @api private
         def cache_key(predicate, options)
           messages.cache_key(predicate, options)
+        end
+
+        # @api private
+        def pruned_data(template, **input)
+          messages.pruned_data(template, **input)
+        end
+
+        # @api private
+        def interpolate(template, **data)
+          messages.interpolate(template, **data)
         end
       end
     end

@@ -6,6 +6,7 @@ require 'dry/equalizer'
 require 'dry/configurable'
 
 require 'dry/schema/constants'
+require 'dry/schema/messages/template'
 
 module Dry
   module Schema
@@ -76,23 +77,37 @@ module Dry
           tokens = { name: name, locale: options.fetch(:locale, default_locale) }
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
 
-          rule = get(path, {}, options) if path
+          rule = get(path, options) if path
           rule.is_a?(Hash) ? rule[:text] : rule
         end
 
         # Retrieve a message template
         #
-        # @return [Hash]
+        # @return [Template]
         #
         # @api public
+        # rubocop:disable Metrics/AbcSize
         def call(predicate, options)
-          tokens = options.reject { |key, _|
-            key.equal?(:locale) || config.lookup_options.include?(key)
-          }
+          options = { locale: default_locale, **options }
+          opts = options.reject { |k,| config.lookup_options.include?(k) }
+          path = lookup_paths(predicate, options).detect { |key| key?(key, opts) }
 
-          lookup(predicate, tokens, options)
+          return unless path
+
+          result = get(path, opts)
+
+          [
+            Template.new(
+              messages: self,
+              key: path,
+              text: result[:text],
+              options: opts
+            ),
+            result[:meta]
+          ]
         end
-        alias [] call
+        # rubocop:enable Metrics/AbcSize
+        alias_method :[], :call
 
         # Retrieve an array of looked up paths
         #
@@ -106,21 +121,6 @@ module Dry
           tokens = lookup_tokens(predicate, options)
           filled_lookup_paths(tokens)
         end
-
-        # Try to find a message for the given predicate and its options
-        #
-        # @api private
-        #
-        # rubocop:disable Metrics/AbcSize
-        def lookup(predicate, tokens, options)
-          opts = options.reject { |k, _| config.lookup_options.include?(k) }
-          path = lookup_paths(predicate, options).detect { |key| key?(key, opts) }
-
-          return unless path
-
-          get(path, tokens, opts)
-        end
-        # rubocop:enable Metrics/AbcSize
 
         # @api private
         def lookup_paths(predicate, options)

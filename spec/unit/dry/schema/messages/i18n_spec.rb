@@ -10,12 +10,10 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
     describe '#lookup' do
       it 'returns lookup result' do
-        result = messages.lookup(:filled?, {}, path: [:name])
+        template, meta = messages[:filled?, path: [:name]]
 
-        expect(result).to eql(
-          text: 'must be filled',
-          meta: {}
-        )
+        expect(template.()).to eql('must be filled')
+        expect(meta).to eql({})
       end
     end
 
@@ -33,12 +31,10 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
     describe '#lookup' do
       it 'returns lookup result' do
-        result = messages.lookup(:filled?, {}, path: [:name])
+        template, meta = messages[:filled?, path: [:name]]
 
-        expect(result).to eql(
-          text: 'must be filled',
-          meta: {}
-        )
+        expect(template.()).to eql('must be filled')
+        expect(meta).to eql({})
       end
     end
 
