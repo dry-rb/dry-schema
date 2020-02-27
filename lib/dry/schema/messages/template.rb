@@ -17,7 +17,7 @@ module Dry
 
         # @api private
         def data(input = EMPTY_HASH)
-          messages.pruned_data(self, **input)
+          messages.pruned_data(self, **options, **input)
         end
 
         # @api private
