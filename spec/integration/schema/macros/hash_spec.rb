@@ -38,4 +38,44 @@ RSpec.describe 'Macros #hash' do
       expect(result).to be_failing(['must be a hash'])
     end
   end
+
+  context 'with hash schema' do
+    let(:hash_schema) do
+      Types::Hash.schema(name: 'string')
+    end
+
+    context 'and a block' do
+      subject(:schema) do
+        hash_schema = self.hash_schema
+
+        Dry::Schema.define do
+          required(:foo).hash(hash_schema) do
+            required(:email).value(:string)
+          end
+        end
+      end
+
+      let(:input) { { foo: { name: 'John' } } }
+
+      it 'combines schemas' do
+        expect(result).to be_failing(email: ["is missing", "must be a string"])
+      end
+    end
+
+    context 'and a predicate' do
+       subject(:schema) do
+        hash_schema = self.hash_schema
+
+        Dry::Schema.define do
+          required(:foo).hash(hash_schema, :filled?)
+        end
+      end
+
+      let(:input) { { foo: { } } }
+
+      it 'adds predicates' do
+        expect(result).to be_failing(["must be filled"])
+      end
+    end
+  end
 end

@@ -39,15 +39,7 @@ module Dry
             if block && type_spec.equal?(:hash)
               hash(&block)
             elsif type_spec.respond_to?(:keys)
-              hash do
-                type_spec.each do |key|
-                  if key.required?
-                    required(key.name).value(key.type)
-                  else
-                    optional(key.name).value(key.type)
-                  end
-                end
-              end
+              hash(type_spec)
             elsif block
               trace.append(new(chain: false).instance_exec(&block))
             end
