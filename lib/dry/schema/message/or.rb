@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/equalizer'
+require 'dry/schema/message/or/single_path'
+require 'dry/schema/message/or/multi_path'
 
 module Dry
   module Schema
@@ -8,74 +9,23 @@ module Dry
     #
     # @api public
     class Message
-      # A message sub-type used by OR operations
-      #
-      # @api public
-      class Or
-        # @api private
-        attr_reader :left
-
-        # @api private
-        attr_reader :right
-
-        # @api private
-        attr_reader :path
-
-        # @api private
-        attr_reader :_path
-
-        # @api private
-        attr_reader :messages
-
+      module Or
         # @api private
         def self.[](left, right, messages)
-          if [left, right].flatten.map(&:path).uniq.size == 1
-            new(left, right, messages)
+          msgs = [left, right].flatten
+          paths = msgs.map(&:path)
+
+          if paths.uniq.size == 1
+            SinglePath.new(left, right, messages)
           elsif right.is_a?(Array)
-            right
+            if left.is_a?(Array) && paths.uniq.size > 1
+              MultiPath.new(left, right)
+            else
+              right
+            end
           else
-            [left, right].flatten.max
+            msgs.max
           end
-        end
-
-        # @api private
-        def initialize(left, right, messages)
-          @left = left
-          @right = right
-          @messages = messages
-          @path = left.path
-          @_path = left._path
-        end
-
-        # Dump a message into a string
-        #
-        # Both sides of the message will be joined using translated
-        # value under `dry_schema.or` message key
-        #
-        # @see Message#dump
-        #
-        # @return [String]
-        #
-        # @api public
-        def dump
-          "#{left.dump} #{messages[:or][:text]} #{right.dump}"
-        end
-        alias to_s dump
-
-        # Dump an `or` message into a hash
-        #
-        # @see Message#to_h
-        #
-        # @return [String]
-        #
-        # @api public
-        def to_h
-          _path.to_h(dump)
-        end
-
-        # @api private
-        def to_a
-          [left, right]
         end
       end
     end

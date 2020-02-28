@@ -22,7 +22,14 @@ module Dry
       # @see Message::Or
       #
       # @api public
-      class Or
+      class Or::SinglePath
+        # @api private
+        def hint?
+          false
+        end
+      end
+
+      class Or::MultiPath
         # @api private
         def hint?
           false

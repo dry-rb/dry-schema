@@ -2,6 +2,7 @@
 
 require 'dry/configurable'
 require 'dry/initializer'
+require 'dry/logic/operators'
 
 require 'dry/schema/type_registry'
 require 'dry/schema/type_container'
@@ -23,6 +24,8 @@ module Dry
     class Processor
       extend Dry::Initializer
       extend Dry::Configurable
+
+      include Dry::Logic::Operators
 
       setting :key_map_type
       setting :type_registry_namespace, :strict
@@ -137,9 +140,10 @@ module Dry
       # Return AST representation of the rules
       #
       # @api private
-      def to_ast
+      def to_ast(*)
         rule_applier.to_ast
       end
+      alias_method :ast, :to_ast
 
       # Return the message compiler
       #

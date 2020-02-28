@@ -13,6 +13,10 @@ module Dry
         def call(*args, &block)
           super(*args, &nil) unless args.empty?
 
+          if args.size.equal?(1) && (op = args.first).is_a?(Dry::Logic::Operations::Abstract)
+            process_operation(op)
+          end
+
           if block
             schema = define(*args, &block)
             trace << schema.to_rule
@@ -22,6 +26,22 @@ module Dry
         end
 
         private
+
+        # @api private
+        def process_operation(op)
+          schemas = op.rules.select { |rule| rule.is_a?(Processor) }
+
+          hash_schema = hash_type.schema(
+            schemas.map(&:schema_dsl).map(&:types).reduce(:merge)
+          )
+
+          schema_dsl.set_type(name, hash_schema)
+        end
+
+        # @api private
+        def hash_type
+          schema_dsl.resolve_type(:hash)
+        end
 
         # @api private
         def define(*args, &block)
