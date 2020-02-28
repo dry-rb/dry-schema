@@ -13,7 +13,6 @@
   changed:
   - "`:i18n` message backend delegates interpolation and caching to `I18n` (issue
     #211) (@robhanlon22)"
-  - "(internal) `:yaml` message backend no longer uses template objects (@robhanlon22)"
   - "(internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is
     a drop-in replacement (@flash-gordon)"
 - version: 1.4.3
