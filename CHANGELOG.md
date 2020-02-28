@@ -16,7 +16,6 @@
 ### Changed
 
 - `:i18n` message backend delegates interpolation and caching to `I18n` (issue #211) (@robhanlon22)
-- (internal) `:yaml` message backend no longer uses template objects (@robhanlon22)
 - (internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is a drop-in replacement (@flash-gordon)
 
 [Compare v1.4.3...master](https://github.com/dry-rb/dry-schema/compare/v1.4.3...master)
