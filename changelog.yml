@@ -10,6 +10,8 @@
     (@solnic)'
   - 'You can now set global config via `Dry::Schema.config` (issue #205) (@robhanlon22)'
   - 'Default error message for `:uuid_v4?` predicate (isssue #230) (@solnic)'
+  - "[experimental] you can compose schemas in the DSL using the standard logic operators
+    (issue #231 closed via #245) (@solnic)"
   changed:
   - "`:i18n` message backend delegates interpolation and caching to `I18n` (issue
     #211) (@robhanlon22)"
