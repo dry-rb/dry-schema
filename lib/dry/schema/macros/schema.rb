@@ -35,7 +35,7 @@ module Dry
             schemas.map(&:schema_dsl).map(&:types).reduce(:merge)
           )
 
-          schema_dsl.set_type(name, hash_schema)
+          type(hash_schema)
         end
 
         # @api private

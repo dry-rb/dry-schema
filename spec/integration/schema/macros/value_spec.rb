@@ -217,5 +217,56 @@ RSpec.describe 'Macros #value' do
         expect(schema.(data: { num: '11' })).to be_success
       end
     end
+
+    context 'with a hash type' do
+      let(:type) do
+        Types::Hash.schema(name: 'string')
+      end
+
+      subject(:schema) do
+        env = self
+        Dry::Schema.define do
+          required(:data).value(env.type)
+        end
+      end
+
+      it 'unpacks type' do
+        expect(schema.(data: { name: nil }).messages).to eql(
+          data: { name: ['must be a string'] }
+        )
+      end
+
+      context 'optional keys' do
+        let(:type) do
+          Types::Hash.schema(first_name: 'string', last_name?: 'string')
+        end
+
+        it 'allows keys to be missing' do
+          expect(schema.(data: { first_name: nil }).messages).to eql(
+            data: { first_name: ['must be a string'] }
+          )
+        end
+      end
+
+      context 'nested schemas' do
+        let(:type) do
+          Types::Hash.schema(
+            name: 'string',
+            address: Types::Hash.schema(
+              city: 'string'
+            )
+          )
+        end
+
+        it 'is supported' do
+          expect(schema.(data: { name: 'John' }).messages).to eql(
+            data: { address: ["is missing", "must be a hash"] }
+          )
+          expect(schema.(data: { name: 'John', address: {} }).messages).to eql(
+            data: { address: { city: ["is missing", "must be a string"] } }
+          )
+        end
+      end
+    end
   end
 end
