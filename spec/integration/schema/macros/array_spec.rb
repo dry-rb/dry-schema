@@ -296,4 +296,37 @@ RSpec.describe 'Macros #array' do
       }.to raise_error(ArgumentError, /Types::Constructor/)
     end
   end
+
+  context 'with a type hash' do
+    let(:hash_schema) { Types::Hash.schema(name: 'string') }
+
+    let(:schema) do
+      hash_schema = self.hash_schema
+
+      Dry::Schema.define do
+        required(:foo).array(hash_schema)
+      end
+    end
+
+    context 'valid input' do
+      let(:input) do
+        { foo: [{ name: 'John' }, { name: 'Jane' }] }
+      end
+
+      specify do
+        expect(result).to be_success
+        expect(result.to_h).to eql(input)
+      end
+    end
+
+    context 'errors' do
+      let(:input) do
+        { foo: [{}] }
+      end
+
+      specify do
+        expect(result).to be_failing(0 => { name: ['is missing', 'must be a string'] })
+      end
+    end
+  end
 end

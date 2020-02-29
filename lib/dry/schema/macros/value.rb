@@ -23,7 +23,7 @@ module Dry
                 schema.type_schema
               end
 
-            schema_dsl.set_type(name, updated_type)
+            type(updated_type)
           end
 
           trace_opts = opts.reject { |key, _| key == :type_spec || key == :type_rule }

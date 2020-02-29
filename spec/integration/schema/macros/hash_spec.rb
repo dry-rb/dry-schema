@@ -44,6 +44,14 @@ RSpec.describe 'Macros #hash' do
       Types::Hash.schema(name: 'string')
     end
 
+    subject(:schema) do
+      hash_schema = self.hash_schema
+
+      Dry::Schema.define do
+        required(:foo).hash(hash_schema)
+      end
+    end
+
     context 'and a block' do
       subject(:schema) do
         hash_schema = self.hash_schema
@@ -69,6 +77,30 @@ RSpec.describe 'Macros #hash' do
         Dry::Schema.define do
           required(:foo).hash(hash_schema, :filled?)
         end
+      end
+
+      let(:input) { { foo: { } } }
+
+      it 'adds predicates' do
+        expect(result).to be_failing(["must be filled"])
+      end
+    end
+
+    context 'with coercible types' do
+      let(:hash_schema) do
+        Types::Hash.schema(age: 'params.integer')
+      end
+
+      let(:input) { { foo: { age: '39' } } }
+
+      specify do
+        expect(result.to_h).to eql(foo: { age: 39 })
+      end
+    end
+
+    context 'constrained type' do
+      let(:hash_schema) do
+        Types::Hash.schema({}).constrained([:filled])
       end
 
       let(:input) { { foo: { } } }
