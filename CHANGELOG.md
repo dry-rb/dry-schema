@@ -7,7 +7,18 @@
 - You can now set global config via `Dry::Schema.config` (issue #205) (@robhanlon22)
 - Default error message for `:uuid_v4?` predicate (isssue #230) (@solnic)
 - [experimental] you can compose schemas in the DSL using the standard logic operators (issue #231 closed via #245) (@solnic)
-- Hash schema type can now be used with proper keys and predicates inferring. Constructor and default types are explicitly not supported (@flash-gordon)
+- Hash schema type can now be used with proper keys and predicates inferring. Constructor
+and default types are explicitly not supported (@flash-gordon)
+  ```ruby
+  UserType = Dry::Types['hash'].schema(
+    name: 'string',
+    email: 'string'
+  )
+
+  Dry::Schema.define do
+    require(:user).hash(UserType)
+  end
+  ```
 
 ### Fixed
 
