@@ -1,7 +1,7 @@
 ---
 - version: unreleased
-  summary: 
-  date: 
+  summary:
+  date:
   fixed:
   - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
   - Callbacks can now be inherited from multiple parents (@skryukov)
@@ -12,8 +12,19 @@
   - 'Default error message for `:uuid_v4?` predicate (isssue #230) (@solnic)'
   - "[experimental] you can compose schemas in the DSL using the standard logic operators
     (issue #231 closed via #245) (@solnic)"
-  - Hash schema type can now be used with proper keys and predicates inferring. Constructor
+  - |-
+    Hash schema type can now be used with proper keys and predicates inferring. Constructor
     and default types are explicitly not supported (@flash-gordon)
+      ```ruby
+      UserType = Dry::Types['hash'].schema(
+        name: 'string',
+        email: 'string'
+      )
+
+      Dry::Schema.define do
+        require(:user).hash(UserType)
+      end
+      ```
   changed:
   - "`:i18n` message backend delegates interpolation and caching to `I18n` (issue
     #211) (@robhanlon22)"
