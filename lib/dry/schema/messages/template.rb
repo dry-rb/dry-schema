@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/initializer'
+require 'dry/equalizer'
 
 require 'dry/schema/constants'
 
@@ -10,15 +11,15 @@ module Dry
       # @api private
       class Template
         extend Dry::Initializer
+        include Dry::Equalizer(:messages, :key, :options)
 
         option :messages
         option :key
-        option :text
         option :options
 
         # @api private
         def data(input = EMPTY_HASH)
-          messages.pruned_data(self, **options, **input)
+          messages.interpolatable_data(self, **options, **input)
         end
 
         # @api private

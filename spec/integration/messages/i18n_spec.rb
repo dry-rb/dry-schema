@@ -33,11 +33,19 @@ RSpec.describe Dry::Schema::Messages::I18n do
         { default_locale: :pl }
       end
 
-      it 'returns a message' do
-        template, meta = messages[:size?, path: :age, size: 10]
+      it 'returns a template' do
+        template, = messages[:size?, path: :age, size: 10]
 
-        expect(template.()).to eql('wielkość musi być równa 10')
-        expect(meta).to eql({})
+        expect(template).to eq(
+          Dry::Schema::Messages::Template.new(
+            messages: messages,
+            key: 'dry_schema.errors.size?.arg.default',
+            options: {
+              locale: :pl,
+              size: 10
+            }
+          )
+        )
       end
     end
 
@@ -50,35 +58,35 @@ RSpec.describe Dry::Schema::Messages::I18n do
         expect(messages[:not_here, path: :srsly]).to be(nil)
       end
 
-      it 'returns a message for a predicate' do
+      it 'returns a template for a predicate' do
         template, meta = messages[:filled?, path: :name]
 
         expect(template.()).to eql('nie może być pusty')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific rule' do
+      it 'returns a template for a specific rule' do
         template, meta = messages[:filled?, path: :email]
 
         expect(template.()).to eql('Proszę podać adres email')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific val type' do
+      it 'returns a template for a specific val type' do
         template, meta = messages[:size?, path: :pages, val_type: String]
 
         expect(template.(size: 2)).to eql('wielkość musi być równa 2')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific rule and its default arg type' do
+      it 'returns a template for a specific rule and its default arg type' do
         template, meta = messages[:size?, path: :pages]
 
         expect(template.(size: 2)).to eql('wielkość musi być równa 2')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific rule and its arg type' do
+      it 'returns a template for a specific rule and its arg type' do
         template, meta = messages[:size?, path: :pages, arg_type: Range]
 
         expect(template.(size_left: 1, size_right: 2)).to eql('wielkość musi być między 1 a 2')
@@ -130,7 +138,7 @@ RSpec.describe Dry::Schema::Messages::I18n do
           I18n.fallbacks = I18n::Locale::Fallbacks.new(:en)
         end
 
-        it 'returns a message for a predicate in the default_locale' do
+        it 'returns a template for a predicate in the default_locale' do
           template, meta = messages[:even?, path: :some_number]
 
           expect(I18n.locale).to eql(:pl)
@@ -141,28 +149,28 @@ RSpec.describe Dry::Schema::Messages::I18n do
     end
 
     context 'with a different locale' do
-      it 'returns a message for a predicate' do
+      it 'returns a template for a predicate' do
         template, meta = messages[:filled?, path: :name, locale: :en]
 
         expect(template.()).to eql('must be filled')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific rule' do
+      it 'returns a template for a specific rule' do
         template, meta = messages[:filled?, path: :email, locale: :en]
 
         expect(template.()).to eql('Please provide your email')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific rule and its default arg type' do
+      it 'returns a template for a specific rule and its default arg type' do
         template, meta = messages[:size?, path: :pages, locale: :en]
 
         expect(template.(size: 2)).to eql('size must be 2')
         expect(meta).to eql({})
       end
 
-      it 'returns a message for a specific rule and its arg type' do
+      it 'returns a template for a specific rule and its arg type' do
         template, meta = messages[:size?, path: :pages, arg_type: Range, locale: :en]
 
         expect(template.(size_left: 1, size_right: 2)).to eql('size must be within 1 - 2')

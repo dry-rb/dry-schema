@@ -71,8 +71,8 @@ module Dry
         end
 
         # @api private
-        def pruned_data(template, **input)
-          messages.pruned_data(template, **input)
+        def interpolatable_data(template, **input)
+          messages.interpolatable_data(template, **input)
         end
 
         # @api private

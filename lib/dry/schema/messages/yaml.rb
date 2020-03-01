@@ -134,43 +134,53 @@ module Dry
       end
 
       # @api private
-      def cache
-        @cache ||= self.class.cache[self]
-      end
-
-      # @api private
       def prepare
         @data = config.load_paths.map { |path| load_translations(path) }.reduce({}, :merge)
         self
       end
 
       # @api private
-      def pruned_data(template, **input)
-        tokens, = evaluation_context(template)
+      def interpolatable_data(template, **input)
+        tokens = evaluation_context(template).fetch(:tokens)
         input.select { |k,| tokens.include?(k) }
       end
 
       # @api private
       def interpolate(template, **data)
-        _, evaluator = evaluation_context(template)
+        evaluator = evaluation_context(template).fetch(:evaluator)
         data.empty? ? evaluator.() : evaluator.(**data)
       end
 
       private
 
+      # @api private
       def evaluation_context(template)
-        cache.fetch_or_store(template.text) do
-          tokens = template.text.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
-          text = template.text.gsub('%', '#')
+        result = get(template.key, template.options)
+
+        unless result
+          raise KeyError, "No message found when evaluating template, template=#{template.inspect}"
+        end
+
+        cache.fetch_or_store(result.fetch(:text)) do |input|
+          tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
+          text = input.gsub('%', '#')
 
           # rubocop:disable Security/Eval
-          evaluator = eval(<<~RUBY, EMPTY_CONTEXT, __FILE__, __LINE__)
+          evaluator = eval(<<~RUBY, EMPTY_CONTEXT, __FILE__, __LINE__ + 1)
             -> (#{tokens.map { |token| "#{token}:" }.join(', ')}) { "#{text}" }
           RUBY
           # rubocop:enable Security/Eval
 
-          [tokens, evaluator]
+          {
+            tokens: tokens,
+            evaluator: evaluator
+          }
         end
+      end
+
+      # @api private
+      def cache
+        @cache ||= self.class.cache[self]
       end
 
       # @api private

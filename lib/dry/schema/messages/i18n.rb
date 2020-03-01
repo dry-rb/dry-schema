@@ -95,7 +95,7 @@ module Dry
       end
 
       # @api private
-      def pruned_data(_template, **input)
+      def interpolatable_data(_template, **input)
         input
       end
 

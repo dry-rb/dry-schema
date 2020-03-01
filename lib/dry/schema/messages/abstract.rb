@@ -99,7 +99,6 @@ module Dry
             Template.new(
               messages: self,
               key: path,
-              text: result[:text],
               options: opts
             ),
             result[:meta]

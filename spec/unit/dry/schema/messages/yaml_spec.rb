@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require 'dry/schema/messages/yaml'
+require 'dry/schema/messages/template'
 
 RSpec.describe Dry::Schema::Messages::YAML do
   subject(:messages) do
     Dry::Schema::Messages::YAML.build
   end
 
-  describe '#lookup' do
+  describe '#[]' do
     context 'with default config' do
       it 'returns text and optional meta' do
         template, meta = messages[:filled?, path: [:name]]
@@ -186,6 +187,28 @@ RSpec.describe Dry::Schema::Messages::YAML do
             text: 'text not filled', meta: { code: 476 }
           }
         )
+      end
+    end
+  end
+
+  context 'evaluating a bad template' do
+    let(:template) do
+      Dry::Schema::Messages::Template.new(
+        messages: messages,
+        key: 'does not exist',
+        options: {}
+      )
+    end
+
+    describe '#interpolatable_data' do
+      it 'raises a KeyError when the template has a bad key' do
+        expect { messages.interpolatable_data(template) }.to raise_error(KeyError)
+      end
+    end
+
+    describe '#interpolate' do
+      it 'raises a KeyError when the template has a bad key' do
+        expect { messages.interpolate(template) }.to raise_error(KeyError)
       end
     end
   end
