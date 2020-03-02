@@ -1,7 +1,7 @@
 ---
 - version: unreleased
-  summary:
-  date:
+  summary: 
+  date: 
   fixed:
   - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
   - Callbacks can now be inherited from multiple parents (@skryukov)
@@ -25,6 +25,9 @@
         require(:user).hash(UserType)
       end
       ```
+  - struct extension, it allows to use dry-struct classes as source for hash schemas.
+    Note that output will still be presented as plain hashes, returning structs from
+    schemas will require more work, it's planned for next versions (@flash-gordon)
   changed:
   - "`:i18n` message backend delegates interpolation and caching to `I18n` (issue
     #211) (@robhanlon22)"
