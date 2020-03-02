@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'dry/logic/operators'
-require 'dry/types/predicate_inferrer'
-require 'dry/types/primitive_inferrer'
 
 require 'dry/schema/macros/core'
+require 'dry/schema/predicate_inferrer'
+require 'dry/schema/primitive_inferrer'
 
 module Dry
   module Schema
@@ -28,13 +28,13 @@ module Dry
         #   PredicateInferrer is used to infer predicate type-check from a type spec
         #   @return [PredicateInferrer]
         #   @api private
-        option :predicate_inferrer, default: proc { ::Dry::Types::PredicateInferrer.new(compiler.predicates) }
+        option :predicate_inferrer, default: proc { PredicateInferrer.new(compiler.predicates) }
 
         # @!attribute [r] primitive_inferrer
         #   PrimitiveInferrer used to get a list of primitive classes from configured type
         #   @return [PrimitiveInferrer]
         #   @api private
-        option :primitive_inferrer, default: proc { ::Dry::Types::PrimitiveInferrer.new }
+        option :primitive_inferrer, default: proc { PrimitiveInferrer.new }
 
         # @overload value(*predicates, **predicate_opts)
         #   Set predicates without and with arguments

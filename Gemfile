@@ -12,6 +12,7 @@ gem 'dry-types', github: 'dry-rb/dry-types', branch: 'master' if ENV['DRY_TYPES_
 
 group :test do
   gem 'dry-monads', require: false
+  gem 'dry-struct', require: false
   gem 'i18n', require: false
   gem 'transproc'
 end
