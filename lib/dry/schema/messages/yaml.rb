@@ -155,13 +155,7 @@ module Dry
 
       # @api private
       def evaluation_context(template)
-        result = get(template.key, template.options)
-
-        unless result
-          raise KeyError, "No message found when evaluating template, template=#{template.inspect}"
-        end
-
-        cache.fetch_or_store(result.fetch(:text)) do |input|
+        cache.fetch_or_store(get(template.key, template.options).fetch(:text)) do |input|
           tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
           text = input.gsub('%', '#')
 

@@ -19,14 +19,24 @@ module Dry
 
         # @api private
         def data(input = EMPTY_HASH)
+          ensure_message!
           messages.interpolatable_data(self, **options, **input)
         end
 
         # @api private
         def call(data = EMPTY_HASH)
+          ensure_message!
           messages.interpolate(self, **data)
         end
         alias_method :[], :call
+
+        private
+
+        def ensure_message!
+          return if messages.key?(key, options)
+
+          raise KeyError, "No message found for template, template=#{inspect}"
+        end
       end
     end
   end
