@@ -9,7 +9,7 @@ RSpec.describe 'Predicates: Min Size' do
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => %w(1 2 3) } }
+      let(:input) { { 'foo' => %w[1 2 3] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Min Size' do
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => %w(1 2 3) } }
+      let(:input) { { 'foo' => %w[1 2 3] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -107,7 +107,7 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => %w[1 2 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -155,7 +155,7 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => %w[1 2 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -203,7 +203,7 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => %w[1 2 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -253,7 +253,7 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => %w[1 2 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -301,7 +301,7 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => %w[1 2 3] } }
 
           it 'is successful' do
             expect(result).to be_successful
@@ -349,7 +349,7 @@ RSpec.describe 'Predicates: Min Size' do
         end
 
         context 'with valid input' do
-          let(:input) { { 'foo' => %w(1 2 3) } }
+          let(:input) { { 'foo' => %w[1 2 3] } }
 
           it 'is successful' do
             expect(result).to be_successful

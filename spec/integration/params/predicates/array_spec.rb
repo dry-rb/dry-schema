@@ -65,7 +65,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     context 'with invalid input (array with non-integers)' do
-      let(:input) { { 'foo' => %w(foo bar) } }
+      let(:input) { { 'foo' => %w[foo bar] } }
 
       it 'is not successful' do
         expect(result).to be_failing 0 => ['must be an integer'], 1 => ['must be an integer']
@@ -73,7 +73,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     context 'with invalid input (mixed array)' do
-      let(:input) { { 'foo' => %w(1 bar) } }
+      let(:input) { { 'foo' => %w[1 bar] } }
 
       it 'is not successful' do
         expect(result).to be_failing 1 => ['must be an integer']
@@ -137,7 +137,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     context 'with invalid input (array with non-integers)' do
-      let(:input) { { 'foo' => %w(foo bar) } }
+      let(:input) { { 'foo' => %w[foo bar] } }
 
       it 'is not successful' do
         expect(result).to be_failing 0 => ['must be an integer'], 1 => ['must be an integer']
@@ -145,7 +145,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     context 'with invalid input (mixed array)' do
-      let(:input) { { 'foo' => %w(1 bar) } }
+      let(:input) { { 'foo' => %w[1 bar] } }
 
       it 'is not successful' do
         expect(result).to be_failing 1 => ['must be an integer']

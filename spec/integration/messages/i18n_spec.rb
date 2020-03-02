@@ -126,7 +126,7 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
           # https://github.com/svenfuchs/i18n/pull/415
           # Since I18n does not provide default fallbacks anymore, we have to do this explicitly
-          I18n::Backend::Simple.send(:include, I18n::Backend::Fallbacks)
+          I18n::Backend::Simple.include I18n::Backend::Fallbacks
           I18n.fallbacks = I18n::Locale::Fallbacks.new(:en)
         end
 

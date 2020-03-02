@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'schema logic operators' do
   subject(:schema) do
     Dry::Schema.public_send(schema_method) do

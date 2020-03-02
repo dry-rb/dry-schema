@@ -68,12 +68,12 @@ RSpec.describe Dry::Schema, '.define' do
       end
 
       it 'passes when input is valid' do
-        expect(schema.(tags: ['red', 'blue'])).to be_success
+        expect(schema.(tags: %w[red blue])).to be_success
       end
 
       it 'fails when input is not valid' do
         expect(schema.(tags: ['red', nil])).to be_failure
-        expect(schema.(tags: ['red', 'black'])).to be_failure
+        expect(schema.(tags: %w[red black])).to be_failure
       end
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema::Params do
   it_behaves_like 'schema logic operators' do
     let(:schema_method) { :Params }
@@ -168,9 +170,9 @@ RSpec.describe Dry::Schema::Params do
       context 'with unexpected keys' do
         let(:input) do
           { sites: [
-              { visitor: { foo: 'bar', login: 'jane', age: 36 } },
-              { visitor: { bar: 'foo', login: 'john', age: 25 } }
-            ] }
+            { visitor: { foo: 'bar', login: 'jane', age: 36 } },
+            { visitor: { bar: 'foo', login: 'john', age: 25 } }
+          ] }
         end
 
         it 'uses a merged key-map to sanitize keys' do
@@ -182,9 +184,9 @@ RSpec.describe Dry::Schema::Params do
       context 'with values that need coercion' do
         let(:input) do
           { sites: [
-              { visitor: { login: 'jane', age: '36' } },
-              { visitor: { login: 'john', age: '25' } }
-            ] }
+            { visitor: { login: 'jane', age: '36' } },
+            { visitor: { login: 'john', age: '25' } }
+          ] }
         end
 
         it 'uses a merged key-map to sanitize keys' do

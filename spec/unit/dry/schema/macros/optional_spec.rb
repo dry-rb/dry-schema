@@ -45,8 +45,8 @@ RSpec.describe Dry::Schema::Macros::Optional do
     it 'builds a rule with predicates applied to array elements' do
       rule = macro.each(:str?).to_rule
 
-      expect(rule.(email: ['foo', 'bar'])).to be_success
-      expect(rule.(other: ['foo', 'bar'])).to be_success
+      expect(rule.(email: %w[foo bar])).to be_success
+      expect(rule.(other: %w[foo bar])).to be_success
       expect(rule.(email: [1, 'bar'])).to be_failure
     end
   end

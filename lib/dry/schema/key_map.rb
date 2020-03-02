@@ -120,7 +120,7 @@ module Dry
       #
       # @return [String]
       def inspect
-        "#<#{self.class}[#{keys.map(&:dump).map(&:inspect).join(", ")}]>"
+        "#<#{self.class}[#{keys.map(&:dump).map(&:inspect).join(', ')}]>"
       end
 
       # Dump keys to their spec format

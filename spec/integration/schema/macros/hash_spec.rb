@@ -66,12 +66,12 @@ RSpec.describe 'Macros #hash' do
       let(:input) { { foo: { name: 'John' } } }
 
       it 'combines schemas' do
-        expect(result).to be_failing(email: ["is missing", "must be a string"])
+        expect(result).to be_failing(email: ['is missing', 'must be a string'])
       end
     end
 
     context 'and a predicate' do
-       subject(:schema) do
+      subject(:schema) do
         hash_schema = self.hash_schema
 
         Dry::Schema.define do
@@ -79,10 +79,10 @@ RSpec.describe 'Macros #hash' do
         end
       end
 
-      let(:input) { { foo: { } } }
+      let(:input) { { foo: {} } }
 
       it 'adds predicates' do
-        expect(result).to be_failing(["must be filled"])
+        expect(result).to be_failing(['must be filled'])
       end
     end
 
@@ -103,10 +103,10 @@ RSpec.describe 'Macros #hash' do
         Types::Hash.schema({}).constrained([:filled])
       end
 
-      let(:input) { { foo: { } } }
+      let(:input) { { foo: {} } }
 
       it 'adds predicates' do
-        expect(result).to be_failing(["must be filled"])
+        expect(result).to be_failing(['must be filled'])
       end
     end
   end

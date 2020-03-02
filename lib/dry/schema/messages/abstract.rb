@@ -86,7 +86,6 @@ module Dry
         # @return [Template]
         #
         # @api public
-        # rubocop:disable Metrics/AbcSize
         def call(predicate, options)
           options = { locale: default_locale, **options }
           opts = options.reject { |k,| config.lookup_options.include?(k) }
@@ -106,7 +105,7 @@ module Dry
             result[:meta]
           ]
         end
-        # rubocop:enable Metrics/AbcSize
+
         alias_method :[], :call
 
         # Retrieve an array of looked up paths

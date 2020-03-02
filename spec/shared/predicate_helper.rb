@@ -9,7 +9,7 @@ RSpec.shared_context 'predicate helper' do
     Module.new {
       include Dry::Logic::Predicates
 
-      def self.email?(value)
+      def self.email?(_value)
         true
       end
     }
