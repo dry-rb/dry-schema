@@ -12,6 +12,7 @@ gem 'dry-configurable', github: 'dry-rb/dry-configurable', branch: 'master' if E
 
 group :test do
   gem 'dry-monads', require: false
+  gem 'dry-struct', require: false
   gem 'i18n', require: false
   gem 'transproc'
 end

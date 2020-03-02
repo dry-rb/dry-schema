@@ -38,7 +38,7 @@ module Dry
 
             if block && type_spec.equal?(:hash)
               hash(&block)
-            elsif type_spec.respond_to?(:keys)
+            elsif type_spec.is_a?(::Dry::Types::Type) && hash_type?(type_spec)
               hash(type_spec)
             elsif block
               trace.append(new(chain: false).instance_exec(&block))
@@ -57,6 +57,10 @@ module Dry
         # @api private
         def array_type?(type)
           primitive_inferrer[type].eql?([::Array])
+        end
+
+        def hash_type?(type)
+          primitive_inferrer[type].eql?([::Hash])
         end
 
         # @api private
