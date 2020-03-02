@@ -19,6 +19,7 @@ and default types are explicitly not supported (@flash-gordon)
     require(:user).hash(UserType)
   end
   ```
+- struct extension, it allows to use dry-struct classes as source for hash schemas. Note that output will still be presented as plain hashes, returning structs from schemas will require more work, it's planned for next versions (@flash-gordon)
 
 ### Fixed
 
