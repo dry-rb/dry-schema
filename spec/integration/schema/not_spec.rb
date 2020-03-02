@@ -9,7 +9,7 @@ RSpec.describe 'Schema with negated rules' do
 
   describe '#messages' do
     it 'passes with valid input' do
-      expect(schema.(tags: %w(a b c))).to be_success
+      expect(schema.(tags: %w[a b c])).to be_success
     end
 
     it 'fails with invalid input' do

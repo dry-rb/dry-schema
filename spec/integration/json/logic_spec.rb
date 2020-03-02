@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema::JSON do
   it_behaves_like 'schema logic operators' do
     let(:schema_method) { :JSON }

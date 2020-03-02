@@ -56,7 +56,7 @@ RSpec.describe Dry::Schema, 'OR messages' do
     end
 
     it 'provides error messages for invalid input where right side failed' do
-      expect(schema.(foo: %w(1 2 3)).errors).to eql(
+      expect(schema.(foo: %w[1 2 3]).errors).to eql(
         foo: {
           0 => ['must be an integer'],
           1 => ['must be an integer'],

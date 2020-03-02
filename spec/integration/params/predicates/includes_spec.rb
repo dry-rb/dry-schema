@@ -9,7 +9,7 @@ RSpec.describe 'Predicates: Includes' do
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => ['1', '2', '3'] } }
+      let(:input) { { 'foo' => %w[1 2 3] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -41,7 +41,7 @@ RSpec.describe 'Predicates: Includes' do
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => ['2', '3', '4'] } }
+      let(:input) { { 'foo' => %w[2 3 4] } }
 
       it 'is not successful' do
         expect(result).to be_failing ['must include 1']
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Includes' do
     end
 
     context 'with valid input' do
-      let(:input) { { 'foo' => ['1', '2', '3'] } }
+      let(:input) { { 'foo' => %w[1 2 3] } }
 
       it 'is successful' do
         expect(result).to be_successful
@@ -89,7 +89,7 @@ RSpec.describe 'Predicates: Includes' do
     end
 
     context 'with invalid input' do
-      let(:input) { { 'foo' => ['2', '3', '4'] } }
+      let(:input) { { 'foo' => %w[2 3 4] } }
 
       it 'is not successful' do
         expect(result).to be_failing ['must include 1']

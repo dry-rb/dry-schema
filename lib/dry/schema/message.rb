@@ -54,7 +54,7 @@ module Dry
       def dump
         @dump ||= meta.empty? ? text : { text: text, **meta }
       end
-      alias to_s dump
+      alias_method :to_s, :dump
 
       # Dump the message into a hash
       #

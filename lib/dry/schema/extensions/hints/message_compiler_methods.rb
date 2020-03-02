@@ -73,7 +73,7 @@ module Dry
           end
 
           # @api private
-          def visit_each(node, opts)
+          def visit_each(_node, _opts)
             # TODO: we can still generate a hint for elements here!
             []
           end

@@ -35,7 +35,7 @@ module Dry
       # @return [NamespacedRule]
       #
       # @api private
-      def visit_namespace(node, opts = EMPTY_HASH)
+      def visit_namespace(node, _opts = EMPTY_HASH)
         namespace, rest = node
         NamespacedRule.new(namespace, visit(rest))
       end

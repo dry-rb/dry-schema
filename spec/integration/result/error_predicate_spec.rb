@@ -168,7 +168,7 @@ RSpec.describe Dry::Schema::Result, '#error?' do
 
     context 'when there is no error' do
       let(:input) do
-        { tags: ['foo', 'bar'] }
+        { tags: %w[foo bar] }
       end
 
       it 'returns false for symbol key spec' do

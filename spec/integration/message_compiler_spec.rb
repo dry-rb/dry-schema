@@ -14,7 +14,7 @@ RSpec.describe Dry::Schema::MessageCompiler do
           errors: {
             key?: {
               arg: {
-                default: '+%{name}+ key is missing in the hash',
+                default: '+%{name}+ key is missing in the hash'
               },
               value: {
                 gender: 'Please provide your gender'
@@ -26,7 +26,7 @@ RSpec.describe Dry::Schema::MessageCompiler do
               }
             }
           }
-        },
+        }
       },
       pl: {
         dry_schema: {

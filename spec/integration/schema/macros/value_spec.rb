@@ -260,10 +260,10 @@ RSpec.describe 'Macros #value' do
 
         it 'is supported' do
           expect(schema.(data: { name: 'John' }).messages).to eql(
-            data: { address: ["is missing", "must be a hash"] }
+            data: { address: ['is missing', 'must be a hash'] }
           )
           expect(schema.(data: { name: 'John', address: {} }).messages).to eql(
-            data: { address: { city: ["is missing", "must be a string"] } }
+            data: { address: { city: ['is missing', 'must be a string'] } }
           )
         end
       end

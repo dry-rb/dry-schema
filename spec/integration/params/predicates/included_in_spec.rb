@@ -4,7 +4,7 @@ RSpec.describe 'Predicates: Included In' do
   context 'with required' do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo) { included_in?(%w(1 3 5)) }
+        required(:foo) { included_in?(%w[1 3 5]) }
       end
     end
 
@@ -60,7 +60,7 @@ RSpec.describe 'Predicates: Included In' do
   context 'with optional' do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo) { included_in?(%w(1 3 5)) }
+        optional(:foo) { included_in?(%w[1 3 5]) }
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).value(included_in?: %w(1 3 5))
+            required(:foo).value(included_in?: %w[1 3 5])
           end
         end
 
@@ -174,7 +174,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).filled(included_in?: %w(1 3 5))
+            required(:foo).filled(included_in?: %w[1 3 5])
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).maybe(:string, included_in?: %w(1 3 5))
+            required(:foo).maybe(:string, included_in?: %w[1 3 5])
           end
         end
 
@@ -288,7 +288,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with value' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).value(included_in?: %w(1 3 5))
+            optional(:foo).value(included_in?: %w[1 3 5])
           end
         end
 
@@ -344,7 +344,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with filled' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).filled(included_in?: %w(1 3 5))
+            optional(:foo).filled(included_in?: %w[1 3 5])
           end
         end
 
@@ -400,7 +400,7 @@ RSpec.describe 'Predicates: Included In' do
       context 'with maybe' do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).maybe(:string).maybe(included_in?: %w(1 3 5))
+            optional(:foo).maybe(:string).maybe(included_in?: %w[1 3 5])
           end
         end
 

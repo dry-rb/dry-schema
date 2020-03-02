@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema::Path do
   subject(:path) do
     Dry::Schema::Path.new(segments)

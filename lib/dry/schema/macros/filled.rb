@@ -23,7 +23,6 @@ module Dry
         end
 
         # @api private
-        # rubocop:disable Style/GuardClause
         def ensure_valid_predicates(predicates)
           if predicates.include?(:empty?)
             raise ::Dry::Schema::InvalidSchemaError, 'Using filled with empty? predicate is invalid'
@@ -33,7 +32,6 @@ module Dry
             raise ::Dry::Schema::InvalidSchemaError, 'Using filled with filled? is redundant'
           end
         end
-        # rubocop:enable Style/GuardClause
 
         # @api private
         def filter_empty_string?

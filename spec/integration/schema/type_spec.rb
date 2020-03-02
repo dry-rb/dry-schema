@@ -41,11 +41,11 @@ RSpec.describe Dry::Schema, 'types specs' do
   context 'single type spec with an array with a member' do
     shared_examples 'array with member' do
       it 'uses params coercion' do
-        expect(schema.(nums: %w(1 2 3)).to_h).to eql(nums: [1, 2, 3])
+        expect(schema.(nums: %w[1 2 3]).to_h).to eql(nums: [1, 2, 3])
       end
 
       it 'infers array? + each(:integer?)' do
-        expect(schema.(nums: %w(1 oops 3)).errors.to_h).to eql(nums: { 1 => ['must be an integer'] })
+        expect(schema.(nums: %w[1 oops 3]).errors.to_h).to eql(nums: { 1 => ['must be an integer'] })
       end
     end
 

@@ -21,7 +21,7 @@ module Dry
         merge(types_container)
       end
 
-      alias registered? key?
+      alias_method :registered?, :key?
     end
   end
 end
