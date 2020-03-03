@@ -107,6 +107,15 @@ module Dry
 
         alias_method :[], :call
 
+        # Check if given key is defined
+        #
+        # @return [Boolean]
+        #
+        # @api public
+        def key?(_key, _options = EMPTY_HASH)
+          raise NotImplementedError
+        end
+
         # Retrieve an array of looked up paths
         #
         # @param [Symbol] predicate
@@ -157,6 +166,16 @@ module Dry
         # @api private
         def default_locale
           config.default_locale
+        end
+
+        # @api private
+        def interpolatable_data(_key, _options, **_data)
+          raise NotImplementedError
+        end
+
+        # @api private
+        def interpolate(_key, _options, **_data)
+          raise NotImplementedError
         end
 
         private

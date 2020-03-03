@@ -140,22 +140,22 @@ module Dry
       end
 
       # @api private
-      def interpolatable_data(template, **input)
-        tokens = evaluation_context(template).fetch(:tokens)
-        input.select { |k,| tokens.include?(k) }
+      def interpolatable_data(key, options, **data)
+        tokens = evaluation_context(key, options).fetch(:tokens)
+        data.select { |k,| tokens.include?(k) }
       end
 
       # @api private
-      def interpolate(template, **data)
-        evaluator = evaluation_context(template).fetch(:evaluator)
+      def interpolate(key, options, **data)
+        evaluator = evaluation_context(key, options).fetch(:evaluator)
         data.empty? ? evaluator.() : evaluator.(**data)
       end
 
       private
 
       # @api private
-      def evaluation_context(template)
-        cache.fetch_or_store(get(template.key, template.options).fetch(:text)) do |input|
+      def evaluation_context(key, options)
+        cache.fetch_or_store(get(key, options).fetch(:text)) do |input|
           tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
           text = input.gsub('%', '#')
 

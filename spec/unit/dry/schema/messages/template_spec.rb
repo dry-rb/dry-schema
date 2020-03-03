@@ -1,60 +1,68 @@
 # frozen_string_literal: true
 
 require 'dry/schema/messages/template'
-require 'dry/schema/messages/yaml'
+require 'dry/schema/messages/abstract'
 
 RSpec.describe Dry::Schema::Messages::Template do
-  let(:messages) do
-    Dry::Schema::Messages::YAML.new.merge(
-      stringify_keys(
-        en: {
-          dry_schema: {
-            errors: {
-              neato?: '%{name} is awesome and %{adjective}'
-            }
-          }
-        }
-      )
-    )
-  end
+  let(:messages) { instance_double('Dry::Schema::Messages::Abstract') }
+  let(:key) { 'key' }
+  let(:options) { { name: 'Alice', locale: :en } }
 
-  let(:valid_template) do
+  subject(:template) do
     Dry::Schema::Messages::Template.new(
       messages: messages,
-      key: '%<locale>s.dry_schema.errors.neato?',
-      options: {
-        name: 'Alice',
-        locale: :en
-      }
-    )
-  end
-
-  let(:broken_template) do
-    Dry::Schema::Messages::Template.new(
-      messages: messages,
-      key: 'this does not exist',
-      options: {}
+      key: key,
+      options: options
     )
   end
 
   describe '#data' do
     it 'delegates to the message backend' do
-      expect(valid_template.data(adjective: 'rad', ignored: 'param'))
-        .to eq(adjective: 'rad', name: 'Alice')
+      input = { adjective: 'rad', ignored: 'param' }
+      data = { adjective: 'rad', name: 'Alice' }
+
+      allow(messages).to receive(:key?)
+        .with(key, options)
+        .and_return(true)
+
+      allow(messages).to receive(:interpolatable_data)
+        .with(key, options, **options, **input)
+        .and_return(data)
+
+      expect(template.data(input)).to eq(data)
     end
 
     it 'raises a KeyError when the key does not exist' do
-      expect { broken_template.data }.to raise_error(KeyError)
+      allow(messages).to receive(:key?)
+        .with(key, options)
+        .and_return(false)
+
+      expect { template.data }.to raise_error(KeyError)
     end
   end
 
   describe '#call' do
     it 'delegates to the message backend' do
-      expect(valid_template.(name: 'Alice', adjective: 'rad')).to eq('Alice is awesome and rad')
+      data = { adjective: 'rad', name: 'Alice' }
+      message = 'Alice is awesome and rad'
+
+      allow(messages).to receive(:key?)
+        .with(key, options)
+        .and_return(true)
+
+      allow(messages).to receive(:interpolate)
+        .with(key, options, **data)
+        .and_return(message)
+
+      expect(template.(data)).to eq(message)
     end
 
     it 'raises a KeyError when the key does not exist' do
-      expect { broken_template.call }.to raise_error(KeyError)
+      allow(messages).to receive(:key?)
+        .with(key, options)
+        .and_return(false)
+
+      expect { template.() }.to raise_error(KeyError)
     end
   end
 end

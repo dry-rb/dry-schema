@@ -18,15 +18,15 @@ module Dry
         option :options
 
         # @api private
-        def data(input = EMPTY_HASH)
+        def data(data = EMPTY_HASH)
           ensure_message!
-          messages.interpolatable_data(self, **options, **input)
+          messages.interpolatable_data(key, options, **options, **data)
         end
 
         # @api private
         def call(data = EMPTY_HASH)
           ensure_message!
-          messages.interpolate(self, **data)
+          messages.interpolate(key, options, **data)
         end
         alias_method :[], :call
 

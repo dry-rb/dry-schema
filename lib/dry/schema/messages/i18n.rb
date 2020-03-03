@@ -95,23 +95,23 @@ module Dry
       end
 
       # @api private
-      def interpolatable_data(_template, **input)
-        input
+      def interpolatable_data(_key, _options, **data)
+        data
       end
 
       # @api private
-      def interpolate(template, **data)
-        text_key = "#{template.key}.text"
+      def interpolate(key, options, **data)
+        text_key = "#{key}.text"
 
         opts = {
           locale: default_locale,
-          **template.options,
+          **options,
           **data
         }
 
-        key = key?(text_key, opts) ? text_key : template.key
+        resolved_key = key?(text_key, opts) ? text_key : key
 
-        t.(key, **opts)
+        t.(resolved_key, **opts)
       end
 
       private
