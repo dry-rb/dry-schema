@@ -71,13 +71,13 @@ module Dry
         end
 
         # @api private
-        def pruned_data(template, **input)
-          messages.pruned_data(template, **input)
+        def interpolatable_data(key, options, **data)
+          messages.interpolatable_data(key, options, **data)
         end
 
         # @api private
-        def interpolate(template, **data)
-          messages.interpolate(template, **data)
+        def interpolate(key, options, **data)
+          messages.interpolate(key, options, **data)
         end
       end
     end

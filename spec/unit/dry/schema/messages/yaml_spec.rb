@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require 'dry/schema/messages/yaml'
+require 'dry/schema/messages/template'
 
 RSpec.describe Dry::Schema::Messages::YAML do
   subject(:messages) do
     Dry::Schema::Messages::YAML.build
   end
 
-  describe '#lookup' do
+  describe '#[]' do
     context 'with default config' do
       it 'returns text and optional meta' do
         template, meta = messages[:filled?, path: [:name]]

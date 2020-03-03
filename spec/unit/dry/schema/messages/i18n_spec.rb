@@ -8,8 +8,8 @@ RSpec.describe Dry::Schema::Messages::I18n do
       Dry::Schema::Messages::I18n.build
     end
 
-    describe '#lookup' do
-      it 'returns lookup result' do
+    describe '#[]' do
+      it 'returns template result' do
         template, meta = messages[:filled?, path: [:name]]
 
         expect(template.()).to eql('must be filled')
@@ -29,8 +29,8 @@ RSpec.describe Dry::Schema::Messages::I18n do
       Dry::Schema::Messages::I18n.build(top_namespace: 'my_app')
     end
 
-    describe '#lookup' do
-      it 'returns lookup result' do
+    describe '#[]' do
+      it 'returns template result' do
         template, meta = messages[:filled?, path: [:name]]
 
         expect(template.()).to eql('must be filled')
