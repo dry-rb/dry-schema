@@ -90,6 +90,17 @@ module Dry
       end
       alias_method :[], :call
 
+      # Merge with another schema
+      #
+      # @param [Processor] other
+      #
+      # @return [Processor, Params, JSON]
+      #
+      # @api public
+      def merge(other)
+        schema_dsl.merge(other.schema_dsl).()
+      end
+
       # Return a proc that acts like a schema object
       #
       # @return [Proc]
