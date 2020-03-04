@@ -2,6 +2,9 @@
 
 require 'dry/initializer'
 
+require 'dry/schema/constants'
+require 'dry/schema/step'
+
 module Dry
   module Schema
     # Steps for the Dry::Schema::Processor
@@ -20,8 +23,6 @@ module Dry
     class ProcessorSteps
       extend Dry::Initializer
 
-      STEPS_IN_ORDER = %i[key_coercer filter_schema value_coercer rule_applier].freeze
-
       option :steps, default: -> { EMPTY_HASH.dup }
       option :before_steps, default: -> { EMPTY_HASH.dup }
       option :after_steps, default: -> { EMPTY_HASH.dup }
@@ -35,11 +36,27 @@ module Dry
       # @api public
       def call(result)
         STEPS_IN_ORDER.each do |name|
-          before_steps[name]&.each { |step| process_step(step, result) }
-          process_step(steps[name], result)
-          after_steps[name]&.each { |step| process_step(step, result) }
+          before_steps[name]&.each { |step| step&.(result) }
+          steps[name]&.(result)
+          after_steps[name]&.each { |step| step&.(result) }
         end
+
         result
+      end
+
+      # @api private
+      def rule_applier
+        @rule_applier ||= steps[:rule_applier].executor
+      end
+
+      # @api private
+      def key_map
+        @key_map ||= self[:key_coercer].executor.key_map
+      end
+
+      # @api private
+      def type_schema
+        @type_schema ||= steps[:value_coercer].executor.type_schema
       end
 
       # Returns step by name
@@ -57,8 +74,7 @@ module Dry
       #
       # @api public
       def []=(name, value)
-        validate_step_name(name)
-        steps[name] = value
+        steps[name] = Step.new(type: :core, name: name, executor: value)
       end
 
       # Add passed block before mentioned step
@@ -69,9 +85,8 @@ module Dry
       #
       # @api public
       def after(name, &block)
-        validate_step_name(name)
         after_steps[name] ||= EMPTY_ARRAY.dup
-        after_steps[name] << block.to_proc
+        after_steps[name] << Step.new(type: :after, name: name, executor: block)
         self
       end
 
@@ -83,25 +98,9 @@ module Dry
       #
       # @api public
       def before(name, &block)
-        validate_step_name(name)
         before_steps[name] ||= EMPTY_ARRAY.dup
-        before_steps[name] << block.to_proc
+        before_steps[name] << Step.new(type: :before, name: name, executor: block)
         self
-      end
-
-      # @api private
-      def process_step(step, result)
-        return unless step
-
-        output = step.(result)
-        result.replace(output) if output.is_a?(::Hash)
-      end
-
-      # @api private
-      def validate_step_name(name)
-        return if STEPS_IN_ORDER.include?(name)
-
-        raise ArgumentError, "Undefined step name #{name}. Available names: #{STEPS_IN_ORDER}"
       end
 
       # Stacks callback steps and returns new ProcessorSteps instance
@@ -122,6 +121,17 @@ module Dry
       def merge_callbacks(left, right)
         left.merge(right) do |_key, oldval, newval|
           oldval + newval
+        end
+      end
+
+      # @api private
+      def import_callbacks(path, other)
+        other.before_steps.each do |name, steps|
+          (before_steps[name] ||= []).concat(steps.map { |step| step.scoped(path) })
+        end
+
+        other.after_steps.each do |name, steps|
+          (after_steps[name] ||= []).concat(steps.map { |step| step.scoped(path) })
         end
       end
     end

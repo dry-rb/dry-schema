@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dry/schema/path'
 require 'dry/schema/macros/dsl'
 
 module Dry
@@ -22,6 +23,8 @@ module Dry
               else
                 schema.type_schema
               end
+
+            import_steps(schema)
 
             type(updated_type)
           end
@@ -75,6 +78,11 @@ module Dry
               Dry::Types['array'].constructor { ... }
             ERROR
           end
+        end
+
+        # @api private
+        def import_steps(schema)
+          schema_dsl.steps.import_callbacks(Path[[*path, name]], schema.steps)
         end
 
         # @api private

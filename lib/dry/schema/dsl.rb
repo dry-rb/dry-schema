@@ -4,6 +4,7 @@ require 'dry/initializer'
 
 require 'dry/schema'
 require 'dry/schema/constants'
+require 'dry/schema/path'
 require 'dry/schema/config'
 require 'dry/schema/compiler'
 require 'dry/schema/types'
@@ -72,6 +73,9 @@ module Dry
 
       # @return [ProcessorSteps] Steps for the processor
       option :steps, default: proc { ProcessorSteps.new }
+
+      # @return [Path, Array] Path under which the schema is defined
+      option :path, -> *args { Path[*args] if args.any? }, default: proc { EMPTY_ARRAY }
 
       # Build a new DSL object and evaluate provided block
       #
