@@ -32,7 +32,7 @@ end
 
 ```ruby
 Dry::Schema.Params do
-  # expands to `required(:age) { array? & filled? }`
+  # expands to `required(:tags) { array? & filled? }`
   required(:tags).filled(:array)
 end
 ```
