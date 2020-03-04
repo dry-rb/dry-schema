@@ -202,6 +202,20 @@ module Dry
         processor_type.new(schema_dsl: self, steps: result_steps)
       end
 
+      # Merge with another dsl
+      #
+      # @return [DSL]
+      #
+      # @api private
+      def merge(other)
+        new(
+          parent: parents + other.parents,
+          macros: macros + other.macros,
+          types: types.merge(other.types),
+          steps: steps.merge(other.steps)
+        )
+      end
+
       # Cast this DSL into a rule object
       #
       # @return [RuleApplier]
