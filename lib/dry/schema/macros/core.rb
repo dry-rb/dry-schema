@@ -33,6 +33,11 @@ module Dry
         end
 
         # @api private
+        def path
+          schema_dsl.path
+        end
+
+        # @api private
         def to_rule
           compiler.visit(to_ast)
         end

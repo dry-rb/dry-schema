@@ -19,6 +19,7 @@ module Dry
 
           if block
             schema = define(*args, &block)
+            import_steps(schema)
             trace << schema.to_rule
           end
 
@@ -45,7 +46,7 @@ module Dry
 
         # @api private
         def define(*args, &block)
-          definition = schema_dsl.new(&block)
+          definition = schema_dsl.new(path: schema_dsl.path, &block)
           schema = definition.call
           type_schema =
             if array_type?(parent_type)

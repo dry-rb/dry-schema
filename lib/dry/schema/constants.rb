@@ -14,6 +14,9 @@ module Dry
     QUESTION_MARK = '?'
     DOT = '.'
 
+    # core processor steps in the default execution order
+    STEPS_IN_ORDER = %i[key_coercer filter_schema value_coercer rule_applier].freeze
+
     # Path to the default set of localized messages bundled within the gem
     DEFAULT_MESSAGES_PATH = Pathname(__dir__).join('../../../config/errors.yml').realpath.freeze
 

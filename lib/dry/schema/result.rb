@@ -32,10 +32,41 @@ module Dry
       option :message_compiler
 
       # @api private
+      option :parent, default: -> { nil }
+
+      # @api private
       def self.new(*, **)
         result = super
-        yield(result)
+        yield(result) if block_given?
         result.freeze
+      end
+
+      # Return a new result scoped to a specific path
+      #
+      # @param [Symbol, Array, Path]
+      #
+      # @return [Result]
+      #
+      # @api private
+      def at(path, &block)
+        new(Path[path].reduce(output) { |a, e| a[e] }, parent: self, &block)
+      end
+
+      # @api private
+      def new(output, **opts, &block)
+        self.class.new(
+          output,
+          message_compiler: message_compiler,
+          results: results,
+          **opts,
+          &block
+        )
+      end
+
+      # @api private
+      def update(hash)
+        output.update(hash)
+        self
       end
 
       # @api private

@@ -110,15 +110,6 @@ module Dry
         ->(input) { call(input) }
       end
 
-      # Return the key map
-      #
-      # @return [KeyMap]
-      #
-      # @api public
-      def key_map
-        steps[:key_coercer].key_map
-      end
-
       # Return string represntation
       #
       # @return [String]
@@ -130,14 +121,31 @@ module Dry
         STR
       end
 
+      # Return the key map
+      #
+      # @return [KeyMap]
+      #
+      # @api public
+      def key_map
+        steps.key_map
+      end
+
       # Return the type schema
       #
       # @return [Dry::Types::Safe]
       #
       # @api private
       def type_schema
-        steps[:value_coercer].type_schema
+        steps.type_schema
       end
+
+      # Return the rule applier
+      #
+      # @api private
+      def rule_applier
+        steps.rule_applier
+      end
+      alias_method :to_rule, :rule_applier
 
       # Return the rules config
       #
@@ -173,14 +181,6 @@ module Dry
       def rules
         rule_applier.rules
       end
-
-      # Return the rule applier
-      #
-      # @api private
-      def rule_applier
-        steps[:rule_applier]
-      end
-      alias_method :to_rule, :rule_applier
 
       # Check if there are filter rules
       #
