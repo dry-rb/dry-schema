@@ -5,6 +5,7 @@
   fixed:
   - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
   - Callbacks can now be inherited from multiple parents (@skryukov)
+  - 'Callbacks work with nested schemas (issue #209) (@solnic)'
   added:
   - 'Support for complex sum types ie `value([:integer, array[:integer])` (issue #214)
     (@solnic)'
