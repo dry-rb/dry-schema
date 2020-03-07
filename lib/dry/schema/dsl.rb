@@ -14,6 +14,7 @@ require 'dry/schema/processor'
 require 'dry/schema/processor_steps'
 require 'dry/schema/key_map'
 require 'dry/schema/key_coercer'
+require 'dry/schema/key_validator'
 require 'dry/schema/value_coercer'
 require 'dry/schema/rule_applier'
 
@@ -197,7 +198,9 @@ module Dry
       # @api private
       def call
         all_steps = parents.map(&:steps) + [steps]
+
         result_steps = all_steps.inject { |result, steps| result.merge(steps) }
+
         result_steps[:key_coercer] = key_coercer
         result_steps[:value_coercer] = value_coercer
         result_steps[:rule_applier] = rule_applier
