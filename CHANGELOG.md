@@ -31,6 +31,7 @@ and default types are explicitly not supported (@flash-gordon)
 
 - `:i18n` message backend delegates interpolation and caching to `I18n` (issue #211) (@robhanlon22)
 - (internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is a drop-in replacement (@flash-gordon)
+- Raise ArgumentError in DSL if parent DSL configs differ (@robhanlon22)
 
 [Compare v1.4.3...master](https://github.com/dry-rb/dry-schema/compare/v1.4.3...master)
 
