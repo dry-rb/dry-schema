@@ -34,6 +34,7 @@
     #211) (@robhanlon22)"
   - "(internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is
     a drop-in replacement (@flash-gordon)"
+  - Raise ArgumentError in DSL if parent DSL configs differ (@robhanlon22)
 - version: 1.4.3
   date: '2020-01-08'
   added:
