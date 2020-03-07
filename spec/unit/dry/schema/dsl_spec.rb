@@ -57,5 +57,24 @@ RSpec.describe Dry::Schema::DSL do
       Dry::Schema.config.messages.namespace = replacement_namespace
       expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
     end
+
+    it 'raises an ArgumentError if the parent configs differ' do
+      parent = [namespace, namespace, replacement_namespace, namespace].map do |namespace|
+        config = Dry::Schema::Config.new.tap { |c| c.messages.namespace = namespace }
+        Dry::Schema::DSL.new(config: config)
+      end
+
+      expect { Dry::Schema::DSL.new(parent: parent) }
+        .to raise_error(ArgumentError, /Parent configs differ/)
+    end
+
+    it 'does not raise an error if the parent configs are the same' do
+      parent = Array.new(4) do
+        config = Dry::Schema::Config.new.tap { |c| c.messages.namespace = namespace }
+        Dry::Schema::DSL.new(config: config)
+      end
+
+      expect { Dry::Schema::DSL.new(parent: parent) }.not_to raise_error
+    end
   end
 end

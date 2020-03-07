@@ -69,7 +69,7 @@ module Dry
       option :parent, Types::Coercible::Array, default: -> { EMPTY_ARRAY.dup }, as: :parents
 
       # @return [Config] Configuration object exposed via `#configure` method
-      option :config, optional: true, default: proc { (parent || Schema).config.dup }
+      option :config, optional: true, default: proc { default_config }
 
       # @return [ProcessorSteps] Steps for the processor
       option :steps, default: proc { ProcessorSteps.new }
@@ -452,6 +452,18 @@ module Dry
       # @api private
       def parent_key_map
         parents.reduce([]) { |key_map, parent| parent.key_map + key_map }
+      end
+
+      # @api private
+      def default_config
+        parents.each_cons(2) do |left, right|
+          unless left.config == right.config
+            raise ArgumentError,
+                  "Parent configs differ, left=#{left.inspect}, right=#{right.inspect}"
+          end
+        end
+
+        (parent || Schema).config.dup
       end
     end
   end
