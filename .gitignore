@@ -10,3 +10,4 @@ Gemfile.lock
 doc
 .vscode
 pkg/
+.byebug_history
