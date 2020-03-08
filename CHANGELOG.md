@@ -26,6 +26,7 @@ and default types are explicitly not supported (@flash-gordon)
 - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
 - Callbacks can now be inherited from multiple parents (@skryukov)
 - Callbacks work with nested schemas (issue #209) (@solnic)
+- Custom type is respected when defining nested schemas (issue #174 closed via #263) (@solnic)
 
 ### Changed
 
