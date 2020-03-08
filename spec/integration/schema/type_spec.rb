@@ -297,5 +297,34 @@ RSpec.describe Dry::Schema, 'types specs' do
         end
       end
     end
+
+    context 'when default type is overridden in a nested schema' do
+      subject(:schema) do
+        Dry::Schema.define do
+          required(:person).type(Test::ToHash).schema(Test::PersonSchema)
+        end
+      end
+
+      before do
+        Test::ToHash = Types::Nominal::Any.constructor(&:to_h)
+
+        Test::Person = Class.new do
+          def to_h
+            { name: 'Luke', age: 21 }
+          end
+        end
+
+        Test::PersonSchema = Dry::Schema.define do
+          required(:name).filled(:string)
+          required(:age).value(:integer, gt?: 18)
+        end
+      end
+
+      it 'respects the overridden type' do
+        person = Test::Person.new
+
+        expect(schema.(person: person)).to be_success
+      end
+    end
   end
 end
