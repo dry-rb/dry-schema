@@ -177,6 +177,11 @@ module Dry
           self
         end
 
+        # @api private
+        def custom_type?
+          schema_dsl.custom_type?(name)
+        end
+
         private
 
         # @api private

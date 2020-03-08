@@ -14,6 +14,8 @@ module Dry
         def call(*predicates, **opts, &block)
           schema = predicates.detect { |predicate| predicate.is_a?(Processor) }
 
+          type_spec = opts[:type_spec]
+
           if schema
             current_type = schema_dsl.types[name]
 
@@ -26,7 +28,7 @@ module Dry
 
             import_steps(schema)
 
-            type(updated_type)
+            type(updated_type) unless custom_type? && !current_type.respond_to?(:of)
           end
 
           trace_opts = opts.reject { |key, _| key == :type_spec || key == :type_rule }
@@ -36,8 +38,6 @@ module Dry
             trace.append(new(chain: false).instance_exec(&block)) if block
           else
             trace.evaluate(*predicates, **trace_opts)
-
-            type_spec = opts[:type_spec]
 
             if block && type_spec.equal?(:hash)
               hash(&block)

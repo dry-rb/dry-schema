@@ -176,7 +176,7 @@ module Dry
       def key(name, macro:, &block)
         raise ArgumentError, "Key +#{name}+ is not a symbol" unless name.is_a?(::Symbol)
 
-        set_type(name, Types::Any)
+        set_type(name, Types::Any.meta(default: true))
 
         macro = macro.new(
           name: name,
@@ -311,6 +311,15 @@ module Dry
         meta = { required: false, maybe: type.optional? }
 
         types[name] = type.meta(meta)
+      end
+
+      # Check if a custom type was set under provided key name
+      #
+      # @return [Bool]
+      #
+      # @api private
+      def custom_type?(name)
+        !types[name].meta[:default].equal?(true)
       end
 
       # Resolve type object from the provided spec
