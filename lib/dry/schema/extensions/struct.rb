@@ -13,7 +13,7 @@ module Dry
         def call(*args)
           if args.size >= 1 && args[0].is_a?(::Class) && args[0] <= ::Dry::Struct
             if block_given?
-              raise ArgumentError, "blocks are not supported when using "\
+              raise ArgumentError, 'blocks are not supported when using '\
                                    "a struct class (#{name.inspect} => #{args[0]})"
             end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'struct extension' do
   before { Dry::Schema.load_extensions(:struct) }
 
@@ -17,7 +19,7 @@ RSpec.describe 'struct extension' do
     let(:input) { { foo: { name: 'John' } } }
 
     it 'infers predicates from struct' do
-      expect(result).to be_failing(email: ["is missing", "must be a string"])
+      expect(result).to be_failing(email: ['is missing', 'must be a string'])
     end
 
     context 'extra predicates' do
@@ -32,14 +34,14 @@ RSpec.describe 'struct extension' do
       let(:input) { { foo: {} } }
 
       it 'adds predicates' do
-        expect(result).to be_failing(["must be filled"])
+        expect(result).to be_failing(['must be filled'])
       end
     end
 
     context 'more options' do
       it 'raises an error when a block is given (not supported)' do
         struct = self.struct
-        expect { Dry::Schema.define { required(:foo).hash(struct) { } } }.to raise_error(
+        expect { Dry::Schema.define { required(:foo).hash(struct) {} } }.to raise_error(
           ArgumentError,
           /blocks are not supported/
         )
@@ -59,7 +61,7 @@ RSpec.describe 'struct extension' do
     let(:input) { { foo: { name: 'John' } } }
 
     it 'infers predicates from struct' do
-      expect(result).to be_failing(email: ["is missing", "must be a string"])
+      expect(result).to be_failing(email: ['is missing', 'must be a string'])
     end
 
     context 'complex struct' do
@@ -79,7 +81,7 @@ RSpec.describe 'struct extension' do
 
       it 'produces errors for nested structs' do
         expect(result).to be_failing(
-          addresses: { 0 => { city: ["is missing", "must be a string"] } }
+          addresses: { 0 => { city: ['is missing', 'must be a string'] } }
         )
       end
     end
