@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/processor'
 
 RSpec.describe Dry::Schema::Processor, '#merge' do

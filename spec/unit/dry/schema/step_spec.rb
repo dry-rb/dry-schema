@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/schema/step'
 
 RSpec.describe Dry::Schema::Step do
@@ -8,7 +10,7 @@ RSpec.describe Dry::Schema::Step do
       end
 
       let(:root_step) do
-        Dry::Schema::Step.new(type: :core, name: :rule_applier, executor: -> result {
+        Dry::Schema::Step.new(type: :core, name: :rule_applier, executor: lambda { |result|
           result.update(test: true)
         })
       end

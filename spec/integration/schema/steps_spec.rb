@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Schema, 'callbacks' do
   context 'top-level' do
     subject(:schema) do
@@ -86,7 +88,7 @@ RSpec.describe Dry::Schema, 'callbacks' do
     it 'raises error' do
       expect {
         Dry::Schema.define do
-          before(:oops) { }
+          before(:oops) {}
           required(:user).value(:hash)
         end
       }.to raise_error(ArgumentError, /oops/)
