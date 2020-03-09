@@ -24,6 +24,9 @@ and default types are explicitly not supported (@flash-gordon)
 
 ### Fixed
 
+- `maybe` macro in JSON schemas no longer converts empty strings to `nil`.
+This was a bug in dry-types but your code may rely on this behavior. If you still
+require this behavior, we recommend using a custom type (see Advanced -> Custom types in the docs) (@flash-gordon)
 - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
 - Callbacks can now be inherited from multiple parents (@skryukov)
 - Callbacks work with nested schemas (issue #209) (@solnic)
