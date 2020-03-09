@@ -20,6 +20,7 @@ and default types are explicitly not supported (@flash-gordon)
   end
   ```
 - struct extension, it allows to use dry-struct classes as source for hash schemas. Note that output will still be presented as plain hashes, returning structs from schemas will require more work, it's planned for next versions (@flash-gordon)
+- :info extension which adds #info method to your schemas which produces a simple hash providing information about keys and types (issue #36 closed via #262) (@solnic)
 
 ### Fixed
 
