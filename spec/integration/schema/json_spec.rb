@@ -108,5 +108,20 @@ RSpec.describe Dry::Schema, 'defining a schema with json coercion' do
         }
       )
     end
+
+    context 'empty strings' do
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:name).maybe(:string)
+        end
+      end
+
+      it 'keeps strings when maybe macro is used' do
+        result = schema.(name: '')
+
+        expect(result).to be_success
+        expect(result.to_h).to eql(name: '')
+      end
+    end
   end
 end
