@@ -441,6 +441,8 @@ module Dry
 
       # Build a key spec needed by the key map
       #
+      # TODO: we need a key-map compiler using Types AST
+      #
       # @api private
       def key_spec(name, type)
         if type.respond_to?(:keys)
@@ -448,6 +450,10 @@ module Dry
         elsif type.respond_to?(:member)
           kv = key_spec(name, type.member)
           kv.equal?(name) ? name : kv.flatten(1)
+        elsif type.meta[:maybe] && type.respond_to?(:right)
+          key_spec(name, type.right)
+        elsif type.respond_to?(:type)
+          key_spec(name, type.type)
         else
           name
         end
