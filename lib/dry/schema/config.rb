@@ -51,6 +51,15 @@ module Dry
         setting(:default_locale, nil)
       end
 
+      # @!method validate_keys
+      #
+      # On/off switch for key validator
+      #
+      # @return [Boolean]
+      #
+      # @api public
+      setting(:validate_keys, false)
+
       # @api private
       def respond_to_missing?(meth, include_private = false)
         super || config.respond_to?(meth, include_private)

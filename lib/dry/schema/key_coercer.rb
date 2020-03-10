@@ -32,8 +32,8 @@ module Dry
       end
 
       # @api private
-      def call(source)
-        key_map.write(source.to_h)
+      def call(result)
+        key_map.write(result.to_h)
       end
       alias_method :[], :call
     end

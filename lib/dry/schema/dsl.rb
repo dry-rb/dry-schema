@@ -201,6 +201,7 @@ module Dry
 
         result_steps = all_steps.inject { |result, steps| result.merge(steps) }
 
+        result_steps[:key_validator] = key_validator if config.validate_keys
         result_steps[:key_coercer] = key_coercer
         result_steps[:value_coercer] = value_coercer
         result_steps[:rule_applier] = rule_applier
@@ -405,6 +406,15 @@ module Dry
       # @api private
       def parent_filter_schemas
         parents.select(&:filter_rules?).map(&:filter_schema)
+      end
+
+      # Build a key validator
+      #
+      # @return [KeyValidator]
+      #
+      # @api private
+      def key_validator
+        KeyValidator.new(key_map: key_map + parent_key_map)
       end
 
       # Build a key coercer

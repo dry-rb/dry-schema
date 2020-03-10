@@ -176,6 +176,13 @@ module Dry
         end
       end
 
+      # Add a new error AST node
+      #
+      # @api private
+      def add_error(node)
+        result_ast << node
+      end
+
       private
 
       # A list of failure ASTs produced by rule result objects
