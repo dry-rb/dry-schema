@@ -48,4 +48,33 @@ RSpec.describe 'Params / Macros / maybe' do
       )
     end
   end
+
+  context 'with a nested hash' do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:song).maybe(:hash) do
+          required(:title).filled(:string)
+          optional(:author).filled(:string)
+        end
+      end
+    end
+
+    it 'passes when valid' do
+      song = { 'title' => 'World', 'author' => 'Joe' }
+
+      expect(schema.(song: song)).to be_success
+    end
+
+    it 'fails when not valid' do
+      song = { 'title' => '', 'author' => 'Jane' }
+
+      expect(schema.(song: song).errors.to_h).to eql(
+        song: { title: ['must be filled'] }
+      )
+    end
+
+    it 'passes when nil' do
+      expect(schema.(song: nil)).to be_success
+    end
+  end
 end
