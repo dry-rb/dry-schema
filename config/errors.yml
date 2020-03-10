@@ -3,6 +3,8 @@ en:
     or: "or"
 
     errors:
+      unexpected_key: "is not allowed"
+
       array?: "must be an array"
 
       empty?: "must be empty"

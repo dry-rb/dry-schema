@@ -100,6 +100,11 @@ module Dry
         self.class.new(map(&:stringified))
       end
 
+      # @api private
+      def to_dot_notation
+        @to_dot_notation ||= map(&:to_dot_notation).flatten
+      end
+
       # Iterate over keys
       #
       # @api public

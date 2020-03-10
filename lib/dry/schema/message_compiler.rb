@@ -101,6 +101,20 @@ module Dry
       end
 
       # @api private
+      def visit_unexpected_key(node, opts)
+        path, input = node
+
+        msg = messages.translate('errors.unexpected_key')
+
+        Message.new(
+          path: path,
+          text: msg[:text],
+          predicate: nil,
+          input: input
+        )
+      end
+
+      # @api private
       def visit_or(node, opts)
         left, right = node.map { |n| visit(n, opts) }
         Message::Or[left, right, or_translator]

@@ -65,6 +65,11 @@ module Dry
       end
 
       # @api private
+      def to_dot_notation
+        [name.to_s]
+      end
+
+      # @api private
       def new(**new_opts)
         self.class.new(id, name: name, coercer: coercer, **new_opts)
       end
@@ -119,6 +124,11 @@ module Dry
       end
 
       # @api private
+      def to_dot_notation
+        [name].product(members.flat_map(&:to_dot_notation)).map { |e| e.join(DOT) }
+      end
+
+      # @api private
       def dump
         { name => members.map(&:dump) }
       end
@@ -153,6 +163,11 @@ module Dry
       # @api private
       def stringified
         new(name: name.to_s, member: member.stringified)
+      end
+
+      # @api private
+      def to_dot_notation
+        [:"#{name}[]", *member.to_dot_notation].join(DOT)
       end
 
       # @api private

@@ -84,7 +84,7 @@ module Dry
       #
       # @api public
       def call(input)
-        Result.new(input, message_compiler: message_compiler) do |result|
+        Result.new(input, input: input, message_compiler: message_compiler) do |result|
           steps.call(result)
         end
       end
