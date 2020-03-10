@@ -1,7 +1,7 @@
 ---
 - version: unreleased
-  summary:
-  date:
+  summary: 
+  date: 
   fixed:
   - |-
     `maybe` macro in JSON schemas no longer converts empty strings to `nil`.
@@ -12,6 +12,7 @@
   - 'Callbacks work with nested schemas (issue #209) (@solnic)'
   - 'Custom type is respected when defining nested schemas (issue #174 closed via
     #263) (@solnic)'
+  - 'Key map is properly inferred for maybe-hashes (issue #266 fixed via #269) (@solnic)'
   added:
   - 'Support for complex sum types ie `value([:integer, array[:integer])` (issue #214)
     (@solnic)'
