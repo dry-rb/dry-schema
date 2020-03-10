@@ -31,6 +31,7 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Callbacks can now be inherited from multiple parents (@skryukov)
 - Callbacks work with nested schemas (issue #209) (@solnic)
 - Custom type is respected when defining nested schemas (issue #174 closed via #263) (@solnic)
+- Key map is properly inferred for maybe-hashes (issue #266 fixed via #269) (@solnic)
 
 ### Changed
 
