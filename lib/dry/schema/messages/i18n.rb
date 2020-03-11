@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'i18n'
-require 'dry/schema/messages/abstract'
+require "i18n"
+require "dry/schema/messages/abstract"
 
 module Dry
   module Schema
@@ -82,7 +82,7 @@ module Dry
             top_namespace = config.top_namespace
 
             mapped_data = data
-              .map { |k, v| [k, { top_namespace => v[DEFAULT_MESSAGES_ROOT] }] }
+              .map { |k, v| [k, {top_namespace => v[DEFAULT_MESSAGES_ROOT]}] }
               .to_h
 
             store_translations(mapped_data)

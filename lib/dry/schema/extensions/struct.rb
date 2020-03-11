@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'dry/struct'
-require 'dry/schema/predicate_inferrer'
-require 'dry/schema/primitive_inferrer'
-require 'dry/schema/macros/dsl'
-require 'dry/schema/macros/hash'
+require "dry/struct"
+require "dry/schema/predicate_inferrer"
+require "dry/schema/primitive_inferrer"
+require "dry/schema/macros/dsl"
+require "dry/schema/macros/hash"
 
 module Dry
   module Schema
@@ -13,7 +13,7 @@ module Dry
         def call(*args)
           if args.size >= 1 && args[0].is_a?(::Class) && args[0] <= ::Dry::Struct
             if block_given?
-              raise ArgumentError, 'blocks are not supported when using '\
+              raise ArgumentError, "blocks are not supported when using "\
                                    "a struct class (#{name.inspect} => #{args[0]})"
             end
 

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'set'
-require 'concurrent/map'
-require 'dry/equalizer'
-require 'dry/configurable'
+require "set"
+require "concurrent/map"
+require "dry/equalizer"
+require "dry/configurable"
 
-require 'dry/schema/constants'
-require 'dry/schema/messages/template'
+require "dry/schema/constants"
+require "dry/schema/messages/template"
 
 module Dry
   module Schema
@@ -21,29 +21,29 @@ module Dry
         setting :default_locale, nil
         setting :load_paths, Set[DEFAULT_MESSAGES_PATH]
         setting :top_namespace, DEFAULT_MESSAGES_ROOT
-        setting :root, 'errors'
+        setting :root, "errors"
         setting :lookup_options, %i[root predicate path val_type arg_type].freeze
 
         setting :lookup_paths, [
-          '%<root>s.rules.%<path>s.%<predicate>s.arg.%<arg_type>s',
-          '%<root>s.rules.%<path>s.%<predicate>s',
-          '%<root>s.%<predicate>s.%<message_type>s',
-          '%<root>s.%<predicate>s.value.%<path>s',
-          '%<root>s.%<predicate>s.value.%<val_type>s.arg.%<arg_type>s',
-          '%<root>s.%<predicate>s.value.%<val_type>s',
-          '%<root>s.%<predicate>s.arg.%<arg_type>s',
-          '%<root>s.%<predicate>s'
+          "%<root>s.rules.%<path>s.%<predicate>s.arg.%<arg_type>s",
+          "%<root>s.rules.%<path>s.%<predicate>s",
+          "%<root>s.%<predicate>s.%<message_type>s",
+          "%<root>s.%<predicate>s.value.%<path>s",
+          "%<root>s.%<predicate>s.value.%<val_type>s.arg.%<arg_type>s",
+          "%<root>s.%<predicate>s.value.%<val_type>s",
+          "%<root>s.%<predicate>s.arg.%<arg_type>s",
+          "%<root>s.%<predicate>s"
         ].freeze
 
-        setting :rule_lookup_paths, ['rules.%<name>s'].freeze
+        setting :rule_lookup_paths, ["rules.%<name>s"].freeze
 
-        setting :arg_types, Hash.new { |*| 'default' }.update(
-          Range => 'range'
+        setting :arg_types, Hash.new { |*| "default" }.update(
+          Range => "range"
         )
 
-        setting :val_types, Hash.new { |*| 'default' }.update(
-          Range => 'range',
-          String => 'string'
+        setting :val_types, Hash.new { |*| "default" }.update(
+          Range => "range",
+          String => "string"
         )
 
         # @api private
@@ -74,7 +74,7 @@ module Dry
 
         # @api private
         def rule(name, options = {})
-          tokens = { name: name, locale: options.fetch(:locale, default_locale) }
+          tokens = {name: name, locale: options.fetch(:locale, default_locale)}
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
 
           rule = get(path, options) if path
@@ -87,7 +87,7 @@ module Dry
         #
         # @api public
         def call(predicate, options)
-          options = { locale: default_locale, **options }
+          options = {locale: default_locale, **options}
           opts = options.reject { |k,| config.lookup_options.include?(k) }
           path = lookup_paths(predicate, options).detect { |key| key?(key, opts) }
 

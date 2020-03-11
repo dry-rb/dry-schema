@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/types'
+require "dry/types"
 
 module Dry
   module Schema

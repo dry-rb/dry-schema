@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/schema/message/or/single_path'
-require 'dry/schema/message/or/multi_path'
+require "dry/schema/message/or/single_path"
+require "dry/schema/message/or/multi_path"
 
 module Dry
   module Schema

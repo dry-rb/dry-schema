@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/macros/value'
+require "dry/schema/macros/value"
 
 module Dry
   module Schema

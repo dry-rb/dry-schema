@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/message/or/abstract'
+require "dry/schema/message/or/abstract"
 
 module Dry
   module Schema

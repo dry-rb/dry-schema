@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema'
+require "dry/schema"
 
 RSpec.describe Dry::Schema::Result do
   subject(:schema) do
@@ -11,19 +11,19 @@ RSpec.describe Dry::Schema::Result do
     end
   end
 
-  describe '#messages' do
-    it 'returns failures for root key and hints for child keys' do
+  describe "#messages" do
+    it "returns failures for root key and hints for child keys" do
       result = schema.(template: nil)
 
       expect(result.messages.to_h)
-        .to eql(template: [['must be a hash'], id: ['must be greater than 0']])
+        .to eql(template: [["must be a hash"], id: ["must be greater than 0"]])
     end
 
-    it 'returns hints for child keys' do
+    it "returns hints for child keys" do
       result = schema.(template: {})
 
       expect(result.messages.to_h)
-        .to eql(template: { id: ['is missing', 'must be an integer', 'must be greater than 0'] })
+        .to eql(template: {id: ["is missing", "must be an integer", "must be greater than 0"]})
     end
   end
 end

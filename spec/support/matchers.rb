@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rspec/expectations'
+require "rspec/expectations"
 
 RSpec::Matchers.define :be_successful do
   match do |actual|

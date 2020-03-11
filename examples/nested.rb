@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry-schema'
+require "dry-schema"
 
 schema = Dry::Schema.define do
   required(:address).schema do
@@ -18,5 +18,5 @@ end
 result = schema.call({})
 puts result.errors.messages.inspect
 
-result = schema.call(address: { city: 'NYC' })
+result = schema.call(address: {city: "NYC"})
 puts result.errors.messages.inspect

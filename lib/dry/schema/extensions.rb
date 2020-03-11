@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 Dry::Schema.register_extension(:monads) do
-  require 'dry/schema/extensions/monads'
+  require "dry/schema/extensions/monads"
 end
 
 Dry::Schema.register_extension(:hints) do
-  require 'dry/schema/extensions/hints'
+  require "dry/schema/extensions/hints"
 end
 
 Dry::Schema.register_extension(:struct) do
-  require 'dry/schema/extensions/struct'
+  require "dry/schema/extensions/struct"
 end
 
 Dry::Schema.register_extension(:info) do
-  require 'dry/schema/extensions/info'
+  require "dry/schema/extensions/info"
 end

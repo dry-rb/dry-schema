@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/logic/predicates'
-require 'dry/types/predicate_registry'
+require "dry/logic/predicates"
+require "dry/types/predicate_registry"
 
 module Dry
   module Schema

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'dry/schema/processor'
+require "dry/schema/processor"
 
-RSpec.describe Dry::Schema::Processor, '#merge' do
-  context 'without parents' do
+RSpec.describe Dry::Schema::Processor, "#merge" do
+  context "without parents" do
     subject(:schema) { left.merge(right) }
 
     let(:left) do
@@ -26,26 +26,26 @@ RSpec.describe Dry::Schema::Processor, '#merge' do
       end
     end
 
-    it 'maintains rules' do
-      expect(schema.(name: '', age: 'foo').errors.to_h).to eql(
-        name: ['must be filled'], age: ['must be an integer']
+    it "maintains rules" do
+      expect(schema.(name: "", age: "foo").errors.to_h).to eql(
+        name: ["must be filled"], age: ["must be an integer"]
       )
     end
 
-    it 'maintains types' do
-      expect(schema.(name: '', age: '36').errors.to_h).to eql(
-        name: ['must be filled']
+    it "maintains types" do
+      expect(schema.(name: "", age: "36").errors.to_h).to eql(
+        name: ["must be filled"]
       )
     end
 
-    it 'maintains hooks' do
-      expect(schema.(name: 'Jane', age: 36).to_h).to eql(
-        name: 'Jane', age: 36, left: true, right: true
+    it "maintains hooks" do
+      expect(schema.(name: "Jane", age: 36).to_h).to eql(
+        name: "Jane", age: 36, left: true, right: true
       )
     end
   end
 
-  context 'with parents' do
+  context "with parents" do
     subject(:schema) { left.merge(right) }
 
     let(:left_parent) do
@@ -72,12 +72,12 @@ RSpec.describe Dry::Schema::Processor, '#merge' do
       end
     end
 
-    it 'maintains all rules' do
-      expect(schema.(name: '', age: 'foo').errors.to_h).to eql(
-        name: ['must be filled'],
-        age: ['must be an integer'],
-        email: ['is missing'],
-        address: ['is missing']
+    it "maintains all rules" do
+      expect(schema.(name: "", age: "foo").errors.to_h).to eql(
+        name: ["must be filled"],
+        age: ["must be an integer"],
+        email: ["is missing"],
+        address: ["is missing"]
       )
     end
   end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'dry/equalizer'
-require 'dry/configurable'
+require "dry/equalizer"
+require "dry/configurable"
 
-require 'dry/schema/constants'
-require 'dry/schema/predicate_registry'
-require 'dry/schema/type_container'
+require "dry/schema/constants"
+require "dry/schema/predicate_registry"
+require "dry/schema/type_container"
 
 module Dry
   module Schema
@@ -67,7 +67,7 @@ module Dry
 
       # @api private
       def inspect
-        "#<#{self.class} #{to_h.map { |k, v| ["#{k}=", v.inspect] }.map(&:join).join(' ')}>"
+        "#<#{self.class} #{to_h.map { |k, v| ["#{k}=", v.inspect] }.map(&:join).join(" ")}>"
       end
 
       private

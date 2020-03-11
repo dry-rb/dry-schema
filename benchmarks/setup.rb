@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'benchmark/ips'
-require 'hotch'
+require "benchmark/ips"
+require "hotch"
 
-ENV['HOTCH_VIEWER'] ||= 'open'
+ENV["HOTCH_VIEWER"] ||= "open"
 
-require 'dry/schema'
+require "dry/schema"
 
 PersonSchema = Dry::Schema.Params do
   required(:name).value(:string)
@@ -14,5 +14,5 @@ PersonSchema = Dry::Schema.Params do
 end
 
 def profile(&block)
-  Hotch(filter: 'Dry', &block)
+  Hotch(filter: "Dry", &block)
 end

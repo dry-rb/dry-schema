@@ -2,9 +2,9 @@
 
 # frozen_string_literal: true
 
-require 'bundler/setup'
-require 'pry'
-require 'dry/schema'
+require "bundler/setup"
+require "pry"
+require "dry/schema"
 
 module Types
   include Dry::Types()
@@ -24,4 +24,4 @@ class Context
   end
 end
 
-Pry.start(Context.new, prompt: [proc { 'dry-schema> ' }, proc { 'dry-schema*> ' }])
+Pry.start(Context.new, prompt: [proc { "dry-schema> " }, proc { "dry-schema*> " }])

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'pathname'
-require 'dry/core/constants'
+require "pathname"
+require "dry/core/constants"
 
 module Dry
   # Common constants used across the library
@@ -10,9 +10,9 @@ module Dry
   module Schema
     include Core::Constants
 
-    LIST_SEPARATOR = ', '
-    QUESTION_MARK = '?'
-    DOT = '.'
+    LIST_SEPARATOR = ", "
+    QUESTION_MARK = "?"
+    DOT = "."
 
     # core processor steps in the default execution order
     STEPS_IN_ORDER = %i[
@@ -24,10 +24,10 @@ module Dry
     ].freeze
 
     # Path to the default set of localized messages bundled within the gem
-    DEFAULT_MESSAGES_PATH = Pathname(__dir__).join('../../../config/errors.yml').realpath.freeze
+    DEFAULT_MESSAGES_PATH = Pathname(__dir__).join("../../../config/errors.yml").realpath.freeze
 
     # Default namespace used for localized messages in YAML files
-    DEFAULT_MESSAGES_ROOT = 'dry_schema'
+    DEFAULT_MESSAGES_ROOT = "dry_schema"
 
     # An error raised when DSL is used in an incorrect way
     InvalidSchemaError = Class.new(StandardError)

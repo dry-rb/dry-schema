@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Dry::Schema, 'unexpected keys' do
+RSpec.describe Dry::Schema, "unexpected keys" do
   subject(:schema) do
     Dry::Schema.define do
       config.validate_keys = true
@@ -18,19 +18,19 @@ RSpec.describe Dry::Schema, 'unexpected keys' do
     end
   end
 
-  it 'adds error messages about unexpected keys' do
+  it "adds error messages about unexpected keys" do
     input = {
-      foo: 'unexpected',
-      name: 'Jane',
-      address: { bar: 'unexpected', city: 'NYC', zipcode: '1234' },
-      roles: [{ name: 'admin' }, { name: 'editor', foo: 'unexpected' }]
+      foo: "unexpected",
+      name: "Jane",
+      address: {bar: "unexpected", city: "NYC", zipcode: "1234"},
+      roles: [{name: "admin"}, {name: "editor", foo: "unexpected"}]
     }
 
     expect(schema.(input).errors.to_h)
       .to eql(
-        foo: ['is not allowed'],
-        address: { bar: ['is not allowed'] },
-        roles: { 1 => { foo: ['is not allowed'] } }
+        foo: ["is not allowed"],
+        address: {bar: ["is not allowed"]},
+        roles: {1 => {foo: ["is not allowed"]}}
       )
   end
 end

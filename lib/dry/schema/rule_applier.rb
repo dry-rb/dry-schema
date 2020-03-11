@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
+require "dry/initializer"
 
-require 'dry/schema'
-require 'dry/schema/constants'
-require 'dry/schema/config'
-require 'dry/schema/result'
-require 'dry/schema/messages'
-require 'dry/schema/message_compiler'
+require "dry/schema"
+require "dry/schema/constants"
+require "dry/schema/config"
+require "dry/schema/result"
+require "dry/schema/messages"
+require "dry/schema/message_compiler"
 
 module Dry
   module Schema

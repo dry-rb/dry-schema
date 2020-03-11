@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
-require 'dry/equalizer'
+require "dry/initializer"
+require "dry/equalizer"
 
-require 'dry/schema/path'
+require "dry/schema/path"
 
 module Dry
   module Schema
@@ -167,7 +167,7 @@ module Dry
         "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect}>"
       end
 
-      if RUBY_VERSION >= '2.7'
+      if RUBY_VERSION >= "2.7"
         # Pattern matching support
         #
         # @api private

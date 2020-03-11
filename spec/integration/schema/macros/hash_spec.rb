@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Macros #hash' do
+RSpec.describe "Macros #hash" do
   subject(:schema) do
     Dry::Schema.define do
       required(:foo).hash do
@@ -9,39 +9,39 @@ RSpec.describe 'Macros #hash' do
     end
   end
 
-  context 'with valid input' do
+  context "with valid input" do
     let(:input) do
-      { foo: { bar: 'valid' } }
+      {foo: {bar: "valid"}}
     end
 
-    it 'is successful' do
+    it "is successful" do
       expect(result).to be_successful
     end
   end
 
-  context 'with invalid input' do
+  context "with invalid input" do
     let(:input) do
-      { foo: { bar: 312 } }
+      {foo: {bar: 312}}
     end
 
-    it 'is not successful' do
-      expect(result).to be_failing(bar: ['must be a string'])
+    it "is not successful" do
+      expect(result).to be_failing(bar: ["must be a string"])
     end
   end
 
-  context 'with invalid input type' do
+  context "with invalid input type" do
     let(:input) do
-      { foo: nil }
+      {foo: nil}
     end
 
-    it 'is not successful' do
-      expect(result).to be_failing(['must be a hash'])
+    it "is not successful" do
+      expect(result).to be_failing(["must be a hash"])
     end
   end
 
-  context 'with hash schema' do
+  context "with hash schema" do
     let(:hash_schema) do
-      Types::Hash.schema(name: 'string')
+      Types::Hash.schema(name: "string")
     end
 
     subject(:schema) do
@@ -52,7 +52,7 @@ RSpec.describe 'Macros #hash' do
       end
     end
 
-    context 'and a block' do
+    context "and a block" do
       subject(:schema) do
         hash_schema = self.hash_schema
 
@@ -63,14 +63,14 @@ RSpec.describe 'Macros #hash' do
         end
       end
 
-      let(:input) { { foo: { name: 'John' } } }
+      let(:input) { {foo: {name: "John"}} }
 
-      it 'combines schemas' do
-        expect(result).to be_failing(email: ['is missing', 'must be a string'])
+      it "combines schemas" do
+        expect(result).to be_failing(email: ["is missing", "must be a string"])
       end
     end
 
-    context 'and a predicate' do
+    context "and a predicate" do
       subject(:schema) do
         hash_schema = self.hash_schema
 
@@ -79,34 +79,34 @@ RSpec.describe 'Macros #hash' do
         end
       end
 
-      let(:input) { { foo: {} } }
+      let(:input) { {foo: {}} }
 
-      it 'adds predicates' do
-        expect(result).to be_failing(['must be filled'])
+      it "adds predicates" do
+        expect(result).to be_failing(["must be filled"])
       end
     end
 
-    context 'with coercible types' do
+    context "with coercible types" do
       let(:hash_schema) do
-        Types::Hash.schema(age: 'params.integer')
+        Types::Hash.schema(age: "params.integer")
       end
 
-      let(:input) { { foo: { age: '39' } } }
+      let(:input) { {foo: {age: "39"}} }
 
       specify do
-        expect(result.to_h).to eql(foo: { age: 39 })
+        expect(result.to_h).to eql(foo: {age: 39})
       end
     end
 
-    context 'constrained type' do
+    context "constrained type" do
       let(:hash_schema) do
         Types::Hash.schema({}).constrained([:filled])
       end
 
-      let(:input) { { foo: {} } }
+      let(:input) { {foo: {}} }
 
-      it 'adds predicates' do
-        expect(result).to be_failing(['must be filled'])
+      it "adds predicates" do
+        expect(result).to be_failing(["must be filled"])
       end
     end
   end

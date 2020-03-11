@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/schema/constants'
-require 'dry/schema/path'
+require "dry/schema/constants"
+require "dry/schema/path"
 
 module Dry
   module Schema

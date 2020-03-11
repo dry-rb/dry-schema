@@ -7,8 +7,8 @@ module Dry
     # @api private
     module Messages
       BACKENDS = {
-        i18n: 'I18n',
-        yaml: 'YAML'
+        i18n: "I18n",
+        yaml: "YAML"
       }.freeze
 
       module_function
@@ -31,7 +31,7 @@ module Dry
   end
 end
 
-require 'dry/schema/messages/abstract'
-require 'dry/schema/messages/namespaced'
-require 'dry/schema/messages/yaml'
-require 'dry/schema/messages/i18n' if defined?(I18n)
+require "dry/schema/messages/abstract"
+require "dry/schema/messages/namespaced"
+require "dry/schema/messages/yaml"
+require "dry/schema/messages/i18n" if defined?(I18n)

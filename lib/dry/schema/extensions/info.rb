@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/extensions/info/schema_compiler'
+require "dry/schema/extensions/info/schema_compiler"
 
 module Dry
   module Schema

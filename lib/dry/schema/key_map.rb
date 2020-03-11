@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'dry/equalizer'
-require 'dry/core/cache'
-require 'dry/schema/constants'
-require 'dry/schema/key'
+require "dry/equalizer"
+require "dry/core/cache"
+require "dry/schema/constants"
+require "dry/schema/key"
 
 module Dry
   module Schema
@@ -125,7 +125,7 @@ module Dry
       #
       # @return [String]
       def inspect
-        "#<#{self.class}[#{keys.map(&:dump).map(&:inspect).join(', ')}]>"
+        "#<#{self.class}[#{keys.map(&:dump).map(&:inspect).join(", ")}]>"
       end
 
       # Dump keys to their spec format

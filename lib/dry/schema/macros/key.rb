@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'dry/schema/processor'
-require 'dry/schema/macros/dsl'
-require 'dry/schema/constants'
+require "dry/schema/processor"
+require "dry/schema/macros/dsl"
+require "dry/schema/constants"
 
 module Dry
   module Schema
