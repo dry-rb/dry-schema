@@ -167,7 +167,7 @@ module Dry
 
       # @api private
       def to_dot_notation
-        [:"#{name}[]", *member.to_dot_notation].join(DOT)
+        [:"#{name}[]"].product(member.to_dot_notation).map { |el| el.join(DOT) }
       end
 
       # @api private
