@@ -12,4 +12,5 @@ sections:
 Available extensions:
 
 - [Hints](docs::extensions/hints)
+- [Info](docs::extensions/info)
 - [Monads](docs::extensions/monads)
