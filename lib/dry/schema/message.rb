@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
-require 'dry/equalizer'
+require "dry/initializer"
+require "dry/equalizer"
 
-require 'dry/schema/path'
-require 'dry/schema/message/or'
+require "dry/schema/path"
+require "dry/schema/message/or"
 
 module Dry
   module Schema
@@ -52,7 +52,7 @@ module Dry
       #
       # @api public
       def dump
-        @dump ||= meta.empty? ? text : { text: text, **meta }
+        @dump ||= meta.empty? ? text : {text: text, **meta}
       end
       alias_method :to_s, :dump
 
@@ -85,8 +85,8 @@ module Dry
       # @api private
       def to_or(root)
         clone = dup
-        clone.instance_variable_set('@path', path - root.to_a)
-        clone.instance_variable_set('@_path', nil)
+        clone.instance_variable_set("@path", path - root.to_a)
+        clone.instance_variable_set("@_path", nil)
         clone
       end
 
@@ -98,7 +98,7 @@ module Dry
         r_path = other._path
 
         unless l_path.same_root?(r_path)
-          raise ArgumentError, 'Cannot compare messages from different root paths'
+          raise ArgumentError, "Cannot compare messages from different root paths"
         end
 
         l_path <=> r_path

@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
+require "dry/initializer"
 
-require 'dry/schema'
-require 'dry/schema/constants'
-require 'dry/schema/path'
-require 'dry/schema/config'
-require 'dry/schema/compiler'
-require 'dry/schema/types'
-require 'dry/schema/macros'
+require "dry/schema"
+require "dry/schema/constants"
+require "dry/schema/path"
+require "dry/schema/config"
+require "dry/schema/compiler"
+require "dry/schema/types"
+require "dry/schema/macros"
 
-require 'dry/schema/processor'
-require 'dry/schema/processor_steps'
-require 'dry/schema/key_map'
-require 'dry/schema/key_coercer'
-require 'dry/schema/key_validator'
-require 'dry/schema/value_coercer'
-require 'dry/schema/rule_applier'
+require "dry/schema/processor"
+require "dry/schema/processor_steps"
+require "dry/schema/key_map"
+require "dry/schema/key_coercer"
+require "dry/schema/key_validator"
+require "dry/schema/value_coercer"
+require "dry/schema/rule_applier"
 
 module Dry
   module Schema
@@ -240,7 +240,7 @@ module Dry
       #
       # @api public
       def array
-        -> member_type { type_registry['array'].of(resolve_type(member_type)) }
+        -> member_type { type_registry["array"].of(resolve_type(member_type)) }
       end
 
       # Method allows steps injection to the processor
@@ -288,7 +288,7 @@ module Dry
       #
       # @api private
       def type_schema
-        our_schema = type_registry['hash'].schema(types).lax
+        our_schema = type_registry["hash"].schema(types).lax
         schemas = [*parents.map(&:type_schema), our_schema]
         schemas.inject { |result, schema| result.schema(schema.to_a) }
       end
@@ -312,7 +312,7 @@ module Dry
       # @api private
       def set_type(name, spec)
         type = resolve_type(spec)
-        meta = { required: false, maybe: type.optional? }
+        meta = {required: false, maybe: type.optional?}
 
         types[name] = type.meta(meta)
       end
@@ -360,7 +360,7 @@ module Dry
       #
       # @api private
       def filter_rules?
-        if instance_variable_defined?('@filter_schema_dsl') && !filter_schema_dsl.macros.empty?
+        if instance_variable_defined?("@filter_schema_dsl") && !filter_schema_dsl.macros.empty?
           return true
         end
 
@@ -459,7 +459,7 @@ module Dry
       # @api private
       def key_spec(name, type)
         if type.respond_to?(:keys)
-          { name => key_map(type.name_key_map) }
+          {name => key_map(type.name_key_map)}
         elsif type.respond_to?(:member)
           kv = key_spec(name, type.member)
           kv.equal?(name) ? name : kv.flatten(1)

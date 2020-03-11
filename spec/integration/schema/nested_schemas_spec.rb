@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe Dry::Schema, 'nested schemas' do
-  context 'with multiple nested schemas' do
+RSpec.describe Dry::Schema, "nested schemas" do
+  context "with multiple nested schemas" do
     subject(:schema) do
       Dry::Schema.define do
         required(:content).value(:hash).hash do
@@ -16,31 +16,31 @@ RSpec.describe Dry::Schema, 'nested schemas' do
       end
     end
 
-    it 'passes when input is valid' do
-      input = { content: { meta: { version: '1.0' }, data: { city: 'Canberra' } } }
+    it "passes when input is valid" do
+      input = {content: {meta: {version: "1.0"}, data: {city: "Canberra"}}}
       expect(schema.(input)).to be_success
     end
 
-    it 'fails when one sub-key is missing' do
-      input = { content: { data: { city: 'Canberra' } } }
-      expect(schema.(input).messages).to eql(content: { meta: ['is missing', 'must be a hash'] })
+    it "fails when one sub-key is missing" do
+      input = {content: {data: {city: "Canberra"}}}
+      expect(schema.(input).messages).to eql(content: {meta: ["is missing", "must be a hash"]})
     end
 
-    it 'fails when both sub-keys are missing' do
-      input = { content: {} }
-      expect(schema.(input).messages).to eql(content: { meta: ['is missing', 'must be a hash'], data: ['is missing', 'must be a hash'] })
+    it "fails when both sub-keys are missing" do
+      input = {content: {}}
+      expect(schema.(input).messages).to eql(content: {meta: ["is missing", "must be a hash"], data: ["is missing", "must be a hash"]})
     end
 
-    it 'fails when the deeply nested keys are invalid' do
-      input = { content: { meta: { version: '' }, data: { city: '' } } }
+    it "fails when the deeply nested keys are invalid" do
+      input = {content: {meta: {version: ""}, data: {city: ""}}}
 
       expect(schema.(input).messages).to eql(
-        content: { meta: { version: ['must be filled'] }, data: { city: ['must be filled'] } }
+        content: {meta: {version: ["must be filled"]}, data: {city: ["must be filled"]}}
       )
     end
   end
 
-  context 'with a 2-level deep schema' do
+  context "with a 2-level deep schema" do
     subject(:schema) do
       Dry::Schema.define do
         required(:meta).hash do
@@ -52,40 +52,40 @@ RSpec.describe Dry::Schema, 'nested schemas' do
       end
     end
 
-    it 'passes when input is valid' do
-      expect(schema.(meta: { info: { details: 'Krakow', meta: 'foo' } })).to be_success
+    it "passes when input is valid" do
+      expect(schema.(meta: {info: {details: "Krakow", meta: "foo"}})).to be_success
     end
 
-    it 'fails when root key is missing' do
-      expect(schema.({}).messages).to eql(meta: ['is missing', 'must be a hash'])
+    it "fails when root key is missing" do
+      expect(schema.({}).messages).to eql(meta: ["is missing", "must be a hash"])
     end
 
-    it 'fails when 1-level key is missing' do
+    it "fails when 1-level key is missing" do
       expect(schema.(meta: {}).messages).to eql(
-        meta: { info: ['is missing', 'must be a hash'] }
+        meta: {info: ["is missing", "must be a hash"]}
       )
     end
 
-    it 'fails when 2-level key is missing' do
-      expect(schema.(meta: { info: {} }).messages).to eql(
-        meta: { info: { details: ['is missing', 'must be a string'], meta: ['is missing', 'must be a string'] } }
+    it "fails when 2-level key is missing" do
+      expect(schema.(meta: {info: {}}).messages).to eql(
+        meta: {info: {details: ["is missing", "must be a string"], meta: ["is missing", "must be a string"]}}
       )
     end
 
-    it 'fails when 1-level key has invalid value' do
-      expect(schema.(meta: { info: nil, meta: 'foo' }).messages).to eql(
-        meta: { info: ['must be a hash'] }
+    it "fails when 1-level key has invalid value" do
+      expect(schema.(meta: {info: nil, meta: "foo"}).messages).to eql(
+        meta: {info: ["must be a hash"]}
       )
     end
 
-    it 'fails when 2-level key has invalid value' do
-      expect(schema.(meta: { info: { details: nil, meta: 'foo' } }).messages).to eql(
-        meta: { info: { details: ['must be a string'] } }
+    it "fails when 2-level key has invalid value" do
+      expect(schema.(meta: {info: {details: nil, meta: "foo"}}).messages).to eql(
+        meta: {info: {details: ["must be a string"]}}
       )
     end
   end
 
-  context 'when duplicated key names are used in 2 subsequent levels' do
+  context "when duplicated key names are used in 2 subsequent levels" do
     subject(:schema) do
       Dry::Schema.define do
         required(:meta).value(:hash).hash do
@@ -94,26 +94,26 @@ RSpec.describe Dry::Schema, 'nested schemas' do
       end
     end
 
-    it 'passes when input is valid' do
-      expect(schema.(meta: { meta: 'data' })).to be_success
+    it "passes when input is valid" do
+      expect(schema.(meta: {meta: "data"})).to be_success
     end
 
-    it 'fails when root key is missing' do
-      expect(schema.({}).messages).to eql(meta: ['is missing', 'must be a hash'])
+    it "fails when root key is missing" do
+      expect(schema.({}).messages).to eql(meta: ["is missing", "must be a hash"])
     end
 
-    it 'fails when 1-level key is missing' do
-      expect(schema.(meta: {}).messages).to eql(meta: { meta: ['is missing', 'must be a string'] })
+    it "fails when 1-level key is missing" do
+      expect(schema.(meta: {}).messages).to eql(meta: {meta: ["is missing", "must be a string"]})
     end
 
-    it 'fails when 1-level key value is invalid' do
-      expect(schema.(meta: { meta: '' }).messages).to eql(
-        meta: { meta: ['must be filled'] }
+    it "fails when 1-level key value is invalid" do
+      expect(schema.(meta: {meta: ""}).messages).to eql(
+        meta: {meta: ["must be filled"]}
       )
     end
   end
 
-  context 'when duplicated key names are used in 2 subsequent levels as schemas' do
+  context "when duplicated key names are used in 2 subsequent levels as schemas" do
     subject(:schema) do
       Dry::Schema.define do
         required(:meta).value(:hash).hash do
@@ -124,38 +124,38 @@ RSpec.describe Dry::Schema, 'nested schemas' do
       end
     end
 
-    it 'passes when input is valid' do
-      expect(schema.(meta: { meta: { data: 'this is fine' } })).to be_success
+    it "passes when input is valid" do
+      expect(schema.(meta: {meta: {data: "this is fine"}})).to be_success
     end
 
-    it 'fails when root key is missing' do
-      expect(schema.({}).messages).to eql(meta: ['is missing', 'must be a hash'])
+    it "fails when root key is missing" do
+      expect(schema.({}).messages).to eql(meta: ["is missing", "must be a hash"])
     end
 
-    it 'fails when 1-level key is missing' do
-      expect(schema.(meta: {}).messages).to eql(meta: { meta: ['is missing', 'must be a hash'] })
+    it "fails when 1-level key is missing" do
+      expect(schema.(meta: {}).messages).to eql(meta: {meta: ["is missing", "must be a hash"]})
     end
 
-    it 'fails when 1-level key value is invalid' do
-      expect(schema.(meta: { meta: '' }).messages).to eql(
-        meta: { meta: ['must be a hash'] }
+    it "fails when 1-level key value is invalid" do
+      expect(schema.(meta: {meta: ""}).messages).to eql(
+        meta: {meta: ["must be a hash"]}
       )
     end
 
-    it 'fails when 2-level key is missing' do
-      expect(schema.(meta: { meta: {} }).messages).to eql(
-        meta: { meta: { data: ['is missing', 'must be a string'] } }
+    it "fails when 2-level key is missing" do
+      expect(schema.(meta: {meta: {}}).messages).to eql(
+        meta: {meta: {data: ["is missing", "must be a string"]}}
       )
     end
 
-    it 'fails when 2-level key value is invalid' do
-      expect(schema.(meta: { meta: { data: '' } }).messages).to eql(
-        meta: { meta: { data: ['must be filled'] } }
+    it "fails when 2-level key value is invalid" do
+      expect(schema.(meta: {meta: {data: ""}}).messages).to eql(
+        meta: {meta: {data: ["must be filled"]}}
       )
     end
   end
 
-  context 'with `each` + schema inside another schema' do
+  context "with `each` + schema inside another schema" do
     subject(:schema) do
       Dry::Schema.define do
         required(:meta).value(:hash).hash do
@@ -170,46 +170,46 @@ RSpec.describe Dry::Schema, 'nested schemas' do
       end
     end
 
-    it 'passes when data is valid' do
-      expect(schema.(meta: { data: [{ info: { name: 'oh hai' } }] })).to be_success
+    it "passes when data is valid" do
+      expect(schema.(meta: {data: [{info: {name: "oh hai"}}]})).to be_success
     end
 
-    it 'fails when root key is missing' do
-      expect(schema.({}).messages).to eql(meta: ['is missing', 'must be a hash'])
+    it "fails when root key is missing" do
+      expect(schema.({}).messages).to eql(meta: ["is missing", "must be a hash"])
     end
 
-    it 'fails when root key value is invalid' do
-      expect(schema.(meta: '').messages).to eql(meta: ['must be a hash'])
+    it "fails when root key value is invalid" do
+      expect(schema.(meta: "").messages).to eql(meta: ["must be a hash"])
     end
 
-    it 'fails when 1-level key is missing' do
-      expect(schema.(meta: {}).messages).to eql(meta: { data: ['is missing', 'must be an array'] })
+    it "fails when 1-level key is missing" do
+      expect(schema.(meta: {}).messages).to eql(meta: {data: ["is missing", "must be an array"]})
     end
 
-    it 'fails when 1-level key has invalid value' do
-      expect(schema.(meta: { data: '' }).messages).to eql(meta: { data: ['must be an array'] })
+    it "fails when 1-level key has invalid value" do
+      expect(schema.(meta: {data: ""}).messages).to eql(meta: {data: ["must be an array"]})
     end
 
-    it 'fails when 1-level key has value with a missing key' do
-      expect(schema.(meta: { data: [{}] }).messages).to eql(
-        meta: { data: { 0 => { info: ['is missing', 'must be a hash'] } } }
+    it "fails when 1-level key has value with a missing key" do
+      expect(schema.(meta: {data: [{}]}).messages).to eql(
+        meta: {data: {0 => {info: ["is missing", "must be a hash"]}}}
       )
     end
 
-    it 'fails when 1-level key has value with an incorrect type' do
-      expect(schema.(meta: { data: [{ info: '' }] }).messages).to eql(
-        meta: { data: { 0 => { info: ['must be a hash'] } } }
+    it "fails when 1-level key has value with an incorrect type" do
+      expect(schema.(meta: {data: [{info: ""}]}).messages).to eql(
+        meta: {data: {0 => {info: ["must be a hash"]}}}
       )
     end
 
-    it 'fails when 1-level key has value with a key with an invalid value' do
-      expect(schema.(meta: { data: [{ info: { name: '' } }] }).messages).to eql(
-        meta: { data: { 0 => { info: { name: ['must be filled'] } } } }
+    it "fails when 1-level key has value with a key with an invalid value" do
+      expect(schema.(meta: {data: [{info: {name: ""}}]}).messages).to eql(
+        meta: {data: {0 => {info: {name: ["must be filled"]}}}}
       )
     end
   end
 
-  context 'with 2-level `each` + schema' do
+  context "with 2-level `each` + schema" do
     subject(:schema) do
       Dry::Schema.define do
         required(:data).value(:array).each do
@@ -224,19 +224,19 @@ RSpec.describe Dry::Schema, 'nested schemas' do
       end
     end
 
-    it 'passes when input is valid' do
-      expect(schema.(data: [{ tags: [{ name: 'red' }, { name: 'blue' }] }])).to be_success
+    it "passes when input is valid" do
+      expect(schema.(data: [{tags: [{name: "red"}, {name: "blue"}]}])).to be_success
     end
 
-    it 'fails when 1-level element is not valid' do
+    it "fails when 1-level element is not valid" do
       expect(schema.(data: [{}]).messages).to eql(
-        data: { 0 => { tags: ['is missing', 'must be an array'] } }
+        data: {0 => {tags: ["is missing", "must be an array"]}}
       )
     end
 
-    it 'fails when 2-level element is not valid' do
-      expect(schema.(data: [{ tags: [{ name: 'red' }, { name: '' }] }]).messages).to eql(
-        data: { 0 => { tags: { 1 => { name: ['must be filled'] } } } }
+    it "fails when 2-level element is not valid" do
+      expect(schema.(data: [{tags: [{name: "red"}, {name: ""}]}]).messages).to eql(
+        data: {0 => {tags: {1 => {name: ["must be filled"]}}}}
       )
     end
   end

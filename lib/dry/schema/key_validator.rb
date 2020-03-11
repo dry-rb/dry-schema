@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
-require 'dry/schema/constants'
+require "dry/initializer"
+require "dry/schema/constants"
 
 module Dry
   module Schema
@@ -9,9 +9,9 @@ module Dry
     class KeyValidator
       extend Dry::Initializer
 
-      INDEX_REGEX = /\[\d+\]/
-      DIGIT_REGEX = /\A\d+\z/
-      BRACKETS = '[]'
+      INDEX_REGEX = /\[\d+\]/.freeze
+      DIGIT_REGEX = /\A\d+\z/.freeze
+      BRACKETS = "[]"
 
       # @api private
       option :key_map

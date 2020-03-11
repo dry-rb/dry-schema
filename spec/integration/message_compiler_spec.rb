@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'dry/schema/message_compiler'
+require "dry/schema/message_compiler"
 
 RSpec.describe Dry::Schema::MessageCompiler do
   subject(:message_compiler) { Dry::Schema::MessageCompiler.new(messages) }
 
-  include_context 'predicate helper'
+  include_context "predicate helper"
 
   let(:messages) do
     Dry::Schema::Messages::YAML.build.merge(
@@ -14,15 +14,15 @@ RSpec.describe Dry::Schema::MessageCompiler do
           errors: {
             key?: {
               arg: {
-                default: '+%{name}+ key is missing in the hash'
+                default: "+%{name}+ key is missing in the hash"
               },
               value: {
-                gender: 'Please provide your gender'
+                gender: "Please provide your gender"
               }
             },
             rules: {
               address: {
-                filled?: 'Please provide your address'
+                filled?: "Please provide your address"
               }
             }
           }
@@ -31,380 +31,380 @@ RSpec.describe Dry::Schema::MessageCompiler do
       pl: {
         dry_schema: {
           rules: {
-            email: 'adres email'
+            email: "adres email"
           },
           errors: {
-            email?: 'nie jest poprawny'
+            email?: "nie jest poprawny"
           }
         }
       }
     )
   end
 
-  describe '#call with flat inputs' do
+  describe "#call with flat inputs" do
     let(:ast) do
       [
         [:failure, [:name, p(:key?, :name)]],
         [:failure, [:gender, p(:key?, :gender)]],
         [:key, [:age, [:failure, [:age, p(:gt?, 18)]]]],
-        [:key, [:email, [:failure, [:email, p(:filled?, '')]]]],
-        [:key, [:address, [:failure, [:address, p(:filled?, '')]]]]
+        [:key, [:email, [:failure, [:email, p(:filled?, "")]]]],
+        [:key, [:address, [:failure, [:address, p(:filled?, "")]]]]
       ]
     end
 
-    it 'converts error ast into another format' do
+    it "converts error ast into another format" do
       expect(message_compiler.(ast).to_h).to eql(
-        name: ['+name+ key is missing in the hash'],
-        gender: ['Please provide your gender'],
-        age: ['must be greater than 18'],
-        email: ['must be filled'],
-        address: ['Please provide your address']
+        name: ["+name+ key is missing in the hash"],
+        gender: ["Please provide your gender"],
+        age: ["must be greater than 18"],
+        email: ["must be filled"],
+        address: ["Please provide your address"]
       )
     end
   end
 
-  describe '#visit with an :input node' do
-    context 'full message' do
-      it 'returns full message including rule name' do
+  describe "#visit with an :input node" do
+    context "full message" do
+      it "returns full message including rule name" do
         msg = message_compiler.with(full: true).visit(
-          [:failure, [:num, [:key, [:num, p(:int?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:int?, "2")]]]]
         )
 
-        expect(msg).to eql('num must be an integer')
+        expect(msg).to eql("num must be an integer")
       end
     end
 
-    context 'rule name translations' do
-      it 'translates rule name and its message' do
+    context "rule name translations" do
+      it "translates rule name and its message" do
         msg = message_compiler.with(locale: :pl, full: true).visit(
-          [:failure, [:email, [:key, [:email, p(:email?, 'oops')]]]]
+          [:failure, [:email, [:key, [:email, p(:email?, "oops")]]]]
         )
 
-        expect(msg).to eql('adres email nie jest poprawny')
+        expect(msg).to eql("adres email nie jest poprawny")
       end
     end
 
-    describe ':empty?' do
-      it 'returns valid message' do
+    describe ":empty?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:tags, [:key, [:tags, p(:empty?, nil)]]]]
         )
 
-        expect(msg).to eql('must be empty')
+        expect(msg).to eql("must be empty")
       end
     end
 
-    describe ':excluded_from?' do
-      it 'returns valid message' do
+    describe ":excluded_from?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:excluded_from?, [1, 2, 3], 2)]]]]
         )
 
-        expect(msg).to eql('must not be one of: 1, 2, 3')
+        expect(msg).to eql("must not be one of: 1, 2, 3")
       end
     end
 
-    describe ':excludes?' do
-      it 'returns valid message' do
+    describe ":excludes?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:array, [:key, [:array, p(:excludes?, 2, [1, 2])]]]]
         )
 
-        expect(msg).to eql('must not include 2')
+        expect(msg).to eql("must not include 2")
       end
     end
 
-    describe ':included_in?' do
-      it 'returns valid message' do
+    describe ":included_in?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:included_in?, [1, 2, 3], :num)]]]]
         )
 
-        expect(msg).to eql('must be one of: 1, 2, 3')
+        expect(msg).to eql("must be one of: 1, 2, 3")
       end
     end
 
-    describe ':includes?' do
-      it 'returns valid message' do
+    describe ":includes?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:includes?, 2, [1])]]]]
         )
 
-        expect(msg).to eql('must include 2')
+        expect(msg).to eql("must include 2")
       end
     end
 
-    describe ':gt?' do
-      it 'returns valid message' do
+    describe ":gt?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:gt?, 3, 2)]]]]
         )
 
-        expect(msg).to eql('must be greater than 3')
+        expect(msg).to eql("must be greater than 3")
       end
     end
 
-    describe ':gteq?' do
-      it 'returns valid message' do
+    describe ":gteq?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:gteq?, 3, 2)]]]]
         )
 
-        expect(msg).to eql('must be greater than or equal to 3')
+        expect(msg).to eql("must be greater than or equal to 3")
       end
     end
 
-    describe ':lt?' do
-      it 'returns valid message' do
+    describe ":lt?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:lt?, 3, 2)]]]]
         )
 
-        expect(msg).to eql('must be less than 3')
+        expect(msg).to eql("must be less than 3")
       end
     end
 
-    describe ':lteq?' do
-      it 'returns valid message' do
+    describe ":lteq?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:lteq?, 3, 2)]]]]
         )
 
-        expect(msg).to eql('must be less than or equal to 3')
+        expect(msg).to eql("must be less than or equal to 3")
       end
     end
 
-    describe ':hash?' do
-      it 'returns valid message' do
+    describe ":hash?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:address, [:key, [:address, p(:hash?, '')]]]]
+          [:failure, [:address, [:key, [:address, p(:hash?, "")]]]]
         )
 
-        expect(msg).to eql('must be a hash')
+        expect(msg).to eql("must be a hash")
       end
     end
 
-    describe ':array?' do
-      it 'returns valid message' do
+    describe ":array?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:phone_numbers, [:key, [:phone, p(:array?, '')]]]]
+          [:failure, [:phone_numbers, [:key, [:phone, p(:array?, "")]]]]
         )
 
-        expect(msg).to eql('must be an array')
+        expect(msg).to eql("must be an array")
       end
     end
 
-    describe ':int?' do
-      it 'returns valid message' do
+    describe ":int?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:int?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:int?, "2")]]]]
         )
 
-        expect(msg).to eql('must be an integer')
+        expect(msg).to eql("must be an integer")
       end
     end
 
-    describe ':float?' do
-      it 'returns valid message' do
+    describe ":float?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:float?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:float?, "2")]]]]
         )
 
-        expect(msg).to eql('must be a float')
+        expect(msg).to eql("must be a float")
       end
     end
 
-    describe ':decimal?' do
-      it 'returns valid message' do
+    describe ":decimal?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:decimal?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:decimal?, "2")]]]]
         )
 
-        expect(msg).to eql('must be a decimal')
+        expect(msg).to eql("must be a decimal")
       end
     end
 
-    describe ':date?' do
-      it 'returns valid message' do
+    describe ":date?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:date?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:date?, "2")]]]]
         )
 
-        expect(msg).to eql('must be a date')
+        expect(msg).to eql("must be a date")
       end
     end
 
-    describe ':date_time?' do
-      it 'returns valid message' do
+    describe ":date_time?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:date_time?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:date_time?, "2")]]]]
         )
 
-        expect(msg).to eql('must be a date time')
+        expect(msg).to eql("must be a date time")
       end
     end
 
-    describe ':time?' do
-      it 'returns valid message' do
+    describe ":time?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:time?, '2')]]]]
+          [:failure, [:num, [:key, [:num, p(:time?, "2")]]]]
         )
 
-        expect(msg).to eql('must be a time')
+        expect(msg).to eql("must be a time")
       end
     end
 
-    describe ':max_size?' do
-      it 'returns valid message' do
+    describe ":max_size?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:max_size?, 3, 'abcd')]]]]
+          [:failure, [:num, [:key, [:num, p(:max_size?, 3, "abcd")]]]]
         )
 
-        expect(msg).to eql('size cannot be greater than 3')
+        expect(msg).to eql("size cannot be greater than 3")
       end
     end
 
-    describe ':min_size?' do
-      it 'returns valid message' do
+    describe ":min_size?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:min_size?, 3, 'ab')]]]]
+          [:failure, [:num, [:key, [:num, p(:min_size?, 3, "ab")]]]]
         )
 
-        expect(msg).to eql('size cannot be less than 3')
+        expect(msg).to eql("size cannot be less than 3")
       end
     end
 
-    describe ':nil?' do
-      it 'returns valid message' do
+    describe ":nil?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:nil?, nil)]]]]
         )
 
-        expect(msg).to eql('cannot be defined')
+        expect(msg).to eql("cannot be defined")
       end
     end
 
-    describe ':size?' do
-      it 'returns valid message when val is array and arg is int' do
+    describe ":size?" do
+      it "returns valid message when val is array and arg is int" do
         msg = message_compiler.visit(
           [:failure, [:numbers, [:key, [:numbers, p(:size?, 3, [1])]]]]
         )
 
-        expect(msg).to eql('size must be 3')
+        expect(msg).to eql("size must be 3")
       end
 
-      it 'returns valid message when val is array and arg is range' do
+      it "returns valid message when val is array and arg is range" do
         msg = message_compiler.visit(
           [:failure, [:numbers, [:key, [:numbers, p(:size?, 3..4, [1])]]]]
         )
 
-        expect(msg).to eql('size must be within 3 - 4')
+        expect(msg).to eql("size must be within 3 - 4")
       end
 
-      it 'returns valid message when arg is int' do
+      it "returns valid message when arg is int" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:size?, 3, 'ab')]]]]
+          [:failure, [:num, [:key, [:num, p(:size?, 3, "ab")]]]]
         )
 
-        expect(msg).to eql('length must be 3')
+        expect(msg).to eql("length must be 3")
       end
 
-      it 'returns valid message when arg is range' do
+      it "returns valid message when arg is range" do
         msg = message_compiler.visit(
-          [:failure, [:num, [:key, [:num, p(:size?, 3..4, 'ab')]]]]
+          [:failure, [:num, [:key, [:num, p(:size?, 3..4, "ab")]]]]
         )
 
-        expect(msg).to eql('length must be within 3 - 4')
+        expect(msg).to eql("length must be within 3 - 4")
       end
     end
 
-    describe ':str?' do
-      it 'returns valid message' do
+    describe ":str?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:str?, 3)]]]]
         )
 
-        expect(msg).to eql('must be a string')
+        expect(msg).to eql("must be a string")
       end
     end
 
-    describe ':bool?' do
-      it 'returns valid message' do
+    describe ":bool?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:num, [:key, [:num, p(:bool?, 3)]]]]
         )
 
-        expect(msg).to eql('must be boolean')
+        expect(msg).to eql("must be boolean")
       end
     end
 
-    describe ':format?' do
-      it 'returns valid message' do
+    describe ":format?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:str, [:key, [:str, p(:format?, /^F/, 'Bar')]]]]
+          [:failure, [:str, [:key, [:str, p(:format?, /^F/, "Bar")]]]]
         )
 
-        expect(msg).to eql('is in invalid format')
+        expect(msg).to eql("is in invalid format")
       end
     end
 
-    describe ':number?' do
-      it 'returns valid message' do
+    describe ":number?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:str, [:key, [:str, p(:number?, 'not a number')]]]]
+          [:failure, [:str, [:key, [:str, p(:number?, "not a number")]]]]
         )
 
-        expect(msg).to eql('must be a number')
+        expect(msg).to eql("must be a number")
       end
     end
 
-    describe ':odd?' do
-      it 'returns valid message' do
+    describe ":odd?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:str, [:key, [:str, p(:odd?, 1)]]]]
         )
 
-        expect(msg).to eql('must be odd')
+        expect(msg).to eql("must be odd")
       end
     end
 
-    describe ':even?' do
-      it 'returns valid message' do
+    describe ":even?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
           [:failure, [:str, [:key, [:str, p(:even?, 2)]]]]
         )
 
-        expect(msg).to eql('must be even')
+        expect(msg).to eql("must be even")
       end
     end
 
-    describe ':eql?' do
-      it 'returns valid message' do
+    describe ":eql?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:str, [:key, [:str, p(:eql?, 'Bar', 'Foo')]]]]
+          [:failure, [:str, [:key, [:str, p(:eql?, "Bar", "Foo")]]]]
         )
 
-        expect(msg).to eql('must be equal to Bar')
+        expect(msg).to eql("must be equal to Bar")
       end
     end
 
-    describe ':not_eql?' do
-      it 'returns valid message' do
+    describe ":not_eql?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:str, [:key, [:str, p(:not_eql?, 'Foo', 'Foo')]]]]
+          [:failure, [:str, [:key, [:str, p(:not_eql?, "Foo", "Foo")]]]]
         )
 
-        expect(msg).to eql('must not be equal to Foo')
+        expect(msg).to eql("must not be equal to Foo")
       end
     end
 
-    describe ':type?' do
-      it 'returns valid message' do
+    describe ":type?" do
+      it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:age, [:key, [:age, p(:type?, Integer, '1')]]]]
+          [:failure, [:age, [:key, [:age, p(:type?, Integer, "1")]]]]
         )
 
-        expect(msg).to eql('must be Integer')
+        expect(msg).to eql("must be Integer")
       end
     end
   end

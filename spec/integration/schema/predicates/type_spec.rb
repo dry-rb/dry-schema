@@ -1,397 +1,397 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Predicates: Type' do
-  context 'with required' do
+RSpec.describe "Predicates: Type" do
+  context "with required" do
     subject(:schema) do
       Dry::Schema.define do
         required(:foo) { type?(Integer) }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { foo: 23 } }
+    context "with valid input" do
+      let(:input) { {foo: 23} }
 
-      it 'is successful' do
+      it "is successful" do
         expect(result).to be_successful
       end
     end
 
-    context 'with missing input' do
+    context "with missing input" do
       let(:input) { {} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['is missing', 'must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["is missing", "must be Integer"]
       end
     end
 
-    context 'with nil input' do
-      let(:input) { { foo: nil } }
+    context "with nil input" do
+      let(:input) { {foo: nil} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["must be Integer"]
       end
     end
 
-    context 'with blank input' do
-      let(:input) { { foo: '' } }
+    context "with blank input" do
+      let(:input) { {foo: ""} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["must be Integer"]
       end
     end
 
-    context 'with invalid type' do
-      let(:input) { { foo: [:x] } }
+    context "with invalid type" do
+      let(:input) { {foo: [:x]} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["must be Integer"]
       end
     end
   end
 
-  context 'with optional' do
+  context "with optional" do
     subject(:schema) do
       Dry::Schema.define do
         optional(:foo) { type?(Integer) }
       end
     end
 
-    context 'with valid input' do
-      let(:input) { { foo: 23 } }
+    context "with valid input" do
+      let(:input) { {foo: 23} }
 
-      it 'is successful' do
+      it "is successful" do
         expect(result).to be_successful
       end
     end
 
-    context 'with missing input' do
+    context "with missing input" do
       let(:input) { {} }
 
-      it 'is successful' do
+      it "is successful" do
         expect(result).to be_successful
       end
     end
 
-    context 'with nil input' do
-      let(:input) { { foo: nil } }
+    context "with nil input" do
+      let(:input) { {foo: nil} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["must be Integer"]
       end
     end
 
-    context 'with blank input' do
-      let(:input) { { foo: '' } }
+    context "with blank input" do
+      let(:input) { {foo: ""} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["must be Integer"]
       end
     end
 
-    context 'with invalid type' do
-      let(:input) { { foo: [:x] } }
+    context "with invalid type" do
+      let(:input) { {foo: [:x]} }
 
-      it 'is not successful' do
-        expect(result).to be_failing ['must be Integer']
+      it "is not successful" do
+        expect(result).to be_failing ["must be Integer"]
       end
     end
   end
 
-  context 'as macro' do
-    context 'with required' do
-      context 'with value' do
+  context "as macro" do
+    context "with required" do
+      context "with value" do
         subject(:schema) do
           Dry::Schema.define do
             required(:foo).value(type?: Integer)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 23 } }
+        context "with valid input" do
+          let(:input) { {foo: 23} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with missing input' do
+        context "with missing input" do
           let(:input) { {} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["is missing", "must be Integer"]
           end
         end
 
-        context 'with nil input' do
-          let(:input) { { foo: nil } }
+        context "with nil input" do
+          let(:input) { {foo: nil} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
 
-        context 'with blank input' do
-          let(:input) { { foo: '' } }
+        context "with blank input" do
+          let(:input) { {foo: ""} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context "with invalid type" do
+          let(:input) { {foo: [:x]} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
       end
 
-      context 'with filled' do
+      context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
             required(:foo).filled(type?: Integer)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 23 } }
+        context "with valid input" do
+          let(:input) { {foo: 23} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with missing input' do
+        context "with missing input" do
           let(:input) { {} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["is missing", "must be Integer"]
           end
         end
 
-        context 'with nil input' do
-          let(:input) { { foo: nil } }
+        context "with nil input" do
+          let(:input) { {foo: nil} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be filled", "must be Integer"]
           end
         end
 
-        context 'with blank input' do
-          let(:input) { { foo: '' } }
+        context "with blank input" do
+          let(:input) { {foo: ""} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be filled", "must be Integer"]
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context "with invalid type" do
+          let(:input) { {foo: [:x]} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
       end
 
-      context 'with maybe' do
+      context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
             required(:foo).maybe(type?: Integer)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 23 } }
+        context "with valid input" do
+          let(:input) { {foo: 23} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with missing input' do
+        context "with missing input" do
           let(:input) { {} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['is missing', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["is missing", "must be Integer"]
           end
         end
 
-        context 'with nil input' do
-          let(:input) { { foo: nil } }
+        context "with nil input" do
+          let(:input) { {foo: nil} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with blank input' do
-          let(:input) { { foo: '' } }
+        context "with blank input" do
+          let(:input) { {foo: ""} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context "with invalid type" do
+          let(:input) { {foo: [:x]} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
       end
     end
 
-    context 'with optional' do
-      context 'with value' do
+    context "with optional" do
+      context "with value" do
         subject(:schema) do
           Dry::Schema.define do
             optional(:foo).value(type?: Integer)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 23 } }
+        context "with valid input" do
+          let(:input) { {foo: 23} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with missing input' do
+        context "with missing input" do
           let(:input) { {} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with nil input' do
-          let(:input) { { foo: nil } }
+        context "with nil input" do
+          let(:input) { {foo: nil} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
 
-        context 'with blank input' do
-          let(:input) { { foo: '' } }
+        context "with blank input" do
+          let(:input) { {foo: ""} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context "with invalid type" do
+          let(:input) { {foo: [:x]} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
       end
 
-      context 'with filled' do
+      context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
             optional(:foo).filled(type?: Integer)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 23 } }
+        context "with valid input" do
+          let(:input) { {foo: 23} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with missing input' do
+        context "with missing input" do
           let(:input) { {} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with nil input' do
-          let(:input) { { foo: nil } }
+        context "with nil input" do
+          let(:input) { {foo: nil} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be filled", "must be Integer"]
           end
         end
 
-        context 'with blank input' do
-          let(:input) { { foo: '' } }
+        context "with blank input" do
+          let(:input) { {foo: ""} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be filled', 'must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be filled", "must be Integer"]
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context "with invalid type" do
+          let(:input) { {foo: [:x]} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
       end
 
-      context 'with maybe' do
+      context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
             optional(:foo).maybe(type?: Integer)
           end
         end
 
-        context 'with valid input' do
-          let(:input) { { foo: 23 } }
+        context "with valid input" do
+          let(:input) { {foo: 23} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with missing input' do
+        context "with missing input" do
           let(:input) { {} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with nil input' do
-          let(:input) { { foo: nil } }
+        context "with nil input" do
+          let(:input) { {foo: nil} }
 
-          it 'is successful' do
+          it "is successful" do
             expect(result).to be_successful
           end
         end
 
-        context 'with blank input' do
-          let(:input) { { foo: '' } }
+        context "with blank input" do
+          let(:input) { {foo: ""} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
 
-        context 'with invalid type' do
-          let(:input) { { foo: [:x] } }
+        context "with invalid type" do
+          let(:input) { {foo: [:x]} }
 
-          it 'is not successful' do
-            expect(result).to be_failing ['must be Integer']
+          it "is not successful" do
+            expect(result).to be_failing ["must be Integer"]
           end
         end
       end
     end
   end
 
-  context 'with a custom class' do
+  context "with a custom class" do
     subject(:schema) do
       Dry::Schema.define do
         required(:foo).value(type?: CustomClass)
@@ -404,12 +404,12 @@ RSpec.describe 'Predicates: Type' do
       Object.send(:remove_const, :CustomClass)
     end
 
-    it 'it succeeds with valid input' do
+    it "it succeeds with valid input" do
       expect(schema.(foo: CustomClass.new)).to be_success
     end
 
-    it 'it fails with invalid input' do
-      expect(schema.(foo: 'oops')).to be_failing ["must be #{CustomClass}"]
+    it "it fails with invalid input" do
+      expect(schema.(foo: "oops")).to be_failing ["must be #{CustomClass}"]
     end
   end
 end

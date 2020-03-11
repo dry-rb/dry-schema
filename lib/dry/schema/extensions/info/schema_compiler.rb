@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/constants'
+require "dry/schema/constants"
 
 module Dry
   module Schema
@@ -9,17 +9,17 @@ module Dry
       # @api private
       class SchemaCompiler
         PREDICATE_TO_TYPE = {
-          array?: 'array',
-          bool?: 'bool',
-          date?: 'date',
-          date_time?: 'date_time',
-          decimal?: 'float',
-          float?: 'float',
-          hash?: 'hash',
-          int?: 'integer',
-          nil?: 'nil',
-          str?: 'string',
-          time?: 'time'
+          array?: "array",
+          bool?: "bool",
+          date?: "date",
+          date_time?: "date_time",
+          decimal?: "float",
+          float?: "float",
+          hash?: "hash",
+          int?: "integer",
+          nil?: "nil",
+          str?: "string",
+          time?: "time"
         }.freeze
 
         # @api private
@@ -32,7 +32,7 @@ module Dry
 
         # @api private
         def to_h
-          { keys: keys }
+          {keys: keys}
         end
 
         # @api private
@@ -54,10 +54,10 @@ module Dry
 
           return unless key
 
-          target_info = opts[:member] ? { member: target.to_h } : target.to_h
-          type = opts[:member] ? 'array' : 'hash'
+          target_info = opts[:member] ? {member: target.to_h} : target.to_h
+          type = opts[:member] ? "array" : "hash"
 
-          keys.update(key => { **keys[key], type: type, **target_info })
+          keys.update(key => {**keys[key], type: type, **target_info})
         end
 
         # @api private
@@ -93,7 +93,7 @@ module Dry
           key = opts[:key]
 
           if name.equal?(:key?)
-            keys[rest[0][1]] = { required: opts.fetch(:required, true) }
+            keys[rest[0][1]] = {required: opts.fetch(:required, true)}
           else
             type = PREDICATE_TO_TYPE[name]
             keys[key][:type] = type if type

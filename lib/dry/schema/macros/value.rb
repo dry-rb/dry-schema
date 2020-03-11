@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/schema/path'
-require 'dry/schema/macros/dsl'
+require "dry/schema/path"
+require "dry/schema/macros/dsl"
 
 module Dry
   module Schema
@@ -49,7 +49,7 @@ module Dry
           end
 
           if trace.captures.empty?
-            raise ArgumentError, 'wrong number of arguments (given 0, expected at least 1)'
+            raise ArgumentError, "wrong number of arguments (given 0, expected at least 1)"
           end
 
           each(type_spec.type.member) if type_spec.respond_to?(:member)
@@ -71,7 +71,7 @@ module Dry
           if array_type.respond_to?(:of)
             array_type.of(member)
           else
-            raise ArgumentError, <<~ERROR.split("\n").join(' ')
+            raise ArgumentError, <<~ERROR.split("\n").join(" ")
               Cannot define schema for a nominal array type.
               Array types must be instances of Dry::Types::Array,
               usually constructed with Types::Constructor(Array) { ... } or

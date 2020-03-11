@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/macros/value'
+require "dry/schema/macros/value"
 
 module Dry
   module Schema
@@ -25,11 +25,11 @@ module Dry
         # @api private
         def ensure_valid_predicates(predicates)
           if predicates.include?(:empty?)
-            raise ::Dry::Schema::InvalidSchemaError, 'Using filled with empty? predicate is invalid'
+            raise ::Dry::Schema::InvalidSchemaError, "Using filled with empty? predicate is invalid"
           end
 
           if predicates.include?(:filled?)
-            raise ::Dry::Schema::InvalidSchemaError, 'Using filled with filled? is redundant'
+            raise ::Dry::Schema::InvalidSchemaError, "Using filled with filled? is redundant"
           end
         end
 

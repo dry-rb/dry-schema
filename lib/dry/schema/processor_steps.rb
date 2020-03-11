@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
+require "dry/initializer"
 
-require 'dry/schema/constants'
-require 'dry/schema/step'
+require "dry/schema/constants"
+require "dry/schema/step"
 
 module Dry
   module Schema

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/constants'
+require "dry/schema/constants"
 
 module Dry
   module Schema
@@ -35,7 +35,7 @@ module Dry
         when Path
           spec
         else
-          raise ArgumentError, '+spec+ must be either a Symbol, Array, Hash or a Path'
+          raise ArgumentError, "+spec+ must be either a Symbol, Array, Hash or a Path"
         end
       end
 

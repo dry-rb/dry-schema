@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Predicates: Key' do
-  context 'with required' do
-    it 'raises error' do
+RSpec.describe "Predicates: Key" do
+  context "with required" do
+    it "raises error" do
       expect { Dry::Schema.Params { required(:foo) { key? } } }.to raise_error Dry::Schema::InvalidSchemaError
     end
   end
 
-  context 'with optional' do
-    it 'raises error' do
+  context "with optional" do
+    it "raises error" do
       expect { Dry::Schema.Params { optional(:foo) { key? } } }.to raise_error Dry::Schema::InvalidSchemaError
     end
   end
 
-  context 'as macro' do
-    context 'with required' do
-      context 'with value' do
-        it 'raises error' do
+  context "as macro" do
+    context "with required" do
+      context "with value" do
+        it "raises error" do
           expect {
             Dry::Schema.Params do
               required(:foo).value(:key?)
@@ -25,8 +25,8 @@ RSpec.describe 'Predicates: Key' do
         end
       end
 
-      context 'with filled' do
-        it 'raises error' do
+      context "with filled" do
+        it "raises error" do
           expect {
             Dry::Schema.Params do
               required(:foo).filled(:key?)
@@ -35,8 +35,8 @@ RSpec.describe 'Predicates: Key' do
         end
       end
 
-      context 'with maybe' do
-        it 'raises error' do
+      context "with maybe" do
+        it "raises error" do
           expect {
             Dry::Schema.Params do
               required(:foo).maybe(:key?)
@@ -46,9 +46,9 @@ RSpec.describe 'Predicates: Key' do
       end
     end
 
-    context 'with optional' do
-      context 'with value' do
-        it 'raises error' do
+    context "with optional" do
+      context "with value" do
+        it "raises error" do
           expect {
             Dry::Schema.Params do
               optional(:foo).value(:key?)
@@ -57,8 +57,8 @@ RSpec.describe 'Predicates: Key' do
         end
       end
 
-      context 'with filled' do
-        it 'raises error' do
+      context "with filled" do
+        it "raises error" do
           expect {
             Dry::Schema.Params do
               optional(:foo).filled(:key?)
@@ -67,8 +67,8 @@ RSpec.describe 'Predicates: Key' do
         end
       end
 
-      context 'with maybe' do
-        it 'raises error' do
+      context "with maybe" do
+        it "raises error" do
           expect {
             Dry::Schema.Params do
               optional(:foo).maybe(:key?)

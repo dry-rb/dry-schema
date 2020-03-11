@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/schema/macros/key'
+require "dry/schema/macros/key"
 
 module Dry
   module Schema

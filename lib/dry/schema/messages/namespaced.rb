@@ -24,7 +24,7 @@ module Dry
           @config = messages.config
           @namespace = namespace
           @messages = messages
-          @call_opts = { namespace: namespace }.freeze
+          @call_opts = {namespace: namespace}.freeze
         end
 
         # Get a message for the given key and its options
@@ -62,7 +62,7 @@ module Dry
         # @api private
         def rule_lookup_paths(tokens)
           base_paths = messages.rule_lookup_paths(tokens)
-          base_paths.map { |key| key.gsub('dry_schema', "dry_schema.#{namespace}") } + base_paths
+          base_paths.map { |key| key.gsub("dry_schema", "dry_schema.#{namespace}") } + base_paths
         end
 
         # @api private

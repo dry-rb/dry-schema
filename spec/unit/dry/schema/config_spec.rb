@@ -1,44 +1,44 @@
 # frozen_string_literal: true
 
-require 'dry/schema/config'
+require "dry/schema/config"
 
 RSpec.describe Dry::Schema::Config do
   subject(:config) do
     Dry::Schema::Config.new
   end
 
-  describe '#messages' do
-    it 'returns default value' do
+  describe "#messages" do
+    it "returns default value" do
       expect(config.messages.backend).to be(:yaml)
     end
 
-    it 'returns overridden value' do
+    it "returns overridden value" do
       config.messages.backend = :i18n
 
       expect(config.messages.backend).to be(:i18n)
     end
   end
 
-  describe '#predicates' do
-    it 'returns configured predicates registry' do
+  describe "#predicates" do
+    it "returns configured predicates registry" do
       expect(config.predicates).to be_instance_of(Dry::Schema::PredicateRegistry)
     end
   end
 
-  describe '#finalize!' do
-    it 'finalizes the config' do
+  describe "#finalize!" do
+    it "finalizes the config" do
       config.finalize!
 
       expect(config).to be_frozen
     end
   end
 
-  describe '#eql?' do
-    it 'returns true when configs are the same' do
+  describe "#eql?" do
+    it "returns true when configs are the same" do
       expect(config).to eql(config.dup)
     end
 
-    it 'returns false when configs differ' do
+    it "returns false when configs differ" do
       other = config.dup
       other.messages.backend = :i18n
 
@@ -46,13 +46,13 @@ RSpec.describe Dry::Schema::Config do
     end
   end
 
-  describe '#inspect' do
-    it 'returns true when configs are the same' do
-      expect(config.inspect).to include('#<Dry::Schema::Config ')
+  describe "#inspect" do
+    it "returns true when configs are the same" do
+      expect(config.inspect).to include("#<Dry::Schema::Config ")
     end
   end
 
-  it 'quacks like a config' do
+  it "quacks like a config" do
     to_h = config.method(:to_h)
 
     expect(to_h.()).to eql(config.config.to_h)

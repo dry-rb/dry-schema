@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require 'dry/configurable'
-require 'dry/initializer'
-require 'dry/logic/operators'
+require "dry/configurable"
+require "dry/initializer"
+require "dry/logic/operators"
 
-require 'dry/schema/type_registry'
-require 'dry/schema/type_container'
-require 'dry/schema/processor_steps'
-require 'dry/schema/rule_applier'
-require 'dry/schema/key_coercer'
-require 'dry/schema/value_coercer'
+require "dry/schema/type_registry"
+require "dry/schema/type_container"
+require "dry/schema/processor_steps"
+require "dry/schema/rule_applier"
+require "dry/schema/key_coercer"
+require "dry/schema/value_coercer"
 
 module Dry
   module Schema
@@ -71,7 +71,7 @@ module Dry
           elsif definition
             definition.call
           else
-            raise ArgumentError, 'Cannot create a schema without a definition'
+            raise ArgumentError, "Cannot create a schema without a definition"
           end
         end
       end

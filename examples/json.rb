@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'dry-schema'
+require "json"
+require "dry-schema"
 
 schema = Dry::Schema.JSON do
   required(:email).filled

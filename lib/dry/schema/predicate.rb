@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/equalizer'
-require 'dry/logic/operators'
+require "dry/equalizer"
+require "dry/logic/operators"
 
 module Dry
   module Schema

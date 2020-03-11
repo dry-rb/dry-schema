@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/types/primitive_inferrer'
+require "dry/types/primitive_inferrer"
 
 module Dry
   module Schema

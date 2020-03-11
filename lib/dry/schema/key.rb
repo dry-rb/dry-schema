@@ -130,7 +130,7 @@ module Dry
 
       # @api private
       def dump
-        { name => members.map(&:dump) }
+        {name => members.map(&:dump)}
       end
     end
 

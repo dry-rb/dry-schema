@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry/core/extensions'
+require "dry/core/extensions"
 
-require 'dry/schema/config'
-require 'dry/schema/constants'
-require 'dry/schema/dsl'
-require 'dry/schema/params'
-require 'dry/schema/json'
+require "dry/schema/config"
+require "dry/schema/constants"
+require "dry/schema/dsl"
+require "dry/schema/params"
+require "dry/schema/json"
 
 module Dry
   # Main interface
@@ -87,4 +87,4 @@ module Dry
   end
 end
 
-require 'dry/schema/extensions'
+require "dry/schema/extensions"

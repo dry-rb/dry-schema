@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Dry::Schema::JSON, '#info' do
+RSpec.describe Dry::Schema::JSON, "#info" do
   before do
     Dry::Schema.load_extensions(:info)
   end
@@ -29,47 +29,47 @@ RSpec.describe Dry::Schema::JSON, '#info' do
       keys: {
         email: {
           required: true,
-          type: 'string'
+          type: "string"
         },
         age: {
           required: false,
-          type: 'integer'
+          type: "integer"
         },
         roles: {
           required: true,
-          type: 'array',
+          type: "array",
           member: {
             keys: {
               name: {
                 required: true,
-                type: 'string'
+                type: "string"
               },
               desc: {
                 required: false,
-                type: 'string'
+                type: "string"
               }
             }
           }
         },
         address: {
           required: false,
-          type: 'hash',
+          type: "hash",
           keys: {
             street: {
               required: true,
-              type: 'string'
+              type: "string"
             },
             zipcode: {
               required: true,
-              type: 'string'
+              type: "string"
             },
             city: {
               required: true,
-              type: 'string'
+              type: "string"
             },
             phone: {
               required: false,
-              type: 'string'
+              type: "string"
             }
           }
         }
@@ -77,27 +77,27 @@ RSpec.describe Dry::Schema::JSON, '#info' do
     }
   end
 
-  it 'returns info hash' do
+  it "returns info hash" do
     expect(schema.info).to eql(info)
   end
 
-  describe 'inferring types' do
+  describe "inferring types" do
     {
-      array: 'array',
-      bool: 'bool',
-      date: 'date',
-      date_time: 'date_time',
-      decimal: 'float',
-      float: 'float',
-      hash: 'hash',
-      integer: 'integer',
-      nil: 'nil',
-      string: 'string',
-      time: 'time'
+      array: "array",
+      bool: "bool",
+      date: "date",
+      date_time: "date_time",
+      decimal: "float",
+      float: "float",
+      hash: "hash",
+      integer: "integer",
+      nil: "nil",
+      string: "string",
+      time: "time"
     }.each do |type_spec, type_name|
       it "infers '#{type_name}' from '#{type_spec}'" do
         expect(Dry::Schema.define { required(:key).value(type_spec) }.info).to eql(
-          keys: { key: { required: true, type: type_name } }
+          keys: {key: {required: true, type: type_name}}
         )
       end
     end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'dry/schema/params'
+require "dry/schema/params"
 
-RSpec.describe 'Namespaced messages' do
-  context 'namespace with nested schema' do
+RSpec.describe "Namespaced messages" do
+  context "namespace with nested schema" do
     let(:post_schema) do
       Dry::Schema.Params do
         config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
@@ -16,17 +16,17 @@ RSpec.describe 'Namespaced messages' do
       end
     end
 
-    it 'uses namespaced messages' do
-      result = post_schema.call(post_body: '', comment: { comment_body: '' })
+    it "uses namespaced messages" do
+      result = post_schema.call(post_body: "", comment: {comment_body: ""})
 
       expect(result.errors[:post_body]).to eql(["POST can't be blank"])
 
       expect(result.errors[:comment][:comment_body])
-        .to eql(['post comment must be filled'])
+        .to eql(["post comment must be filled"])
     end
   end
 
-  context 'in nested, re-used schemas' do
+  context "in nested, re-used schemas" do
     let!(:comment_schema) do
       Test::CommentSchema = Dry::Schema.Params do
         config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
@@ -46,8 +46,8 @@ RSpec.describe 'Namespaced messages' do
       end
     end
 
-    it 'uses namespaced messages' do
-      result = post_schema.call(post_body: '', comment: { comment_body: '' })
+    it "uses namespaced messages" do
+      result = post_schema.call(post_body: "", comment: {comment_body: ""})
 
       expect(result.errors[:post_body]).to eql(["POST can't be blank"])
 

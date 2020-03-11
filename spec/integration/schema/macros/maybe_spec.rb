@@ -1,69 +1,69 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Macros #maybe' do
-  describe 'with no args' do
+RSpec.describe "Macros #maybe" do
+  describe "with no args" do
     subject(:schema) do
       Dry::Schema.define do
         required(:email).maybe
       end
     end
 
-    it 'generates nil? | filled? rule' do
+    it "generates nil? | filled? rule" do
       expect { schema }.to raise_error(ArgumentError)
     end
   end
 
-  describe 'with a type spec' do
+  describe "with a type spec" do
     subject(:schema) do
       Dry::Schema.define do
         required(:email).maybe(:string, format?: /@/)
       end
     end
 
-    it 'generates nil? | str? rule' do
+    it "generates nil? | str? rule" do
       expect(schema.(email: nil)).to be_success
-      expect(schema.(email: 'jane@doe.org')).to be_success
-      expect(schema.(email: 'jane').errors).to eql(email: ['is in invalid format'])
+      expect(schema.(email: "jane@doe.org")).to be_success
+      expect(schema.(email: "jane").errors).to eql(email: ["is in invalid format"])
     end
   end
 
-  describe 'with a predicate with args' do
+  describe "with a predicate with args" do
     subject(:schema) do
       Dry::Schema.define do
         required(:name).maybe(min_size?: 3)
       end
     end
 
-    it 'generates nil? | (filled? & min_size?) rule' do
+    it "generates nil? | (filled? & min_size?) rule" do
       expect(schema.(name: nil).messages).to be_empty
 
-      expect(schema.(name: 'jane').messages).to be_empty
+      expect(schema.(name: "jane").messages).to be_empty
 
-      expect(schema.(name: 'xy').messages).to eql(
-        name: ['size cannot be less than 3']
+      expect(schema.(name: "xy").messages).to eql(
+        name: ["size cannot be less than 3"]
       )
     end
   end
 
-  describe 'with a block' do
+  describe "with a block" do
     subject(:schema) do
       Dry::Schema.define do
         required(:name).maybe { str? & min_size?(3) }
       end
     end
 
-    it 'generates nil? | (str? & min_size?) rule' do
+    it "generates nil? | (str? & min_size?) rule" do
       expect(schema.(name: nil).messages).to be_empty
 
-      expect(schema.(name: 'jane').messages).to be_empty
+      expect(schema.(name: "jane").messages).to be_empty
 
-      expect(schema.(name: 'xy').messages).to eql(
-        name: ['size cannot be less than 3']
+      expect(schema.(name: "xy").messages).to eql(
+        name: ["size cannot be less than 3"]
       )
     end
   end
 
-  describe 'with an optional key and a block with schema' do
+  describe "with an optional key and a block with schema" do
     subject(:schema) do
       Dry::Schema.define do
         optional(:employee).maybe(:hash).maybe(:hash?) do
@@ -74,44 +74,44 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'passes when input is valid' do
-      expect(schema.(employee: { id: '1' })).to be_success
+    it "passes when input is valid" do
+      expect(schema.(employee: {id: "1"})).to be_success
     end
 
-    it 'passes when key is missing' do
+    it "passes when key is missing" do
       expect(schema.({})).to be_success
     end
 
-    it 'passes when value is nil' do
+    it "passes when value is nil" do
       expect(schema.(employee: nil)).to be_success
     end
 
-    it 'fails when value for nested schema is invalid' do
-      expect(schema.(employee: { id: 1 }).messages).to eql(
-        employee: { id: ['must be a string'] }
+    it "fails when value for nested schema is invalid" do
+      expect(schema.(employee: {id: 1}).messages).to eql(
+        employee: {id: ["must be a string"]}
       )
     end
   end
 
-  describe 'with a predicate and a block' do
+  describe "with a predicate and a block" do
     subject(:schema) do
       Dry::Schema.define do
         required(:name).maybe(:str?) { min_size?(3) }
       end
     end
 
-    it 'generates nil? | (str? & min_size?) rule' do
+    it "generates nil? | (str? & min_size?) rule" do
       expect(schema.(name: nil).messages).to be_empty
 
-      expect(schema.(name: 'jane').messages).to be_empty
+      expect(schema.(name: "jane").messages).to be_empty
 
-      expect(schema.(name: 'xy').messages).to eql(
-        name: ['size cannot be less than 3']
+      expect(schema.(name: "xy").messages).to eql(
+        name: ["size cannot be less than 3"]
       )
     end
   end
 
-  context 'with a nested hash' do
+  context "with a nested hash" do
     subject(:schema) do
       Dry::Schema.define do
         required(:song).maybe(:hash) do
@@ -121,21 +121,21 @@ RSpec.describe 'Macros #maybe' do
       end
     end
 
-    it 'passes when valid' do
-      song = { title: 'World', author: 'Joe' }
+    it "passes when valid" do
+      song = {title: "World", author: "Joe"}
 
       expect(schema.(song: song)).to be_success
     end
 
-    it 'fails when not valid' do
-      song = { title: nil, author: 'Jane' }
+    it "fails when not valid" do
+      song = {title: nil, author: "Jane"}
 
       expect(schema.(song: song).messages).to eql(
-        song: { title: ['must be filled'] }
+        song: {title: ["must be filled"]}
       )
     end
 
-    it 'passes when nil' do
+    it "passes when nil" do
       expect(schema.(song: nil)).to be_success
     end
   end

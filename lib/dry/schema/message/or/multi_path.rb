@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'dry/equalizer'
+require "dry/equalizer"
 
-require 'dry/schema/message/or/abstract'
-require 'dry/schema/path'
+require "dry/schema/message/or/abstract"
+require "dry/schema/path"
 
 module Dry
   module Schema

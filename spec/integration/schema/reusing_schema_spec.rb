@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Reusing schemas' do
+RSpec.describe "Reusing schemas" do
   subject(:schema) do
     Dry::Schema.define do
       required(:city).filled
@@ -20,18 +20,18 @@ RSpec.describe 'Reusing schemas' do
     Object.send(:remove_const, :LocationSchema)
   end
 
-  it 're-uses existing schema' do
-    expect(schema.(city: 'NYC', location: { lat: 1.23, lng: 45.6 })).to be_success
+  it "re-uses existing schema" do
+    expect(schema.(city: "NYC", location: {lat: 1.23, lng: 45.6})).to be_success
 
-    expect(schema.(city: 'NYC', location: { lat: nil, lng: '45.6' }).messages).to eql(
+    expect(schema.(city: "NYC", location: {lat: nil, lng: "45.6"}).messages).to eql(
       location: {
-        lat: ['must be filled'],
-        lng: ['must be a float']
+        lat: ["must be filled"],
+        lng: ["must be a float"]
       }
     )
   end
 
-  context 'when overrides existing schema' do
+  context "when overrides existing schema" do
     subject(:schema) do
       Dry::Schema.define do
         required(:city).filled
@@ -42,11 +42,11 @@ RSpec.describe 'Reusing schemas' do
       end
     end
 
-    it 'uses new schema' do
-      expect(schema.(city: 'NYC', location: { lat: 1.23, lng: nil }).messages).to eql(
+    it "uses new schema" do
+      expect(schema.(city: "NYC", location: {lat: 1.23, lng: nil}).messages).to eql(
         location: {
-          lat: ['must be greater than or equal to 18'],
-          lng: ['must be filled']
+          lat: ["must be greater than or equal to 18"],
+          lng: ["must be filled"]
         }
       )
     end

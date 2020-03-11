@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'dry/schema/messages/i18n'
+require "dry/schema/messages/i18n"
 
-RSpec.describe Dry::Schema, 'with localized messages' do
-  describe 'defining schema' do
-    context 'without a namespace' do
+RSpec.describe Dry::Schema, "with localized messages" do
+  describe "defining schema" do
+    context "without a namespace" do
       subject(:schema) do
         Dry::Schema.define do
           config.messages.backend = :i18n
@@ -15,16 +15,16 @@ RSpec.describe Dry::Schema, 'with localized messages' do
         end
       end
 
-      describe '#messages' do
-        it 'returns localized error messages' do
-          expect(schema.(email: '').messages(locale: :pl)).to eql(
-            email: ['Proszę podać adres email']
+      describe "#messages" do
+        it "returns localized error messages" do
+          expect(schema.(email: "").messages(locale: :pl)).to eql(
+            email: ["Proszę podać adres email"]
           )
         end
       end
     end
 
-    context 'with a namespace' do
+    context "with a namespace" do
       subject(:schema) do
         Dry::Schema.define do
           config.messages.backend = :i18n
@@ -36,16 +36,16 @@ RSpec.describe Dry::Schema, 'with localized messages' do
         end
       end
 
-      describe '#errors' do
-        it 'returns localized error messages' do
-          expect(schema.(email: '').errors).to eql(email: ['Please provide your email'])
+      describe "#errors" do
+        it "returns localized error messages" do
+          expect(schema.(email: "").errors).to eql(email: ["Please provide your email"])
 
-          expect(schema.(email: '').errors(locale: :pl)).to eql(email: ['Hej user! Dawaj ten email no!'])
+          expect(schema.(email: "").errors(locale: :pl)).to eql(email: ["Hej user! Dawaj ten email no!"])
         end
       end
     end
 
-    context 'with a config.default_locale set' do
+    context "with a config.default_locale set" do
       subject(:schema) do
         Dry::Schema.define do
           config.messages.backend = :i18n
@@ -58,11 +58,11 @@ RSpec.describe Dry::Schema, 'with localized messages' do
         end
       end
 
-      describe '#errors' do
-        it 'returns localized error messages' do
-          expect(schema.(email: '').errors(locale: :en)).to eql(email: ['Please provide your email'])
+      describe "#errors" do
+        it "returns localized error messages" do
+          expect(schema.(email: "").errors(locale: :en)).to eql(email: ["Please provide your email"])
 
-          expect(schema.(email: '').errors).to eql(email: ['Hej user! Dawaj ten email no!'])
+          expect(schema.(email: "").errors).to eql(email: ["Hej user! Dawaj ten email no!"])
         end
       end
     end

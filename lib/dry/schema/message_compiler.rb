@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'dry/initializer'
+require "dry/initializer"
 
-require 'dry/schema/constants'
-require 'dry/schema/message'
-require 'dry/schema/message_set'
-require 'dry/schema/message_compiler/visitor_opts'
+require "dry/schema/constants"
+require "dry/schema/message"
+require "dry/schema/message_set"
+require "dry/schema/message_compiler/visitor_opts"
 
 module Dry
   module Schema
@@ -44,7 +44,7 @@ module Dry
       def initialize(messages, **options)
         super
         @options = options
-        @default_lookup_options = options[:locale] ? { locale: locale } : EMPTY_HASH
+        @default_lookup_options = options[:locale] ? {locale: locale} : EMPTY_HASH
       end
 
       # @api private
@@ -101,10 +101,10 @@ module Dry
       end
 
       # @api private
-      def visit_unexpected_key(node, opts)
+      def visit_unexpected_key(node, _opts)
         path, input = node
 
-        msg = messages.translate('errors.unexpected_key')
+        msg = messages.translate("errors.unexpected_key")
 
         Message.new(
           path: path,

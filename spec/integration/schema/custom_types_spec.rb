@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Registering custom types' do
+RSpec.describe "Registering custom types" do
   let(:container_without_types) { Dry::Schema::TypeContainer.new }
 
   let(:container_with_types) do
@@ -9,25 +9,25 @@ RSpec.describe 'Registering custom types' do
 
   let(:params) do
     {
-      email: 'some@body.abc',
-      age: '  I AM NOT THAT OLD '
+      email: "some@body.abc",
+      age: "  I AM NOT THAT OLD "
     }
   end
 
   before do
     container_with_types.register(
-      'params.trimmed_string',
+      "params.trimmed_string",
       Types::Strict::String.constructor(&:strip).constructor(&:downcase)
     )
 
-    stub_const('ContainerWithoutTypes', container_without_types)
-    stub_const('ContainerWithTypes', container_with_types)
+    stub_const("ContainerWithoutTypes", container_without_types)
+    stub_const("ContainerWithTypes", container_with_types)
   end
 
-  context 'class-based definition' do
+  context "class-based definition" do
     subject(:schema) { klass.new.call(params) }
 
-    context 'custom type is not registered' do
+    context "custom type is not registered" do
       let(:klass) do
         class Test::CustomTypeSchema < Dry::Schema::Params
           define do
@@ -39,12 +39,12 @@ RSpec.describe 'Registering custom types' do
         end
       end
 
-      it 'raises exception that nothing is registered with the key' do
+      it "raises exception that nothing is registered with the key" do
         expect { subject }.to raise_exception(Dry::Container::Error)
       end
     end
 
-    context 'custom type is registered' do
+    context "custom type is registered" do
       let(:klass) do
         class Test::CustomTypeSchema < Dry::Schema::Params
           define do
@@ -56,20 +56,20 @@ RSpec.describe 'Registering custom types' do
         end
       end
 
-      it 'does not raise any exceptions' do
+      it "does not raise any exceptions" do
         expect { subject }.not_to raise_exception
       end
 
-      it 'coerces the type' do
-        expect(subject[:age]).to eql('i am not that old')
+      it "coerces the type" do
+        expect(subject[:age]).to eql("i am not that old")
       end
     end
   end
 
-  context 'DSL-based definition' do
+  context "DSL-based definition" do
     subject(:schema) { schema_object.call(params) }
 
-    context 'custom type is not registered' do
+    context "custom type is not registered" do
       let(:schema_object) do
         Dry::Schema.Params do
           config.types = ContainerWithoutTypes
@@ -79,12 +79,12 @@ RSpec.describe 'Registering custom types' do
         end
       end
 
-      it 'raises exception that nothing is registered with the key' do
+      it "raises exception that nothing is registered with the key" do
         expect { subject }.to raise_exception(Dry::Container::Error)
       end
     end
 
-    context 'custom type is registered' do
+    context "custom type is registered" do
       let(:schema_object) do
         Dry::Schema.Params do
           config.types = ContainerWithTypes
@@ -94,16 +94,16 @@ RSpec.describe 'Registering custom types' do
         end
       end
 
-      it 'does not raise any exceptions' do
+      it "does not raise any exceptions" do
         expect { subject }.not_to raise_exception
       end
 
-      it 'coerces the type' do
-        expect(subject[:age]).to eql('i am not that old')
+      it "coerces the type" do
+        expect(subject[:age]).to eql("i am not that old")
       end
 
-      context 'nested schema' do
-        let(:params) { { user: { age: '  I AM NOT THAT OLD ' } } }
+      context "nested schema" do
+        let(:params) { {user: {age: "  I AM NOT THAT OLD "}} }
 
         let(:schema_object) do
           Dry::Schema.Params do
@@ -116,7 +116,7 @@ RSpec.describe 'Registering custom types' do
         end
 
         specify do
-          expect(subject[:user][:age]).to eql('i am not that old')
+          expect(subject[:user][:age]).to eql("i am not that old")
         end
       end
     end
