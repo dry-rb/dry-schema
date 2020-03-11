@@ -12,6 +12,7 @@ sections:
 ---
 
 - [Predicate Logic](docs::advanced/predicate-logic)
+- [Composing schemas](docs::advanced/composing-schemas)
 - [Unexpected keys](docs::advanced/unexpected-keys)
 - [Filtering](docs::advanced/filtering)
 - [Key maps](docs::advanced/key-maps)
