@@ -4,6 +4,7 @@ layout: gem-single
 name: dry-schema
 sections:
   - hints
+  - info
   - monads
 ---
 

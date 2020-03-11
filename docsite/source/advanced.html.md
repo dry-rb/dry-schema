@@ -4,6 +4,8 @@ layout: gem-single
 name: dry-schema
 sections:
   - predicate-logic
+  - composing-schemas
+  - unexpected-keys
   - filtering
   - key-maps
   - rule-ast
@@ -18,3 +20,4 @@ sections:
 - [Key maps](docs::advanced/key-maps)
 - [Rule AST](docs::advanced/rule-ast)
 - [Custom types](docs::advanced/custom-types)
+- [Processor steps](docs::advanced/processor-steps)
