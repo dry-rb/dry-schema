@@ -1,4 +1,4 @@
-## unreleased 
+## 1.5.0 2020-03-11
 
 
 ### Added
@@ -19,8 +19,8 @@ and default types are explicitly not supported (@flash-gordon)
     require(:user).hash(UserType)
   end
   ```
-- struct extension, it allows to use dry-struct classes as source for hash schemas. Note that output will still be presented as plain hashes, returning structs from schemas will require more work, it's planned for next versions (@flash-gordon)
-- :info extension which adds #info method to your schemas which produces a simple hash providing information about keys and types (issue #36 closed via #262) (@solnic)
+- `:struct` extension which allows using dry-struct classes as source for hash schemas. Note that output will still be presented as plain hashes, returning structs from schemas will require more work, it's planned for next versions (@flash-gordon)
+- `:info` extension which adds #info method to your schemas which produces a simple hash providing information about keys and types (issue #36 closed via #262) (@solnic)
 
 ### Fixed
 
@@ -30,16 +30,16 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - YAML message backend no longer crashes when load_paths are empty (@robhanlon22)
 - Callbacks can now be inherited from multiple parents (@skryukov)
 - Callbacks work with nested schemas (issue #209) (@solnic)
-- Custom type is respected when defining nested schemas (issue #174 closed via #263) (@solnic)
+- Custom type is respected when defining nested schemas (issue #174 closed via 263) (@solnic)
 - Key map is properly inferred for maybe-hashes (issue #266 fixed via #269) (@solnic)
 
 ### Changed
 
 - `:i18n` message backend delegates interpolation and caching to `I18n` (issue #211) (@robhanlon22)
-- (internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is a drop-in replacement (@flash-gordon)
 - Raise ArgumentError in DSL if parent DSL configs differ (@robhanlon22)
+- (internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is a drop-in replacement (@flash-gordon)
 
-[Compare v1.4.3...master](https://github.com/dry-rb/dry-schema/compare/v1.4.3...master)
+[Compare v1.4.3...v1.5.0](https://github.com/dry-rb/dry-schema/compare/v1.4.3...v1.5.0)
 
 ## 1.4.3 2020-01-08
 
