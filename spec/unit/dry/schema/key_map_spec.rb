@@ -122,7 +122,7 @@ RSpec.describe Dry::Schema::KeyMap do
   end
 
   context "with a nested array" do
-    let(:keys) { [:title, [:tags, [:name]]] }
+    let(:keys) { [:title, [:tags, [:name, :count]]] }
 
     describe "#each" do
       it "yields each key and nested key map" do
@@ -132,7 +132,7 @@ RSpec.describe Dry::Schema::KeyMap do
 
         expect(result).to eql(
           [Dry::Schema::Key[:title],
-           Dry::Schema::Key::Array[:tags, member: Dry::Schema::KeyMap[:name]]]
+           Dry::Schema::Key::Array[:tags, member: Dry::Schema::KeyMap[:name, :count]]]
         )
       end
     end
@@ -143,26 +143,32 @@ RSpec.describe Dry::Schema::KeyMap do
 
         hash = {
           "title" => "Bohemian Rhapsody",
-          "tags" => [{"name" => "queen"}, {"name" => "classic"}]
+          "tags" => [
+            {"name" => "queen", "count" => 312},
+            {"name" => "classic", "count" => 423}
+          ]
         }
 
         key_map.stringified.each { |key| key.read(hash) { |value| result << value } }
 
-        expect(result).to eql(["Bohemian Rhapsody", [{"name" => "queen"}, {"name" => "classic"}]])
+        expect(result).to eql(
+          ["Bohemian Rhapsody",
+           [{"name" => "queen", "count" => 312}, {"name" => "classic", "count" => 423}]]
+          )
       end
     end
 
     describe "#to_dot_notation" do
       it "returns an array with dot-notation strings" do
         expect(key_map.to_dot_notation)
-          .to eql(["title", "tags[].name"])
+          .to eql(["title", "tags[].name", "tags[].count"])
       end
     end
 
     describe "#inspect" do
       it "returns a string representation" do
         expect(key_map.inspect).to eql(<<-STR.strip)
-          #<Dry::Schema::KeyMap[:title, [:tags, [:name]]]>
+          #<Dry::Schema::KeyMap[:title, [:tags, [:name, :count]]]>
         STR
       end
     end

@@ -14,6 +14,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
 
       required(:roles).array(:hash) do
         required(:name).filled(:string)
+        required(:expires_at).value(:date)
       end
     end
   end
@@ -23,7 +24,10 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       foo: "unexpected",
       name: "Jane",
       address: {bar: "unexpected", city: "NYC", zipcode: "1234"},
-      roles: [{name: "admin"}, {name: "editor", foo: "unexpected"}]
+      roles: [
+        {name: "admin", expires_at: Date.today},
+        {name: "editor", foo: "unexpected", expires_at: Date.today}
+      ]
     }
 
     expect(schema.(input).errors.to_h)
