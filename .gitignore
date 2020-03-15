@@ -11,3 +11,4 @@ doc
 .vscode
 pkg/
 .byebug_history
+spec/examples.txt
