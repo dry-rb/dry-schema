@@ -449,7 +449,7 @@ Checks that a value is included in a given array.
 describe 'included_in?' do
   let(:schema) do
     Dry::Schema.Params do
-      required(:sample).value(included_in?: [1,3,5])
+      required(:sample).value(:integer, included_in?: [1, 3, 5])
     end
   end
 

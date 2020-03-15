@@ -134,7 +134,7 @@ RSpec.describe "Predicates: Gteq" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).value(gteq?: 23)
+            required(:foo).value(:integer, gteq?: 23)
           end
         end
 
@@ -198,7 +198,7 @@ RSpec.describe "Predicates: Gteq" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).filled(gteq?: 23)
+            required(:foo).filled(:integer, gteq?: 23)
           end
         end
 
@@ -262,7 +262,7 @@ RSpec.describe "Predicates: Gteq" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).maybe(gteq?: 23)
+            required(:foo).maybe(:integer, gteq?: 23)
           end
         end
 
@@ -328,7 +328,7 @@ RSpec.describe "Predicates: Gteq" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).value(gteq?: 23)
+            optional(:foo).value(:integer, gteq?: 23)
           end
         end
 
@@ -392,7 +392,7 @@ RSpec.describe "Predicates: Gteq" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).filled(gteq?: 23)
+            optional(:foo).filled(:integer, gteq?: 23)
           end
         end
 
@@ -456,7 +456,7 @@ RSpec.describe "Predicates: Gteq" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).maybe(gteq?: 23)
+            optional(:foo).maybe(:integer, gteq?: 23)
           end
         end
 

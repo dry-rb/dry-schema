@@ -119,7 +119,7 @@ RSpec.context "Predicates: Included In" do
         context "with value" do
           subject(:schema) do
             Dry::Schema.define do
-              required(:foo).value(included_in?: [1, 3, 5])
+              required(:foo).value(:integer, included_in?: [1, 3, 5])
             end
           end
 
@@ -175,7 +175,7 @@ RSpec.context "Predicates: Included In" do
         context "with filled" do
           subject(:schema) do
             Dry::Schema.define do
-              required(:foo).filled(included_in?: [1, 3, 5])
+              required(:foo).filled(:integer, included_in?: [1, 3, 5])
             end
           end
 
@@ -231,7 +231,7 @@ RSpec.context "Predicates: Included In" do
         context "with maybe" do
           subject(:schema) do
             Dry::Schema.define do
-              required(:foo).maybe(included_in?: [1, 3, 5])
+              required(:foo).maybe(:integer, included_in?: [1, 3, 5])
             end
           end
 
@@ -289,7 +289,7 @@ RSpec.context "Predicates: Included In" do
         context "with value" do
           subject(:schema) do
             Dry::Schema.define do
-              optional(:foo).value(included_in?: [1, 3, 5])
+              optional(:foo).value(:integer, included_in?: [1, 3, 5])
             end
           end
 
@@ -345,7 +345,7 @@ RSpec.context "Predicates: Included In" do
         context "with filled" do
           subject(:schema) do
             Dry::Schema.define do
-              optional(:foo).filled(included_in?: [1, 3, 5])
+              optional(:foo).filled(:integer, included_in?: [1, 3, 5])
             end
           end
 
@@ -401,7 +401,7 @@ RSpec.context "Predicates: Included In" do
         context "with maybe" do
           subject(:schema) do
             Dry::Schema.define do
-              optional(:foo).maybe(included_in?: [1, 3, 5])
+              optional(:foo).maybe(:integer, included_in?: [1, 3, 5])
             end
           end
 

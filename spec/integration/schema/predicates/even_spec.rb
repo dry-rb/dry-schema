@@ -118,7 +118,7 @@ RSpec.describe "Predicates: Even" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).value(:even?)
+            required(:foo).value(:integer, :even?)
           end
         end
 
@@ -174,7 +174,7 @@ RSpec.describe "Predicates: Even" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).filled(:even?)
+            required(:foo).filled(:integer, :even?)
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe "Predicates: Even" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).maybe(:even?)
+            required(:foo).maybe(:integer, :even?)
           end
         end
 
@@ -288,7 +288,7 @@ RSpec.describe "Predicates: Even" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).value(:even?)
+            optional(:foo).value(:integer, :even?)
           end
         end
 
@@ -344,7 +344,7 @@ RSpec.describe "Predicates: Even" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).filled(:even?)
+            optional(:foo).filled(:integer, :even?)
           end
         end
 
@@ -400,7 +400,7 @@ RSpec.describe "Predicates: Even" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).maybe(:even?)
+            optional(:foo).maybe(:integer, :even?)
           end
         end
 
