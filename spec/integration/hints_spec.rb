@@ -20,7 +20,7 @@ RSpec.describe "Validation hints" do
   context "with yaml messages" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).maybe(:int?, gt?: 18)
+        required(:age).maybe(:integer, gt?: 18)
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe "Validation hints" do
       Dry::Schema.define do
         config.messages.backend = :i18n
 
-        required(:age).maybe(:int?, gt?: 18)
+        required(:age).maybe(:integer, gt?: 18)
       end
     end
 
@@ -42,8 +42,8 @@ RSpec.describe "Validation hints" do
   context "when type expectation is specified" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:email).filled
-        required(:name).filled(:str?, size?: 5..25)
+        required(:email).filled(:string)
+        required(:name).filled(:string, size?: 5..25)
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe "Validation hints" do
   context "when predicate failed and there is a corresponding hint generated" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:age).value(lt?: 23)
+        required(:age).value(:integer, lt?: 23)
       end
     end
 
@@ -70,10 +70,10 @@ RSpec.describe "Validation hints" do
   context "with a nested schema with same rule names" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:code).filled(:str?, eql?: "foo")
+        required(:code).filled(:string, eql?: "foo")
 
         required(:nested).hash do
-          required(:code).filled(:str?, eql?: "bar")
+          required(:code).filled(:string, eql?: "bar")
         end
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe "Validation hints" do
   context "with an each rule" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:nums).each(:int?, gt?: 0)
+        required(:nums).each(:integer, gt?: 0)
       end
     end
 
@@ -121,7 +121,7 @@ RSpec.describe "Validation hints" do
   context "with a format? predicate" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:name).value(size?: 2, format?: /xy/)
+        required(:name).value(:string, size?: 2, format?: /xy/)
       end
     end
 
@@ -150,7 +150,7 @@ RSpec.describe "Validation hints" do
       Dry::Schema.define do
         configure { |c| c.messages.load_paths << SPEC_ROOT.join("fixtures/messages.yml") }
 
-        required(:pill).filled(eql?: "blue")
+        required(:pill).filled(:string, eql?: "blue")
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe "Validation hints" do
     end
 
     it "provides a correct hint" do
-      expect(schema.(pill: nil).messages).to eql(
+      expect(schema.(pill: "").messages).to eql(
         pill: ["must be filled", "must be equal to blue"]
       )
     end
@@ -171,7 +171,7 @@ RSpec.describe "Validation hints" do
     subject(:schema) do
       Dry::Schema.define do
         required(:attributes).hash do
-          optional(:text) { int? | nil? }
+          optional(:text).value([:integer, :nil])
         end
       end
     end

@@ -91,7 +91,7 @@ module Dry
       alias_method :[], :call
 
       # @api public
-      def xor(other)
+      def xor(_other)
         raise NotImplementedError, "composing schemas using `xor` operator is not supported yet"
       end
       alias_method :^, :xor

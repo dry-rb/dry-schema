@@ -262,7 +262,7 @@ RSpec.describe "Predicates: Lt" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).maybe(:integer).maybe(:int?, lt?: 23)
+            required(:foo).maybe(:integer).maybe(:integer, lt?: 23)
           end
         end
 
@@ -456,7 +456,7 @@ RSpec.describe "Predicates: Lt" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).maybe(:integer).maybe(:int?, lt?: 23)
+            optional(:foo).maybe(:integer).maybe(:integer, lt?: 23)
           end
         end
 

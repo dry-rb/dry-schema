@@ -230,7 +230,7 @@ RSpec.describe "Predicates: Odd" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).maybe(:integer).maybe(:int?, :odd?)
+            required(:foo).maybe(:integer).maybe(:integer, :odd?)
           end
         end
 

@@ -19,7 +19,7 @@ RSpec.describe "Defining a schema with multiple parents" do
 
   let(:parent2) do
     Dry::Schema.Params do
-      required(:age).filter(:filled?).value(:integer)
+      required(:age).filter(:any, :filled?).value(:integer)
 
       after(:rule_applier) do |result|
         result.to_h[:bar] = "bar"

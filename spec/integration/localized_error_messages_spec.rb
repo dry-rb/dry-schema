@@ -11,7 +11,7 @@ RSpec.describe Dry::Schema, "with localized messages" do
           config.messages.load_paths = %w[en pl]
             .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
 
-          required(:email).value(:filled?)
+          required(:email).value(:string, :filled?)
         end
       end
 
@@ -32,7 +32,7 @@ RSpec.describe Dry::Schema, "with localized messages" do
           config.messages.load_paths = %w[en pl]
             .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
 
-          required(:email).value(:filled?)
+          required(:email).value(:string, :filled?)
         end
       end
 
@@ -54,7 +54,7 @@ RSpec.describe Dry::Schema, "with localized messages" do
           config.messages.load_paths = %w[en pl]
             .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
 
-          required(:email).value(:filled?)
+          required(:email).value(:string, :filled?)
         end
       end
 

@@ -10,7 +10,7 @@ Here's a common example - your system supports only one specific date format, an
 
 ```ruby
 schema = Dry::Schema.Params do
-  required(:email).filled
+  required(:email).filled(:string)
   required(:birthday).filter(format?: /\d{4}-\d{2}-\d{2}/).value(:date)
 end
 

@@ -146,8 +146,8 @@ module Dry
       # @return [Macros::Required]
       #
       # @api public
-      def required(name, &block)
-        key(name, macro: Macros::Required, &block)
+      def required(name)
+        key(name, macro: Macros::Required)
       end
 
       # Define an optional key
@@ -162,8 +162,8 @@ module Dry
       # @return [Macros::Optional]
       #
       # @api public
-      def optional(name, &block)
-        key(name, macro: Macros::Optional, &block)
+      def optional(name)
+        key(name, macro: Macros::Optional)
       end
 
       # A generic method for defining keys
@@ -174,7 +174,7 @@ module Dry
       # @return [Macros::Key]
       #
       # @api public
-      def key(name, macro:, &block)
+      def key(name, macro:)
         raise ArgumentError, "Key +#{name}+ is not a symbol" unless name.is_a?(::Symbol)
 
         set_type(name, Types::Any.meta(default: true))
@@ -186,7 +186,6 @@ module Dry
           filter_schema_dsl: filter_schema_dsl
         )
 
-        macro.value(&block) if block
         macros << macro
         macro
       end

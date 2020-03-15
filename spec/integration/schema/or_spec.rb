@@ -42,7 +42,7 @@ RSpec.describe Dry::Schema, "OR messages" do
   context "with a predicate and an each operation" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo) { str? | value(:array?).each(:int?) }
+        required(:foo) { str? | value(:array?).each(:integer) }
       end
     end
 

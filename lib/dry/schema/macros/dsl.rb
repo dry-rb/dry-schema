@@ -199,24 +199,17 @@ module Dry
         end
 
         # @api private
-        def extract_type_spec(*args, nullable: false, set_type: true)
-          type_spec = args[0] unless schema_or_predicate?(args[0])
+        def extract_type_spec(type_spec, *predicates, nullable: false, set_type: true)
+          resolved_type = resolve_type(type_spec, nullable)
 
-          predicates = Array(type_spec ? args[1..-1] : args)
-          type_rule = nil
+          if type_spec.is_a?(::Array)
+            type_rule = type_spec.map { |ts| new(chain: false).value(ts) }.reduce(:|)
+          else
+            type_predicates = predicate_inferrer[resolved_type]
 
-          if type_spec
-            resolved_type = resolve_type(type_spec, nullable)
+            predicates.replace(type_predicates + predicates) unless type_predicates.empty?
 
-            if type_spec.is_a?(::Array)
-              type_rule = type_spec.map { |ts| new(chain: false).value(ts) }.reduce(:|)
-            else
-              type_predicates = predicate_inferrer[resolved_type]
-
-              predicates.replace(type_predicates + predicates) unless type_predicates.empty?
-
-              return self if predicates.empty?
-            end
+            return self if predicates.empty?
           end
 
           type(resolved_type) if set_type && resolved_type

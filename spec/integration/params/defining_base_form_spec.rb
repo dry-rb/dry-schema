@@ -10,7 +10,7 @@ RSpec.describe "Defining base schema class" do
   let(:parent) do
     Dry::Schema.Params do
       required(:email).filled(:string)
-      required(:age).filter(:filled?).value(:integer)
+      required(:age).filter(:any, :filled?).value(:integer)
     end
   end
 

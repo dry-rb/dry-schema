@@ -3,7 +3,7 @@
 RSpec.describe Dry::Schema::Result do
   before { Dry::Schema.load_extensions(:monads) }
 
-  let(:schema) { Dry::Schema.define { required(:name).filled(:str?, size?: 2..4) } }
+  let(:schema) { Dry::Schema.define { required(:name).filled(:string, size?: 2..4) } }
 
   let(:result) { schema.(input) }
 

@@ -4,15 +4,13 @@ RSpec.describe Dry::Schema do
   describe "defining schema with optional keys and value rules" do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:email).value(:filled?)
+        optional(:email).value(:string, :filled?)
 
         required(:address).hash do
-          required(:city).value(:filled?)
-          required(:street).value(:filled?)
+          required(:city).value(:string, :filled?)
+          required(:street).value(:string, :filled?)
 
-          optional(:phone_number) do
-            nil? | str?
-          end
+          optional(:phone_number).value([:nil, :string])
         end
       end
     end
@@ -32,7 +30,7 @@ RSpec.describe Dry::Schema do
     subject(:schema) do
       Dry::Schema.define do
         required(:name).filled(:string)
-        optional(:login)
+        optional(:login).filled(:any)
       end
     end
 
@@ -47,10 +45,8 @@ RSpec.describe Dry::Schema do
   describe "defining schema with optional key that can be an array with hashes" do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:contacts).array do
-          hash do
-            required(:name).filled
-          end
+        optional(:contacts).array(:hash) do
+          required(:name).filled(:string)
         end
       end
     end
@@ -61,7 +57,7 @@ RSpec.describe Dry::Schema do
     end
 
     it "produces correct errors when array has an invalid element" do
-      expect(schema.(contacts: [{name: nil}]).errors)
+      expect(schema.(contacts: [{name: ""}]).errors)
         .to eql(contacts: {0 => {name: ["must be filled"]}})
     end
   end

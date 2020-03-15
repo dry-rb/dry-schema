@@ -26,8 +26,8 @@ module Dry
         # @return [Macros::Key]
         #
         # @api public
-        def filter(*args, &block)
-          (filter_schema_dsl[name] || filter_schema_dsl.optional(name)).value(*args, &block)
+        def filter(type_spec, *args, &block)
+          (filter_schema_dsl[name] || filter_schema_dsl.optional(name)).value(type_spec, *args, &block)
           self
         end
         ruby2_keywords(:filter) if respond_to?(:ruby2_keywords, true)
@@ -53,8 +53,8 @@ module Dry
         # @see Macros::DSL#value
         #
         # @api public
-        def value(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+        def value(type_spec, *args, **opts, &block)
+          extract_type_spec(type_spec, *args) do |*predicates, type_spec:, type_rule:|
             super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
           end
         end
@@ -69,8 +69,8 @@ module Dry
         # @return [Macros::Key]
         #
         # @api public
-        def filled(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+        def filled(type_spec, *args, **opts, &block)
+          extract_type_spec(type_spec, *args) do |*predicates, type_spec:, type_rule:|
             super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
           end
         end
@@ -85,11 +85,27 @@ module Dry
         # @return [Macros::Key]
         #
         # @api public
-        def maybe(*args, **opts, &block)
-          extract_type_spec(*args, nullable: true) do |*predicates, type_spec:, type_rule:|
+        def maybe(type_spec, *args, **opts, &block)
+          extract_type_spec(type_spec, *args, nullable: true) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Maybe) do |macro|
               macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end
+          end
+        end
+
+        # Set type specification and predicates for a maybe value
+        #
+        # @example
+        #   required(:name).maybe(:string)
+        #
+        # @see Macros::Key#value
+        #
+        # @return [Macros::Key]
+        #
+        # @api public
+        def array(type_spec, *args, **opts, &block)
+          extract_type_spec(type_spec, *args) do |*predicates, type_spec:, type_rule:|
+            super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
           end
         end
 

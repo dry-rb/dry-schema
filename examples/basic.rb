@@ -3,7 +3,7 @@
 require "dry-schema"
 
 schema = Dry::Schema.define do
-  required(:email).filled
+  required(:email).filled(:string)
 
   required(:age).filled(:int?, gt?: 18)
 end

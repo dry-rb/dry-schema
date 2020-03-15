@@ -4,7 +4,7 @@ RSpec.describe "Predicates: Array" do
   context "with required" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo).value(:array?).each(:int?)
+        required(:foo).value(:array?).each(:integer)
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe "Predicates: Array" do
   context "with optional" do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:foo).value(:array?).each(:int?)
+        optional(:foo).value(:array?).each(:integer)
       end
     end
 
@@ -148,7 +148,7 @@ RSpec.describe "Predicates: Array" do
   context "with block-based syntax" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo) { array? { each(:int?) } }
+        required(:foo) { array? { each(:integer) } }
       end
     end
 

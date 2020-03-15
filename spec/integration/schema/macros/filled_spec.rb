@@ -4,7 +4,7 @@ RSpec.describe "Macros #filled" do
   describe "with no args" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:email).filled
+        required(:email).filled(:string)
       end
     end
 

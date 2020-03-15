@@ -151,7 +151,7 @@ RSpec.describe "Predicates: Size" do
         context "with filled" do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).filled(bytesize?: 3)
+              required(:foo).filled(:string, bytesize?: 3)
             end
           end
 
@@ -167,7 +167,7 @@ RSpec.describe "Predicates: Size" do
             let(:input) { {} }
 
             it "is not successful" do
-              expect(result).to be_failing ["is missing", "must be 3 bytes long"]
+              expect(result).to be_failing ["is missing", "must be a string", "must be 3 bytes long"]
             end
           end
 
@@ -199,7 +199,7 @@ RSpec.describe "Predicates: Size" do
         context "with maybe" do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).maybe(bytesize?: 3)
+              required(:foo).maybe(:string, bytesize?: 3)
             end
           end
 
@@ -215,7 +215,7 @@ RSpec.describe "Predicates: Size" do
             let(:input) { {} }
 
             it "is not successful" do
-              expect(result).to be_failing ["is missing", "must be 3 bytes long"]
+              expect(result).to be_failing ["is missing", "must be a string", "must be 3 bytes long"]
             end
           end
 
@@ -231,7 +231,7 @@ RSpec.describe "Predicates: Size" do
             let(:input) { {"foo" => ""} }
 
             it "is successful" do
-              expect(result).to be_failing ["must be 3 bytes long"]
+              expect(result).to be_successful
             end
           end
 
@@ -297,7 +297,7 @@ RSpec.describe "Predicates: Size" do
         context "with filled" do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo).filled(bytesize?: 3)
+              optional(:foo).filled(:string, bytesize?: 3)
             end
           end
 

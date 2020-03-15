@@ -32,7 +32,7 @@ RSpec.describe "Namespaced messages" do
         config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
         config.messages.namespace = :comment
 
-        required(:comment_body).filled
+        required(:comment_body).filled(:string)
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe "Namespaced messages" do
         config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
         config.messages.namespace = :post
 
-        required(:post_body).filled
+        required(:post_body).filled(:string)
         required(:comment).hash(::Test::CommentSchema)
       end
     end

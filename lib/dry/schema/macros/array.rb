@@ -10,32 +10,30 @@ module Dry
       # @api private
       class Array < DSL
         # @api private
-        def value(*args, **opts, &block)
+        def value(*predicates, type_spec:, type_rule:, **opts, &block)
           type(:array)
 
-          extract_type_spec(*args, set_type: false) do |*predicates, type_spec:, type_rule:|
-            type(schema_dsl.array[type_spec]) if type_spec
+          type(schema_dsl.array[type_spec]) if type_spec
 
-            is_hash_block = type_spec.equal?(:hash)
+          is_hash_block = type_spec.equal?(:hash)
 
-            if predicates.any? || opts.any? || !is_hash_block
-              super(
-                *predicates, type_spec: type_spec, type_rule: type_rule, **opts,
-                &(is_hash_block ? nil : block)
-              )
-            end
+          if predicates.any? || opts.any? || !is_hash_block
+            super(
+              *predicates, type_spec: type_spec, type_rule: type_rule, **opts,
+              &(is_hash_block ? nil : block)
+            )
+          end
 
-            is_op = args.size.equal?(2) && args[1].is_a?(Logic::Operations::Abstract)
+          is_op = predicates.size.equal?(2) && predicates[1].is_a?(Logic::Operations::Abstract)
 
-            if is_hash_block && !is_op
-              hash(&block)
-            elsif is_op
-              hash = Value.new(schema_dsl: schema_dsl.new, name: name).hash(args[1])
+          if is_hash_block && !is_op
+            hash(&block)
+          elsif is_op
+            hash = Value.new(schema_dsl: schema_dsl.new, name: name).hash(args[1])
 
-              trace.captures.concat(hash.trace.captures)
+            trace.captures.concat(hash.trace.captures)
 
-              type(schema_dsl.types[name].of(hash.schema_dsl.types[name]))
-            end
+            type(schema_dsl.types[name].of(hash.schema_dsl.types[name]))
           end
 
           self

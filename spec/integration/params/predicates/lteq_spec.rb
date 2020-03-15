@@ -456,7 +456,7 @@ RSpec.describe "Predicates: Lteq" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).maybe(:integer).maybe(:int?, lteq?: 23)
+            optional(:foo).maybe(:integer).maybe(:integer, lteq?: 23)
           end
         end
 

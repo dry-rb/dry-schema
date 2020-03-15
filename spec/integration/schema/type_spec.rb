@@ -112,7 +112,7 @@ RSpec.describe Dry::Schema, "types specs" do
   context "sum type spec with rules" do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:age).type([:nil, :integer]).maybe(:int?, gt?: 18)
+        required(:age).type([:nil, :integer]).maybe(:integer, gt?: 18)
       end
     end
 

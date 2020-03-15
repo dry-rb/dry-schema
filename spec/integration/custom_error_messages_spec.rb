@@ -20,7 +20,7 @@ RSpec.describe Dry::Schema do
           config.messages.load_paths << SPEC_ROOT.join("fixtures/locales/en.yml")
         end
 
-        required(:email).value(:filled?)
+        required(:email).value(:string, :filled?)
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe Dry::Schema do
             config.messages.backend = :i18n
           end
 
-          required(:email).value(:filled?)
+          required(:email).value(:string, :filled?)
         end
       end
 
@@ -54,7 +54,7 @@ RSpec.describe Dry::Schema do
 
       subject(:schema) do
         Dry::Schema.define do
-          required(:email).value(:filled?)
+          required(:email).value(:string, :filled?)
         end
       end
 

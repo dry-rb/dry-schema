@@ -5,7 +5,7 @@ RSpec.describe "Predicates: Bytesize" do
     context "with required" do
       subject(:schema) do
         Dry::Schema.Params do
-          required(:foo) { bytesize?(2..3) }
+          required(:foo).value(:string) { bytesize?(2..3) }
         end
       end
 
@@ -21,15 +21,15 @@ RSpec.describe "Predicates: Bytesize" do
         let(:input) { {} }
 
         it "is not successful" do
-          expect(result).to be_failing ["is missing", "must be within 2 - 3 bytes long"]
+          expect(result).to be_failing ["is missing", "must be a string", "must be within 2 - 3 bytes long"]
         end
       end
 
       context "with nil input" do
         let(:input) { {"foo" => nil} }
 
-        it "is raises error" do
-          expect { result }.to raise_error(NoMethodError)
+        it "is not successful" do
+          expect(result).to be_failing ["must be a string", "must be within 2 - 3 bytes long"]
         end
       end
 
@@ -54,7 +54,7 @@ RSpec.describe "Predicates: Bytesize" do
     context "with optional" do
       subject(:schema) do
         Dry::Schema.Params do
-          optional(:foo) { bytesize?(2..3) }
+          optional(:foo).value(:string) { bytesize?(2..3) }
         end
       end
 
@@ -78,7 +78,7 @@ RSpec.describe "Predicates: Bytesize" do
         let(:input) { {"foo" => nil} }
 
         it "is raises error" do
-          expect { result }.to raise_error(NoMethodError)
+          expect(result).to be_failing ["must be a string", "must be within 2 - 3 bytes long"]
         end
       end
 
@@ -105,7 +105,7 @@ RSpec.describe "Predicates: Bytesize" do
         context "with value" do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).value(bytesize?: 2..3)
+              required(:foo).value(:string, bytesize?: 2..3)
             end
           end
 
@@ -121,15 +121,15 @@ RSpec.describe "Predicates: Bytesize" do
             let(:input) { {} }
 
             it "is not successful" do
-              expect(result).to be_failing ["is missing", "must be within 2 - 3 bytes long"]
+              expect(result).to be_failing ["is missing", "must be a string", "must be within 2 - 3 bytes long"]
             end
           end
 
           context "with nil input" do
             let(:input) { {"foo" => nil} }
 
-            it "is raises error" do
-              expect { result }.to raise_error(NoMethodError)
+            it "is not successful" do
+              expect(result).to be_failing ["must be a string", "must be within 2 - 3 bytes long"]
             end
           end
 
@@ -153,7 +153,7 @@ RSpec.describe "Predicates: Bytesize" do
         context "with filled" do
           subject(:schema) do
             Dry::Schema.Params do
-              required(:foo).filled(bytesize?: 2..3)
+              required(:foo).filled(:string, bytesize?: 2..3)
             end
           end
 
@@ -169,7 +169,7 @@ RSpec.describe "Predicates: Bytesize" do
             let(:input) { {} }
 
             it "is not successful" do
-              expect(result).to be_failing ["is missing", "must be within 2 - 3 bytes long"]
+              expect(result).to be_failing ["is missing", "must be a string", "must be within 2 - 3 bytes long"]
             end
           end
 
@@ -251,7 +251,7 @@ RSpec.describe "Predicates: Bytesize" do
         context "with value" do
           subject(:schema) do
             Dry::Schema.Params do
-              optional(:foo).value(bytesize?: 2..3)
+              optional(:foo).value(:string, bytesize?: 2..3)
             end
           end
 
@@ -274,8 +274,8 @@ RSpec.describe "Predicates: Bytesize" do
           context "with nil input" do
             let(:input) { {"foo" => nil} }
 
-            it "is raises error" do
-              expect { result }.to raise_error(NoMethodError)
+            it "is successful" do
+              expect(result).to be_failing ["must be a string", "must be within 2 - 3 bytes long"]
             end
           end
 

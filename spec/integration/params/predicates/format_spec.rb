@@ -174,7 +174,7 @@ RSpec.describe "Predicates: Format" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).filled(:str?, format?: /bar/)
+            required(:foo).filled(:string, format?: /bar/)
           end
         end
 
@@ -344,7 +344,7 @@ RSpec.describe "Predicates: Format" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).filled(:str?, format?: /bar/)
+            optional(:foo).filled(:string, format?: /bar/)
           end
         end
 

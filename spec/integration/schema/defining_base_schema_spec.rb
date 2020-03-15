@@ -3,7 +3,7 @@
 RSpec.describe "Defining base schema class" do
   subject(:schema) do
     Dry::Schema.define(parent: parent) do
-      required(:email).filled
+      required(:email).filled(:string)
       required(:age).filled
     end
   end

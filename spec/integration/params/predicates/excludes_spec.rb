@@ -4,7 +4,7 @@ RSpec.describe "Predicates: Excludes" do
   context "with required" do
     subject(:schema) do
       Dry::Schema.Params do
-        required(:foo).value(array[:integer]).each(:int?).value(excludes?: 1)
+        required(:foo).value(array[:integer]).each(:integer).value(excludes?: 1)
       end
     end
 
@@ -52,7 +52,7 @@ RSpec.describe "Predicates: Excludes" do
   context "with optional" do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo).value(array[:integer]).each(:int?).value(excludes?: 1)
+        optional(:foo).value(array[:integer]).each(:integer).value(excludes?: 1)
       end
     end
 
