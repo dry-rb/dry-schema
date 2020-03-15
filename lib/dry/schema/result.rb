@@ -43,7 +43,7 @@ module Dry
 
       # Return a new result scoped to a specific path
       #
-      # @param [Symbol, Array, Path]
+      # @param path [Symbol, Array, Path]
       #
       # @return [Result]
       #

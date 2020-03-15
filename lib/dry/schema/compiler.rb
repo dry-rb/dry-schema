@@ -30,7 +30,7 @@ module Dry
       # used as nested schemas
       #
       # @param [Array] node
-      # @param [Hash] opts
+      # @param [Hash] _opts Unused
       #
       # @return [NamespacedRule]
       #
