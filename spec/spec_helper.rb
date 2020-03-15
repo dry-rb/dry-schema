@@ -61,6 +61,7 @@ RSpec.configure do |config|
   end
   config.disable_monkey_patching!
   config.filter_run_when_matching :focus
+  config.example_status_persistence_file_path = "spec/examples.txt"
 
   config.include PredicatesIntegration
   config.include Coercions
