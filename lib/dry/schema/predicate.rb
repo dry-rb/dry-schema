@@ -13,6 +13,8 @@ module Dry
       #
       # @api private
       class Negation
+        include Dry::Logic::Operators
+
         # @api private
         attr_reader :predicate
 
