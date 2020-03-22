@@ -1,3 +1,13 @@
+## unreleased 
+
+
+### Fixed
+
+- Negated predicates support the logic operator API now (fixed via #276) (@solnic)
+
+
+[Compare v1.5.0...master](https://github.com/dry-rb/dry-schema/compare/v1.5.0...master)
+
 ## 1.5.0 2020-03-11
 
 
