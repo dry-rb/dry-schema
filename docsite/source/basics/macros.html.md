@@ -56,7 +56,7 @@ Use it when a value is expected to be a hash:
 
 ```ruby
 Dry::Schema.Params do
-  # expands to: `required(:tags) { hash? & filled? & schema { required(:name).filled(:string) } } }`
+  # expands to: `required(:tags) { hash? & schema { required(:name).filled(:string) } } }`
   required(:tags).hash do
     required(:name).filled(:string)
   end
