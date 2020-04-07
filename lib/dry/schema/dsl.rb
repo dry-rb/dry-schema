@@ -2,7 +2,6 @@
 
 require "dry/initializer"
 
-require "dry/schema"
 require "dry/schema/constants"
 require "dry/schema/path"
 require "dry/schema/config"
