@@ -4,6 +4,7 @@
 ### Fixed
 
 - Negated predicates support the logic operator API now (fixed via #276) (@solnic)
+- Fixed circular require warning (issue #279 closed via #282) (@landongrindheim)
 
 
 [Compare v1.5.0...master](https://github.com/dry-rb/dry-schema/compare/v1.5.0...master)
