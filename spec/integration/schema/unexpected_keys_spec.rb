@@ -37,4 +37,25 @@ RSpec.describe Dry::Schema, "unexpected keys" do
         roles: {1 => {foo: ["is not allowed"]}}
       )
   end
+
+  context "with an array validation" do
+    subject(:schema) do
+      Dry::Schema.define do
+        config.validate_keys = true
+
+        required(:name).filled(:string)
+        optional(:tags).array(:str?)
+      end
+    end
+
+    it "adds error messages" do
+      input = { name: "", tags: ["red", 123] }
+      expect(schema.(input).errors.to_h)
+        .to eql(
+          name: ["must be filled"],
+          tags: {1=>["must be a string"]}
+        )
+    end
+
+  end
 end

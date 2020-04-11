@@ -53,6 +53,7 @@ module Dry
           when Hash
             [key].product(key_paths(hash[key])).map { |keys| keys.join(DOT) }
           when Array
+            return [] unless value.all? Hash
             value.flat_map.with_index { |el, idx|
               key_paths(el).map { |path| ["#{key}[#{idx}]", *path].join(DOT) }
             }
