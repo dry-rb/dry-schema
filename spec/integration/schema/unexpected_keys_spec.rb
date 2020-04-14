@@ -44,7 +44,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
         config.validate_keys = true
 
         required(:name).filled(:string)
-        optional(:tags).array(:str?)
+        optional(:tags).array(:string)
       end
     end
 
