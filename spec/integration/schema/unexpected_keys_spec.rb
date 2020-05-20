@@ -6,6 +6,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       config.validate_keys = true
 
       required(:name).filled(:string)
+      required(:ids).filled(:array).each(:integer)
 
       required(:address).hash do
         required(:city).filled(:string)
@@ -23,6 +24,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     input = {
       foo: "unexpected",
       name: "Jane",
+      ids: [1, 2, 3, 4],
       address: {bar: "unexpected", city: "NYC", zipcode: "1234"},
       roles: [
         {name: "admin", expires_at: Date.today},
