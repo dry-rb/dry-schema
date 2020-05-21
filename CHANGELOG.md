@@ -3,10 +3,9 @@
 
 ### Fixed
 
-- Negated predicates support the logic operator API now (fixed via #276) (@solnic)
-- Fixed circular require warning (issue #279 closed via #282) (@landongrindheim)
-- Validating keys against an array with non-hash members no longer crashes (issue #283 fixed via #284) (@beechnut)
-- Key validator no longer crashes with an array of non-hashes (issue #289 fixed via #288) (@tadeusz-niemiec)
+- Negated predicates support the logic operator API now (fixed via #276 by @solnic)
+- Fixed circular require warning (issue #279 closed via #282 by @landongrindheim)
+- Validating keys against an array with non-hash members no longer crashes (issue #283 fixed via #284 by @beechnut and issue #289 fixed via #288 by @tadeusz-niemiec)
 
 
 [Compare v1.5.0...v1.5.1](https://github.com/dry-rb/dry-schema/compare/v1.5.0...v1.5.1)
