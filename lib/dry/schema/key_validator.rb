@@ -53,8 +53,8 @@ module Dry
           when Hash
             [key].product(key_paths(hash[key])).map { |keys| keys.join(DOT) }
           when Array
-            return [] unless value.all? { |obj| obj.is_a? Hash }
-            value.flat_map.with_index { |el, idx|
+            hashes_or_arrays = value.select { |e| e.is_a?(Array) || e.is_a?(Hash) }
+            hashes_or_arrays.flat_map.with_index { |el, idx|
               key_paths(el).map { |path| ["#{key}[#{idx}]", *path].join(DOT) }
             }
           else
