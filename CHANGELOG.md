@@ -1,4 +1,4 @@
-## unreleased 
+## 1.5.1 2020-05-21
 
 
 ### Fixed
@@ -9,7 +9,7 @@
 - Key validator no longer crashes with an array of non-hashes (issue #289 fixed via #288) (@tadeusz-niemiec)
 
 
-[Compare v1.5.0...master](https://github.com/dry-rb/dry-schema/compare/v1.5.0...master)
+[Compare v1.5.0...v1.5.1](https://github.com/dry-rb/dry-schema/compare/v1.5.0...v1.5.1)
 
 ## 1.5.0 2020-03-11
 
