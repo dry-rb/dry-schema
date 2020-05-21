@@ -1,7 +1,7 @@
 ---
-- version: unreleased
-  summary: 
-  date: 
+- version: 1.5.1
+  summary:
+  date: '2020-05-21'
   fixed:
   - 'Negated predicates support the logic operator API now (fixed via #276) (@solnic)'
   - 'Fixed circular require warning (issue #279 closed via #282) (@landongrindheim)'
@@ -9,10 +9,10 @@
     #283 fixed via #284) (@beechnut)'
   - 'Key validator no longer crashes with an array of non-hashes (issue #289 fixed
     via #288) (@tadeusz-niemiec)'
-  added: 
-  changed: 
+  added:
+  changed:
 - version: 1.5.0
-  summary: 
+  summary:
   date: '2020-03-11'
   fixed:
   - |-
