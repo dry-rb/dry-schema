@@ -69,7 +69,7 @@ RSpec.describe Dry::Schema, "with localized messages" do
           expect(schema.(email: "").errors).to eql(email: ["Hej user! Dawaj ten email no!"])
         end
 
-        it "returns localized error messages with defined whitespace character when full option is set to true" do
+        it "returns localized error messages with defined whitespace character for 'full' option" do
           schema = Dry::Schema.define do
             config.messages.backend = :i18n
             config.messages.namespace = :user
