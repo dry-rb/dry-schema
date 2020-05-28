@@ -29,6 +29,14 @@ module Dry
 
       EMPTY_OPTS = VisitorOpts.new
       EMPTY_MESSAGE_SET = MessageSet.new(EMPTY_ARRAY).freeze
+      FULL_MESSAGE_WHITESPACE = Hash.new(' ').merge(
+            ja: '',
+            zh: '',
+            bn: '',
+            th: '',
+            lo: '',
+            my: '',
+          )
 
       param :messages
 
@@ -203,7 +211,7 @@ module Dry
         return text if !text || !full
 
         rule = options[:path]
-        "#{messages.rule(rule, options) || rule} #{text}"
+        [messages.rule(rule, options) || rule, text].join(FULL_MESSAGE_WHITESPACE[template.options[:locale]])
       end
 
       # @api private
