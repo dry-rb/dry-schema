@@ -1,15 +1,25 @@
 ---
+- version: unreleased
+  summary: 
+  date: 
+  fixed: 
+  added: 
+  changed:
+  - 'Using `full` option no longer adds a space between the name of a key and the
+    message in case of languages that have no spaces between words (ie Japanese) (issue
+    #161 closed via #292 by @tadeusz-niemiec)'
 - version: 1.5.1
-  summary:
+  summary: 
   date: '2020-05-21'
   fixed:
   - 'Negated predicates support the logic operator API now (fixed via #276 by @solnic)'
   - 'Fixed circular require warning (issue #279 closed via #282 by @landongrindheim)'
-  - 'Validating keys against an array with non-hash members no longer crashes (issue #283 fixed via #284 by @beechnut and issue #289 fixed via #288 by @tadeusz-niemiec)'
-  added:
-  changed:
+  - 'Validating keys against an array with non-hash members no longer crashes (issue
+    #283 fixed via #284 by @beechnut and issue #289 fixed via #288 by @tadeusz-niemiec)'
+  added: 
+  changed: 
 - version: 1.5.0
-  summary:
+  summary: 
   date: '2020-03-11'
   fixed:
   - |-
