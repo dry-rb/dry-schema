@@ -14,7 +14,7 @@ RSpec.describe Dry::Schema::MessageCompiler do
           errors: {
             key?: {
               arg: {
-                default: "+%{name}+ key is missing in the hash"
+                default: '+%{name}+ key is missing in the hash'
               },
               value: {
                 gender: "Please provide your gender"
@@ -315,6 +315,34 @@ RSpec.describe Dry::Schema::MessageCompiler do
         )
 
         expect(msg).to eql("length must be within 3 - 4")
+      end
+
+      it "handles 'num' and 'size' interchangeably as interpolated arguments" do
+        messages = Dry::Schema::Messages::YAML.build.merge(
+          pl: {
+            dry_schema: {
+              errors: {
+                size?: {
+                  arg: {
+                    default: 'długość musi być równa %{num}',
+                    range: 'długość musi być między %{num_left} a %{size_right}'
+                  }
+                }
+              }
+            }
+          }
+        )
+        message_compiler = Dry::Schema::MessageCompiler.new(messages).with(locale: :pl)
+        range_error_message = message_compiler.visit(
+          [:failure, [:num, [:key, [:num, p(:size?, 3..4, 'ab')]]]]
+        )
+
+        single_value_error_message = message_compiler.visit(
+          [:failure, [:num, [:key, [:num, p(:size?, 5, 'ab')]]]]
+        )
+
+        expect(range_error_message).to eql('długość musi być między 3 a 4')
+        expect(single_value_error_message).to eql('długość musi być równa 5')
       end
     end
 
