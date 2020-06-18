@@ -41,8 +41,8 @@ jobs:
         - 'false'
         - 'true'
     env:
-      CLASSPATH: ''
       COVERAGE: "${{matrix.coverage}}"
+      COVERAGE_TOKEN: "${{secrets.CODACY_PROJECT_TOKEN}}"
       DRY_LOGIC_FROM_MASTER: "${{matrix.dry_logic_from_master}}"
       DRY_TYPES_FROM_MASTER: "${{matrix.dry_types_from_master}}"
       DRY_CONFIGURABLE_FROM_MASTER: "${{matrix.dry_configurable_from_master}}"
@@ -64,7 +64,7 @@ jobs:
       run: bundle exec rake
     - name: Run codacy-coverage-reporter
       uses: codacy/codacy-coverage-reporter-action@master
-      if: env.COVERAGE == 'true' && secrets.CODACY_PROJECT_TOKEN != ''
+      if: env.COVERAGE == 'true' && env.COVERAGE_TOKEN != ''
       with:
         project-token: "${{secrets.CODACY_PROJECT_TOKEN}}"
         coverage-reports: coverage/coverage.xml
