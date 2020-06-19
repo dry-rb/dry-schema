@@ -32,15 +32,11 @@ jobs:
         - ruby: '2.6'
           coverage: 'true'
         - ruby: 2.7.0
-          dry_logic_from_master:
-          - 'false'
-          - 'true'
-          dry_types_from_master:
-          - 'false'
-          - 'true'
-          dry_configurable_from_master:
-          - 'false'
-          - 'true'
+          dry_logic_from_master: 'true'
+        - ruby: 2.7.0
+          dry_types_from_master: 'true'
+        - ruby: 2.7.0
+          dry_configurable_from_master: 'true'
     env:
       COVERAGE: "${{matrix.coverage}}"
       COVERAGE_TOKEN: "${{secrets.CODACY_PROJECT_TOKEN}}"
