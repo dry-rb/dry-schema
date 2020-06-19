@@ -5,9 +5,7 @@ jobs:
         include:
           - ruby: "2.7.0"
             dry_logic_from_master: "true"
-          - ruby: "2.7.0"
             dry_types_from_master: "true"
-          - ruby: "2.7.0"
             dry_configurable_from_master: "true"
     env:
       DRY_LOGIC_FROM_MASTER: ${{matrix.dry_logic_from_master}}
