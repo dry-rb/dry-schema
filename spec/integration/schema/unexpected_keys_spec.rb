@@ -40,6 +40,21 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       )
   end
 
+  it "is treated as a failure when passed unexpected keys" do
+    input = {
+      foo: "unexpected",
+      name: "Jane",
+      ids: [1, 2, 3, 4],
+      address: {bar: "unexpected", city: "NYC", zipcode: "1234"},
+      roles: [
+        {name: "admin", expires_at: Date.today},
+        {name: "editor", foo: "unexpected", expires_at: Date.today}
+      ]
+    }
+
+    expect(schema.(input)).to be_failure
+  end
+
   context "with an array validation" do
     subject(:schema) do
       Dry::Schema.define do
