@@ -1,4 +1,4 @@
-## unreleased 
+## 1.5.2 2020-06-26
 
 
 ### Fixed
@@ -9,7 +9,7 @@
 
 - Using `full` option no longer adds a space between the name of a key and the message in case of languages that have no spaces between words (ie Japanese) (issue #161 closed via #292 by @tadeusz-niemiec)
 
-[Compare v1.5.1...master](https://github.com/dry-rb/dry-schema/compare/v1.5.1...master)
+[Compare v1.5.1...v1.5.2](https://github.com/dry-rb/dry-schema/compare/v1.5.1...v1.5.2)
 
 ## 1.5.1 2020-05-21
 
