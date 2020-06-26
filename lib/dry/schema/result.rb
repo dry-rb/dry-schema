@@ -121,7 +121,7 @@ module Dry
       #
       # @api public
       def success?
-        results.empty?
+        result_ast.empty?
       end
 
       # Check if the result is not successful
