@@ -1,6 +1,10 @@
 ## unreleased 
 
 
+### Fixed
+
+- `Result#{success?,failure?}` work as expected when there are only key validation failures (issue #297 fixed via #298) (@adamransom)
+
 ### Changed
 
 - Using `full` option no longer adds a space between the name of a key and the message in case of languages that have no spaces between words (ie Japanese) (issue #161 closed via #292 by @tadeusz-niemiec)
