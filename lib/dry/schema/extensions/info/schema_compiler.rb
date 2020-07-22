@@ -50,7 +50,7 @@ module Dry
         def visit_set(node, opts = EMPTY_HASH)
           target = (key = opts[:key]) ? self.class.new : self
 
-          node.map { |child| target.visit(child, opts) }
+          node.each { |child| target.visit(child, opts) }
 
           return unless key
 
