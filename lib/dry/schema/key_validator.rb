@@ -28,7 +28,7 @@ module Dry
             if path[INDEX_REGEX]
               key = path.gsub(INDEX_REGEX, BRACKETS)
 
-              unless key_paths.include?(key)
+              if key_paths.none? { |key_path| key_path.include?(key) }
                 arr = path.gsub(INDEX_REGEX) { |m| ".#{m[1]}" }
                 arr.split(DOT).map { |s| DIGIT_REGEX.match?(s) ? s.to_i : s.to_sym }
               end
