@@ -1,6 +1,10 @@
 ## unreleased 
 
 
+### Fixed
+
+- Key validator works correctly with an array with maybe hash as its member (issue #308 fixed via #309) (@tadeusz-niemiec)
+
 ### Changed
 
 - [info extension] small performance improvement in the set visitor (see #305 for more details) (@esparta)
