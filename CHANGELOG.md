@@ -1,4 +1,4 @@
-## unreleased 
+## 1.5.3 2020-08-21
 
 
 ### Fixed
@@ -9,7 +9,7 @@
 
 - [info extension] small performance improvement in the set visitor (see #305 for more details) (@esparta)
 
-[Compare v1.5.2...master](https://github.com/dry-rb/dry-schema/compare/v1.5.2...master)
+[Compare v1.5.2...v1.5.3](https://github.com/dry-rb/dry-schema/compare/v1.5.2...v1.5.3)
 
 ## 1.5.2 2020-06-26
 
