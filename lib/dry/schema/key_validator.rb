@@ -32,7 +32,7 @@ module Dry
                 arr = path.gsub(INDEX_REGEX) { |m| ".#{m[1]}" }
                 arr.split(DOT).map { |s| DIGIT_REGEX.match?(s) ? s.to_i : s.to_sym }
               end
-            elsif !key_paths.include?(path)
+            elsif key_paths.none? { |key_path| key_path.include?(path) }
               path
             end
 

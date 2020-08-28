@@ -92,5 +92,22 @@ RSpec.describe Dry::Schema, "unexpected keys" do
         expect(schema.(locations: [{ feedback_location: nil}]).errors.to_h).to eq({})
       end
     end
+
+    context "with a non-nested maybe hash validator" do
+      subject(:schema) do
+        Dry::Schema.define do
+          config.validate_keys = true
+
+          required(:feedback_location).maybe(:hash) do
+            required(:lat).filled(:float)
+            required(:lon).filled(:float)
+          end
+        end
+      end
+
+      it "doesn't add error messages when there are no unexpected keys" do
+        expect(schema.(feedback_location: nil).errors.to_h).to eq({})
+      end
+    end
   end
 end
