@@ -1,3 +1,13 @@
+## unreleased 
+
+
+### Fixed
+
+- Key validation works correctly with a non-nested maybe hashes (issue #311 fixed via #312) (@svobom57)
+
+
+[Compare v1.5.3...master](https://github.com/dry-rb/dry-schema/compare/v1.5.3...master)
+
 ## 1.5.3 2020-08-21
 
 
