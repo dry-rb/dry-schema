@@ -116,6 +116,7 @@ module Dry
 
         Message.new(
           path: path,
+          meta: msg[:meta] || EMPTY_HASH,
           text: msg[:text],
           predicate: nil,
           input: input
