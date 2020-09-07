@@ -1,3 +1,13 @@
+## unreleased 
+
+
+### Fixed
+
+- Key validation works with messages that have meta-data (issue #310 fixed via #313) (@tadeusz-niemiec)
+
+
+[Compare v1.5.4...master](https://github.com/dry-rb/dry-schema/compare/v1.5.4...master)
+
 ## 1.5.4 
 
 2020-09-03
