@@ -55,6 +55,20 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     expect(schema.(input)).to be_failure
   end
 
+  it "supports meta tags" do
+    schema = Dry::Schema.define do
+      config.validate_keys = true
+      config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/pl.yml"
+      config.messages.default_locale = :pl
+
+      required(:title).filled
+    end
+
+    expect(schema.(wrong_key: nil).errors(full: true).to_h)
+        .to eq({:wrong_key => [{:code => "nieoczekiwany_klucz", :text => "Podano nieoczekiwany klucz"}],
+                :title => [:code => "brak_klucza", :text => "title nie został podany"]})
+  end
+
   context "with an array validation" do
     subject(:schema) do
       Dry::Schema.define do

@@ -23,3 +23,9 @@ pl:
         rules:
           email:
             filled?: "Hej user! Dawaj ten email no!"
+      unexpected_key:
+        text: "Podano nieoczekiwany klucz"
+        code: "nieoczekiwany_klucz"
+      key?:
+        text: "nie został podany"
+        code: "brak_klucza"
