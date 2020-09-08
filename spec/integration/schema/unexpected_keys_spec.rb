@@ -88,6 +88,22 @@ RSpec.describe Dry::Schema, "unexpected keys" do
         )
     end
 
+    it "doesn't add the unexpected key error message when the type is wrong" do
+      schema = Dry::Schema.define do
+        config.validate_keys = true
+
+        required(:pets).array(:hash) do
+          required(:name).filled(:string)
+        end
+      end
+
+      expect(schema.(foo: 'unexpected', pets: 'a string').errors.to_h)
+          .to eql(
+                  foo: ["is not allowed"],
+                  pets: ["must be an array"],
+              )
+    end
+
     context "with a nested maybe hash validator" do
       subject(:schema) do
         Dry::Schema.define do
