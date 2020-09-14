@@ -4,6 +4,7 @@
 ### Fixed
 
 - Key validation works with messages that have meta-data (issue #310 fixed via #313) (@tadeusz-niemiec)
+- Using an external schema along with a key specified as a `:hash` works as expected (issue #296 fixed via #315) (@tadeusz-niemiec + @solnic)
 
 
 [Compare v1.5.4...master](https://github.com/dry-rb/dry-schema/compare/v1.5.4...master)
