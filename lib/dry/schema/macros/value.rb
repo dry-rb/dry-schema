@@ -28,10 +28,14 @@ module Dry
 
             import_steps(schema)
 
-            type(updated_type) unless custom_type? && !current_type.respond_to?(:of)
+            if !custom_type? || array_type?(current_type) || hash_type?(current_type)
+              type(updated_type)
+            elsif maybe_type?(current_type)
+              type(updated_type.optional)
+            end
           end
 
-          trace_opts = opts.reject { |key, _| key == :type_spec || key == :type_rule }
+          trace_opts = opts.reject { |key, _| %i[type_spec type_rule].include?(key) }
 
           if (type_rule = opts[:type_rule])
             trace.append(type_rule).evaluate(*predicates, **trace_opts)
@@ -62,8 +66,14 @@ module Dry
           primitive_inferrer[type].eql?([::Array])
         end
 
+        # @api private
         def hash_type?(type)
           primitive_inferrer[type].eql?([::Hash])
+        end
+
+        # @api private
+        def maybe_type?(type)
+          type.meta[:maybe].equal?(true)
         end
 
         # @api private

@@ -77,4 +77,30 @@ RSpec.describe "Params / Macros / maybe" do
       expect(schema.(song: nil)).to be_success
     end
   end
+
+  context "with a nested schema" do
+    inner_schema = Dry::Schema.Params do
+      required(:name).filled(:string)
+    end
+
+    schema = Dry::Schema.Params do
+      required(:user).maybe(:hash, inner_schema)
+    end
+
+    it "passes when valid" do
+      expect(schema.("user" => {name: "John"})).to be_success
+    end
+
+    it "passes when valid and keys are strings" do
+      expect(schema.("user" => {"name" => "John"})).to be_success
+    end
+
+    it "fails when not valid" do
+      expect(schema.("user" => {"name" => 1}).errors.to_h).to eq(user: {name: ["must be a string"]})
+    end
+
+    it "passes when optional argument is missing" do
+      expect(schema.("user" => nil)).to be_success
+    end
+  end
 end

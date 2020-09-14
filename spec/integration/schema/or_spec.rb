@@ -86,4 +86,29 @@ RSpec.describe Dry::Schema, "OR messages" do
       expect(schema.(foo: {bar: ""}).errors).to eql(foo: {bar: ["must be filled"]})
     end
   end
+
+  context "with two schemas" do
+    name_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+    end
+
+    nickname_schema = Dry::Schema.define do
+      required(:nickname).filled(:string)
+    end
+
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:user) { name_schema | nickname_schema }
+      end
+    end
+
+    it "returns success for valid input" do
+      expect(schema.(user: {name: "John"})).to be_success
+      expect(schema.(user: {nickname: "John"})).to be_success
+    end
+
+    it "provides error messages for invalid input where both sides failed" do
+      expect(schema.(user: {}).errors.to_h).to eql(user: {or: [{name: ["is missing"]}, {nickname: ["is missing"]}]})
+    end
+  end
 end

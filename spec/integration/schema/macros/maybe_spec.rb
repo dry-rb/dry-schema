@@ -139,4 +139,40 @@ RSpec.describe "Macros #maybe" do
       expect(schema.(song: nil)).to be_success
     end
   end
+
+  context "with a nested schema" do
+    inner_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+    end
+
+    schema = Dry::Schema.define do
+      required(:user).maybe(:hash, inner_schema)
+    end
+
+    it "passes when valid" do
+      expect(schema.(user: {name: "John"})).to be_success
+    end
+
+    it "fails when not valid" do
+      expect(schema.(user: {name: 1}).errors.to_h).to eq(user: {name: ["must be a string"]})
+    end
+  end
+
+  context "with an array with nested schema" do
+    inner_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+    end
+
+    schema = Dry::Schema.define do
+      required(:users).maybe(:array).each(inner_schema)
+    end
+
+    it "passes when valid" do
+      expect(schema.(users: [{name: "John"}])).to be_success
+    end
+
+    it "fails when not valid" do
+      expect(schema.(users: [{name: 1}]).errors.to_h).to eq(users: {0 => {name: ["must be a string"]}})
+    end
+  end
 end
