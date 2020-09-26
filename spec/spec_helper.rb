@@ -2,6 +2,7 @@
 
 require_relative "support/coverage"
 require_relative "support/warnings"
+require_relative "support/rspec_options"
 
 Warning.ignore(%r{gems/i18n})
 Warning.process { |w| raise w }
@@ -59,16 +60,10 @@ RSpec.configure do |config|
   unless RUBY_VERSION >= "2.7"
     config.exclude_pattern = "**/pattern_matching_spec.rb"
   end
-  config.disable_monkey_patching!
-  config.filter_run_when_matching :focus
   config.example_status_persistence_file_path = "spec/examples.txt"
 
   config.include PredicatesIntegration
   config.include Coercions
-
-  config.define_derived_metadata do |meta|
-    meta[:aggregate_failures] = true
-  end
 
   config.before do
     stub_const("Test", Module.new)
