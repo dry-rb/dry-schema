@@ -54,6 +54,20 @@ RSpec.describe Dry::Schema::Path do
 
       expect(path.include?(other)).to be(false)
     end
+
+    context "with array item" do
+      let(:left) do
+        Dry::Schema::Path.new([:foo, 0, :bar, 1, :baz])
+      end
+
+      let(:right) do
+        Dry::Schema::Path.new([:foo, 1])
+      end
+
+      it "returns false when right-side points to another element of the same array" do
+        expect(left.include?(right)).to be(false)
+      end
+    end
   end
 
   describe "#&" do

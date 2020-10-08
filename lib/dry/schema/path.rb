@@ -95,6 +95,7 @@ module Dry
         return false unless same_root?(other)
         return last.equal?(other.last) if index? && other.index?
         return self.class.new([*to_a[0..-2]]).include?(other) if index?
+        return false if !index? && other.index?
 
         self >= other && !other.key_matches(self).include?(nil)
       end
