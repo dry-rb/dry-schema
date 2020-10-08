@@ -56,15 +56,17 @@ RSpec.describe Dry::Schema::Path do
     end
 
     context "with array item" do
-      let(:left) do
-        Dry::Schema::Path.new([:foo, 0, :bar, 1, :baz])
-      end
+      it "returns true when path points to the root element with nested elements that contains errors" do
+        left = Dry::Schema::Path.new([:foo, 0, :bar, 1, :baz])
+        right = Dry::Schema::Path.new([:foo, 0])
 
-      let(:right) do
-        Dry::Schema::Path.new([:foo, 1])
+        expect(left.include?(right)).to be(true)
       end
 
       it "returns false when right-side points to another element of the same array" do
+        left = Dry::Schema::Path.new([:foo, 0, :bar, 1, :baz])
+        right = Dry::Schema::Path.new([:foo, 1])
+
         expect(left.include?(right)).to be(false)
       end
     end
