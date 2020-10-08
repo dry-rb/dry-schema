@@ -1,4 +1,4 @@
-## unreleased 
+## 1.5.5 2020-10-08
 
 
 ### Fixed
@@ -8,7 +8,7 @@
 - `Result#error?(path)` works correctly when the path points to an array item (issue #317 fixed via #318) (@solnic)
 
 
-[Compare v1.5.4...master](https://github.com/dry-rb/dry-schema/compare/v1.5.4...master)
+[Compare v1.5.4...v1.5.5](https://github.com/dry-rb/dry-schema/compare/v1.5.4...v1.5.5)
 
 ## 1.5.4 
 
