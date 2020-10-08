@@ -5,6 +5,7 @@
 
 - Key validation works with messages that have meta-data (issue #310 fixed via #313) (@tadeusz-niemiec)
 - Using an external schema along with a key specified as a `:hash` works as expected (issue #296 fixed via #315) (@tadeusz-niemiec + @solnic)
+- `Result#error?(path)` works correctly when the path points to an array item (issue #317 fixed via #318) (@solnic)
 
 
 [Compare v1.5.4...master](https://github.com/dry-rb/dry-schema/compare/v1.5.4...master)
