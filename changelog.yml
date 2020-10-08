@@ -7,6 +7,8 @@
     #313) (@tadeusz-niemiec)'
   - 'Using an external schema along with a key specified as a `:hash` works as expected
     (issue #296 fixed via #315) (@tadeusz-niemiec + @solnic)'
+  - "`Result#error?(path)` works correctly when the path points to an array item (issue
+    #317 fixed via #318) (@solnic)"
   added: 
   changed: 
 - version: 1.5.4
