@@ -1,7 +1,7 @@
 ---
-- version: unreleased
-  summary: 
-  date: 
+- version: 1.5.5
+  summary:
+  date: '2020-10-08'
   fixed:
   - 'Key validation works with messages that have meta-data (issue #310 fixed via
     #313) (@tadeusz-niemiec)'
@@ -9,49 +9,49 @@
     (issue #296 fixed via #315) (@tadeusz-niemiec + @solnic)'
   - "`Result#error?(path)` works correctly when the path points to an array item (issue
     #317 fixed via #318) (@solnic)"
-  added: 
-  changed: 
+  added:
+  changed:
 - version: 1.5.4
   summary: '2020-09-03'
-  date: 
+  date:
   fixed:
   - 'Key validation works correctly with a non-nested maybe hashes (issue #311 fixed
     via #312) (@svobom57)'
-  added: 
-  changed: 
+  added:
+  changed:
 - version: 1.5.3
-  summary: 
+  summary:
   date: '2020-08-21'
   fixed:
   - 'Key validator works correctly with an array with maybe hash as its member (issue
     #308 fixed via #309) (@tadeusz-niemiec)'
-  added: 
+  added:
   changed:
   - "[info extension] small performance improvement in the set visitor (see #305 for
     more details) (@esparta)"
 - version: 1.5.2
-  summary: 
+  summary:
   date: '2020-06-26'
   fixed:
   - "`Result#{success?,failure?}` work as expected when there are only key validation
     failures (issue #297 fixed via #298) (@adamransom)"
-  added: 
+  added:
   changed:
   - 'Using `full` option no longer adds a space between the name of a key and the
     message in case of languages that have no spaces between words (ie Japanese) (issue
     #161 closed via #292 by @tadeusz-niemiec)'
 - version: 1.5.1
-  summary: 
+  summary:
   date: '2020-05-21'
   fixed:
   - 'Negated predicates support the logic operator API now (fixed via #276 by @solnic)'
   - 'Fixed circular require warning (issue #279 closed via #282 by @landongrindheim)'
   - 'Validating keys against an array with non-hash members no longer crashes (issue
     #283 fixed via #284 by @beechnut and issue #289 fixed via #288 by @tadeusz-niemiec)'
-  added: 
-  changed: 
+  added:
+  changed:
 - version: 1.5.0
-  summary: 
+  summary:
   date: '2020-03-11'
   fixed:
   - |-
