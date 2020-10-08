@@ -90,15 +90,29 @@ module Dry
         keys.index(key)
       end
 
+      def without_index
+        self.class.new([*to_a[0..-2]])
+      end
+
       # @api private
+      #
+      # rubocop:disable Metrics/PerceivedComplexity
       def include?(other)
         return false unless same_root?(other)
         return last.equal?(other.last) if index? && other.index?
-        return self.class.new([*to_a[0..-2]]).include?(other) if index?
-        return false if !index? && other.index?
+        return without_index.include?(other) if index?
+
+        if !index? && other.index?
+          path = key_matches(other, :select)
+
+          return false unless path.size > 1
+
+          self.class.new(path).include?(other)
+        end
 
         self >= other && !other.key_matches(self).include?(nil)
       end
+      # rubocop:enable Metrics/PerceivedComplexity
 
       # @api private
       def <=>(other)
