@@ -1,3 +1,13 @@
+## 1.5.6 2020-10-21
+
+
+### Fixed
+
+- Fixed stack error which was a regression introduced in 1.5.5 (issue #322 fixed via #323) (@flash-gordon)
+
+
+[Compare v1.5.5...v1.5.6](https://github.com/dry-rb/dry-schema/compare/v1.5.5...v1.5.6)
+
 ## 1.5.5 2020-10-08
 
 
