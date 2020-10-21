@@ -69,6 +69,13 @@ RSpec.describe Dry::Schema::Path do
 
         expect(left.include?(right)).to be(false)
       end
+
+      it "doens't blow up stack on specific input" do
+        left = Dry::Schema::Path.new([:data, :relationships, :data])
+        right = Dry::Schema::Path.new([:data, :relationships, :replacements, :data, 1])
+
+        expect(left.include?(right)).to be(false)
+      end
     end
   end
 
