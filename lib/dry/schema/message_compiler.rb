@@ -131,7 +131,10 @@ module Dry
 
       # @api private
       def or_translator
-        @or_translator ||= proc { |k| messages.translate(k, **default_lookup_options) }
+        @or_translator ||= proc { |k|
+          message = messages.translate(k, **default_lookup_options)
+          message.is_a?(Hash) ? message[:text] : message
+        }
       end
 
       # @api private
