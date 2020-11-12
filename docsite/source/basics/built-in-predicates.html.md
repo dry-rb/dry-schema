@@ -366,7 +366,7 @@ describe 'min_binsize?' do
   end
 
   it 'with regular ruby' do
-    assert 'こ'.byte <= 3
+    assert 'こ'.byte >= 3
   end
 
   it 'with dry-schema' do
@@ -388,7 +388,7 @@ describe 'bytesize?' do
   end
 
   it 'with regular ruby' do
-    assert 'こ'.byte <= 3
+    assert 'こ'.byte == 3
   end
 
   it 'with dry-schema' do
