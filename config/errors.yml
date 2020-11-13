@@ -67,7 +67,7 @@ en:
 
       key?: "is missing"
 
-      attr?: "is missing"
+      attr?: "must respond to %{name}"
 
       lt?: "must be less than %{num}"
 
