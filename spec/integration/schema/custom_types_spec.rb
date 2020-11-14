@@ -121,4 +121,53 @@ RSpec.describe "Registering custom types" do
       end
     end
   end
+
+  context "error handling" do
+    before do
+      container_with_types.register(
+        "params.string_or_integer",
+        Types::Strict::String | Types::Strict::Decimal
+      )
+    end
+
+    let(:klass) do
+      class Test::CustomTypeSchema < Dry::Schema::Params
+        define do
+          config.types = ContainerWithTypes
+
+          required(:age).filled(:string_or_integer)
+        end
+      end
+    end
+
+    let(:params) {
+      {
+        age: 4.5
+      }
+    }
+
+    subject(:schema) { klass.new.call(params) }
+
+    before do
+      klass.definition.configure { |config| config.messages.backend = backend }
+    end
+
+    context 'with YAML backend' do
+      let(:backend) { :yaml }
+
+      it "provides a valid error message" do
+        expect(subject.errors[:age])
+          .to include 'must be a string or must be a decimal'
+      end
+    end
+
+    context 'with I18n backend' do
+      let(:backend) { :i18n }
+
+      it "provides a valid error message" do
+        expect(subject.errors[:age])
+          .to include 'must be a string or must be a decimal'
+      end
+    end
+  end
 end

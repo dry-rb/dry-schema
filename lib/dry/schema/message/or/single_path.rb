@@ -38,7 +38,7 @@ module Dry
           #
           # @api public
           def dump
-            @dump ||= "#{left.dump} #{messages[:or][:text]} #{right.dump}"
+            @dump ||= "#{left.dump} #{messages[:or]} #{right.dump}"
           end
           alias_method :to_s, :dump
 
