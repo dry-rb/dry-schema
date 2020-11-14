@@ -1,3 +1,13 @@
+## unreleased 
+
+
+### Fixed
+
+- Using sum types with a i18n backend no longer crashes (issue #328 fixes via #331) (@tylerhunt)
+
+
+[Compare v1.5.6...master](https://github.com/dry-rb/dry-schema/compare/v1.5.6...master)
+
 ## 1.5.6 2020-10-21
 
 
