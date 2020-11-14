@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe "Registering custom types" do
-  let(:container_without_types) { Dry::Schema::TypeContainer.new }
+  let(:result) do
+    schema.call(params)
+  end
+
+  let(:container_without_types) do
+    Dry::Schema::TypeContainer.new
+  end
 
   let(:container_with_types) do
     Dry::Schema::TypeContainer.new
@@ -25,7 +31,7 @@ RSpec.describe "Registering custom types" do
   end
 
   context "class-based definition" do
-    subject(:schema) { klass.new.call(params) }
+    subject(:schema) { klass.new }
 
     context "custom type is not registered" do
       let(:klass) do
@@ -40,7 +46,7 @@ RSpec.describe "Registering custom types" do
       end
 
       it "raises exception that nothing is registered with the key" do
-        expect { subject }.to raise_exception(Dry::Container::Error)
+        expect { result }.to raise_exception(Dry::Container::Error)
       end
     end
 
@@ -57,20 +63,18 @@ RSpec.describe "Registering custom types" do
       end
 
       it "does not raise any exceptions" do
-        expect { subject }.not_to raise_exception
+        expect { result }.not_to raise_exception
       end
 
       it "coerces the type" do
-        expect(subject[:age]).to eql("i am not that old")
+        expect(result[:age]).to eql("i am not that old")
       end
     end
   end
 
   context "DSL-based definition" do
-    subject(:schema) { schema_object.call(params) }
-
     context "custom type is not registered" do
-      let(:schema_object) do
+      subject(:schema) do
         Dry::Schema.Params do
           config.types = ContainerWithoutTypes
 
@@ -80,12 +84,12 @@ RSpec.describe "Registering custom types" do
       end
 
       it "raises exception that nothing is registered with the key" do
-        expect { subject }.to raise_exception(Dry::Container::Error)
+        expect { result }.to raise_exception(Dry::Container::Error)
       end
     end
 
     context "custom type is registered" do
-      let(:schema_object) do
+      subject(:schema) do
         Dry::Schema.Params do
           config.types = ContainerWithTypes
 
@@ -95,17 +99,15 @@ RSpec.describe "Registering custom types" do
       end
 
       it "does not raise any exceptions" do
-        expect { subject }.not_to raise_exception
+        expect { result }.not_to raise_exception
       end
 
       it "coerces the type" do
-        expect(subject[:age]).to eql("i am not that old")
+        expect(result[:age]).to eql("i am not that old")
       end
 
       context "nested schema" do
-        let(:params) { {user: {age: "  I AM NOT THAT OLD "}} }
-
-        let(:schema_object) do
+        subject(:schema) do
           Dry::Schema.Params do
             config.types = ContainerWithTypes
 
@@ -115,14 +117,18 @@ RSpec.describe "Registering custom types" do
           end
         end
 
+        let(:params) { {user: {age: "  I AM NOT THAT OLD "}} }
+
         specify do
-          expect(subject[:user][:age]).to eql("i am not that old")
+          expect(result[:user][:age]).to eql("i am not that old")
         end
       end
     end
   end
 
   context "error handling" do
+    subject(:schema) { klass.new }
+
     before do
       container_with_types.register(
         "params.string_or_integer",
@@ -146,27 +152,25 @@ RSpec.describe "Registering custom types" do
       }
     }
 
-    subject(:schema) { klass.new.call(params) }
-
     before do
       klass.definition.configure { |config| config.messages.backend = backend }
     end
 
-    context 'with YAML backend' do
+    context "with YAML backend" do
       let(:backend) { :yaml }
 
       it "provides a valid error message" do
-        expect(subject.errors[:age])
-          .to include 'must be a string or must be a decimal'
+        expect(result.errors[:age])
+          .to include "must be a string or must be a decimal"
       end
     end
 
-    context 'with I18n backend' do
+    context "with I18n backend" do
       let(:backend) { :i18n }
 
       it "provides a valid error message" do
-        expect(subject.errors[:age])
-          .to include 'must be a string or must be a decimal'
+        expect(result.errors[:age])
+          .to include "must be a string or must be a decimal"
       end
     end
   end
