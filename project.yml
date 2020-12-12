@@ -16,8 +16,7 @@ gemspec:
   runtime_dependencies:
     - [concurrent-ruby, "~> 1.0"]
     - [dry-configurable, "~> 0.8", ">= 0.8.3"]
-    - [dry-core, "~> 0.4"]
-    - [dry-equalizer, "~> 0.2"]
+    - [dry-core, "~> 0.5", ">= 0.5"]
     - [dry-initializer, "~> 3.0"]
     - [dry-logic, "~> 1.0"]
     - [dry-types, "~> 1.4"]
