@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
-require "dry/equalizer"
+require "dry/core/equalizer"
 
 require "dry/schema/constants"
 

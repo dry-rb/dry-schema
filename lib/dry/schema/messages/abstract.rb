@@ -2,7 +2,7 @@
 
 require "set"
 require "concurrent/map"
-require "dry/equalizer"
+require "dry/core/equalizer"
 require "dry/configurable"
 
 require "dry/schema/constants"
