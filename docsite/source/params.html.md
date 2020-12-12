@@ -31,16 +31,29 @@ puts errors.to_h.inspect
 
 ### Handling empty strings
 
-Your schema will automatically coerce empty strings to `nil` or an empty array, provided that you allow a value to be nil:
+Your schema will automatically coerce empty strings to `nil`, provided that you allow a value to be nil:
 
 ```ruby
 schema = Dry::Schema.Params do
   required(:email).filled(:string)
-  required(:age).maybe(:integer, gt?: 18)
+  required(:age).maybe(:integer)
   required(:tags).maybe(:array)
 end
 
 result = schema.call('email' => 'jane@doe.org', 'age' => '', 'tags' => '')
+
+puts result.to_h
+# {:email=>'jane@doe.org', :age=>nil, :tags=>nil}
+```
+
+Your schema will automatically coerce empty strings **to an empty array**:
+
+```ruby
+schema = Dry::Schema.Params do
+  required(:tags).value(:array)
+end
+
+result = schema.call('tags' => '')
 
 puts result.to_h
 # {:email=>'jane@doe.org', :age=>nil, :tags=>[]}
