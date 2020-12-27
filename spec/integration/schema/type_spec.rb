@@ -327,4 +327,22 @@ RSpec.describe Dry::Schema, "types specs" do
       end
     end
   end
+
+  context "fallback" do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:role).value(Test::Role)
+      end
+    end
+
+    before do
+      Test::Role = Types::String.enum("user", "admin").fallback("user")
+    end
+
+    it "falls back when invalid value provided" do
+      expect(schema.(role: "user").to_h).to eql(role: "user")
+      expect(schema.(role: "admin").to_h).to eql(role: "admin")
+      expect(schema.(role: "nonsense").to_h).to eql(role: "user")
+    end
+  end
 end
