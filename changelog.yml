@@ -1,6 +1,6 @@
 ---
 - version: 1.6.0
-  date:
+  date: '2021-01-21'
   fixed:
   - "Using sum types with a i18n backend no longer crashes (issue #328 fixes via #331) (@tylerhunt)"
   changed:
