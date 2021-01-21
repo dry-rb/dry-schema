@@ -4,8 +4,9 @@ require "dry/initializer"
 
 require "dry/schema/constants"
 require "dry/schema/message"
-require "dry/schema/message_set"
 require "dry/schema/message_compiler/visitor_opts"
+require "dry/schema/message_set"
+require "dry/schema/path"
 
 module Dry
   module Schema
@@ -109,18 +110,8 @@ module Dry
       end
 
       # @api private
-      def visit_unexpected_key(node, _opts)
-        path, input = node
-
-        msg = messages.translate("errors.unexpected_key")
-
-        Message.new(
-          path: path,
-          meta: msg[:meta] || EMPTY_HASH,
-          text: msg[:text],
-          predicate: nil,
-          input: input
-        )
+      def visit_unexpected_key(node, opts)
+        visit_predicate([:unexpected_key, []], opts.dup.update(path: Path[node.first]))
       end
 
       # @api private

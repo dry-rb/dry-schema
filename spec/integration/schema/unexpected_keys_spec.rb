@@ -65,7 +65,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     end
 
     expect(schema.(wrong_key: nil).errors(full: true).to_h)
-        .to eq({:wrong_key => [{:code => "nieoczekiwany_klucz", :text => "Podano nieoczekiwany klucz"}],
+        .to eq({:wrong_key => [{:code => "nieoczekiwany_klucz", :text => "wrong_key Podano nieoczekiwany klucz"}],
                 :title => [:code => "brak_klucza", :text => "title nie został podany"]})
   end
 
