@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.fdescribe 'Predicates: Respond To' do
+RSpec.describe 'Predicates: Respond To' do
   xcontext 'with required' do
     subject(:schema) do
       Dry::Schema.define { required(:foo) { respond_to?(:bar) } }
