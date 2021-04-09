@@ -141,7 +141,7 @@ RSpec.describe 'Predicates: Respond To' do
         end
       end
 
-      fcontext 'with filled' do
+      context 'with filled' do
         subject(:schema) do
           Dry::Schema.define { required(:foo).filled(respond_to?: :bar) }
         end
