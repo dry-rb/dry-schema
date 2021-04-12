@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Predicates: Respond To' do
-  xcontext 'with required' do
+  context 'with required' do
     subject(:schema) do
       Dry::Schema.define { required(:foo) { respond_to?(:bar) } }
     end
@@ -47,7 +47,7 @@ RSpec.describe 'Predicates: Respond To' do
     end
   end
 
-  xcontext 'with optional' do
+  context 'with optional' do
     subject(:schema) do
       Dry::Schema.define { optional(:foo) { respond_to?(:bar) } }
     end

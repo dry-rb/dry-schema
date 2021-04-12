@@ -17,6 +17,7 @@ module Dry
 
         undef :eql?
         undef :nil?
+        undef :respond_to?
 
         # @!attribute [r] chain
         #   Indicate if the macro should append its rules to the provided trace
