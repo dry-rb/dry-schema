@@ -87,6 +87,8 @@ en:
 
       type?: "must be %{type}"
 
+      respond_to?: "must respond to %{method}"
+
       size?:
         arg:
           default: "size must be %{size}"
