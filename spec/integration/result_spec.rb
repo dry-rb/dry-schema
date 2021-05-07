@@ -31,7 +31,7 @@ RSpec.describe Dry::Schema::Result do
     describe "#inspect" do
       it "returns a string representation" do
         expect(result.inspect).to eql(<<-STR.strip)
-          #<Dry::Schema::Result{:name=>"Jane"} errors={}>
+          #<Dry::Schema::Result{:name=>"Jane"} errors={} path=[]>
         STR
       end
     end
@@ -61,8 +61,30 @@ RSpec.describe Dry::Schema::Result do
     describe "#inspect" do
       it "returns a string representation" do
         expect(result.inspect).to eql(<<-STR.strip)
-          #<Dry::Schema::Result{:name=>""} errors={:name=>["must be filled"]}>
+          #<Dry::Schema::Result{:name=>""} errors={:name=>["must be filled"]} path=[]>
         STR
+      end
+    end
+
+    context 'when scoped' do
+      let(:schema) do
+        Dry::Schema.define do
+          required(:account).schema do
+            required(:name).schema do
+              required(:first).filled(:string)
+            end
+          end
+        end
+      end
+
+      let(:input) { {account: {name: {first: "ojab"}}} }
+
+      describe "#inspect" do
+        it "returns a string representation" do
+          expect(result.at([:account, :name]).inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::Result{:first=>"ojab"} errors={} path=[:account, :name]>
+          STR
+        end
       end
     end
 

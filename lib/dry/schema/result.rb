@@ -20,11 +20,6 @@ module Dry
       # @api private
       param :output
 
-      # Dump result to a hash returning processed and validated data
-      #
-      # @return [Hash]
-      alias_method :to_h, :output
-
       # A list of failure ASTs produced by rule result objects
       #
       # @api private
@@ -35,6 +30,9 @@ module Dry
 
       # @api private
       option :parent, default: -> { nil }
+
+      # @api private
+      option :path, default: -> { Path.new([]) }
 
       # @api private
       def self.new(*, **)
@@ -50,8 +48,15 @@ module Dry
       # @return [Result]
       #
       # @api private
-      def at(path, &block)
-        new(Path[path].reduce(output) { |a, e| a[e] }, parent: self, &block)
+      def at(at_path, &block)
+        at_path = Path[at_path]
+
+        if at_path.any?
+          return new(@output, parent: parent || self, path: Path.new([*path, *at_path]), &block)
+        end
+
+        yield(self) if block_given?
+        self
       end
 
       # @api private
@@ -71,9 +76,27 @@ module Dry
         self
       end
 
+      def output
+        path.any? ? parent.output.dig(*path) : super
+      end
+
+      # Dump result to a hash returning processed and validated data
+      #
+      # @return [Hash]
+      alias_method :to_h, :output
+
       # @api private
-      def replace(hash)
-        output.replace(hash)
+      def replace(value)
+        if value.is_a?(output.class)
+          output.replace(value)
+        elsif parent.nil?
+          @output = value
+        else
+          value_holder = path.without_index.any? ? @output.dig(*path.without_index) : @output
+
+          value_holder[path.last] = value
+        end
+
         self
       end
 
@@ -165,7 +188,7 @@ module Dry
       #
       # @api public
       def inspect
-        "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect}>"
+        "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect} path=#{path.keys.inspect}>"
       end
 
       if RUBY_VERSION >= "2.7"
