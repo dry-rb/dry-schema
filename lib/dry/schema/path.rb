@@ -19,14 +19,14 @@ module Dry
 
       # Coerce a spec into a path object
       #
-      # @param [Path, Symbol, String, Hash, Array<Symbol>] spec
+      # @param [Path, Symbol, Integer, String, Hash, Array<Symbol>] spec
       #
       # @return [Path]
       #
       # @api private
       def self.call(spec)
         case spec
-        when Symbol, Array
+        when Symbol, Array, Integer
           new(Array[*spec])
         when String
           new(spec.split(DOT).map(&:to_sym))
@@ -35,7 +35,7 @@ module Dry
         when self
           spec
         else
-          raise ArgumentError, "+spec+ must be either a Symbol, Array, Hash or a #{name}"
+          raise ArgumentError, "+spec+ must be either a Symbol, Integer, Array, Hash or a #{name}"
         end
       end
 

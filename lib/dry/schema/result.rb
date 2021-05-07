@@ -76,8 +76,12 @@ module Dry
         self
       end
 
+      def dig(*path)
+        path.reduce(@output) { |output, key| output.fetch(key) }
+      end
+
       def output
-        path.any? ? parent.output.dig(*path) : super
+        dig(*path)
       end
 
       # Dump result to a hash returning processed and validated data
@@ -92,9 +96,7 @@ module Dry
         elsif parent.nil?
           @output = value
         else
-          value_holder = path.without_index.any? ? @output.dig(*path.without_index) : @output
-
-          value_holder[path.last] = value
+          dig(*path.without_index)[path.last] = value
         end
 
         self

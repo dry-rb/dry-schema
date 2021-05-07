@@ -33,11 +33,23 @@ module Dry
 
       # @api private
       def call(result)
-        scoped_result = path.equal?(EMPTY_PATH) ? result : result.at(path)
+        scoped_results(result).each do |scoped_result|
+          output = executor.(scoped_result)
+          scoped_result.replace(output) if output.is_a?(Hash)
+        end
+      end
 
-        output = executor.(scoped_result)
-        scoped_result.replace(output) if output.is_a?(Hash)
-        output
+      # @api private
+      def scoped_results(initial_result)
+        path.reduce([initial_result]) do |results, path_key|
+          results.flat_map do |result|
+            scoped_result = result.at(path_key)
+
+            next scoped_result unless scoped_result.output.is_a?(Array)
+
+            Array.new(scoped_result.output.length) { |index| scoped_result.at(index) }
+          end
+        end
       end
 
       # @api private

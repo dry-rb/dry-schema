@@ -77,10 +77,8 @@ RSpec.describe Dry::Schema, "callbacks" do
     end
 
     it "calls callbacks" do
-      pending "not implemented yet"
-
-      expect(schema.(accounts: [{user: {date: nil}}]).to_h)
-        .to eql(accounts: [{user: {name: "default"}}])
+      expect(schema.(accounts: [{user: {date: nil}}, {user: {date: Date.parse('1995-07-07')}}]).to_h)
+        .to eql(accounts: [{user: {name: "default"}}, {user: {name: "default", date: Date.parse("1995-07-07")}}])
     end
   end
 
