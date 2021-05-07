@@ -15,17 +15,6 @@ RSpec.describe Dry::Schema::Path do
     end
   end
 
-  describe "#index" do
-    let(:segments) do
-      %i[foo bar 1 baz bar foo]
-    end
-
-    it "returns index for a given key" do
-      expect(path.index(:'1')).to be(2)
-      expect(path.index(:baz)).to be(3)
-    end
-  end
-
   describe "#include?" do
     let(:segments) do
       %i[foo bar 1 baz bar foo]

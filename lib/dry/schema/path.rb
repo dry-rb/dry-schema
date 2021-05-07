@@ -71,24 +71,13 @@ module Dry
       end
 
       # @api private
-      def index(key)
-        keys.index(key)
-      end
-
-      # @api private
       def include?(other)
         keys[0, other.keys.length].eql?(other.keys)
       end
 
       # @api private
       def <=>(other)
-        raise ArgumentError, "Can't compare paths from different branches" unless same_root?(other)
-
-        return 0 if keys.eql?(other.keys)
-
-        res = key_matches(other).compact.reject { |value| value.equal?(false) }
-
-        res.size < count ? 1 : -1
+        keys.length <=> other.keys.length if include?(other) || other.include?(self)
       end
 
       # @api private
@@ -96,11 +85,6 @@ module Dry
         self.class.new(
           keys.take_while.with_index { |key, index| other.keys[index].eql?(key) }
         )
-      end
-
-      # @api private
-      def key_matches(other, meth = :map)
-        public_send(meth) { |key| (idx = other.index(key)) && keys[idx].equal?(key) }
       end
 
       # @api private
