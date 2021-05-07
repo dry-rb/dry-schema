@@ -60,24 +60,9 @@ module Dry
 
       # @api private
       def to_h(value = EMPTY_ARRAY.dup)
-        curr_idx = 0
-        last_idx = keys.size - 1
-        hash = EMPTY_HASH.dup
-        node = hash
+        value = [value] unless value.is_a?(Array)
 
-        while curr_idx <= last_idx
-          node =
-            node[keys[curr_idx]] =
-              if curr_idx == last_idx
-                value.is_a?(Array) ? value : [value]
-              else
-                EMPTY_HASH.dup
-              end
-
-          curr_idx += 1
-        end
-
-        hash
+        keys.reverse_each.reduce(value) { |result, key| {key => result} }
       end
 
       # @api private
