@@ -86,4 +86,20 @@ RSpec.describe Dry::Schema::Path do
       expect(path & other).to eql(Dry::Schema::Path.new([]))
     end
   end
+
+  describe "#<=>" do
+    let(:paths) do
+      [
+        %i[a b d],
+        %i[b],
+        %i[a b c],
+        [],
+        %i[a b]
+      ].map { |path| Dry::Schema::Path[path] }
+    end
+
+    it "sorts alphabetically, shortest paths first" do
+      expect(paths.sort.map { |path| path.keys.join(".") }).to eq(["", "a.b", "a.b.c", "a.b.d", "b"])
+    end
+  end
 end

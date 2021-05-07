@@ -87,6 +87,7 @@ module Dry
       def after(name, &block)
         after_steps[name] ||= EMPTY_ARRAY.dup
         after_steps[name] << Step.new(type: :after, name: name, executor: block)
+        after_steps[name].sort_by!(&:path)
         self
       end
 
@@ -100,6 +101,7 @@ module Dry
       def before(name, &block)
         before_steps[name] ||= EMPTY_ARRAY.dup
         before_steps[name] << Step.new(type: :before, name: name, executor: block)
+        before_steps[name].sort_by!(&:path)
         self
       end
 
@@ -120,18 +122,20 @@ module Dry
       # @api private
       def merge_callbacks(left, right)
         left.merge(right) do |_key, oldval, newval|
-          oldval + newval
+          (oldval + newval).sort_by(&:path)
         end
       end
 
       # @api private
       def import_callbacks(path, other)
         other.before_steps.each do |name, steps|
-          (before_steps[name] ||= []).concat(steps.map { |step| step.scoped(path) })
+          before_steps[name] ||= []
+          before_steps[name].concat(steps.map { |step| step.scoped(path) }).sort_by!(&:path)
         end
 
         other.after_steps.each do |name, steps|
-          (after_steps[name] ||= []).concat(steps.map { |step| step.scoped(path) })
+          after_steps[name] ||= []
+          after_steps[name].concat(steps.map { |step| step.scoped(path) }).sort_by!(&:path)
         end
       end
     end

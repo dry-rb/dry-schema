@@ -77,7 +77,11 @@ module Dry
 
       # @api private
       def <=>(other)
-        keys.length <=> other.keys.length if include?(other) || other.include?(self)
+        return keys.length <=> other.keys.length if include?(other) || other.include?(self)
+
+        first_uncommon_index = (self & other).keys.length
+
+        keys[first_uncommon_index] <=> other.keys[first_uncommon_index]
       end
 
       # @api private
