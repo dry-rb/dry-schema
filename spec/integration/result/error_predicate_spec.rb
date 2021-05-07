@@ -37,7 +37,7 @@ RSpec.describe Dry::Schema::Result, "#error?" do
 
       it "raises error" do
         expect { result.error?(Object.new) }
-          .to raise_error(ArgumentError, "+spec+ must be either a Symbol, Array, Hash or a Path")
+          .to raise_error(ArgumentError, "+spec+ must be either a Symbol, Array, Hash or a Dry::Schema::Path")
       end
     end
 
