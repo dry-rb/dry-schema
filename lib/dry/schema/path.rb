@@ -75,25 +75,9 @@ module Dry
         keys.index(key)
       end
 
-      def without_index
-        self.class.new(to_a[0..-2])
-      end
-
       # @api private
       def include?(other)
-        if !same_root?(other)
-          false
-        elsif index?
-          if other.index?
-            last.equal?(other.last)
-          else
-            without_index.include?(other)
-          end
-        elsif other.index? && key_matches(other, :select).size < 2
-          false
-        else
-          self >= other && !other.key_matches(self).include?(nil)
-        end
+        keys[0, other.keys.length].eql?(other.keys)
       end
 
       # @api private
@@ -131,11 +115,6 @@ module Dry
       # @api private
       def same_root?(other)
         root.equal?(other.root)
-      end
-
-      # @api private
-      def index?
-        last.is_a?(Integer)
       end
     end
   end
