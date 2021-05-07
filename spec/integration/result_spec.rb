@@ -5,6 +5,14 @@ RSpec.describe Dry::Schema::Result do
 
   let(:schema) { Dry::Schema.define { required(:name).filled(size?: 2..4) } }
 
+  context "with frozen input" do
+    let(:input) { {name: "Jane"}.freeze }
+
+    it "does not raise errors" do
+      expect { result }.not_to raise_error
+    end
+  end
+
   context "with valid input" do
     let(:input) { {name: "Jane"} }
 

@@ -73,7 +73,7 @@ module Dry
 
       # @api private
       def replace(hash)
-        @output = hash
+        output.replace(hash)
         self
       end
 
