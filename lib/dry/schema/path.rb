@@ -93,12 +93,8 @@ module Dry
 
       # @api private
       def &(other)
-        unless same_root?(other)
-          raise ArgumentError, "#{other.inspect} doesn't have the same root #{inspect}"
-        end
-
         self.class.new(
-          key_matches(other, :select).compact.reject { |value| value.equal?(false) }
+          keys.take_while.with_index { |key, index| other.keys[index].eql?(key) }
         )
       end
 

@@ -91,10 +91,10 @@ RSpec.describe Dry::Schema::Path do
       expect(path & other).to eql(root)
     end
 
-    it "raises if other is not included in the source" do
+    it "returns empty path if other is not included in the source" do
       other = Dry::Schema::Path.new(%i[foo baz qux])
 
-      expect { path & other }.to raise_error(ArgumentError, /doesn't have the same root/)
+      expect(path & other).to eql(Dry::Schema::Path.new([]))
     end
   end
 end
