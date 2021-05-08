@@ -151,7 +151,11 @@ module Dry
       # @api private
       def write(source, target)
         read(source) { |value|
-          target[coerced_name] = value.is_a?(::Array) ? value.map { |el| member.write(el) } : value
+          target[coerced_name] = if value.is_a?(::Array)
+                                   value.map { |el| el.is_a?(::Hash) ? member.write(el) : el }
+                                 else
+                                   value
+                                 end
         }
       end
 
