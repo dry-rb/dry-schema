@@ -132,6 +132,33 @@ RSpec.describe Dry::Schema, "callbacks" do
     end
   end
 
+  context 'with schema with callbacks in missing optional key' do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:account).schema do
+          required(:name).filled(:string)
+        end
+
+        optional(:email).schema do
+          optional(:address).schema do
+            required(:local_part).filled(:string)
+            required(:domain).filled(:string)
+
+            before(:key_coercer) do |result|
+              result.to_h.transform_keys { |key| key.to_s.squeeze.to_sym }
+            end
+          end
+
+          before(:key_coercer) do |result|
+            result.to_h.transform_keys(&:succ)
+          end
+        end
+      end
+    end
+
+    it { expect(schema.(account: {name: "ojab"}).to_h).to eql(account: {name: "ojab"}) }
+  end
+
   context "when schema with callbacks is reused" do
     let(:first_schema) do
       local_nested_schema = nested_schema

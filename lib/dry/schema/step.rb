@@ -43,12 +43,14 @@ module Dry
       def scoped_results(initial_result)
         path.reduce([initial_result]) do |results, path_key|
           results.flat_map do |result|
+            next unless result.output.key?(path_key)
+
             scoped_result = result.at(path_key)
 
             next scoped_result unless scoped_result.output.is_a?(Array)
 
             Array.new(scoped_result.output.length) { |index| scoped_result.at(index) }
-          end
+          end.compact
         end
       end
 
