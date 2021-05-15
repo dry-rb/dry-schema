@@ -31,6 +31,27 @@ RSpec.describe "Params / Constructor Types" do
     end
   end
 
+  context "an array that coerces values to hashes" do
+    subject(:schema) do
+      Dry::Schema.define do
+        nested_schema = Dry::Schema.define do
+          required(:inner_field).filled(:integer)
+        end
+
+        array_type = Types::Strict::Array
+                       .of(nested_schema)
+                       .constructor { |value| value.map { |el| Marshal.load(el) } }
+
+        required(:outer_field).filled(array_type)
+      end
+    end
+
+    it "uses the constructor" do
+      expect(schema.(outer_field: [Marshal.dump(inner_field: 1), Marshal.dump(inner_field: 2)]).to_h)
+        .to eql(outer_field: [{inner_field: 1}, {inner_field: 2}])
+    end
+  end
+
   context "using Schema processor" do
     subject(:schema) do
       Dry::Schema.define do
