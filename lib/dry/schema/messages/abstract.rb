@@ -18,13 +18,13 @@ module Dry
         include Dry::Configurable
         include Dry::Equalizer(:config)
 
-        setting :default_locale, nil
-        setting :load_paths, Set[DEFAULT_MESSAGES_PATH]
-        setting :top_namespace, DEFAULT_MESSAGES_ROOT
-        setting :root, "errors"
-        setting :lookup_options, %i[root predicate path val_type arg_type].freeze
+        setting :default_locale
+        setting :load_paths, default: Set[DEFAULT_MESSAGES_PATH]
+        setting :top_namespace, default: DEFAULT_MESSAGES_ROOT
+        setting :root, default: "errors"
+        setting :lookup_options, default: %i[root predicate path val_type arg_type].freeze
 
-        setting :lookup_paths, [
+        setting :lookup_paths, default: [
           "%<root>s.rules.%<path>s.%<predicate>s.arg.%<arg_type>s",
           "%<root>s.rules.%<path>s.%<predicate>s",
           "%<root>s.%<predicate>s.%<message_type>s",
@@ -35,13 +35,13 @@ module Dry
           "%<root>s.%<predicate>s"
         ].freeze
 
-        setting :rule_lookup_paths, ["rules.%<name>s"].freeze
+        setting :rule_lookup_paths, default: ["rules.%<name>s"].freeze
 
-        setting :arg_types, Hash.new { |*| "default" }.update(
+        setting :arg_types, default: Hash.new { |*| "default" }.update(
           Range => "range"
         )
 
-        setting :val_types, Hash.new { |*| "default" }.update(
+        setting :val_types, default: Hash.new { |*| "default" }.update(
           Range => "range",
           String => "string"
         )
