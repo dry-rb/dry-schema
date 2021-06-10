@@ -7,6 +7,9 @@
 
 - Handle arrays of hashes where Array constructor coerces non-Hash input (#351 fixed via #354) (@ojab)
 
+### Changed
+
+- [internal] `Dry::Schema::Path` clean up and performance improvements (via #358) (@ojab)
 
 [Compare v1.6.2...master](https://github.com/dry-rb/dry-schema/compare/v1.6.2...master)
 
