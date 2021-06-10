@@ -6,7 +6,9 @@
   - 'Handle arrays of hashes where Array constructor coerces non-Hash input (#351
     fixed via #354) (@ojab)'
   added: 
-  changed: 
+  changed:
+  - "[internal] `Dry::Schema::Path` clean up and performance improvements (via #358)
+    (@ojab)"
 - version: 1.6.2
   summary: 
   date: '2021-04-15'
