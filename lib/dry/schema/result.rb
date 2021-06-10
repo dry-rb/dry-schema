@@ -96,7 +96,7 @@ module Dry
         elsif parent.nil?
           @output = value
         else
-          dig(*path.without_index)[path.last] = value
+          dig(*path.to_a[0..-2])[path.last] = value
         end
 
         self
