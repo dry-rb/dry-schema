@@ -15,17 +15,6 @@ RSpec.describe Dry::Schema::Path do
     end
   end
 
-  describe "#index" do
-    let(:segments) do
-      %i[foo bar 1 baz bar foo]
-    end
-
-    it "returns index for a given key" do
-      expect(path.index(:'1')).to be(2)
-      expect(path.index(:baz)).to be(3)
-    end
-  end
-
   describe "#include?" do
     let(:segments) do
       %i[foo bar 1 baz bar foo]
@@ -91,10 +80,10 @@ RSpec.describe Dry::Schema::Path do
       expect(path & other).to eql(root)
     end
 
-    it "raises if other is not included in the source" do
+    it "returns empty path if other is not included in the source" do
       other = Dry::Schema::Path.new(%i[foo baz qux])
 
-      expect { path & other }.to raise_error(ArgumentError, /doesn't have the same root/)
+      expect(path & other).to eql(Dry::Schema::Path.new([]))
     end
   end
 end
