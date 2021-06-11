@@ -9,6 +9,8 @@
   changed:
   - "[internal] `Dry::Schema::Path` clean up and performance improvements (via #358)
     (@ojab)"
+  - "[internal] simplify and speed up handling of steps in nested schemas (via #360)
+    (@ojab)"
 - version: 1.6.2
   summary: 
   date: '2021-04-15'
