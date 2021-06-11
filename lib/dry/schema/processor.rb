@@ -84,14 +84,14 @@ module Dry
       #
       # @api public
       def call(input)
-        Result.new(input, input: input, message_compiler: message_compiler) do |result|
+        Result.new(input.dup, message_compiler: message_compiler) do |result|
           steps.call(result)
         end
       end
       alias_method :[], :call
 
       # @api public
-      def xor(other)
+      def xor(_other)
         raise NotImplementedError, "composing schemas using `xor` operator is not supported yet"
       end
       alias_method :^, :xor

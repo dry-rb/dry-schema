@@ -25,8 +25,10 @@ module Dry
       # @return [Hash]
       alias_method :to_h, :output
 
+      # A list of failure ASTs produced by rule result objects
+      #
       # @api private
-      param :results, default: -> { EMPTY_ARRAY.dup }
+      option :result_ast, default: -> { EMPTY_ARRAY.dup }
 
       # @api private
       option :message_compiler
@@ -57,7 +59,7 @@ module Dry
         self.class.new(
           output,
           message_compiler: message_compiler,
-          results: results,
+          result_ast: result_ast,
           **opts,
           &block
         )
@@ -71,13 +73,12 @@ module Dry
 
       # @api private
       def replace(hash)
-        @output = hash
+        output.replace(hash)
         self
       end
 
       # @api private
       def concat(other)
-        results.concat(other)
         result_ast.concat(other.map(&:to_ast))
         self
       end
@@ -181,15 +182,6 @@ module Dry
       # @api private
       def add_error(node)
         result_ast << node
-      end
-
-      private
-
-      # A list of failure ASTs produced by rule result objects
-      #
-      # @api private
-      def result_ast
-        @result_ast ||= results.map(&:to_ast)
       end
     end
   end
