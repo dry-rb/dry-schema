@@ -10,6 +10,7 @@
 ### Changed
 
 - [internal] `Dry::Schema::Path` clean up and performance improvements (via #358) (@ojab)
+- [internal] simplify and speed up handling of steps in nested schemas (via #360) (@ojab)
 
 [Compare v1.6.2...master](https://github.com/dry-rb/dry-schema/compare/v1.6.2...master)
 
