@@ -6,6 +6,7 @@
 ### Fixed
 
 - Handle arrays of hashes where Array constructor coerces non-Hash input (#351 fixed via #354) (@ojab)
+- Run outer schema processor steps before inner ones (issue #350 fixed via #361) (@ojab)
 
 ### Changed
 
