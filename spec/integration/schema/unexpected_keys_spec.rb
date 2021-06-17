@@ -25,7 +25,10 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       foo: "unexpected",
       name: "Jane",
       ids: [1, 2, 3, 4],
-      address: {bar: "unexpected", city: "NYC", zipcode: "1234"},
+      qux: [],
+      quux: [{}],
+      hoge: {},
+      address: {bar: "unexpected", baz: [1], city: "NYC", zipcode: "1234"},
       roles: [
         {name: "admin", expires_at: Date.today},
         {name: "editor", foo: "unexpected", expires_at: Date.today}
@@ -35,7 +38,10 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     expect(schema.(input).errors.to_h)
       .to eql(
         foo: ["is not allowed"],
-        address: {bar: ["is not allowed"]},
+        qux: ["is not allowed"],
+        quux: ["is not allowed"],
+        hoge: ["is not allowed"],
+        address: {bar: ["is not allowed"], baz: ["is not allowed"]},
         roles: {1 => {foo: ["is not allowed"]}}
       )
   end
