@@ -51,9 +51,14 @@ module Dry
         hash.flat_map { |key, _|
           case (value = hash[key])
           when Hash
+            next key.to_s if value.empty?
+
             [key].product(key_paths(hash[key])).map { |keys| keys.join(DOT) }
           when Array
-            hashes_or_arrays = value.select { |e| e.is_a?(Array) || e.is_a?(Hash) }
+            hashes_or_arrays = value.select { |e| (e.is_a?(Array) || e.is_a?(Hash)) && !e.empty? }
+
+            next key.to_s if hashes_or_arrays.empty?
+
             hashes_or_arrays.flat_map.with_index { |el, idx|
               key_paths(el).map { |path| ["#{key}[#{idx}]", *path].join(DOT) }
             }
