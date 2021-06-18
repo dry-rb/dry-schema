@@ -7,6 +7,7 @@
     fixed via #354) (@ojab)'
   - 'Run outer schema processor steps before inner ones (issue #350 fixed via #361)
     (@ojab)'
+  - 'Fix key validator false negatives on empty collections (see #363) (@Drenmi)'
   added: 
   changed:
   - "[internal] `Dry::Schema::Path` clean up and performance improvements (via #358)
