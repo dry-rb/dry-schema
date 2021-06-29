@@ -12,6 +12,8 @@
     via #364) (@alassek)'
   - 'Using constructor types should work fine now ie `required(:foo).filled(Types::Params::Integer.constructor(&:succ))`
     (issue #280 fixed via #365) (@solnic)'
+  - 'Handle non-Hash to Hash transformation in `before(:key_coercer)` (issue #350
+    fixed via #362) (@ojab)'
   added: 
   changed:
   - "[internal] `Dry::Schema::Path` clean up and performance improvements (via #358)
