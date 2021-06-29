@@ -7,9 +7,6 @@ module Dry
   module Schema
     # @api private
     class Step
-      EMPTY_PATH = Path.new([]).freeze
-      private_constant :EMPTY_PATH
-
       # @api private
       attr_reader :name
 
@@ -23,7 +20,7 @@ module Dry
       attr_reader :path
 
       # @api private
-      def initialize(type:, name:, executor:, path: EMPTY_PATH)
+      def initialize(type:, name:, executor:, path: Path::EMPTY)
         @type = type
         @name = name
         @executor = executor
@@ -33,7 +30,7 @@ module Dry
 
       # @api private
       def call(result)
-        scoped_result = path.equal?(EMPTY_PATH) ? result : result.at(path)
+        scoped_result = path.equal?(Path::EMPTY) ? result : result.at(path)
 
         output = executor.(scoped_result)
         scoped_result.replace(output) if output.is_a?(Hash)

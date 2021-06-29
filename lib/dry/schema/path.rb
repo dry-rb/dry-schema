@@ -100,6 +100,8 @@ module Dry
       def same_root?(other)
         root.equal?(other.root)
       end
+
+      EMPTY = new(EMPTY_ARRAY).freeze
     end
   end
 end

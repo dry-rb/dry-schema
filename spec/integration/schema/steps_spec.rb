@@ -170,6 +170,30 @@ RSpec.describe Dry::Schema, "callbacks" do
     end
   end
 
+  context "when input is not a Hash" do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:email).schema do
+          required(:address).schema do
+            required(:local_part).filled(:string)
+
+            before(:key_coercer) { |result| YAML.safe_load(result.output, permitted_classes: [Symbol]) }
+          end
+
+          before(:key_coercer) { |result| YAML.safe_load(result.output, permitted_classes: [Symbol]) }
+        end
+
+        before(:key_coercer) { |result| YAML.safe_load(result.output, permitted_classes: [Symbol]) }
+      end
+    end
+
+    specify do
+      input = YAML.dump(email: YAML.dump(address: YAML.dump(local_part: "ojab")))
+
+      expect(schema.(input).to_h).to eql(email: {address: {local_part: "ojab"}})
+    end
+  end
+
   context "invalid step name" do
     it "raises error" do
       expect {

@@ -15,15 +15,10 @@ module Dry
     class Result
       include Dry::Equalizer(:output, :errors)
 
-      extend Dry::Initializer
+      extend Dry::Initializer[undefined: false]
 
       # @api private
-      param :output
-
-      # Dump result to a hash returning processed and validated data
-      #
-      # @return [Hash]
-      alias_method :to_h, :output
+      param :output, reader: false
 
       # A list of failure ASTs produced by rule result objects
       #
@@ -34,7 +29,7 @@ module Dry
       option :message_compiler
 
       # @api private
-      option :parent, default: -> { nil }
+      option :path, optional: true, reader: false
 
       # @api private
       def self.new(*, **)
@@ -50,8 +45,8 @@ module Dry
       # @return [Result]
       #
       # @api private
-      def at(path, &block)
-        new(Path[path].reduce(output) { |a, e| a[e] }, parent: self, &block)
+      def at(at_path, &block)
+        new(@output, path: Path.new([*path, *Path[at_path]]), &block)
       end
 
       # @api private
@@ -72,8 +67,30 @@ module Dry
       end
 
       # @api private
-      def replace(hash)
-        output.replace(hash)
+      def path
+        @path || Path::EMPTY
+      end
+
+      # Dump result to a hash returning processed and validated data
+      #
+      # @return [Hash]
+      def output
+        path.equal?(Path::EMPTY) ? @output : @output.dig(*path)
+      end
+      alias_method :to_h, :output
+
+      # @api private
+      def replace(value)
+        if value.is_a?(output.class)
+          output.replace(value)
+        elsif path.equal?(Path::EMPTY)
+          @output = value
+        else
+          value_holder = path.keys.length > 1 ? @output.dig(*path.to_a[0..-2]) : @output
+
+          value_holder[path.last] = value
+        end
+
         self
       end
 
@@ -165,7 +182,7 @@ module Dry
       #
       # @api public
       def inspect
-        "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect}>"
+        "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect} path=#{path.keys.inspect}>"
       end
 
       if RUBY_VERSION >= "2.7"
