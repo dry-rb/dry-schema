@@ -10,6 +10,7 @@
 - Fix key validator false negatives on empty collections (see #363) (@Drenmi)
 - Prevent error message YAML files from being parsed multiple times (issue #352 via #364) (@alassek)
 - Using constructor types should work fine now ie `required(:foo).filled(Types::Params::Integer.constructor(&:succ))` (issue #280 fixed via #365) (@solnic)
+- Handle non-Hash to Hash transformation in `before(:key_coercer)` (issue #350 fixed via #362) (@ojab)
 
 ### Changed
 
