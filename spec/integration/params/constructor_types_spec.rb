@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "json"
+
 RSpec.describe "Params / Constructor Types" do
   context "an array which rejects empty values" do
     subject(:schema) do
@@ -52,18 +54,60 @@ RSpec.describe "Params / Constructor Types" do
     end
   end
 
-  context "using Params processor" do
-    subject(:schema) do
-      Dry::Schema.Params do
-        required(:foo).filled(Types::Params::Hash)
+  context "using Params processor and custom constructor types" do
+    context "with a params hash" do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:foo).filled(Types::Params::Hash)
+        end
+      end
+
+      let(:input) do
+        {foo: { "bar" => 123 }}
+      end
+
+      it "applies predicates" do
+        result = schema.(foo: "")
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be filled"])
+
+        result = schema.(foo: ["not a hash"])
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be a hash"])
       end
     end
 
-    it "uses the constructor" do
-      result = schema.(foo: { "bar" => 123 })
+    context "with a custom json hash" do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:foo).filter(:filled?).value(Types::Hash.constructor(&JSON.method(:parse)))
+        end
+      end
 
-      expect(result).to be_success
-      expect(result.to_h).to eql(foo: { "bar" => 123 })
+      let(:input) do
+        {foo: JSON.dump({ "bar" => 123 })}
+      end
+
+      it "applies predicates" do
+        result = schema.(foo: "")
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be filled"])
+
+        result = schema.(foo: ["not a hash"])
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be a hash"])
+      end
+
+      it "uses the constructor" do
+        result = schema.(input)
+
+        expect(result).to be_success
+        expect(result.to_h).to eql(foo: JSON.load(input[:foo]))
+      end
     end
   end
 
