@@ -52,6 +52,21 @@ RSpec.describe "Params / Constructor Types" do
     end
   end
 
+  context "using Params processor" do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:foo).filled(Types::Params::Hash)
+      end
+    end
+
+    it "uses the constructor" do
+      result = schema.(foo: { "bar" => 123 })
+
+      expect(result).to be_success
+      expect(result.to_h).to eql(foo: { "bar" => 123 })
+    end
+  end
+
   context "using Schema processor" do
     subject(:schema) do
       Dry::Schema.define do
