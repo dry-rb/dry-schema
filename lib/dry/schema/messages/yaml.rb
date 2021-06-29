@@ -72,6 +72,11 @@ module Dry
       end
 
       # @api private
+      def self.source_cache
+        @source_cache ||= Concurrent::Map.new
+      end
+
+      # @api private
       def initialize(data: EMPTY_HASH, config: nil)
         super()
         @data = data
@@ -179,7 +184,9 @@ module Dry
 
       # @api private
       def load_translations(path)
-        data = self.class.flat_hash(YAML.load_file(path))
+        data = self.class.source_cache.fetch_or_store(path) do
+          self.class.flat_hash(YAML.load_file(path)).freeze
+        end
 
         return data unless custom_top_namespace?(path)
 
