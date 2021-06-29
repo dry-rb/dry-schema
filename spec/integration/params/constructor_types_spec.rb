@@ -109,6 +109,25 @@ RSpec.describe "Params / Constructor Types" do
         expect(result.to_h).to eql(foo: JSON.load(input[:foo]))
       end
     end
+
+    context "with multiple constructors (but please define a single one in your actual code)" do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:foo).value(:integer, Types::Params::Integer, Types.Constructor(Integer, &:succ))
+        end
+      end
+
+      let(:input) do
+        {foo: "312"}
+      end
+
+      it "applies predicates" do
+        result = schema.(input)
+
+        expect(result).to be_success
+        expect(result.to_h).to eql(foo: 313)
+      end
+    end
   end
 
   context "using Schema processor" do
