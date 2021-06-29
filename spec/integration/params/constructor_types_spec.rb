@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "json"
+
 RSpec.describe "Params / Constructor Types" do
   context "an array which rejects empty values" do
     subject(:schema) do
@@ -49,6 +51,82 @@ RSpec.describe "Params / Constructor Types" do
     it "uses the constructor" do
       expect(schema.(outer_field: [Marshal.dump(inner_field: 1), Marshal.dump(inner_field: 2)]).to_h)
         .to eql(outer_field: [{inner_field: 1}, {inner_field: 2}])
+    end
+  end
+
+  context "using Params processor and custom constructor types" do
+    context "with a params hash" do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:foo).filled(Types::Params::Hash)
+        end
+      end
+
+      let(:input) do
+        {foo: { "bar" => 123 }}
+      end
+
+      it "applies predicates" do
+        result = schema.(foo: "")
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be filled"])
+
+        result = schema.(foo: ["not a hash"])
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be a hash"])
+      end
+    end
+
+    context "with a custom json hash" do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:foo).filter(:filled?).value(Types::Hash.constructor(&JSON.method(:parse)))
+        end
+      end
+
+      let(:input) do
+        {foo: JSON.dump({ "bar" => 123 })}
+      end
+
+      it "applies predicates" do
+        result = schema.(foo: "")
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be filled"])
+
+        result = schema.(foo: ["not a hash"])
+
+        expect(result).to be_failure
+        expect(result.errors.to_h).to eql(foo: ["must be a hash"])
+      end
+
+      it "uses the constructor" do
+        result = schema.(input)
+
+        expect(result).to be_success
+        expect(result.to_h).to eql(foo: JSON.load(input[:foo]))
+      end
+    end
+
+    context "with multiple constructors (but please define a single one in your actual code)" do
+      subject(:schema) do
+        Dry::Schema.Params do
+          required(:foo).value(:integer, Types::Params::Integer, Types.Constructor(Integer, &:succ))
+        end
+      end
+
+      let(:input) do
+        {foo: "312"}
+      end
+
+      it "applies predicates" do
+        result = schema.(input)
+
+        expect(result).to be_success
+        expect(result.to_h).to eql(foo: 313)
+      end
     end
   end
 

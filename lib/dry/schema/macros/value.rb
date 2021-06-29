@@ -11,8 +11,13 @@ module Dry
       # @api private
       class Value < DSL
         # @api private
-        def call(*predicates, **opts, &block)
+        def call(*args, **opts, &block)
+          types, predicates = args.partition { |arg| arg.is_a?(Dry::Types::Type) }
+
+          constructor = types.select { |type| type.is_a?(Dry::Types::Constructor) }.reduce(:>>)
           schema = predicates.detect { |predicate| predicate.is_a?(Processor) }
+
+          schema_dsl.set_type(name, constructor) if constructor
 
           type_spec = opts[:type_spec]
 
