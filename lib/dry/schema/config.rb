@@ -2,6 +2,7 @@
 
 require "dry/core/equalizer"
 require "dry/configurable"
+require "dry/configurable/version"
 
 require "dry/schema/constants"
 require "dry/schema/predicate_registry"
@@ -18,6 +19,13 @@ module Dry
       include Dry::Configurable
       include Dry::Equalizer(:to_h, inspect: false)
 
+      unless Dry::Configurable::VERSION < "0.13"
+        def self.setting(name, default = Undefined, **opts, &block)
+          return super if default.equal?(Undefined)
+          super(name, **opts.merge(default: default), &block)
+        end
+      end
+
       # @!method predicates
       #
       # Return configured predicate registry
@@ -25,7 +33,7 @@ module Dry
       # @return [Schema::PredicateRegistry]
       #
       # @api public
-      setting(:predicates, Schema::PredicateRegistry.new)
+      setting :predicates, Schema::PredicateRegistry.new
 
       # @!method types
       #
@@ -34,7 +42,7 @@ module Dry
       # @return [Hash]
       #
       # @api public
-      setting(:types, Dry::Types)
+      setting :types, Dry::Types
 
       # @!method messages
       #
@@ -43,12 +51,12 @@ module Dry
       # @return [Dry::Configurable::Config]
       #
       # @api public
-      setting(:messages) do
-        setting(:backend, :yaml)
-        setting(:namespace)
-        setting(:load_paths, Set[DEFAULT_MESSAGES_PATH], &:dup)
-        setting(:top_namespace, DEFAULT_MESSAGES_ROOT)
-        setting(:default_locale, nil)
+      setting :messages do
+        setting :backend, :yaml
+        setting :namespace
+        setting :load_paths, Set[DEFAULT_MESSAGES_PATH], constructor: :dup.to_proc
+        setting :top_namespace, DEFAULT_MESSAGES_ROOT
+        setting :default_locale
       end
 
       # @!method validate_keys
@@ -58,7 +66,7 @@ module Dry
       # @return [Boolean]
       #
       # @api public
-      setting(:validate_keys, false)
+      setting :validate_keys, false
 
       # @api private
       def respond_to_missing?(meth, include_private = false)
