@@ -1,8 +1,25 @@
 # frozen_string_literal: true
 
+require "json-schema"
+
 RSpec.describe Dry::Schema::JSON, "#json_schema" do
   before do
     Dry::Schema.load_extensions(:json_schema)
+  end
+
+  shared_examples "metaschema validation" do
+    describe "validating against the metaschema" do
+      [4, 6].each do |draft_version|
+        draft = "draft#{draft_version}"
+
+        it "produces a valid json schema document for #{draft}" do
+          metaschema = JSON::Validator.validator_for_name(draft).metaschema
+          input = schema.respond_to?(:json_schema) ? schema.json_schema : schema
+
+          JSON::Validator.validate!(metaschema, input)
+        end
+      end
+    end
   end
 
   context "when using a realistic schema with nested data" do
@@ -21,6 +38,8 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
         end
       end
     end
+
+    include_examples "metaschema validation"
 
     it "returns the correct json schema" do
       expect(schema.json_schema).to eql(
@@ -52,8 +71,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
               street: {
                 type: "string"
               }
-            },
-            required: []
+            }
           }
         },
         required: %w[email roles]
@@ -62,6 +80,8 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
   end
 
   context "when using maybe types" do
+    include_examples "metaschema validation"
+
     subject(:schema) do
       Dry::Schema.JSON do
         required(:email).maybe(:string)
@@ -95,12 +115,20 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
       string: {type: "string"},
       time: {type: "string", format: "time"}
     }.each do |type_spec, type_opts|
-      it "infers #{type_opts} from '#{type_spec}'" do
-        expect(Dry::Schema.define { required(:key).value(type_spec) }.json_schema).to eql(
-          type: "object",
-          properties: {key: type_opts},
-          required: ["key"]
-        )
+      describe "type: #{type_spec.inspect}" do
+        subject(:schema) do
+          Dry::Schema.define { required(:key).value(type_spec) }.json_schema
+        end
+
+        include_examples "metaschema validation"
+
+        it "infers with correct default options - #{type_opts.to_json}" do
+          expect(schema).to eql(
+            type: "object",
+            properties: {key: type_opts},
+            required: ["key"]
+          )
+        end
       end
     end
   end

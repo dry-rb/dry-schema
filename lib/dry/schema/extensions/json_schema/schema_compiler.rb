@@ -35,9 +35,9 @@ module Dry
 
         # @api private
         def to_h
-          {type: "object",
-           properties: keys,
-           required: required.to_a}
+          result = {type: "object", properties: keys}
+          result[:required] = required.to_a unless required.empty?
+          result
         end
 
         # @api private

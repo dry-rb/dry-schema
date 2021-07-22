@@ -15,6 +15,7 @@ group :test do
   gem "dry-struct", require: false, github: "dry-rb/dry-struct"
   gem "i18n", "1.8.2", require: false
   gem "transproc"
+  gem "json-schema"
 end
 
 group :tools do
