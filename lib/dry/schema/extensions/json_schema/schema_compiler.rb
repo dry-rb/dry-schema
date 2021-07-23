@@ -61,12 +61,9 @@ module Dry
 
         # @api private
         def to_h
-          result = {
-            type: "object",
-            properties: keys,
-            required: required.to_a
-          }
+          result = {}
           result[:$schema] = "http://json-schema.org/draft-06/schema#" if root?
+          result.merge!(type: "object", properties: keys, required: required.to_a)
           result
         end
 
