@@ -8,7 +8,8 @@ module Dry
     module JSONSchema
       # @api private
       class SchemaCompiler
-        IDENTITY = ->(v, _) { v }
+        IDENTITY = ->(v, _) { v }.freeze
+        TO_INTEGER = ->(v, _) { v.to_i }.freeze
 
         PREDICATE_TO_TYPE = {
           array?: {type: "array"},
@@ -22,8 +23,8 @@ module Dry
           nil?: {type: "null"},
           str?: {type: "string"},
           time?: {type: "string", format: "time"},
-          min_size?: {minLength: ->(v, _) { v.to_i }},
-          max_size?: {maxLength: ->(v, _) { v.to_i }},
+          min_size?: {minLength: TO_INTEGER},
+          max_size?: {maxLength: TO_INTEGER},
           included_in?: {enum: ->(v, _) { v.to_a }},
           uri?: {format: "uri"},
           uuid_v1?: {
@@ -60,12 +61,14 @@ module Dry
         end
 
         # @api private
-        def to_h
+        def to_hash
           result = {}
           result[:$schema] = "http://json-schema.org/draft-06/schema#" if root?
           result.merge!(type: "object", properties: keys, required: required.to_a)
           result
         end
+
+        alias_method :to_h, :to_hash
 
         # @api private
         def call(ast)
@@ -141,13 +144,12 @@ module Dry
         # @api private
         def visit_predicate(node, opts = EMPTY_HASH)
           name, rest = node
-          key = opts[:key]
 
           if name.equal?(:key?)
             prop_name = rest[0][1]
             keys[prop_name] = {}
           else
-            target = keys[key]
+            target = keys[opts[:key]]
             type_opts = fetch_type_opts_for_predicate(name, rest, target)
 
             if target[:type]&.include?("array")
@@ -161,12 +163,13 @@ module Dry
 
         # @api private
         def fetch_type_opts_for_predicate(name, rest, target)
-          type_opts = PREDICATE_TO_TYPE.fetch(name) { EMPTY_HASH }.dup
+          type_opts = PREDICATE_TO_TYPE.fetch(name, EMPTY_HASH).dup
           type_opts.transform_values! { |v| v.respond_to?(:call) ? v.call(rest[0][1], target) : v }
           type_opts.merge!(fetch_filled_options(target[:type], target)) if name == :filled?
           type_opts
         end
 
+        # @api private
         def fetch_filled_options(type, _target)
           case type
           when "string"
