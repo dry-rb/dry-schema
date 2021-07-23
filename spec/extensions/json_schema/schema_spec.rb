@@ -143,23 +143,47 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
 
     context "when its an array type" do
-      include_examples "metaschema validation"
-
       subject(:schema) do
         Dry::Schema.JSON do
           required(:tags).filled(:array)
         end
       end
 
-      xit "returns the correct json schema" do
-        expect(schema.json_schema).to include(
-          properties: {
-            tags: {
-              type: "array",
-              minItems: 1
-            }
-          }
+      it "raises an unknown type conversion error (fix later)" do
+        expect { schema.json_schema }.to raise_error(
+          Dry::Schema::JSONSchema::SchemaCompiler::UnknownConversionError
         )
+      end
+    end
+  end
+
+  context "when using non-convertible types" do
+    unsupported_cases = [
+      Types.Constructor(Struct.new(:name)),
+      {excluded_from?: ["foo"]},
+      {format?: /something/},
+      {bytesize?: 2}
+    ]
+
+    unsupported_cases.each do |predicate|
+      subject(:schema) do
+        Dry::Schema.JSON do
+          if predicate.is_a?(Hash)
+            required(:key).filled(**predicate)
+          else
+            required(:key).filled(predicate)
+          end
+        end
+      end
+
+      it "raises an unknown type conversion error by default" do
+        expect { schema.json_schema }.to raise_error(
+          Dry::Schema::JSONSchema::SchemaCompiler::UnknownConversionError, /predicate/
+        )
+      end
+
+      it "allows for the schema to be generated loosely" do
+        expect { schema.json_schema(loose: true) }.not_to raise_error
       end
     end
   end

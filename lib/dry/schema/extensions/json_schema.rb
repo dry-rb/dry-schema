@@ -14,13 +14,10 @@ module Dry
         # @return [Hash<Symbol=>Hash>]
         #
         # @api public
-        def json_schema
-          return @json_schema if defined?(@json_schema)
-
-          compiler = SchemaCompiler.new(root: true)
+        def json_schema(loose: false)
+          compiler = SchemaCompiler.new(root: true, loose: loose)
           compiler.call(to_ast)
-
-          @json_schema = compiler.to_h
+          compiler.to_hash
         end
       end
     end

@@ -8,6 +8,9 @@ module Dry
     module JSONSchema
       # @api private
       class SchemaCompiler
+        # An error raised when a predicate cannot be converted
+        UnknownConversionError = Class.new(StandardError)
+
         IDENTITY = ->(v, _) { v }.freeze
         TO_INTEGER = ->(v, _) { v.to_i }.freeze
 
@@ -26,6 +29,7 @@ module Dry
           min_size?: {minLength: TO_INTEGER},
           max_size?: {maxLength: TO_INTEGER},
           included_in?: {enum: ->(v, _) { v.to_a }},
+          filled?: EMPTY_HASH,
           uri?: {format: "uri"},
           uuid_v1?: {
             pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
@@ -54,10 +58,11 @@ module Dry
         attr_reader :keys, :required
 
         # @api private
-        def initialize(root: false)
+        def initialize(root: false, loose: false)
           @keys = EMPTY_HASH.dup
           @required = Set.new
           @root = root
+          @loose = loose
         end
 
         # @api private
@@ -163,7 +168,11 @@ module Dry
 
         # @api private
         def fetch_type_opts_for_predicate(name, rest, target)
-          type_opts = PREDICATE_TO_TYPE.fetch(name, EMPTY_HASH).dup
+          type_opts = PREDICATE_TO_TYPE.fetch(name) do
+            raise_unknown_conversion_error!(:predicate, name) unless loose?
+
+            EMPTY_HASH
+          end.dup
           type_opts.transform_values! { |v| v.respond_to?(:call) ? v.call(rest[0][1], target) : v }
           type_opts.merge!(fetch_filled_options(target[:type], target)) if name == :filled?
           type_opts
@@ -174,6 +183,10 @@ module Dry
           case type
           when "string"
             {minLength: 1}
+          when "array"
+            raise_unknown_conversion_error!(:type, :array) unless loose?
+
+            {not: {type: "null"}}
           else
             {not: {type: "null"}}
           end
@@ -194,6 +207,24 @@ module Dry
         # @api private
         def root?
           @root
+        end
+
+        # @api private
+        def loose?
+          @loose
+        end
+
+        def raise_unknown_conversion_error!(type, name)
+          message = <<~MSG
+            Could not find an equivalent conversion for #{type} #{name.inspect}.
+
+            This means that your generated JSON schema may be missing this validation.
+
+            You can ignore this by generating the schema in "loose" mode, i.e.:
+                my_schema.json_schema(loose: true)
+          MSG
+
+          raise UnknownConversionError, message.chomp
         end
       end
     end
