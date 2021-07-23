@@ -144,10 +144,23 @@ module Dry
             prop_name = rest[0][1]
             keys[prop_name] = {}
           else
-            type_opts = PREDICATE_TO_TYPE.fetch(name) { EMPTY_HASH }.dup
-            type_opts.transform_values! { |v| v.respond_to?(:call) ? v.call(rest[0][1]) : v }
-            merge_opts!(keys[key], type_opts)
+            type_opts = fetch_type_opts_for_predicate(name, rest)
+            target = keys[key]
+
+            if target[:type]&.include?("array")
+              target[:items] ||= {}
+              merge_opts!(target[:items], type_opts)
+            else
+              merge_opts!(target, type_opts)
+            end
           end
+        end
+
+        # @api private
+        def fetch_type_opts_for_predicate(name, rest)
+          type_opts = PREDICATE_TO_TYPE.fetch(name) { EMPTY_HASH }.dup
+          type_opts.transform_values! { |v| v.respond_to?(:call) ? v.call(rest[0][1]) : v }
+          type_opts
         end
 
         # @api private

@@ -106,7 +106,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     subject(:schema) do
       Dry::Schema.JSON do
         required(:color).filled(:str?, included_in?: %w[red blue])
-        required(:shade).filled(Types::String.enum("light", "dark"))
+        required(:shade).maybe(array[Types::String.enum("light", "medium", "dark")])
       end
     end
 
@@ -120,8 +120,11 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
             enum: %w[red blue]
           },
           shade: {
-            type: "string",
-            enum: %w[light dark]
+            type: %w[null array],
+            items: {
+              type: "string",
+              enum: %w[light medium dark]
+            }
           }
         },
         required: %w[color shade]
