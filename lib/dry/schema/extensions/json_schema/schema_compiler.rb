@@ -44,7 +44,9 @@ module Dry
           gt?: {exclusiveMinimum: IDENTITY},
           gteq?: {mininum: IDENTITY},
           lt?: {exclusiveMaximum: IDENTITY},
-          lteq?: {maximum: IDENTITY}
+          lteq?: {maximum: IDENTITY},
+          odd?: {type: "integer", not: {multipleOf: 2}},
+          even?: {type: "integer", multipleOf: 2}
         }.freeze
 
         # @api private

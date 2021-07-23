@@ -191,11 +191,17 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
       {gt?: 5} => {type: "integer", exclusiveMinimum: 5},
       {gteq?: 5} => {type: "integer", mininum: 5},
       {lt?: 5} => {type: "integer", exclusiveMaximum: 5},
-      {lteq?: 5} => {type: "integer", maximum: 5}
+      {lteq?: 5} => {type: "integer", maximum: 5},
+      odd?: {type: "integer", not: {multipleOf: 2}},
+      even?: {type: "integer", multipleOf: 2}
     }.each do |type_spec, type_opts|
       describe "type: #{type_spec.inspect}" do
         subject(:schema) do
-          Dry::Schema.define { required(:key).value(:int?, **type_spec) }.json_schema
+          if type_spec.is_a?(Hash)
+            Dry::Schema.define { required(:key).value(:int?, **type_spec) }.json_schema
+          else
+            Dry::Schema.define { required(:key).value(type_spec) }.json_schema
+          end
         end
 
         include_examples "metaschema validation"
