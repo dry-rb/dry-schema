@@ -10,7 +10,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
   shared_examples "metaschema validation" do
     describe "validating against the metaschema" do
       it "produces a valid json schema document for draft6" do
-        metaschema = JSON::Validator.validator_for_name('draft6').metaschema
+        metaschema = JSON::Validator.validator_for_name("draft6").metaschema
         input = schema.respond_to?(:json_schema) ? schema.json_schema : schema
 
         JSON::Validator.validate!(metaschema, input)
@@ -96,6 +96,35 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
           }
         },
         required: %w[email]
+      )
+    end
+  end
+
+  context "when using enums" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:color).filled(:str?, included_in?: %w[red blue])
+        required(:shade).filled(Types::String.enum("light", "dark"))
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          color: {
+            type: "string",
+            enum: %w[red blue]
+          },
+          shade: {
+            type: "string",
+            enum: %w[light dark]
+          }
+        },
+        required: %w[color shade]
       )
     end
   end

@@ -21,7 +21,8 @@ module Dry
           str?: {type: "string"},
           time?: {type: "string", format: "time"},
           min_size?: {minLength: ->(v) { v.to_i }},
-          max_size?: {maxLength: ->(v) { v.to_i }}
+          max_size?: {maxLength: ->(v) { v.to_i }},
+          included_in?: {enum: ->(v) { v.to_a }}
         }.freeze
 
         # @api private
@@ -37,11 +38,11 @@ module Dry
         # @api private
         def to_h
           result = {
-            type: "object", 
+            type: "object",
             properties: keys,
             required: required.to_a
           }
-          result[:"$schema"] = "http://json-schema.org/draft-06/schema#" if root?
+          result[:$schema] = "http://json-schema.org/draft-06/schema#" if root?
           result
         end
 

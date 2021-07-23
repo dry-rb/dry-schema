@@ -10,9 +10,9 @@ The `:json_schema` extension allows you to generate a valid [JSON Schema](https:
 Dry::Schema.load_extensions(:json_schema)
 
 UserSchema = Dry::Schema.JSON do
-  required(:email).filled(:string, min_size?: 8)
-
-  optional(:age).filled(:integer)
+  required(:email).filled(:str?, min_size?: 8)
+  optional(:favorite_color).filled(:str?, included_in?: %w[red green blue pink])
+  optional(:age).filled(:int?)
 end
 
 UserSchema.json_schema 
@@ -23,9 +23,14 @@ UserSchema.json_schema
 #       "type": "string",
 #       "minLength": 8
 #     },
+#     "favorite_color": {
+#       "type": "string",
+# .     "enum": ["red", "green", "blue", "pink"]
+#     },
 #     "age": {
 #       "type": "integer"
 #     },
+#   },
 #   "required": ["email"] 
 # }
 ```
