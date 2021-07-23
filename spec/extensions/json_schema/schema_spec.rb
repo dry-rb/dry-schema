@@ -141,7 +141,12 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
       integer: {type: "integer"},
       nil: {type: "null"},
       string: {type: "string"},
-      time: {type: "string", format: "time"}
+      time: {type: "string", format: "time"},
+      uuid_v1?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
+      uuid_v2?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-2[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
+      uuid_v3?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
+      uuid_v4?: {pattern: "^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}$"},
+      uuid_v5?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
     }.each do |type_spec, type_opts|
       describe "type: #{type_spec.inspect}" do
         subject(:schema) do
@@ -155,6 +160,26 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
             type: "object",
             properties: {key: type_opts},
             required: ["key"]
+          )
+        end
+      end
+    end
+  end
+
+  describe "special string predictes" do
+    {
+      Hash[uri?: 'https'] => {type: "string", format: "uri"},
+    }.each do |type_spec, type_opts|
+      describe "type: #{type_spec.inspect}" do
+        subject(:schema) do
+          Dry::Schema.define { required(:key).value(:string, **type_spec) }.json_schema
+        end
+
+        include_examples "metaschema validation"
+
+        it "infers with correct default options - #{type_opts.to_json}" do
+          expect(schema).to include(
+            properties: {key: type_opts},
           )
         end
       end
