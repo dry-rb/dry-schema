@@ -9,15 +9,11 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
   shared_examples "metaschema validation" do
     describe "validating against the metaschema" do
-      [4, 6].each do |draft_version|
-        draft = "draft#{draft_version}"
+      it "produces a valid json schema document for draft6" do
+        metaschema = JSON::Validator.validator_for_name('draft6').metaschema
+        input = schema.respond_to?(:json_schema) ? schema.json_schema : schema
 
-        it "produces a valid json schema document for #{draft}" do
-          metaschema = JSON::Validator.validator_for_name(draft).metaschema
-          input = schema.respond_to?(:json_schema) ? schema.json_schema : schema
-
-          JSON::Validator.validate!(metaschema, input)
-        end
+        JSON::Validator.validate!(metaschema, input)
       end
     end
   end
@@ -43,6 +39,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
     it "returns the correct json schema" do
       expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
         type: "object",
         properties: {
           email: {
@@ -71,7 +68,8 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
               street: {
                 type: "string"
               }
-            }
+            },
+            required: []
           }
         },
         required: %w[email roles]
@@ -90,6 +88,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
     it "returns the correct json schema" do
       expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
         type: "object",
         properties: {
           email: {
@@ -123,7 +122,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
         include_examples "metaschema validation"
 
         it "infers with correct default options - #{type_opts.to_json}" do
-          expect(schema).to eql(
+          expect(schema).to include(
             type: "object",
             properties: {key: type_opts},
             required: ["key"]

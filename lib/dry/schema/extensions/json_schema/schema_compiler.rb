@@ -28,15 +28,20 @@ module Dry
         attr_reader :keys, :required
 
         # @api private
-        def initialize
+        def initialize(root: false)
           @keys = EMPTY_HASH.dup
           @required = Set.new
+          @root = root
         end
 
         # @api private
         def to_h
-          result = {type: "object", properties: keys}
-          result[:required] = required.to_a unless required.empty?
+          result = {
+            type: "object", 
+            properties: keys,
+            required: required.to_a
+          }
+          result[:"$schema"] = "http://json-schema.org/draft-06/schema#" if root?
           result
         end
 
@@ -127,6 +132,11 @@ module Dry
           new_opts[:type] = [orig_type, new_type] if orig_type && new_type
 
           orig_opts.merge!(new_opts)
+        end
+
+        # @api private
+        def root?
+          @root
         end
       end
     end

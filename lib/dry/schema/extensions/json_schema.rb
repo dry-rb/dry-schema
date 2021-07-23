@@ -17,7 +17,7 @@ module Dry
         def json_schema
           return @json_schema if defined?(@json_schema)
 
-          compiler = SchemaCompiler.new
+          compiler = SchemaCompiler.new(root: true)
           compiler.call(to_ast)
 
           @json_schema = compiler.to_h
