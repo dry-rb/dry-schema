@@ -8,7 +8,7 @@ module Dry
     module JSONSchema
       # @api private
       class SchemaCompiler
-        IDENTITY = ->(v) { v }
+        IDENTITY = ->(v, _) { v }
 
         PREDICATE_TO_TYPE = {
           array?: {type: "array"},
@@ -22,9 +22,9 @@ module Dry
           nil?: {type: "null"},
           str?: {type: "string"},
           time?: {type: "string", format: "time"},
-          min_size?: {minLength: ->(v) { v.to_i }},
-          max_size?: {maxLength: ->(v) { v.to_i }},
-          included_in?: {enum: ->(v) { v.to_a }},
+          min_size?: {minLength: ->(v, _) { v.to_i }},
+          max_size?: {maxLength: ->(v, _) { v.to_i }},
+          included_in?: {enum: ->(v, _) { v.to_a }},
           uri?: {format: "uri"},
           uuid_v1?: {
             pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
@@ -96,8 +96,14 @@ module Dry
         def visit_and(node, opts = EMPTY_HASH)
           left, right = node
 
-          visit(left, opts)
-          visit(right, opts)
+          # We need to know the type first to apply filled macro
+          if left[1][0] == :filled?
+            visit(right, opts)
+            visit(left, opts)
+          else
+            visit(left, opts)
+            visit(right, opts)
+          end
         end
 
         # @api private
@@ -141,8 +147,8 @@ module Dry
             prop_name = rest[0][1]
             keys[prop_name] = {}
           else
-            type_opts = fetch_type_opts_for_predicate(name, rest)
             target = keys[key]
+            type_opts = fetch_type_opts_for_predicate(name, rest, target)
 
             if target[:type]&.include?("array")
               target[:items] ||= {}
@@ -154,10 +160,20 @@ module Dry
         end
 
         # @api private
-        def fetch_type_opts_for_predicate(name, rest)
+        def fetch_type_opts_for_predicate(name, rest, target)
           type_opts = PREDICATE_TO_TYPE.fetch(name) { EMPTY_HASH }.dup
-          type_opts.transform_values! { |v| v.respond_to?(:call) ? v.call(rest[0][1]) : v }
+          type_opts.transform_values! { |v| v.respond_to?(:call) ? v.call(rest[0][1], target) : v }
+          type_opts.merge!(fetch_filled_options(target[:type], target)) if name == :filled?
           type_opts
+        end
+
+        def fetch_filled_options(type, _target)
+          case type
+          when "string"
+            {minLength: 1}
+          else
+            {not: {type: "null"}}
+          end
         end
 
         # @api private

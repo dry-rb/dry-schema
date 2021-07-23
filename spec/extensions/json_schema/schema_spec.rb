@@ -21,16 +21,16 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
   context "when using a realistic schema with nested data" do
     subject(:schema) do
       Dry::Schema.JSON do
-        required(:email).filled(:string)
+        required(:email).value(:string)
 
-        optional(:age).filled(:integer)
+        optional(:age).value(:integer)
 
         required(:roles).array(:hash) do
-          required(:name).filled(:string, min_size?: 12, max_size?: 36)
+          required(:name).value(:string, min_size?: 12, max_size?: 36)
         end
 
         optional(:address).hash do
-          optional(:street).filled(:string)
+          optional(:street).value(:string)
         end
       end
     end
@@ -100,12 +100,76 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
   end
 
+  describe "filled macro" do
+    context "when there is no type" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:email).filled
+        end
+      end
+
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            email: {
+              not: {type: "null"}
+            }
+          }
+        )
+      end
+    end
+
+    context "when its a string type" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:email).filled(:str?)
+        end
+      end
+
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            email: {
+              type: "string",
+              minLength: 1
+            }
+          }
+        )
+      end
+    end
+
+    context "when its an array type" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:tags).filled(:array)
+        end
+      end
+
+      xit "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            tags: {
+              type: "array",
+              minItems: 1
+            }
+          }
+        )
+      end
+    end
+  end
+
   context "when using enums" do
     include_examples "metaschema validation"
 
     subject(:schema) do
       Dry::Schema.JSON do
-        required(:color).filled(:str?, included_in?: %w[red blue])
+        required(:color).value(:str?, included_in?: %w[red blue])
         required(:shade).maybe(array[Types::String.enum("light", "medium", "dark")])
       end
     end
