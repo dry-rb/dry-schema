@@ -9,7 +9,9 @@ module Dry
     # @api public
     module JSONSchema
       module SchemaMethods
-        # Return information about keys and types
+        # Convert the schema into a JSON schema hash
+        #
+        # @param [Symbol] loose Compile the schema in "loose" mode
         #
         # @return [Hash<Symbol=>Hash>]
         #
