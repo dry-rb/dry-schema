@@ -53,7 +53,7 @@ module Dry
         # @api public
         def define(&block)
           @definition ||= DSL.new(
-            processor_type: self, parent: superclass.definition, **config, &block
+            processor_type: self, parent: superclass.definition, **config.to_h, &block
           )
           self
         end
