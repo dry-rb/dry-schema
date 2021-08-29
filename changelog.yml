@@ -1,4 +1,8 @@
 ---
+- version: 1.7.1
+  date: '2021-08-29'
+  changed:
+  - "[internal] Use explicit `#to_h` conversion of Dry::Configurable::Config, to ensure compatibility with upcoming dry-configurable 0.13.0 release (via #371) (@timriley)"
 - version: 1.7.0
   summary: This release ships with a bunch of internal refactorings that should improve performance but if you see any unexpected behavior please do report issues.
   date: '2021-06-29'
