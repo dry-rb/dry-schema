@@ -28,8 +28,8 @@ module Dry
       include Dry::Logic::Operators
 
       setting :key_map_type
-      setting :type_registry_namespace, :strict
-      setting :filter_empty_string, false
+      setting :type_registry_namespace, default: :strict
+      setting :filter_empty_string, default: false
 
       option :steps, default: -> { ProcessorSteps.new }
 

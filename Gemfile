@@ -6,7 +6,8 @@ eval_gemfile "Gemfile.devtools"
 
 gemspec
 
-gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "master" if ENV["DRY_CONFIGURABLE_FROM_MASTER"].eql?("true")
+gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "master"
+# gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "master" if ENV["DRY_CONFIGURABLE_FROM_MASTER"].eql?("true")
 gem "dry-logic", github: "dry-rb/dry-logic", branch: "master" if ENV["DRY_LOGIC_FROM_MASTER"].eql?("true")
 gem "dry-types", github: "dry-rb/dry-types", branch: "master"
 
