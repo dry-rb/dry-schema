@@ -1,4 +1,8 @@
 ---
+- version: 1.8.0
+  date: '2021-09-12'
+  changed:
+  - '[internal] Upgraded to new `setting` API provided in dry-configurable 0.13.0 (@timriley in #356)'
 - version: 1.7.1
   date: '2021-08-29'
   changed:
