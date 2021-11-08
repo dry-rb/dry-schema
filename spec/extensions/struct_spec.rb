@@ -86,4 +86,20 @@ RSpec.describe "struct extension" do
       end
     end
   end
+
+  context "valid hash" do
+    let(:schema) do
+      Dry::Schema.define do
+        required(:foo).value(Dry.Struct(name: "string", email: "string"))
+      end
+    end
+
+    let(:input) do
+      {foo: {name: "John", email: "legit@email"}}
+    end
+
+    it "accepts valid input when it is a hash" do
+      expect(schema.(input).errors.to_h).to eq({})
+    end
+  end
 end

@@ -18,7 +18,7 @@ module Dry
             end
 
             super(args[0].schema, *args.drop(1))
-            type(schema_dsl.types[name].constructor(args[0]))
+            type(schema_dsl.types[name].constructor(args[0].schema))
           else
             super
           end
