@@ -22,7 +22,7 @@ end
 
 ```ruby
 Dry::Schema.Params do
-  required(:age) { none? | int? }
+  required(:age) { nil? | int? }
 end
 ```
 
