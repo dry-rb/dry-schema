@@ -16,7 +16,9 @@ module Dry
           paths = msgs.map(&:path)
 
           if paths.uniq.size == 1
-            SinglePath.new(left, right, messages)
+            l = left.is_a?(Array) && left.size == 1 ? left.first : left
+            r = right.is_a?(Array) && right.size == 1 ? right.first : right
+            SinglePath.new(l, r, messages)
           elsif right.is_a?(Array)
             if (left.is_a?(Array) || left.kind_of?(Or::Abstract)) && paths.uniq.size > 1
               MultiPath.new(left, right)
