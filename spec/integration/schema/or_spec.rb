@@ -18,6 +18,24 @@ RSpec.describe Dry::Schema, "OR messages" do
     end
   end
 
+  context "with three predicates" do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:foo) { str? | int? | bool? }
+      end
+    end
+
+    it "returns success for valid input" do
+      expect(schema.(foo: "bar")).to be_success
+      expect(schema.(foo: 321)).to be_success
+      expect(schema.(foo: true)).to be_success
+    end
+
+    it "provides OR error message for invalid input where all sides failed" do
+      expect(schema.(foo: []).errors.to_h).to eql(foo: ["must be a string or must be an integer or must be boolean"])
+    end
+  end
+
   context "with a predicate and a conjunction of predicates" do
     subject(:schema) do
       Dry::Schema.define do
@@ -109,6 +127,37 @@ RSpec.describe Dry::Schema, "OR messages" do
 
     it "provides error messages for invalid input where both sides failed" do
       expect(schema.(user: {}).errors.to_h).to eql(user: {or: [{name: ["is missing"]}, {nickname: ["is missing"]}]})
+    end
+  end
+
+  context "with three schemas" do
+    name_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+      required(:surname).filled(:string)
+    end
+
+    nickname_schema = Dry::Schema.define do
+      required(:nickname).filled(:string)
+    end
+
+    email_schema = Dry::Schema.define do
+      required(:email).filled(:string)
+    end
+
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:user) { name_schema | nickname_schema | email_schema }
+      end
+    end
+
+    it "returns success for valid input" do
+      expect(schema.(user: {name: "John", surname: "Smith"})).to be_success
+      expect(schema.(user: {nickname: "John"})).to be_success
+      expect(schema.(user: {email: "test@example.com"})).to be_success
+    end
+
+    it "provides error messages for invalid input where both sides failed" do
+      expect(schema.(user: {}).errors.to_h).to eql(user: {or: [{name: ["is missing"], surname: ["is missing"]}, {nickname: ["is missing"]}, email: ["is missing"]]})
     end
   end
 end
