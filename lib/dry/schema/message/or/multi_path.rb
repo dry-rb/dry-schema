@@ -20,14 +20,14 @@ module Dry
           def initialize(*args)
             super
             @root = [left, right].flatten.map(&:_path).reduce(:&)
-            @left = left.map { |msg| msg.to_or(root) }
-            @right = right.map { |msg| msg.to_or(root) }
+            @left = left.flatten.map { |msg| msg.to_or(root) }
+            @right = right.flatten.map { |msg| msg.to_or(root) }
           end
 
           # @api public
           def to_h
             @to_h ||= Path[[*root, :or]].to_h(
-              [left.map(&:to_h).reduce(:merge), right.map(&:to_h).reduce(:merge)]
+              [MessageSet.new(left).to_h, MessageSet.new(right).to_h]
             )
           end
         end
