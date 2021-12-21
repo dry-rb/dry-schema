@@ -50,6 +50,20 @@ Dry::Schema.Params do
 end
 ```
 
+> Caveat: `maybe` doesn't compose with `each`, use the below syntax instead:
+
+```ruby
+Dry::Schema.Params do
+  required(:list).maybe(array[:string])
+
+  # or
+
+  required(:list).maybe(:array) do
+    nil? | each(:string)
+  end
+end
+```
+
 ### hash
 
 Use it when a value is expected to be a hash:
