@@ -29,7 +29,7 @@ module Dry
           else
             trace << hash?
 
-            super(*args, &block)
+            super
           end
         end
       end

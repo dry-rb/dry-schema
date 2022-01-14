@@ -76,9 +76,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def filled(*args, &block)
+        def filled(...)
           append_macro(Macros::Filled) do |macro|
-            macro.call(*args, &block)
+            macro.call(...)
           end
         end
         ruby2_keywords :filled if respond_to?(:ruby2_keywords, true)
@@ -97,9 +97,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def schema(*args, &block)
+        def schema(...)
           append_macro(Macros::Schema) do |macro|
-            macro.call(*args, &block)
+            macro.call(...)
           end
         end
         ruby2_keywords :schema if respond_to?(:ruby2_keywords, true)
@@ -112,9 +112,9 @@ module Dry
         #   end
         #
         # @api public
-        def hash(*args, &block)
+        def hash(...)
           append_macro(Macros::Hash) do |macro|
-            macro.call(*args, &block)
+            macro.call(...)
           end
         end
         ruby2_keywords :hash if respond_to?(:ruby2_keywords, true)
@@ -136,9 +136,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def each(*args, &block)
+        def each(...)
           append_macro(Macros::Each) do |macro|
-            macro.value(*args, &block)
+            macro.value(...)
           end
         end
         ruby2_keywords :each if respond_to?(:ruby2_keywords, true)
@@ -156,9 +156,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def array(*args, &block)
+        def array(...)
           append_macro(Macros::Array) do |macro|
-            macro.value(*args, &block)
+            macro.value(...)
           end
         end
         ruby2_keywords :array if respond_to?(:ruby2_keywords, true)

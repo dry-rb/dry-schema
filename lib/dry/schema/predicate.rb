@@ -28,8 +28,8 @@ module Dry
         # @return [Array]
         #
         # @api private
-        def to_ast(*args)
-          [:not, predicate.to_ast(*args)]
+        def to_ast(...)
+          [:not, predicate.to_ast(...)]
         end
         alias_method :ast, :to_ast
       end

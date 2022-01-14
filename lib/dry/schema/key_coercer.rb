@@ -17,8 +17,8 @@ module Dry
       attr_reader :key_map, :coercer
 
       # @api private
-      def self.new(*args, &coercer)
-        fetch_or_store(*args, coercer) { super(*args, &coercer) }
+      def self.new(*args)
+        fetch_or_store(*args) { super }
       end
 
       # @api private
