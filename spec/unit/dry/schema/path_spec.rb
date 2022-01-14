@@ -11,7 +11,7 @@ RSpec.describe Dry::Schema::Path do
     end
 
     it "returns a nested hash with an array placeholder" do
-      expect(path.to_h).to eql(foo: {bar: {'1': {baz: {bar: {foo: []}}}}})
+      expect(path.to_h).to eql(foo: {bar: {"1": {baz: {bar: {foo: []}}}}})
     end
   end
 

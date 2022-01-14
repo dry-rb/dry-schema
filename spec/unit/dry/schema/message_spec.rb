@@ -19,9 +19,7 @@ RSpec.describe Dry::Schema::Message do
     end
 
     it "returns 0 when path is the same" do
-      # rubocop:disable Lint/UselessComparison
       expect(msg(path: child) <=> msg(path: child)).to be(0)
-      # rubocop:enable Lint/UselessComparison
     end
 
     it "returns 1 when path is higher in hierarchy" do

@@ -154,7 +154,7 @@ RSpec.describe Dry::Schema::KeyMap do
         expect(result).to eql(
           ["Bohemian Rhapsody",
            [{"name" => "queen", "count" => 312}, {"name" => "classic", "count" => 423}]]
-          )
+        )
       end
     end
 

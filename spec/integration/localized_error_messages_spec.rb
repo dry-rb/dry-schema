@@ -23,7 +23,7 @@ RSpec.describe Dry::Schema, "with localized messages" do
         end
 
         it "returns localized error message with defined whitespace character when full option is set to true" do
-            expect(schema.(email: "").messages(locale: :ja, full: true)).to eql(email: ["Eメールは必須入力です"])
+          expect(schema.(email: "").messages(locale: :ja, full: true)).to eql(email: ["Eメールは必須入力です"])
         end
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe Dry::Schema, "with localized messages" do
             config.messages.namespace = :user
             config.messages.default_locale = :ja
             config.messages.load_paths = %w[en pl ja]
-                                             .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+              .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
 
             required(:email).value(:filled?)
           end

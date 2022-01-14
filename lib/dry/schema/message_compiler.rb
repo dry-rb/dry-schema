@@ -30,14 +30,14 @@ module Dry
 
       EMPTY_OPTS = VisitorOpts.new
       EMPTY_MESSAGE_SET = MessageSet.new(EMPTY_ARRAY).freeze
-      FULL_MESSAGE_WHITESPACE = Hash.new(' ').merge(
-            ja: '',
-            zh: '',
-            bn: '',
-            th: '',
-            lo: '',
-            my: '',
-          )
+      FULL_MESSAGE_WHITESPACE = Hash.new(" ").merge(
+        ja: "",
+        zh: "",
+        bn: "",
+        th: "",
+        lo: "",
+        my: ""
+      )
 
       param :messages
 
@@ -206,7 +206,8 @@ module Dry
         return text if !text || !full
 
         rule = options[:path]
-        [messages.rule(rule, options) || rule, text].join(FULL_MESSAGE_WHITESPACE[template.options[:locale]])
+        [messages.rule(rule, options) || rule,
+         text].join(FULL_MESSAGE_WHITESPACE[template.options[:locale]])
       end
 
       # @api private
@@ -228,7 +229,9 @@ module Dry
       # @api private
       def append_mapped_size_tokens(tokens)
         # this is a temporary fix for the inconsistency in the "size" errors arguments
-        mapped_hash = tokens.each_with_object({}) { |(k, v), h| h[k.to_s.gsub("size", "num").to_sym] = v }
+        mapped_hash = tokens.each_with_object({}) { |(k, v), h|
+          h[k.to_s.gsub("size", "num").to_sym] = v
+        }
         tokens.merge(mapped_hash)
       end
     end

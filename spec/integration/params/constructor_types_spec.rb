@@ -41,8 +41,8 @@ RSpec.describe "Params / Constructor Types" do
         end
 
         array_type = Types::Strict::Array
-                       .of(nested_schema)
-                       .constructor { |value| value.map { |el| Marshal.load(el) } }
+          .of(nested_schema)
+          .constructor { |value| value.map { |el| Marshal.load(el) } }
 
         required(:outer_field).filled(array_type)
       end
@@ -63,7 +63,7 @@ RSpec.describe "Params / Constructor Types" do
       end
 
       let(:input) do
-        {foo: { "bar" => 123 }}
+        {foo: {"bar" => 123}}
       end
 
       it "applies predicates" do
@@ -87,7 +87,7 @@ RSpec.describe "Params / Constructor Types" do
       end
 
       let(:input) do
-        {foo: JSON.dump({ "bar" => 123 })}
+        {foo: JSON.dump({"bar" => 123})}
       end
 
       it "applies predicates" do

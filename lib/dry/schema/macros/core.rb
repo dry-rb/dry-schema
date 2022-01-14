@@ -16,7 +16,7 @@ module Dry
         extend Dry::Initializer
 
         # @api private
-        option :name, default: proc { nil }, optional: true
+        option :name, default: proc {}, optional: true
 
         # @api private
         option :compiler, default: proc { Compiler.new }

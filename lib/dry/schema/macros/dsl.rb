@@ -58,9 +58,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def value(*predicates, &block)
+        def value(...)
           append_macro(Macros::Value) do |macro|
-            macro.call(*predicates, &block)
+            macro.call(...)
           end
         end
         ruby2_keywords :value if respond_to?(:ruby2_keywords, true)

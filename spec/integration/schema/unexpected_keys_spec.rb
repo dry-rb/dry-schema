@@ -71,8 +71,8 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     end
 
     expect(schema.(wrong_key: nil).errors(full: true).to_h)
-        .to eq({:wrong_key => [{:code => "nieoczekiwany_klucz", :text => "wrong_key Podano nieoczekiwany klucz"}],
-                :title => [:code => "brak_klucza", :text => "title nie został podany"]})
+      .to eq({wrong_key: [{code: "nieoczekiwany_klucz", text: "wrong_key Podano nieoczekiwany klucz"}],
+              title: [code: "brak_klucza", text: "title nie został podany"]})
   end
 
   context "with an array validation" do
@@ -86,11 +86,11 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     end
 
     it "adds error messages" do
-      input = { name: "", tags: ["red", 123] }
+      input = {name: "", tags: ["red", 123]}
       expect(schema.(input).errors.to_h)
         .to eql(
           name: ["must be filled"],
-          tags: {1=>["must be a string"]}
+          tags: {1 => ["must be a string"]}
         )
     end
 
@@ -103,11 +103,11 @@ RSpec.describe Dry::Schema, "unexpected keys" do
         end
       end
 
-      expect(schema.(foo: 'unexpected', pets: 'a string').errors.to_h)
-          .to eql(
-                  foo: ["is not allowed"],
-                  pets: ["must be an array"],
-              )
+      expect(schema.(foo: "unexpected", pets: "a string").errors.to_h)
+        .to eql(
+          foo: ["is not allowed"],
+          pets: ["must be an array"]
+        )
     end
 
     context "with a nested maybe hash validator" do
@@ -125,7 +125,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       end
 
       it "doesn't add error messages when there are no unexpected keys" do
-        expect(schema.(locations: [{ feedback_location: nil}]).errors.to_h).to eq({})
+        expect(schema.(locations: [{feedback_location: nil}]).errors.to_h).to eq({})
       end
     end
 
