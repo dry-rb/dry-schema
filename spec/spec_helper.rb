@@ -57,9 +57,6 @@ require "dry/configurable/test_interface"
 Dry::Schema.config.enable_test_interface
 
 RSpec.configure do |config|
-  unless RUBY_VERSION >= "2.7"
-    config.exclude_pattern = "**/pattern_matching_spec.rb"
-  end
   config.example_status_persistence_file_path = "spec/examples.txt"
 
   config.include PredicatesIntegration

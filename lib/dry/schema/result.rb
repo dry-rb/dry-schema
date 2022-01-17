@@ -185,13 +185,11 @@ module Dry
         "#<#{self.class}#{to_h.inspect} errors=#{errors.to_h.inspect} path=#{path.keys.inspect}>"
       end
 
-      if RUBY_VERSION >= "2.7"
-        # Pattern matching support
-        #
-        # @api private
-        def deconstruct_keys(_)
-          output
-        end
+      # Pattern matching support
+      #
+      # @api private
+      def deconstruct_keys(_)
+        output
       end
 
       # Add a new error AST node
