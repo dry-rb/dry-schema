@@ -5,6 +5,7 @@ require_relative "support/warnings"
 require_relative "support/rspec_options"
 
 Warning.ignore(%r{gems/i18n})
+Warning.ignore(%r{byebug})
 Warning.process { |w| raise w }
 
 begin
