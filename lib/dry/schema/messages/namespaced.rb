@@ -21,6 +21,7 @@ module Dry
 
         # @api private
         def initialize(namespace, messages)
+          super()
           @config = messages.config
           @namespace = namespace
           @messages = messages

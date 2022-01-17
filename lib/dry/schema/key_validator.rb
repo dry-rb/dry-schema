@@ -17,6 +17,7 @@ module Dry
       option :key_map
 
       # @api private
+      # rubocop: disable Metrics/PerceivedComplexity
       def call(result)
         input = result.to_h
 
@@ -43,10 +44,13 @@ module Dry
 
         result
       end
+      # rubocop: enable Metrics/PerceivedComplexity
 
       private
 
       # @api private
+      # rubocop: disable Metrics/AbcSize
+      # rubocop: disable Metrics/PerceivedComplexity
       def key_paths(hash)
         hash.flat_map { |key, _|
           case (value = hash[key])
@@ -67,6 +71,8 @@ module Dry
           end
         }
       end
+      # rubocop: enable Metrics/PerceivedComplexity
+      # rubocop: enable Metrics/AbcSize
     end
   end
 end

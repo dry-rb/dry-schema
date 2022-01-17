@@ -34,6 +34,7 @@ RSpec.describe "Params / Constructor Types" do
   end
 
   context "an array that coerces values to hashes" do
+    # rubocop: disable Security/MarshalLoad
     subject(:schema) do
       Dry::Schema.define do
         nested_schema = Dry::Schema.define do
@@ -47,6 +48,7 @@ RSpec.describe "Params / Constructor Types" do
         required(:outer_field).filled(array_type)
       end
     end
+    # rubocop: enable Security/MarshalLoad
 
     it "uses the constructor" do
       expect(schema.(outer_field: [Marshal.dump(inner_field: 1), Marshal.dump(inner_field: 2)]).to_h)
@@ -106,7 +108,7 @@ RSpec.describe "Params / Constructor Types" do
         result = schema.(input)
 
         expect(result).to be_success
-        expect(result.to_h).to eql(foo: JSON.load(input[:foo]))
+        expect(result.to_h).to eql(foo: JSON.parse(input[:foo]))
       end
     end
 

@@ -9,6 +9,8 @@ module Dry
       Compiler = ::Class.new(superclass::Compiler)
 
       def initialize(registry = PredicateRegistry.new)
+        super
+
         @compiler = Compiler.new(registry)
       end
     end

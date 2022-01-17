@@ -80,8 +80,10 @@ module Dry
       # Build a new DSL object and evaluate provided block
       #
       # @param [Hash] options
-      # @option options [Class] :processor The processor type (`Params`, `JSON` or a custom sub-class)
-      # @option options [Compiler] :compiler An instance of a rule compiler (must be compatible with `Schema::Compiler`) (optional)
+      # @option options [Class] :processor The processor type
+      #                                    (`Params`, `JSON` or a custom sub-class)
+      # @option options [Compiler] :compiler An instance of a rule compiler
+      #                                      (must be compatible with `Schema::Compiler`) (optional)
       # @option options [Array[DSL]] :parent One or more instances of the parent DSL (optional)
       # @option options [Config] :config A configuration object (optional)
       #
@@ -168,7 +170,8 @@ module Dry
       # A generic method for defining keys
       #
       # @param [Symbol] name The key name
-      # @param [Class] macro The macro sub-class (ie `Macros::Required` or any other `Macros::Key` subclass)
+      # @param [Class] macro The macro sub-class (ie `Macros::Required` or
+      #                      any other `Macros::Key` subclass)
       #
       # @return [Macros::Key]
       #

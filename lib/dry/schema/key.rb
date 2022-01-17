@@ -85,98 +85,99 @@ module Dry
       def coerced_name
         @__coerced_name__ ||= coercer[name]
       end
-    end
 
-    # A specialized key type which handles nested hashes
-    #
-    # @api private
-    class Key::Hash < Key
-      include Dry.Equalizer(:name, :members, :coercer)
-
+      # A specialized key type which handles nested hashes
+      #
       # @api private
-      attr_reader :members
+      class Hash < self
+        include Dry.Equalizer(:name, :members, :coercer)
 
-      # @api private
-      def initialize(id, members:, **opts)
-        super(id, **opts)
-        @members = members
+        # @api private
+        attr_reader :members
+
+        # @api private
+        def initialize(id, members:, **opts)
+          super(id, **opts)
+          @members = members
+        end
+
+        # @api private
+        def read(source)
+          super if source.is_a?(::Hash)
+        end
+
+        def write(source, target)
+          read(source) { |value|
+            target[coerced_name] = value.is_a?(::Hash) ? members.write(value) : value
+          }
+        end
+
+        # @api private
+        def coercible(&coercer)
+          new(coercer: coercer, members: members.coercible(&coercer))
+        end
+
+        # @api private
+        def stringified
+          new(name: name.to_s, members: members.stringified)
+        end
+
+        # @api private
+        def to_dot_notation
+          [name].product(members.flat_map(&:to_dot_notation)).map { |e| e.join(DOT) }
+        end
+
+        # @api private
+        def dump
+          {name => members.map(&:dump)}
+        end
       end
 
+      # A specialized key type which handles nested arrays
+      #
       # @api private
-      def read(source)
-        super if source.is_a?(::Hash)
-      end
+      class Array < self
+        include Dry.Equalizer(:name, :member, :coercer)
 
-      def write(source, target)
-        read(source) { |value|
-          target[coerced_name] = value.is_a?(::Hash) ? members.write(value) : value
-        }
-      end
+        attr_reader :member
 
-      # @api private
-      def coercible(&coercer)
-        new(coercer: coercer, members: members.coercible(&coercer))
-      end
+        # @api private
+        def initialize(id, member:, **opts)
+          super(id, **opts)
+          @member = member
+        end
 
-      # @api private
-      def stringified
-        new(name: name.to_s, members: members.stringified)
-      end
+        # @api private
+        def write(source, target)
+          read(source) { |value|
+            target[coerced_name] =
+              if value.is_a?(::Array)
+                value.map { |el| el.is_a?(::Hash) ? member.write(el) : el }
+              else
+                value
+              end
+          }
+        end
 
-      # @api private
-      def to_dot_notation
-        [name].product(members.flat_map(&:to_dot_notation)).map { |e| e.join(DOT) }
-      end
+        # @api private
+        def coercible(&coercer)
+          new(coercer: coercer, member: member.coercible(&coercer))
+        end
 
-      # @api private
-      def dump
-        {name => members.map(&:dump)}
-      end
-    end
+        # @api private
+        def stringified
+          new(name: name.to_s, member: member.stringified)
+        end
 
-    # A specialized key type which handles nested arrays
-    #
-    # @api private
-    class Key::Array < Key
-      include Dry.Equalizer(:name, :member, :coercer)
+        # @api private
+        def to_dot_notation
+          [:"#{name}[]"].product(member.to_dot_notation).map { |el| el.join(DOT) }
+        end
 
-      attr_reader :member
-
-      # @api private
-      def initialize(id, member:, **opts)
-        super(id, **opts)
-        @member = member
-      end
-
-      # @api private
-      def write(source, target)
-        read(source) { |value|
-          target[coerced_name] = if value.is_a?(::Array)
-                                   value.map { |el| el.is_a?(::Hash) ? member.write(el) : el }
-                                 else
-                                   value
-                                 end
-        }
-      end
-
-      # @api private
-      def coercible(&coercer)
-        new(coercer: coercer, member: member.coercible(&coercer))
-      end
-
-      # @api private
-      def stringified
-        new(name: name.to_s, member: member.stringified)
-      end
-
-      # @api private
-      def to_dot_notation
-        [:"#{name}[]"].product(member.to_dot_notation).map { |el| el.join(DOT) }
-      end
-
-      # @api private
-      def dump
-        [name, member.dump]
+        # @api private
+        def dump
+          [name, member.dump]
+        end
       end
     end
   end

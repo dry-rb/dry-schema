@@ -89,6 +89,10 @@ module Dry
         captures.map(&:to_ast).map(&compiler.method(:visit)).reduce(:and)
       end
 
+      def respond_to_missing?(meth, include_private = false)
+        super || meth.to_s.end_with?(QUESTION_MARK) && compuiler.support?(meth)
+      end
+
       # @api private
       def method_missing(meth, *args, &block)
         if meth.to_s.end_with?(QUESTION_MARK)
@@ -96,7 +100,7 @@ module Dry
             ::Kernel.raise InvalidSchemaError, "#{meth} predicate cannot be used in this context"
           end
 
-          unless compiler.supports?(meth)
+          unless compiler.support?(meth)
             ::Kernel.raise ::ArgumentError, "#{meth} predicate is not defined"
           end
 

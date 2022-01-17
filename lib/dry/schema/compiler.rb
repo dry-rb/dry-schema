@@ -47,7 +47,7 @@ module Dry
       # @return [Boolean]
       #
       # @api private
-      def supports?(predicate)
+      def support?(predicate)
         predicates.key?(predicate)
       end
     end

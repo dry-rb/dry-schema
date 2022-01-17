@@ -5,125 +5,127 @@ require "dry/schema/messages/abstract"
 
 module Dry
   module Schema
-    # I18n message backend
-    #
-    # @api public
-    class Messages::I18n < Messages::Abstract
-      # Translation function
-      #
-      # @return [Method]
-      attr_reader :t
-
-      # @api private
-      def initialize
-        super
-        @t = I18n.method(:t)
-      end
-
-      # Get a message for the given key and its options
-      #
-      # @param [Symbol] key
-      # @param [Hash] options
-      #
-      # @return [String]
+    module Messages
+      # I18n message backend
       #
       # @api public
-      def get(key, options = EMPTY_HASH)
-        return unless key
+      class I18n < Abstract
+        # Translation function
+        #
+        # @return [Method]
+        attr_reader :t
 
-        result = t.(key, locale: options.fetch(:locale, default_locale))
-
-        if result.is_a?(Hash)
-          text = result[:text]
-          meta = result.dup.tap { |h| h.delete(:text) }
-        else
-          text = result
-          meta = EMPTY_HASH.dup
+        # @api private
+        def initialize
+          super
+          @t = ::I18n.method(:t)
         end
 
-        {
-          text: text,
-          meta: meta
-        }
-      end
+        # Get a message for the given key and its options
+        #
+        # @param [Symbol] key
+        # @param [Hash] options
+        #
+        # @return [String]
+        #
+        # @api public
+        def get(key, options = EMPTY_HASH)
+          return unless key
 
-      # Check if given key is defined
-      #
-      # @return [Boolean]
-      #
-      # @api public
-      def key?(key, options)
-        I18n.exists?(key, options.fetch(:locale, default_locale)) ||
-          I18n.exists?(key, I18n.default_locale)
-      end
+          result = t.(key, locale: options.fetch(:locale, default_locale))
 
-      # Merge messages from an additional path
-      #
-      # @param [String, Array<String>] paths
-      #
-      # @return [Messages::I18n]
-      #
-      # @api public
-      def merge(paths)
-        prepare(paths)
-      end
-
-      # @api private
-      def default_locale
-        super || I18n.locale || I18n.default_locale
-      end
-
-      # @api private
-      def prepare(paths = config.load_paths)
-        paths.each do |path|
-          data = YAML.load_file(path)
-
-          if custom_top_namespace?(path)
-            top_namespace = config.top_namespace
-
-            mapped_data = data
-              .map { |k, v| [k, {top_namespace => v[DEFAULT_MESSAGES_ROOT]}] }
-              .to_h
-
-            store_translations(mapped_data)
+          if result.is_a?(Hash)
+            text = result[:text]
+            meta = result.dup.tap { |h| h.delete(:text) }
           else
-            store_translations(data)
+            text = result
+            meta = EMPTY_HASH.dup
           end
+
+          {
+            text: text,
+            meta: meta
+          }
         end
 
-        self
-      end
+        # Check if given key is defined
+        #
+        # @return [Boolean]
+        #
+        # @api public
+        def key?(key, options)
+          ::I18n.exists?(key, options.fetch(:locale, default_locale)) ||
+            ::I18n.exists?(key, ::I18n.default_locale)
+        end
 
-      # @api private
-      def interpolatable_data(_key, _options, **data)
-        data
-      end
+        # Merge messages from an additional path
+        #
+        # @param [String, Array<String>] paths
+        #
+        # @return [Messages::I18n]
+        #
+        # @api public
+        def merge(paths)
+          prepare(paths)
+        end
 
-      # @api private
-      def interpolate(key, options, **data)
-        text_key = "#{key}.text"
+        # @api private
+        def default_locale
+          super || ::I18n.locale || ::I18n.default_locale
+        end
 
-        opts = {
-          locale: default_locale,
-          **options,
-          **data
-        }
+        # @api private
+        def prepare(paths = config.load_paths)
+          paths.each do |path|
+            data = ::YAML.load_file(path)
 
-        resolved_key = key?(text_key, opts) ? text_key : key
+            if custom_top_namespace?(path)
+              top_namespace = config.top_namespace
 
-        t.(resolved_key, **opts)
-      end
+              mapped_data = data.transform_values {
+                {top_namespace => _1[DEFAULT_MESSAGES_ROOT]}
+              }
 
-      private
+              store_translations(mapped_data)
+            else
+              store_translations(data)
+            end
+          end
 
-      # @api private
-      def store_translations(data)
-        locales = data.keys.map(&:to_sym)
+          self
+        end
 
-        I18n.available_locales |= locales
+        # @api private
+        def interpolatable_data(_key, _options, **data)
+          data
+        end
 
-        locales.each do |locale|
-          I18n.backend.store_translations(locale, data[locale.to_s])
+        # @api private
+        def interpolate(key, options, **data)
+          text_key = "#{key}.text"
+
+          opts = {
+            locale: default_locale,
+            **options,
+            **data
+          }
+
+          resolved_key = key?(text_key, opts) ? text_key : key
+
+          t.(resolved_key, **opts)
+        end
+
+        private
+
+        # @api private
+        def store_translations(data)
+          locales = data.keys.map(&:to_sym)
+
+          ::I18n.available_locales |= locales
+
+          locales.each do |locale|
+            ::I18n.backend.store_translations(locale, data[locale.to_s])
+          end
         end
       end
     end

@@ -45,6 +45,7 @@ module Dry
         end
 
         # @api private
+        # rubocop: disable Metrics/AbcSize
         def define(*args, &block)
           definition = schema_dsl.new(path: schema_dsl.path, &block)
           schema = definition.call
@@ -66,6 +67,7 @@ module Dry
 
           schema
         end
+        # rubocop: enable Metrics/AbcSize
 
         # @api private
         def parent_type

@@ -10,6 +10,8 @@ module Dry
       # @api private
       class Array < DSL
         # @api private
+        # rubocop: disable Metrics/PerceivedComplexity
+        # rubocop: disable Metrics/AbcSize
         def value(*args, **opts, &block)
           type(:array)
 
@@ -40,6 +42,8 @@ module Dry
 
           self
         end
+        # rubocop: enable Metrics/AbcSize
+        # rubocop: enable Metrics/PerceivedComplexity
 
         # @api private
         def to_ast(*)

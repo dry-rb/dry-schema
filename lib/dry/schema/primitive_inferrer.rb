@@ -9,6 +9,8 @@ module Dry
       Compiler = ::Class.new(superclass::Compiler)
 
       def initialize
+        super
+
         @compiler = Compiler.new
       end
     end

@@ -200,10 +200,11 @@ module Dry
         end
 
         # @api private
+        # rubocop: disable Metrics/PerceivedComplexity
         def extract_type_spec(*args, nullable: false, set_type: true)
           type_spec = args[0] unless schema_or_predicate?(args[0])
 
-          predicates = Array(type_spec ? args[1..-1] : args)
+          predicates = Array(type_spec ? args[1..] : args)
           type_rule = nil
 
           if type_spec
@@ -228,6 +229,7 @@ module Dry
             yield(*predicates, type_spec: type_spec, type_rule: nil)
           end
         end
+        # rubocop: enable Metrics/PerceivedComplexity
 
         # @api private
         def resolve_type(type_spec, nullable)

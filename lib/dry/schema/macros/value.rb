@@ -11,6 +11,10 @@ module Dry
       # @api private
       class Value < DSL
         # @api private
+        #
+        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
         def call(*args, **opts, &block)
           types, predicates = args.partition { |arg| arg.is_a?(Dry::Types::Type) }
 
@@ -65,6 +69,9 @@ module Dry
 
           self
         end
+        # rubocop:enable Metrics/AbcSize
+        # rubocop:enable Metrics/CyclomaticComplexity
+        # rubocop:enable Metrics/PerceivedComplexity
 
         # @api private
         def array_type?(type)
