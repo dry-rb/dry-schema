@@ -59,6 +59,7 @@ Dry::Schema.config.enable_test_interface
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = "spec/examples.txt"
+  config.order = "random"
 
   config.include PredicatesIntegration
   config.include Coercions
