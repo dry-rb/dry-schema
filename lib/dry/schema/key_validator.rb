@@ -41,13 +41,19 @@ module Dry
         if path[INDEX_REGEX]
           key = path.gsub(INDEX_REGEX, BRACKETS)
 
-          if key_paths.none? { _1.include?(key) }
+          if key_paths.none? { paths_match?(key, _1) }
             arr = path.gsub(INDEX_REGEX) { ".#{_1[1]}" }
             arr.split(DOT).map { DIGIT_REGEX.match?(_1) ? Integer(_1, 10) : _1.to_sym }
           end
-        elsif key_paths.none? { _1.include?(path) }
+        elsif key_paths.none? { paths_match?(path, _1) }
           path
         end
+      end
+
+      # @api private
+      def paths_match?(input_path, key_path)
+        residue = key_path.sub(input_path, "")
+        residue.empty? || residue.start_with?(DOT, BRACKETS)
       end
 
       # @api private
