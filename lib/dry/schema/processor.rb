@@ -123,7 +123,7 @@ module Dry
       # @api public
       def inspect
         <<~STR.strip
-          #<#{self.class.name} keys=#{key_map.map(&:dump)} rules=#{rules.map { |k, v| [k, v.to_s] }.to_h}>
+          #<#{self.class.name} keys=#{key_map.map(&:dump)} rules=#{rules.transform_values(&:to_s)}>
         STR
       end
 

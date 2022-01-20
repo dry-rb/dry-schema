@@ -37,10 +37,11 @@ module Dry
           # @api private
           # rubocop: disable Metrics/AbcSize
           # rubocop: disable Metrics/PerceivedComplexity
+          # rubocop: disable Metrics/CyclomaticComplexity
           def exclude?(messages, opts)
             Array(messages).all? do |msg|
-              hints = opts.hints.reject {
-                msg.eql?(_1) || _1.predicate.eql?(:filled?)
+              hints = opts.hints.reject { |h|
+                msg.eql?(h) || h.predicate.eql?(:filled?)
               }
 
               key_failure = opts.key_failure?(msg.path)
@@ -53,6 +54,7 @@ module Dry
                 HINT_OTHER_EXCLUSION.include?(predicate)
             end
           end
+          # rubocop: enable Metrics/CyclomaticComplexity
           # rubocop: enable Metrics/PerceivedComplexity
           # rubocop: enable Metrics/AbcSize
 

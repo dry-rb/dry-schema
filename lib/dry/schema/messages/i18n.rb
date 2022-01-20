@@ -82,8 +82,8 @@ module Dry
             if custom_top_namespace?(path)
               top_namespace = config.top_namespace
 
-              mapped_data = data.transform_values {
-                {top_namespace => _1[DEFAULT_MESSAGES_ROOT]}
+              mapped_data = data.transform_values { |v|
+                {top_namespace => v[DEFAULT_MESSAGES_ROOT]}
               }
 
               store_translations(mapped_data)

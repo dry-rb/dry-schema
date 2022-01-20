@@ -196,7 +196,7 @@ module Dry
 
           return data unless custom_top_namespace?(path)
 
-          data.map { |k, v| [k.gsub(DEFAULT_MESSAGES_ROOT, config.top_namespace), v] }.to_h
+          data.transform_keys { _1.gsub(DEFAULT_MESSAGES_ROOT, config.top_namespace) }
         end
 
         # @api private
