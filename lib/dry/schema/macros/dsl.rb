@@ -245,8 +245,8 @@ module Dry
         # @api private
         def schema_or_predicate?(arg)
           arg.is_a?(Dry::Schema::Processor) ||
-            arg.is_a?(Symbol) &&
-              arg.to_s.end_with?(QUESTION_MARK)
+            (arg.is_a?(Symbol) &&
+              arg.to_s.end_with?(QUESTION_MARK))
         end
       end
     end

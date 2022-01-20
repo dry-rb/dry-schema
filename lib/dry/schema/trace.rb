@@ -90,7 +90,7 @@ module Dry
       end
 
       def respond_to_missing?(meth, include_private = false)
-        super || meth.to_s.end_with?(QUESTION_MARK) && compuiler.support?(meth)
+        super || (meth.to_s.end_with?(QUESTION_MARK) && compuiler.support?(meth))
       end
 
       # @api private
