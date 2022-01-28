@@ -119,6 +119,7 @@ RSpec.describe "Macros #hash" do
       end
 
       specify do
+        pending
         expect(result).to be_successful
         expect(result.to_h).to eql(foo: {date: DateTime.new(2021, 11, 11)}, unnested_data: DateTime.new(2021, 11, 11))
       end
