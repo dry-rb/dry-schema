@@ -103,7 +103,7 @@ RSpec.describe "Macros #hash" do
       subject(:schema) do
         ExpirationDate = Types::DateTime.constructor { |value| value.to_time.round.to_datetime }
         Dry::Schema.Params do
-          required(:unnested_dated).value(ExpirationDate)
+          required(:unnested_date).value(ExpirationDate)
           required(:foo).hash do
             required(:bar).hash do
               required(:nested_date).value(ExpirationDate)
@@ -112,7 +112,13 @@ RSpec.describe "Macros #hash" do
         end
       end
 
-      let(:input) { {foo: {nested_date: '2021-11-11T00:00:00+00:00'}, unnested_date: '2021-11-11T00:00:00+00:00'  } }
+      let(:input) do
+        {
+          foo: { bar: {nested_date: '2021-11-11T00:00:00+00:00'}},
+          unnested_date: '2021-11-11T00:00:00+00:00',
+        }
+        
+      end
 
       specify do
         expect(result).to be_successful
