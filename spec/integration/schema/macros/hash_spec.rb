@@ -98,8 +98,7 @@ RSpec.describe "Macros #hash" do
       end
     end
 
-    context 'with custom coercible type' do
- 
+    context "with custom coercible type" do
       subject(:schema) do
         ExpirationDate = Types::DateTime.constructor { |value| value.to_time.round.to_datetime }
         Dry::Schema.Params do
@@ -114,15 +113,14 @@ RSpec.describe "Macros #hash" do
 
       let(:input) do
         {
-          foo: { bar: {nested_date: '2021-11-11T00:00:00+00:00'}},
-          unnested_date: '2021-11-11T00:00:00+00:00',
+          foo: {bar: {nested_date: "2021-11-11T00:00:00+00:00"}},
+          unnested_date: "2021-11-11T00:00:00+00:00"
         }
-        
       end
 
       specify do
         expect(result).to be_successful
-        expect(result.to_h).to eql(foo: {date:  DateTime.new(2021, 11, 11) }, unnested_data: DateTime.new(2021, 11, 11))
+        expect(result.to_h).to eql(foo: {date: DateTime.new(2021, 11, 11)}, unnested_data: DateTime.new(2021, 11, 11))
       end
     end
 
