@@ -98,6 +98,28 @@ RSpec.describe "Macros #hash" do
       end
     end
 
+    context 'with custom coercible type' do
+ 
+      subject(:schema) do
+        ExpirationDate = Types::DateTime.constructor { |value| value.to_time.round.to_datetime }
+        Dry::Schema.Params do
+          required(:unnested_dated).value(ExpirationDate)
+          required(:foo).hash do
+            required(:bar).hash do
+              required(:nested_date).value(ExpirationDate)
+            end
+          end
+        end
+      end
+
+      let(:input) { {foo: {nested_date: '2021-11-11T00:00:00+00:00'}, unnested_date: '2021-11-11T00:00:00+00:00'  } }
+
+      specify do
+        expect(result).to be_successful
+        expect(result.to_h).to eql(foo: {date:  DateTime.new(2021, 11, 11) }, unnested_data: DateTime.new(2021, 11, 11))
+      end
+    end
+
     context "constrained type" do
       let(:hash_schema) do
         Types::Hash.schema({}).constrained([:filled])
