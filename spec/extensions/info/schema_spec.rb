@@ -81,6 +81,45 @@ RSpec.describe Dry::Schema::JSON, "#info" do
     expect(schema.info).to eql(info)
   end
 
+  context "with typed array schema" do
+    let(:schema) do
+      Dry::Schema.Params do
+        required(:opt1).filled(Types::Array)
+        required(:opt2).filled(Types::Array(:string))
+        required(:opt3).filled(Types::Array(:integer))
+        required(:opt4).filled(Types::Array(:bool))
+      end
+    end
+
+    let(:info) do
+      {
+        keys: {
+          opt1: {
+            required: true,
+            type: "array"
+          },
+          opt2: {
+            required: true,
+            type: "array",
+            member: "string"
+          },
+          opt3: {
+            required: true,
+            type: "array",
+            member: "integer"
+          },
+          opt4: {
+            required: true,
+            type: "array",
+            member: "bool"
+          }
+        }
+      }
+    end
+
+    it { expect(schema.info).to eql(info) }
+  end
+
   describe "inferring types" do
     {
       array: "array",
