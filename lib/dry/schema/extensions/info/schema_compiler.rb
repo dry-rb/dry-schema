@@ -96,7 +96,16 @@ module Dry
             keys[rest[0][1]] = {required: opts.fetch(:required, true)}
           else
             type = PREDICATE_TO_TYPE[name]
-            keys[key][:type] = type if type
+            assign_type(key, type) if type
+          end
+        end
+
+        # @api private
+        def assign_type(key, type)
+          if keys[key][:type]
+            keys[key][:member] = type
+          else
+            keys[key][:type] = type
           end
         end
       end
