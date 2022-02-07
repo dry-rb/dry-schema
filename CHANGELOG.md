@@ -6,6 +6,7 @@
 ### Fixed
 
 - Composing schemas no longer crashes in certain scenarios (issue #342 fixed via #366) (@vsuhachev)
+- Fix info extension for typed arrays (issue #394 fixed via #397) (@CandyFet)
 
 
 [Compare v1.8.0...master](https://github.com/dry-rb/dry-schema/compare/v1.8.0...master)
