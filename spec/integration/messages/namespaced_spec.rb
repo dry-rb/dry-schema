@@ -55,4 +55,21 @@ RSpec.describe "Namespaced messages" do
         .to eql(["COMMENT can't be blank"])
     end
   end
+
+  context "with OR types" do
+    let(:post_schema) do
+      Dry::Schema.Params do
+        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+        config.messages.namespace = :post
+
+        required(:some_ids).maybe(Types::Array.of(Types::Params::Integer | Types::Params::String))
+      end
+    end
+
+    it "uses namespaced messages" do
+      result = post_schema.call(some_ids: [[]])
+
+      expect(result.errors[:some_ids]).to eql({0 => ["must be an integer or must be a string"]})
+    end
+  end
 end
