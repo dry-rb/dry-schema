@@ -3,6 +3,10 @@
 ## unreleased 
 
 
+### Added
+
+- [EXPERIMENTAL] `json_schema` extension which allows you to convert a schema into a JSON schema (via #369) (@ianks)
+
 ### Fixed
 
 - Composing schemas no longer crashes in certain scenarios (issue #342 fixed via #366) (@vsuhachev)
