@@ -80,6 +80,11 @@ module Dry
         def interpolate(key, options, **data)
           messages.interpolate(key, options, **data)
         end
+
+        # @api private
+        def translate(key, **args)
+          messages.translate(key, **args)
+        end
       end
     end
   end
