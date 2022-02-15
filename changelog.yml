@@ -6,7 +6,9 @@
   - 'Composing schemas no longer crashes in certain scenarios (issue #342 fixed via
     #366) (@vsuhachev)'
   - 'Fix info extension for typed arrays (issue #394 fixed via #397) (@CandyFet)'
-  added: 
+  added:
+  - "[EXPERIMENTAL] `json_schema` extension which allows you to convert a schema into
+    a JSON schema (via #369) (@ianks)"
   changed: 
 - version: 1.8.0
   date: '2021-09-12'
