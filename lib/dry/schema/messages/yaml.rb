@@ -39,10 +39,10 @@ module Dry
           super do |config|
             config.default_locale = :en unless config.default_locale
 
-            config.root = "%<locale>s.#{config.root}"
+            config.root = -"%<locale>s.#{config.root}"
 
             config.rule_lookup_paths = config.rule_lookup_paths.map { |path|
-              "%<locale>s.#{path}"
+              -"%<locale>s.#{path}"
             }
           end
         end
