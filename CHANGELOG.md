@@ -3,6 +3,10 @@
 ## unreleased 
 
 
+### Fixed
+
+- Fix loose JSON schemas for nested hashes (via #401) (@tomdalling)
+
 ### Changed
 
 - [performance] YAML message backend allocates less strings (via #399) (@casperisfine)
