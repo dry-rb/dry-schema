@@ -168,10 +168,12 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     unsupported_cases.each do |predicate|
       subject(:schema) do
         Dry::Schema.JSON do
-          if predicate.is_a?(Hash)
-            required(:key).filled(**predicate)
-          else
-            required(:key).filled(predicate)
+          required(:nested).hash do
+            if predicate.is_a?(Hash)
+              required(:key).filled(**predicate)
+            else
+              required(:key).filled(predicate)
+            end
           end
         end
       end

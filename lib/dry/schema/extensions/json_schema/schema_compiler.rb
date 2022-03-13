@@ -88,7 +88,7 @@ module Dry
 
         # @api private
         def visit_set(node, opts = EMPTY_HASH)
-          target = (key = opts[:key]) ? self.class.new : self
+          target = (key = opts[:key]) ? self.class.new(loose: loose?) : self
 
           node.map { |child| target.visit(child, opts) }
 
