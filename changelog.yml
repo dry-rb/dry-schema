@@ -2,7 +2,8 @@
 - version: unreleased
   summary: 
   date: 
-  fixed: 
+  fixed:
+  - 'Fix loose JSON schemas for nested hashes (via #401) (@tomdalling)'
   added: 
   changed:
   - "[performance] YAML message backend allocates less strings (via #399) (@casperisfine)"
