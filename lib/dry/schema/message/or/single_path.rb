@@ -42,6 +42,10 @@ module Dry
           end
           alias_method :to_s, :dump
 
+          def to_or(_root)
+            self
+          end
+
           # Dump an `or` message into a hash
           #
           # @see Message#to_h
