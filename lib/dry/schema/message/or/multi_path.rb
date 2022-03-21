@@ -22,15 +22,37 @@ module Dry
             flat_left = left.flatten
             flat_right = right.flatten
             @root = [*flat_left, *flat_right].map(&:_path).reduce(:&)
-            @left = flat_left.map { _1.to_or(root) }
-            @right = flat_right.map { _1.to_or(root) }
+            @left = Array(left).map { |msg| msg.to_or(root) }
+            @right = Array(right).map { |msg| msg.to_or(root) }
+          end
+
+          def to_or(_root)
+            self
           end
 
           # @api public
           def to_h
             @to_h ||= Path[[*root, :or]].to_h(
-              [MessageSet.new(left).to_h, MessageSet.new(right).to_h]
+              [merge_side(left), merge_side(right)].flatten
             )
+          end
+
+          alias _path root
+
+          def path
+            to_h
+          end
+
+          protected
+
+          def merge_side(side)
+            side.map do |element|
+              if element.is_a?(MultiPath)
+                [merge_side(element.left), merge_side(element.right)]
+              else
+                element.to_h
+              end
+            end.reduce(&:merge)
           end
         end
       end
