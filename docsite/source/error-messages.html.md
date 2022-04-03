@@ -4,7 +4,7 @@ layout: gem-single
 name: dry-schema
 ---
 
-By default `dry-schema` comes with a set of pre-defined error messages for every built-in predicate. They are defined in [a yaml file](https://github.com/dry-rb/dry-schema/blob/master/config/errors.yml) which is shipped with the gem. This file is compatible with `I18n` format.
+By default `dry-schema` comes with a set of pre-defined error messages for every built-in predicate. They are defined in [a yaml file](https://github.com/dry-rb/dry-schema/blob/main/config/errors.yml) which is shipped with the gem. This file is compatible with `I18n` format.
 
 ## Configuration
 
@@ -30,7 +30,7 @@ You can change the default top namespace using:
 schema = Dry::Schema.Params do
   config.messages.top_namespace = :validation_schema
 end
-``` 
+```
 
 ## Lookup rules
 
@@ -130,7 +130,7 @@ schema.call(email: '').errors(full: true).to_h
 
 ### Finding the right key
 
-`dry-schema` has one error key for each kind of validation (Refer to [`errors.yml`](https://github.com/dry-rb/dry-schema/blob/master/config/errors.yml) for the full list). `key?` and `filled?` can usually be mistaken for each other, so pay attention to them:
+`dry-schema` has one error key for each kind of validation (Refer to [`errors.yml`](https://github.com/dry-rb/dry-schema/blob/main/config/errors.yml) for the full list). `key?` and `filled?` can usually be mistaken for each other, so pay attention to them:
 
 - `key?`: a required parameter is missing in the `params` hash.
 - `filled?`: a required parameter is in the `params` hash but has an empty value.

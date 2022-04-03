@@ -6,9 +6,9 @@ eval_gemfile "Gemfile.devtools"
 
 gemspec
 
-gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "master" if ENV["DRY_CONFIGURABLE_FROM_MASTER"].eql?("true") # rubocop:disable Layout/LineLength
-gem "dry-logic", github: "dry-rb/dry-logic", branch: "master" if ENV["DRY_LOGIC_FROM_MASTER"].eql?("true") # rubocop:disable Layout/LineLength
-gem "dry-types", github: "dry-rb/dry-types", branch: "master"
+gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "main" if ENV["DRY_CONFIGURABLE_FROM_MAIN"].eql?("true") # rubocop:disable Layout/LineLength
+gem "dry-logic", github: "dry-rb/dry-logic", branch: "main" if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true") # rubocop:disable Layout/LineLength
+gem "dry-types", github: "dry-rb/dry-types", branch: "main"
 
 group :test do
   gem "dry-monads", require: false, github: "dry-rb/dry-monads"
