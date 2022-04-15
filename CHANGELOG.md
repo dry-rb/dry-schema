@@ -6,6 +6,7 @@
 ### Fixed
 
 - Fix loose JSON schemas for nested hashes (via #401) (@tomdalling)
+- Correct spelling error 'mininum' to 'minimum' in json-schema extension (via #404) (@svenanderzen)
 
 ### Changed
 
