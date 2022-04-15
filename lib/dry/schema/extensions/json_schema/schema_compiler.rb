@@ -47,7 +47,7 @@ module Dry
             pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
           },
           gt?: {exclusiveMinimum: IDENTITY},
-          gteq?: {mininum: IDENTITY},
+          gteq?: {minimum: IDENTITY},
           lt?: {exclusiveMaximum: IDENTITY},
           lteq?: {maximum: IDENTITY},
           odd?: {type: "integer", not: {multipleOf: 2}},

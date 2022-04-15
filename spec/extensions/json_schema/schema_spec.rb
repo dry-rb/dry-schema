@@ -282,7 +282,7 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
   describe "special number predictes" do
     {
       {gt?: 5} => {type: "integer", exclusiveMinimum: 5},
-      {gteq?: 5} => {type: "integer", mininum: 5},
+      {gteq?: 5} => {type: "integer", minimum: 5},
       {lt?: 5} => {type: "integer", exclusiveMaximum: 5},
       {lteq?: 5} => {type: "integer", maximum: 5},
       odd?: {type: "integer", not: {multipleOf: 2}},
