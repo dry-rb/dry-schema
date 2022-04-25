@@ -116,7 +116,7 @@ module Dry
         ->(input) { call(input) }
       end
 
-      # Return string represntation
+      # Return string representation
       #
       # @return [String]
       #
