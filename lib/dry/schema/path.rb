@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "dry/core/equalizer"
+
 require "dry/schema/constants"
 
 module Dry

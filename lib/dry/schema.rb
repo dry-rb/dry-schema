@@ -2,11 +2,7 @@
 
 require "dry/core/extensions"
 
-require "dry/schema/config"
 require "dry/schema/constants"
-require "dry/schema/dsl"
-require "dry/schema/params"
-require "dry/schema/json"
 
 module Dry
   # Main interface
@@ -14,6 +10,11 @@ module Dry
   # @api public
   module Schema
     extend Dry::Core::Extensions
+
+    autoload(:DSL, "dry/schema/dsl")
+    autoload(:Params, "dry/schema/params")
+    autoload(:JSON, "dry/schema/json")
+    autoload(:Config, "dry/schema/config")
 
     # Configuration
     #
