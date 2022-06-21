@@ -115,6 +115,18 @@ module Dry
         end
 
         # @api private
+        def visit_or(node, opts = EMPTY_HASH)
+          node.each do |child|
+            c = self.class.new(loose: loose?)
+            c.keys.update(subschema: {})
+            c.visit(child, opts.merge(key: :subschema))
+
+            any_of = (keys[opts[:key]][:anyOf] ||= [])
+            any_of << c.keys[:subschema]
+          end
+        end
+
+        # @api private
         def visit_implication(node, opts = EMPTY_HASH)
           node.each do |el|
             visit(el, **opts, required: false)
