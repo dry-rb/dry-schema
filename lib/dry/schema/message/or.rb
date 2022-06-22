@@ -17,8 +17,8 @@ module Dry
 
           if paths.uniq.size == 1
             SinglePath.new(left, right, messages)
-          elsif right.is_a?(Array)
-            if left.is_a?(Array) && paths.uniq.size > 1
+          elsif MultiPath.handler(right)
+            if MultiPath.handler(left) && paths.uniq.size > 1
               MultiPath.new(left, right)
             else
               right
