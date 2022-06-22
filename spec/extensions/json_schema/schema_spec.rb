@@ -32,6 +32,8 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
         optional(:address).hash do
           optional(:street).value(:string)
         end
+
+        required(:id) { str? | int? }
       end
     end
 
@@ -70,9 +72,15 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
               }
             },
             required: []
+          },
+          id: {
+            anyOf: [
+              {type: "string"},
+              {type: "integer"}
+            ]
           }
         },
-        required: %w[email roles]
+        required: %w[email roles id]
       )
     end
   end
