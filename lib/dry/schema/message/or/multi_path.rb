@@ -81,7 +81,7 @@ module Dry
 
           # @api private
           def _messages
-            @_messages ||= [@left, @right].map do |message|
+            @_messages ||= [left, right].map do |message|
               handler = self.class.handler(message)
 
               unless handler
