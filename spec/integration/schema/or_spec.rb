@@ -111,4 +111,82 @@ RSpec.describe Dry::Schema, "OR messages" do
       expect(schema.(user: {}).errors.to_h).to eql(user: {or: [{name: ["is missing"]}, {nickname: ["is missing"]}]})
     end
   end
+
+  context "with three schemas" do
+    name_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+    end
+
+    nickname_schema = Dry::Schema.define do
+      required(:nickname).filled(:string)
+    end
+
+    alias_schema = Dry::Schema.define do
+      required(:alias).filled(:string)
+    end
+
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:user) { name_schema | nickname_schema | alias_schema }
+      end
+    end
+
+    it "returns success for valid input" do
+      expect(schema.(user: {name: "John"})).to be_success
+      expect(schema.(user: {nickname: "John"})).to be_success
+      expect(schema.(user: {alias: "Slick"})).to be_success
+    end
+
+    it "provides error messages for invalid input where all sides failed" do
+      expect(schema.(user: {}).errors.to_h).to eql(
+        {
+          user: {or: [{name: ["is missing"]},
+                      {nickname: ["is missing"]},
+                      {alias: ["is missing"]}]}
+        }
+      )
+    end
+  end
+
+  context "with four schemas" do
+    name_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+    end
+
+    nickname_schema = Dry::Schema.define do
+      required(:nickname).filled(:string)
+    end
+
+    alias_schema = Dry::Schema.define do
+      required(:alias).filled(:string)
+    end
+
+    favorite_food_schema = Dry::Schema.define do
+      required(:favorite_food).filled(:string)
+    end
+
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:user) { name_schema | nickname_schema | alias_schema | favorite_food_schema }
+      end
+    end
+
+    it "returns success for valid input" do
+      expect(schema.(user: {name: "John"})).to be_success
+      expect(schema.(user: {nickname: "John"})).to be_success
+      expect(schema.(user: {alias: "Slick"})).to be_success
+      expect(schema.(user: {favorite_food: "pizza"})).to be_success
+    end
+
+    it "provides error messages for invalid input where all sides failed" do
+      expect(schema.(user: {}).errors.to_h).to eql(
+        {
+          user: {or: [{name: ["is missing"]},
+                      {nickname: ["is missing"]},
+                      {alias: ["is missing"]},
+                      {favorite_food: ["is missing"]}]}
+        }
+      )
+    end
+  end
 end
