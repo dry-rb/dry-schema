@@ -17,8 +17,8 @@ end
 gem "dry-types", github: "dry-rb/dry-types", branch: "main"
 
 group :test do
-  gem "dry-monads", require: false, github: "dry-rb/dry-monads"
-  gem "dry-struct", require: false, github: "dry-rb/dry-struct"
+  gem "dry-monads", require: false, github: "dry-rb/dry-monads", branch: "main"
+  gem "dry-struct", require: false, github: "dry-rb/dry-struct", branch: "main"
   gem "i18n", "1.8.2", require: false
   gem "transproc"
   gem "json-schema"
