@@ -7,6 +7,10 @@
 
 - Support `anyOf` composition in JSON schema output (@robhanlon22)
 
+### Fixed
+
+- Allow composition of multiple ors (issue #307 fixed via #409) (@robhanlon22)
+
 
 [Compare v1.9.2...main](https://github.com/dry-rb/dry-schema/compare/v1.9.2...main)
 
