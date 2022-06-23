@@ -2,7 +2,8 @@
 - version: unreleased
   summary: 
   date: 
-  fixed: 
+  fixed:
+  - 'Allow composition of multiple ors (issue #307 fixed via #409) (@robhanlon22)'
   added:
   - Support `anyOf` composition in JSON schema output (@robhanlon22)
   changed: 
