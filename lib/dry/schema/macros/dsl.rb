@@ -58,12 +58,13 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def value(...)
-          append_macro(Macros::Value) do |macro|
-            macro.call(...)
+        def value(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+            append_macro(Macros::Value) do |macro|
+              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
+            end
           end
         end
-        ruby2_keywords :value if respond_to?(:ruby2_keywords, true)
 
         # Prepends `:filled?` predicate
         #
@@ -76,12 +77,13 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def filled(...)
-          append_macro(Macros::Filled) do |macro|
-            macro.call(...)
+        def filled(*args, **opts, &block)
+          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+            append_macro(Macros::Filled) do |macro|
+              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
+            end
           end
         end
-        ruby2_keywords :filled if respond_to?(:ruby2_keywords, true)
 
         # Specify a nested hash without enforced `hash?` type-check
         #

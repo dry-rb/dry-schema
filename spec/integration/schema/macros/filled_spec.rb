@@ -158,4 +158,29 @@ RSpec.describe "Macros #filled" do
       expect(result.errors).to eql(foo: ["must be filled"])
     end
   end
+
+  describe "nested into further DSLs" do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:foo).filled(:array).each do
+          filled(:array).each do
+            filled(:string)
+          end
+        end
+      end
+    end
+
+    it "passes when valid" do
+      expect(schema.call(foo: [["bar"]])).to be_success
+    end
+
+    it "fails when invalid" do
+      expect(schema.call(foo: 1).messages).to eql(foo: ["must be an array"])
+      expect(schema.call(foo: []).messages).to eql(foo: ["must be filled"])
+      expect(schema.call(foo: [1]).messages).to eql(foo: {0 => ["must be an array"]})
+      expect(schema.call(foo: [[]]).messages).to eql(foo: {0 => ["must be filled"]})
+      expect(schema.call(foo: [[1]]).messages).to eql(foo: {0 => {0 => ["must be a string"]}})
+      expect(schema.call(foo: [[""]]).messages).to eql(foo: {0 => {0 => ["must be filled"]}})
+    end
+  end
 end
