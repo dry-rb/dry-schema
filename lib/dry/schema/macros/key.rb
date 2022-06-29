@@ -32,49 +32,6 @@ module Dry
         end
         ruby2_keywords(:filter) if respond_to?(:ruby2_keywords, true)
 
-        # @overload value(type_spec, *predicates, **predicate_opts)
-        #   Set type specification and predicates
-        #
-        #   @param [Symbol,Types::Type,Array] type_spec
-        #   @param [Array<Symbol>] predicates
-        #   @param [Hash] predicate_opts
-        #
-        #   @example with a predicate
-        #     required(:name).value(:string, :filled?)
-        #
-        #   @example with a predicate with arguments
-        #     required(:name).value(:string, min_size?: 2)
-        #
-        #   @example with a block
-        #     required(:name).value(:string) { filled? & min_size?(2) }
-        #
-        # @return [Macros::Key]
-        #
-        # @see Macros::DSL#value
-        #
-        # @api public
-        def value(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
-            super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
-          end
-        end
-
-        # Set type specification and predicates for a filled value
-        #
-        # @example
-        #   required(:name).filled(:string)
-        #
-        # @see Macros::Key#value
-        #
-        # @return [Macros::Key]
-        #
-        # @api public
-        def filled(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
-            super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
-          end
-        end
-
         # Set type specification and predicates for a maybe value
         #
         # @example

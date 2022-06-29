@@ -11,13 +11,15 @@ module Dry
       # @api private
       class Each < DSL
         # @api private
-        def value(*args, **opts)
+        def value(*args, **opts, &block)
           extract_type_spec(*args, set_type: false) do |*predicates, type_spec:, type_rule:|
             if type_spec && !type_spec.is_a?(Dry::Types::Type)
               type(schema_dsl.array[type_spec])
             end
 
-            super(*predicates, type_spec: type_spec, type_rule: type_rule, **opts)
+            append_macro(Macros::Value) do |macro|
+              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
+            end
           end
         end
 

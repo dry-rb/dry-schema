@@ -56,4 +56,26 @@ RSpec.describe Dry::Schema::Macros::Value do
       )
     end
   end
+
+  context "nesting without keys" do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:foo).value(:array).each do
+          value(:array).each do
+            value(:string)
+          end
+        end
+      end
+    end
+
+    it "passes when valid" do
+      expect(schema.(foo: [["bar"]])).to be_success
+    end
+
+    it "fails when invalid" do
+      expect(schema.(foo: 1).errors).to eql(foo: ["must be an array"])
+      expect(schema.(foo: [1]).errors).to eql(foo: {0 => ["must be an array"]})
+      expect(schema.(foo: [[1]]).errors).to eql(foo: {0 => {0 => ["must be a string"]}})
+    end
+  end
 end
