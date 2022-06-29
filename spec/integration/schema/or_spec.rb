@@ -189,4 +189,174 @@ RSpec.describe Dry::Schema, "OR messages" do
       )
     end
   end
+
+  context "a very complicated schema" do
+    foo_schema_base = Dry::Schema.JSON do
+      required(:type).filled(:string)
+    end
+
+    foo_schema_1 = Dry::Schema.JSON(parent: [foo_schema_base]) do
+      required(:type).filled(:string, included_in?: %w[foo_1])
+      required(:value).array { filled? & str? }
+    end
+
+    foo_schema_2 = Dry::Schema.JSON(parent: [foo_schema_base]) do
+      required(:type).filled(:string, included_in?: %w[foo_2])
+      required(:value).array { filled? & str? }
+    end
+
+    foo_schema_3 = Dry::Schema.JSON(parent: [foo_schema_base]) do
+      required(:type).filled(:string, included_in?: %w[foo_3])
+      required(:value).hash do
+        required(:left).filled(:date_time)
+        required(:right).filled(:date_time)
+      end
+    end
+
+    foo_schema = [foo_schema_1, foo_schema_2, foo_schema_3].reduce(:|)
+
+    foo_schema_extra = Dry::Schema.JSON(parent: [foo_schema_base]) do
+      required(:type).filled(:string, included_in?: %w[foo_extra])
+      required(:value).filled(:string, format?: /foo/)
+    end
+
+    bar_schema_base = Dry::Schema.JSON do
+      required(:type).filled(:string)
+    end
+
+    baz_schema = Dry::Schema.JSON do
+      required(:foos).array { foo_schema_extra | foo_schema }
+    end
+
+    bar_schema_1 = Dry::Schema.JSON(parent: [bar_schema_base, baz_schema]) do
+      required(:type).filled(:string, included_in?: %w[bar_1])
+    end
+
+    bar_schema_2 = Dry::Schema.JSON(parent: [bar_schema_base]) do
+      required(:type).filled(:string, included_in?: %w[bar_2])
+      required(:bazes).filled(:array).each do
+        # rubocop:disable Lint/Void
+        baz_schema
+        # rubocop:enable Lint/Void
+      end
+    end
+
+    bar_schema_3 = Dry::Schema.JSON(parent: [bar_schema_base, baz_schema]) do
+      required(:type).filled(:string, included_in?: %w[bar_3])
+    end
+
+    bar_schema = [bar_schema_1, bar_schema_2, bar_schema_3].reduce(:|)
+
+    schema = Dry::Schema.JSON do
+      required(:bars).filled(:array).each do
+        # rubocop:disable Lint/Void
+        bar_schema
+        # rubocop:enable Lint/Void
+      end
+    end
+
+    it "can succeed" do
+      expect(
+        schema.(
+          bars: [
+            {
+              type: "bar_1",
+              foos: [
+                {
+                  type: "foo_extra",
+                  id: "id",
+                  value: "foobar"
+                }
+              ]
+            }
+          ]
+        )
+      ).to be_success
+    end
+
+    it "provides error messages for a failure" do
+      expect(
+        schema.(
+          bars: [
+            {
+              type: "bar_1",
+              foos: [
+                {
+                  type: "foo_extra",
+                  id: "id"
+                }
+              ]
+            }
+          ]
+        ).errors.to_h
+      )
+        .to eq(
+          bars: {
+            0 => {
+              or: [
+                {
+                  bars: {
+                    0 => {
+                      foos: {
+                        0 => {
+                          or: [
+                            {
+                              value: ["is missing"]
+                            },
+                            {
+                              type: ["must be one of: foo_1"],
+                              value: ["is missing"]
+                            },
+                            {
+                              type: ["must be one of: foo_2"],
+                              value: ["is missing"]
+                            },
+                            {
+                              type: ["must be one of: foo_3"],
+                              value: ["is missing"]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  type: ["must be one of: bar_2"],
+                  bazes: ["is missing"]
+                },
+                {
+                  type: ["must be one of: bar_3"],
+                  bars: {
+                    0 => {
+                      foos: {
+                        0 => {
+                          or: [
+                            {
+                              value: ["is missing"]
+                            },
+                            {
+                              type: ["must be one of: foo_1"],
+                              value: ["is missing"]
+                            },
+                            {
+                              type: ["must be one of: foo_2"],
+                              value: ["is missing"]
+                            },
+                            {
+                              type: ["must be one of: foo_3"],
+                              value: ["is missing"]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        )
+    end
+  end
 end

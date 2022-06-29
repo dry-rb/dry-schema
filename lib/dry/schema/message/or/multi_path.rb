@@ -42,8 +42,8 @@ module Dry
           # @api private
           private_class_method def self.handlers
             @handlers ||= {
-              self => -> { _1 },
-              Array => -> { MessageArray.new(_1) }
+              self => :itself.to_proc,
+              Array => MessageArray.method(:new)
             }.freeze
           end
 
@@ -59,7 +59,7 @@ module Dry
 
           # @api private
           def root
-            @root ||= _messages.flat_map(&:_paths).reduce(:&)
+            @root ||= _paths.reduce(:&)
           end
 
           # @api private
@@ -68,8 +68,13 @@ module Dry
           end
 
           # @api private
+          def _path
+            @_path ||= Path[root]
+          end
+
+          # @api private
           def _paths
-            @paths ||= [Path[root]]
+            @paths ||= _messages.flat_map(&:_paths)
           end
 
           # @api private
