@@ -1,32 +1,39 @@
 ---
+- version: unreleased
+  summary: 
+  date: 
+  fixed: 
+  added:
+  - 'Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)'
+  changed: 
 - version: 1.9.3
-  summary:
+  summary: 
   date: '2022-06-23'
   fixed:
   - 'Allow composition of multiple ors (issue #307 fixed via #409) (@robhanlon22)'
   added:
   - Support `anyOf` composition in JSON schema output (@robhanlon22)
-  changed:
+  changed: 
 - version: 1.9.2
-  summary:
+  summary: 
   date: '2022-05-28'
   fixed:
   - 'Fix loose JSON schemas for nested hashes (via #401) (@tomdalling)'
   - 'Correct spelling error ''mininum'' to ''minimum'' in json-schema extension (via
     #404) (@svenanderzen)'
-  added:
+  added: 
   changed:
   - "[performance] YAML message backend allocates less strings (via #399) (@casperisfine)"
 - version: 1.9.1
-  summary:
+  summary: 
   date: '2022-02-17'
   fixed:
   - 'Namespaced messages no longer crashes in certain scenarios (see dry-rb/dry-validation#692
     fixed via #398) (@krekoten)'
-  added:
-  changed:
+  added: 
+  changed: 
 - version: 1.9.0
-  summary:
+  summary: 
   date: '2022-02-15'
   fixed:
   - 'Composing schemas no longer crashes in certain scenarios (issue #342 fixed via
@@ -35,7 +42,7 @@
   added:
   - "[EXPERIMENTAL] `json_schema` extension which allows you to convert a schema into
     a JSON schema (via #369) (@ianks)"
-  changed:
+  changed: 
 - version: 1.8.0
   date: '2021-09-12'
   changed:
@@ -62,30 +69,30 @@
     (issue #280 fixed via #365) (@solnic)'
   - 'Handle non-Hash to Hash transformation in `before(:key_coercer)` (issue #350
     fixed via #362) (@ojab)'
-  added:
+  added: 
   changed:
   - "[internal] `Dry::Schema::Path` clean up and performance improvements (via #358)
     (@ojab)"
   - "[internal] simplify and speed up handling of steps in nested schemas (via #360)
     (@ojab)"
 - version: 1.6.2
-  summary:
+  summary: 
   date: '2021-04-15'
   fixed:
   - Using `respond_to?` predicate in blocks works now (@rindek)
   added:
   - A default error message for `respond_to?` predicate (@rindek)
-  changed:
+  changed: 
 - version: 1.6.1
-  summary:
+  summary: 
   date: 2021-02-02
   fixed:
   - Messages#[] handles meta/no meta cases more gracefully and has better interoperability
     with the I18n backend. This brings MessageCompiler#visit_unexpected_key up to
     parity with MessageCompiler#visit_predicate. Uses visit_predicate as basis for
     visit_unexpected_key. (@robhanlon22)
-  added:
-  changed:
+  added: 
+  changed: 
 - version: 1.6.0
   date: '2021-01-21'
   fixed:
@@ -110,15 +117,15 @@
 
       See https://github.com/dry-rb/dry-schema/issues/335 for rationale.
 - version: 1.5.6
-  summary:
+  summary: 
   date: '2020-10-21'
   fixed:
   - 'Fixed stack error which was a regression introduced in 1.5.5 (issue #322 fixed
     via #323) (@flash-gordon)'
-  added:
-  changed:
+  added: 
+  changed: 
 - version: 1.5.5
-  summary:
+  summary: 
   date: '2020-10-08'
   fixed:
   - 'Key validation works with messages that have meta-data (issue #310 fixed via
@@ -127,49 +134,49 @@
     (issue #296 fixed via #315) (@tadeusz-niemiec + @solnic)'
   - "`Result#error?(path)` works correctly when the path points to an array item (issue
     #317 fixed via #318) (@solnic)"
-  added:
-  changed:
+  added: 
+  changed: 
 - version: 1.5.4
   summary: '2020-09-03'
-  date:
+  date: 
   fixed:
   - 'Key validation works correctly with a non-nested maybe hashes (issue #311 fixed
     via #312) (@svobom57)'
-  added:
-  changed:
+  added: 
+  changed: 
 - version: 1.5.3
-  summary:
+  summary: 
   date: '2020-08-21'
   fixed:
   - 'Key validator works correctly with an array with maybe hash as its member (issue
     #308 fixed via #309) (@tadeusz-niemiec)'
-  added:
+  added: 
   changed:
   - "[info extension] small performance improvement in the set visitor (see #305 for
     more details) (@esparta)"
 - version: 1.5.2
-  summary:
+  summary: 
   date: '2020-06-26'
   fixed:
   - "`Result#{success?,failure?}` work as expected when there are only key validation
     failures (issue #297 fixed via #298) (@adamransom)"
-  added:
+  added: 
   changed:
   - 'Using `full` option no longer adds a space between the name of a key and the
     message in case of languages that have no spaces between words (ie Japanese) (issue
     #161 closed via #292 by @tadeusz-niemiec)'
 - version: 1.5.1
-  summary:
+  summary: 
   date: '2020-05-21'
   fixed:
   - 'Negated predicates support the logic operator API now (fixed via #276 by @solnic)'
   - 'Fixed circular require warning (issue #279 closed via #282 by @landongrindheim)'
   - 'Validating keys against an array with non-hash members no longer crashes (issue
     #283 fixed via #284 by @beechnut and issue #289 fixed via #288 by @tadeusz-niemiec)'
-  added:
-  changed:
+  added: 
+  changed: 
 - version: 1.5.0
-  summary:
+  summary: 
   date: '2020-03-11'
   fixed:
   - |-
