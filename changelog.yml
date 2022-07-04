@@ -2,7 +2,8 @@
 - version: unreleased
   summary: 
   date: 
-  fixed: 
+  fixed:
+  - 'Fix `or` messages for complex schemas (via #413) (@robhanlon22)'
   added:
   - 'Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)'
   changed: 
