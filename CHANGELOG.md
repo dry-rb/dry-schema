@@ -7,6 +7,10 @@
 
 - Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)
 
+### Fixed
+
+- Fix `or` messages for complex schemas (via #413) (@robhanlon22)
+
 
 [Compare v1.9.3...main](https://github.com/dry-rb/dry-schema/compare/v1.9.3...main)
 
