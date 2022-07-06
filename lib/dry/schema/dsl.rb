@@ -316,7 +316,7 @@ module Dry
         type = resolve_type(spec)
         meta = {required: false, maybe: type.optional?}
 
-        types[name] = type.meta(meta)
+        @types[name] = type.meta(meta)
       end
 
       # Check if a custom type was set under provided key name
@@ -367,6 +367,22 @@ module Dry
         end
 
         parents.any?(&:filter_rules?)
+      end
+
+      # This DSL's type map merged with any parent type maps
+      #
+      # @api private
+      def types
+        [*parents.map(&:types), @types].reduce({}) do |acc, types|
+          merge_types(acc, types)
+        end
+      end
+
+      # @api private
+      def merge_types(lhs, rhs)
+        lhs.merge(rhs) do |_, old, new|
+          old | new
+        end
       end
 
       protected

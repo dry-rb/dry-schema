@@ -225,7 +225,7 @@ RSpec.describe Dry::Schema, "OR messages" do
     end
 
     baz_schema = Dry::Schema.JSON do
-      required(:foos).array { foo_schema_extra | foo_schema }
+      required(:foos).array(:hash, foo_schema_extra | foo_schema)
     end
 
     bar_schema_1 = Dry::Schema.JSON(parent: [bar_schema_base, baz_schema]) do
@@ -234,11 +234,7 @@ RSpec.describe Dry::Schema, "OR messages" do
 
     bar_schema_2 = Dry::Schema.JSON(parent: [bar_schema_base]) do
       required(:type).filled(:string, included_in?: %w[bar_2])
-      required(:bazes).filled(:array).each do
-        # rubocop:disable Lint/Void
-        baz_schema
-        # rubocop:enable Lint/Void
-      end
+      required(:bazes).array(:hash, baz_schema)
     end
 
     bar_schema_3 = Dry::Schema.JSON(parent: [bar_schema_base, baz_schema]) do
@@ -248,11 +244,7 @@ RSpec.describe Dry::Schema, "OR messages" do
     bar_schema = [bar_schema_1, bar_schema_2, bar_schema_3].reduce(:|)
 
     schema = Dry::Schema.JSON do
-      required(:bars).filled(:array).each do
-        # rubocop:disable Lint/Void
-        bar_schema
-        # rubocop:enable Lint/Void
-      end
+      required(:bars).array(:hash, bar_schema)
     end
 
     it "can succeed" do
@@ -266,6 +258,30 @@ RSpec.describe Dry::Schema, "OR messages" do
                   type: "foo_extra",
                   id: "id",
                   value: "foobar"
+                }
+              ]
+            }
+          ]
+        )
+      ).to be_success
+
+      expect(
+        schema.(
+          bars: [
+            {
+              type: "bar_2",
+              bazes: [
+                {
+                  foos: [
+                    {
+                      type: "foo_3",
+                      id: "id",
+                      value: {
+                        left: Time.now.iso8601,
+                        right: Time.now.iso8601
+                      }
+                    }
+                  ]
                 }
               ]
             }
