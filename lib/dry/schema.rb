@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require "dry/core/extensions"
+require "zeitwerk"
 
-require "dry/schema/config"
+require "dry/core"
 require "dry/schema/constants"
-require "dry/schema/dsl"
-require "dry/schema/params"
-require "dry/schema/json"
 
 module Dry
   # Main interface
@@ -14,6 +11,22 @@ module Dry
   # @api public
   module Schema
     extend Dry::Core::Extensions
+    require "dry/schema/extensions"
+
+    # @api private
+    def self.loader
+      @loader ||= Zeitwerk::Loader.new.tap do |loader|
+        root = File.expand_path("..", __dir__)
+        loader.tag = "dry-schema"
+        loader.inflector = Zeitwerk::GemInflector.new("#{root}/dry-schema.rb")
+        loader.inflector.inflect("dsl" => "DSL")
+        loader.push_dir(root)
+        loader.ignore("#{root}/dry-schema.rb")
+        loader.inflector.inflect("i18n" => "I18n", "yaml" => "YAML", "json" => "JSON")
+      end
+    end
+
+    loader.setup
 
     # Configuration
     #
@@ -86,5 +99,3 @@ module Dry
     end
   end
 end
-
-require "dry/schema/extensions"

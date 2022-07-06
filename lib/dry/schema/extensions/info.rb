@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/extensions/info/schema_compiler"
-
 module Dry
   module Schema
     # Info extension
@@ -15,7 +13,7 @@ module Dry
         #
         # @api public
         def info
-          compiler = SchemaCompiler.new
+          compiler = Info::SchemaCompiler.new
           compiler.call(to_ast)
           compiler.to_h
         end

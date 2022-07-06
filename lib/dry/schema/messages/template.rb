@@ -3,8 +3,6 @@
 require "dry/initializer"
 require "dry/core/equalizer"
 
-require "dry/schema/constants"
-
 module Dry
   module Schema
     module Messages
