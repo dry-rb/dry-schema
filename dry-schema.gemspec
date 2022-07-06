@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-initializer", "~> 3.0"
   spec.add_runtime_dependency "dry-logic", "~> 1.0"
   spec.add_runtime_dependency "dry-types", "~> 1.5"
+  spec.add_runtime_dependency "zeitwerk", "~> 2.5"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
