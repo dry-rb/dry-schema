@@ -374,15 +374,62 @@ module Dry
       # @api private
       def types
         [*parents.map(&:types), @types].reduce({}) do |acc, types|
-          merge_types(acc, types)
+          merge_types(Dry::Logic::Operations::And, acc, types)
         end
       end
 
       # @api private
-      def merge_types(lhs, rhs)
-        lhs.merge(rhs) do |_, old, new|
-          old | new
+      def merge_types_or(_op_class, old, new)
+        old | new
+      end
+
+      # @api private
+      def merge_types_and_schemas(op_class, old, new)
+        type_registry["hash"].schema(
+          merge_types(op_class, old.name_key_map, new.name_key_map)
+        )
+      end
+
+      # @api private
+      def merge_types_and_types(op_class, old, new)
+        if old.is_a?(Dry::Types::Constrained) && new.is_a?(Dry::Types::Constrained)
+          old.with(rule: op_class.new(old.rule, new.rule))
+        elsif old.is_a?(Dry::Types::Constrained)
+          old
+        else
+          new
         end
+      end
+
+      # @api private
+      def merge_types_and(op_class, old, new)
+        if old.is_a?(Dry::Types::AnyClass)
+          new
+        elsif new.is_a?(Dry::Types::AnyClass)
+          old
+        elsif old.is_a?(Dry::Types::Schema) && new.is_a?(Dry::Types::Schema)
+          merge_types_and_schemas(op_class, old, new)
+        elsif old.type == new.type
+          merge_types_and_types(op_class, old, new)
+        else
+          raise ArgumentError,
+                "Can't merge types, old=#{old.inspect}, new=#{new.inspect}"
+        end
+      end
+
+      # @api private
+      def merge_types(op_class, lhs, rhs)
+        merge_fn =
+          if op_class == Dry::Logic::Operations::Or
+            method(:merge_types_or)
+          elsif op_class == Dry::Logic::Operations::And ||
+                op_class == Dry::Logic::Operations::Implication
+            method(:merge_types_and)
+          else
+            raise NotImplementedError, "Can't merge types for operation #{op_class.inspect}"
+          end
+
+        lhs.merge(rhs) { |_k, old, new| merge_fn.(op_class, old, new) }
       end
 
       protected

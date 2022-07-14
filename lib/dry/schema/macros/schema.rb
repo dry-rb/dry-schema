@@ -51,7 +51,7 @@ module Dry
                 EMPTY_HASH.dup
               end
 
-            schema_dsl.merge_types(acc, types)
+            schema_dsl.merge_types(op.class, acc, types)
           end
         end
 
