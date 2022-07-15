@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
+require "dry/logic"
 
 require "dry/schema/constants"
 require "dry/schema/path"
@@ -16,6 +17,7 @@ require "dry/schema/key_coercer"
 require "dry/schema/key_validator"
 require "dry/schema/value_coercer"
 require "dry/schema/rule_applier"
+require "dry/schema/types_merger"
 
 module Dry
   module Schema
@@ -363,8 +365,7 @@ module Dry
       # @api private
       def filter_rules?
         if instance_variable_defined?("@filter_schema_dsl") && !filter_schema_dsl.macros.empty?
-          return true
-        end
+          return true end
 
         parents.any?(&:filter_rules?)
       end
@@ -379,57 +380,8 @@ module Dry
       end
 
       # @api private
-      def merge_types_or(_op_class, old, new)
-        old | new
-      end
-
-      # @api private
-      def merge_types_and_schemas(op_class, old, new)
-        type_registry["hash"].schema(
-          merge_types(op_class, old.name_key_map, new.name_key_map)
-        )
-      end
-
-      # @api private
-      def merge_types_and_types(op_class, old, new)
-        if old.is_a?(Dry::Types::Constrained) && new.is_a?(Dry::Types::Constrained)
-          old.with(rule: op_class.new(old.rule, new.rule))
-        elsif old.is_a?(Dry::Types::Constrained)
-          old
-        else
-          new
-        end
-      end
-
-      # @api private
-      def merge_types_and(op_class, old, new)
-        if old.is_a?(Dry::Types::AnyClass)
-          new
-        elsif new.is_a?(Dry::Types::AnyClass)
-          old
-        elsif old.is_a?(Dry::Types::Schema) && new.is_a?(Dry::Types::Schema)
-          merge_types_and_schemas(op_class, old, new)
-        elsif old.type == new.type
-          merge_types_and_types(op_class, old, new)
-        else
-          raise ArgumentError,
-                "Can't merge types, old=#{old.inspect}, new=#{new.inspect}"
-        end
-      end
-
-      # @api private
       def merge_types(op_class, lhs, rhs)
-        merge_fn =
-          if op_class == Dry::Logic::Operations::Or
-            method(:merge_types_or)
-          elsif op_class == Dry::Logic::Operations::And ||
-                op_class == Dry::Logic::Operations::Implication
-            method(:merge_types_and)
-          else
-            raise NotImplementedError, "Can't merge types for operation #{op_class.inspect}"
-          end
-
-        lhs.merge(rhs) { |_k, old, new| merge_fn.(op_class, old, new) }
+        type_merger.(op_class, lhs, rhs)
       end
 
       protected
@@ -557,6 +509,10 @@ module Dry
         end
 
         (parent || Schema).config.dup
+      end
+
+      def type_merger
+        @type_merger ||= TypesMerger.new(type_registry)
       end
     end
   end

@@ -6,7 +6,7 @@ require_relative "support/rspec_options"
 
 Warning.ignore(%r{gems/i18n})
 Warning.ignore(/byebug/)
-Warning.process { |w| raise w }
+# Warning.process { |w| raise w }
 
 begin
   require "pry-byebug"
