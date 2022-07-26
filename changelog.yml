@@ -6,7 +6,8 @@
   - 'Fix `or` messages for complex schemas (via #413) (@robhanlon22)'
   added:
   - 'Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)'
-  changed: 
+  changed:
+  - 'Freeze message hash (fixes #417 via #418) (@solnic)'
 - version: 1.9.3
   summary: 
   date: '2022-06-23'
