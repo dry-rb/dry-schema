@@ -11,6 +11,9 @@
 
 - Fix `or` messages for complex schemas (via #413) (@robhanlon22)
 
+### Changed
+
+- Freeze message hash (fixes #417 via #418) (@solnic)
 
 [Compare v1.9.3...main](https://github.com/dry-rb/dry-schema/compare/v1.9.3...main)
 
