@@ -24,6 +24,10 @@ RSpec.describe Dry::Schema, ".define" do
     it "returns a frozen result" do
       expect(schema.(email: "")).to be_frozen
     end
+
+    it "returns a frozen errors hash" do
+      expect(schema.(email: "").errors.to_h).to be_frozen
+    end
   end
 
   context "using macros" do

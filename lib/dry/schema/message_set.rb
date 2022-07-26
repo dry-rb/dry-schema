@@ -105,7 +105,7 @@ module Dry
 
       # @api private
       def messages_map(messages = self.messages)
-        combine_message_hashes(messages.map(&:to_h))
+        combine_message_hashes(messages.map(&:to_h)).freeze
       end
 
       # @api private
