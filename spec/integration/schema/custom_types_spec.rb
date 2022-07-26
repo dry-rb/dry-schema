@@ -46,7 +46,7 @@ RSpec.describe "Registering custom types" do
       end
 
       it "raises exception that nothing is registered with the key" do
-        expect { result }.to raise_exception(Dry::Container::Error)
+        expect { result }.to raise_exception(Dry::Container::KeyError)
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe "Registering custom types" do
       end
 
       it "raises exception that nothing is registered with the key" do
-        expect { result }.to raise_exception(Dry::Container::Error)
+        expect { result }.to raise_exception(Dry::Container::KeyError)
       end
     end
 
