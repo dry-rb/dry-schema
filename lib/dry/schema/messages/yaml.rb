@@ -3,7 +3,6 @@
 require "yaml"
 require "pathname"
 
-require "dry/core/equalizer"
 require "dry/schema/constants"
 require "dry/schema/messages/abstract"
 
@@ -169,11 +168,9 @@ module Dry
             text = input.gsub("%", "#")
 
             # rubocop:disable Security/Eval
-            # rubocop:disable Style/DocumentDynamicEvalDefinition
             evaluator = eval(<<~RUBY, EMPTY_CONTEXT, __FILE__, __LINE__ + 1)
               -> (#{tokens.map { |token| "#{token}:" }.join(", ")}) { "#{text}" }
             RUBY
-            # rubocop:enable Style/DocumentDynamicEvalDefinition
             # rubocop:enable Security/Eval
 
             {

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/core/equalizer"
-require "dry/core/cache"
 require "dry/schema/constants"
 require "dry/schema/key"
 

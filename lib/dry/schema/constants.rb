@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "pathname"
-require "dry/core/constants"
 
 module Dry
   # Common constants used across the library

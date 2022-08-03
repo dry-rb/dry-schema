@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/core/equalizer"
-require "dry/logic/operators"
-
 module Dry
   module Schema
     # Predicate objects used within the DSL
