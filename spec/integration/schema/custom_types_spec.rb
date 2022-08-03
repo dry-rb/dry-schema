@@ -70,6 +70,24 @@ RSpec.describe "Registering custom types" do
         expect(result[:age]).to eql("i am not that old")
       end
     end
+
+    context "maybe decimal" do
+      let(:klass) do
+        class Test::CustomTypeSchema < Dry::Schema::JSON
+          define do
+            required(:number).maybe(Types::JSON::Decimal | Types::Params::Nil)
+          end
+        end
+      end
+
+      let(:params) do
+        { number: "19.3" }
+      end
+
+      it "coerces the type" do
+        expect(result[:number]).to eql(BigDecimal('19.3'))
+      end
+    end
   end
 
   context "DSL-based definition" do
