@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/types/primitive_inferrer"
-
 module Dry
   module Schema
     # @api private
