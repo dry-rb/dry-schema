@@ -31,7 +31,7 @@ RSpec.describe "inheriting from a parent and extending its rules" do
         required(:foo).hash do
           required(:bar).hash do
             required(:baz).filled(:hash)
-            # required(:qux).filled(:hash)
+            required(:qux).filled(:hash)
           end
           required(:last).hash do
             required(:not).filled(:array).value(array[:string])

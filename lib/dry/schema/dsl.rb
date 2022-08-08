@@ -374,9 +374,7 @@ module Dry
       #
       # @api private
       def types
-        [*parents.map(&:types), @types].reduce({}) do |acc, types|
-          merge_types(Dry::Logic::Operations::And, acc, types)
-        end
+        [*parents.map(&:types), @types].reduce(:merge)
       end
 
       # @api private
