@@ -365,7 +365,8 @@ module Dry
       # @api private
       def filter_rules?
         if instance_variable_defined?("@filter_schema_dsl") && !filter_schema_dsl.macros.empty?
-          return true end
+          return true
+        end
 
         parents.any?(&:filter_rules?)
       end
@@ -379,7 +380,7 @@ module Dry
 
       # @api private
       def merge_types(op_class, lhs, rhs)
-        type_merger.(op_class, lhs, rhs)
+        types_merger.(op_class, lhs, rhs)
       end
 
       protected
@@ -509,8 +510,8 @@ module Dry
         (parent || Schema).config.dup
       end
 
-      def type_merger
-        @type_merger ||= TypesMerger.new(type_registry)
+      def types_merger
+        @types_merger ||= TypesMerger.new(type_registry)
       end
     end
   end

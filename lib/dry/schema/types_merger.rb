@@ -2,6 +2,10 @@
 
 module Dry
   module Schema
+    # Combines multiple logical operations into a single type, taking into
+    # account the type of logical operation (or, and, implication) and the
+    # underlying types (schemas, nominals, etc.)
+    #
     # @api private
     class TypesMerger
       attr_reader :type_registry
