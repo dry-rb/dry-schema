@@ -1,22 +1,19 @@
 # frozen_string_literal: true
 
-require "dry/logic"
-require "dry/types"
-
-require "dry/schema/type_registry"
-
 module Dry
   module Schema
     # @api private
     class TypesMerger
       attr_reader :type_registry
 
+      # @api private
       class ValueMerger
         attr_reader :types_merger
         attr_reader :op_class
         attr_reader :old
         attr_reader :new
 
+        # @api private
         def initialize(types_merger, op_class, old, new)
           @types_merger = types_merger
           @op_class = op_class
@@ -93,8 +90,9 @@ module Dry
           elsif unwrapped_old.primitive == unwrapped_new.primitive
             unwrapped_old
           else
-            raise ArgumentError,
-                  "Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}"
+            raise ArgumentError, <<~MESSAGE
+              Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}
+            MESSAGE
           end
         end
 
