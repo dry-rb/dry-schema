@@ -43,12 +43,8 @@ module Dry
           old | new
         end
 
-        def handle_implication
-          handle_and
-        end
-
         # @api private
-        def handle_and
+        def handle_ordered
           return old if old == new
 
           unwrapped_old, old_rule = unwrap_type(old)
@@ -63,11 +59,13 @@ module Dry
           type
         end
 
+        alias_method :handle_and, :handle_ordered
+        alias_method :handle_implication, :handle_ordered
+
         # @api private
-        # rubocop:disable Metrics/PerceivedComplexity
         def merge_underlying_types(unwrapped_old, unwrapped_new)
-          if unwrapped_old.is_a?(Dry::Types::Schema) &&
-             unwrapped_new.is_a?(Dry::Types::Schema)
+          case [unwrapped_old, unwrapped_new]
+          in Dry::Types::Schema, Dry::Types::Schema
             types_merger.type_registry["hash"].schema(
               types_merger.call(
                 op_class,
@@ -75,28 +73,20 @@ module Dry
                 unwrapped_new.name_key_map
               )
             )
-          elsif unwrapped_old.is_a?(Dry::Types::AnyClass) ||
-                (
-                  unwrapped_old.is_a?(Dry::Types::Hash) &&
-                    unwrapped_new.is_a?(Dry::Types::Schema)
-                )
+          in [Dry::Types::AnyClass, _] | [Dry::Types::Hash, Dry::Types::Schema]
             unwrapped_new
-          elsif unwrapped_new.is_a?(Dry::Types::AnyClass) ||
-                (
-                  unwrapped_old.is_a?(Dry::Types::Schema) &&
-                    unwrapped_new.is_a?(Dry::Types::Hash)
-                )
-            unwrapped_old
-          elsif unwrapped_old.primitive == unwrapped_new.primitive
+          in [Dry::Types::Hash, Dry::Types::Schema] | [_, Dry::Types::AnyClass]
             unwrapped_old
           else
-            raise ArgumentError, <<~MESSAGE
-              Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}
-            MESSAGE
+            if unwrapped_old.primitive != unwrapped_new.primitive
+              raise ArgumentError, <<~MESSAGE
+                Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}
+              MESSAGE
+            end
+
+            unwrapped_old
           end
         end
-
-        # rubocop:enable Metrics/PerceivedComplexity
 
         # @api private
         def unwrap_type(type)
