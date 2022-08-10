@@ -15,7 +15,7 @@ module Dry
         def value(*args, **opts, &block)
           type(:array)
 
-          extract_type_spec(*args, set_type: false) do |*predicates, type_spec:, type_rule:|
+          extract_type_spec(args, set_type: false) do |*predicates, type_spec:, type_rule:|
             type(schema_dsl.array[type_spec]) if type_spec
 
             is_hash_block = type_spec.equal?(:hash)

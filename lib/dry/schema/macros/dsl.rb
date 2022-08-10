@@ -57,7 +57,7 @@ module Dry
         #
         # @api public
         def value(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+          extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Value) do |macro|
               macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end
@@ -76,7 +76,7 @@ module Dry
         #
         # @api public
         def filled(*args, **opts, &block)
-          extract_type_spec(*args) do |*predicates, type_spec:, type_rule:|
+          extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Filled) do |macro|
               macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end
@@ -201,7 +201,7 @@ module Dry
 
         # @api private
         # rubocop: disable Metrics/PerceivedComplexity
-        def extract_type_spec(*args, nullable: false, set_type: true)
+        def extract_type_spec(args, nullable: false, set_type: true)
           type_spec = args[0] unless schema_or_predicate?(args[0])
 
           predicates = Array(type_spec ? args[1..] : args)

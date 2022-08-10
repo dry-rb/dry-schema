@@ -43,7 +43,7 @@ module Dry
         #
         # @api public
         def maybe(*args, **opts, &block)
-          extract_type_spec(*args, nullable: true) do |*predicates, type_spec:, type_rule:|
+          extract_type_spec(args, nullable: true) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Maybe) do |macro|
               macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end

@@ -159,6 +159,33 @@ RSpec.describe "Macros #filled" do
     end
   end
 
+  describe "with a constrained constructor type" do
+    let(:csv) do
+      Types::Array.constrained(max_size: 2).constructor { |s| s.split(",") }
+    end
+
+    subject(:schema) do
+      csv = self.csv
+      Dry::Schema.define do
+        required(:foo).filled(csv)
+      end
+    end
+
+    it "applies constructor before applying filled? and constraints" do
+      result = schema.(foo: "")
+      expect(result.to_h).to eql(foo: [])
+      expect(result.errors).to eql(foo: ["must be filled"])
+
+      result = schema.(foo: "foo,bar")
+      expect(result).to be_success
+      expect(result.to_h).to eql(foo: %w[foo bar])
+
+      result = schema.(foo: "foo,bar,baz")
+      expect(result.to_h).to eql(foo: %w[foo bar baz])
+      expect(result.errors).to eql(foo: ["size cannot be greater than 2"])
+    end
+  end
+
   describe "nested into further DSLs" do
     subject(:schema) do
       Dry::Schema.define do
