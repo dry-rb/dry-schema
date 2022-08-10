@@ -224,8 +224,13 @@ RSpec.describe Dry::Schema, "OR messages" do
       required(:type).filled(:string)
     end
 
+    arg_schema = Dry::Schema.JSON do
+      required(:value).value { int? | (filled? & str?) }
+    end
+
     baz_schema = Dry::Schema.JSON do
       required(:foos).array(:hash, foo_schema_extra | foo_schema)
+      optional(:args).filled(:array).array(:hash, arg_schema)
     end
 
     bar_schema_1 = Dry::Schema.JSON(parent: [bar_schema_base, baz_schema]) do
@@ -368,6 +373,40 @@ RSpec.describe Dry::Schema, "OR messages" do
                       }
                     }
                   }
+                }
+              ]
+            }
+          }
+        )
+
+      expect(
+        schema.(
+          bars: [
+            {
+              type: "bar_1",
+              foos: [
+                {
+                  type: "foo_extra",
+                  id: "id",
+                  value: "foobar"
+                }
+              ],
+              args: [{value: false}]
+            }
+          ]
+        ).errors.to_h
+      )
+        .to eq(
+          bars: {
+            0 => {
+              or: [
+                {args: {value: ["must be an integer or must be a string"]}},
+                {bazes: ["is missing"], type: ["must be one of: bar_2"]},
+                {
+                  args: {
+                    value: ["must be an integer or must be a string"]
+                  },
+                  type: ["must be one of: bar_3"]
                 }
               ]
             }

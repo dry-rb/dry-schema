@@ -34,17 +34,17 @@ module Dry
             end
           end
 
-          # @api private
-          def self.handler(message)
-            handlers.find { |k,| message.is_a?(k) }&.last
-          end
+          MULTI_PATH_HANDLER = -> { _1 }
+          MESSAGE_ARRAY_HANDLER = -> { MessageArray.new(_1) }
 
           # @api private
-          private_class_method def self.handlers
-            @handlers ||= {
-              self => :itself.to_proc,
-              Array => MessageArray.method(:new)
-            }.freeze
+          def self.handler(message)
+            case message
+            when self
+              MULTI_PATH_HANDLER
+            when Array
+              MESSAGE_ARRAY_HANDLER
+            end
           end
 
           # @api public

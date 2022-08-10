@@ -21,10 +21,11 @@ module Dry
 
           # @api private
           def initialize(*args, messages)
-            super(*args)
+            super(*args.map { [_1].flatten })
             @messages = messages
-            @path = left.path
-            @_path = left._path
+            message = left.first
+            @path = message.path
+            @_path = message._path
           end
 
           # Dump a message into a string
@@ -38,7 +39,7 @@ module Dry
           #
           # @api public
           def dump
-            @dump ||= "#{left.dump} #{messages[:or]} #{right.dump}"
+            @dump ||= [*left, *right].map(&:dump).join(" #{messages[:or]} ")
           end
           alias_method :to_s, :dump
 
@@ -55,7 +56,16 @@ module Dry
 
           # @api private
           def to_a
-            @to_a ||= [left, right]
+            @to_a ||= [*left, *right]
+          end
+
+          # @api private
+          def to_or(root)
+            to_ored = [left, right].map do |msgs|
+              msgs.map { _1.to_or(root) }
+            end
+
+            self.class.new(*to_ored, messages)
           end
         end
       end
