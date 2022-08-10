@@ -4,6 +4,8 @@
   date: 
   fixed:
   - 'Fix `or` messages for complex schemas (via #413) (@robhanlon22)'
+  - 'Using `filled` with a constrained constructor type works as expected (via #416)
+    (@robhanlon22)'
   added:
   - 'Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)'
   changed:
