@@ -4,7 +4,7 @@ RSpec.describe "inheriting from a parent and extending its rules" do
   context "one parent" do
     let(:parent) do
       Dry::Schema.define do
-        required(:foo).filled(:hash?)
+        required(:foo).filled(:hash)
       end
     end
 
@@ -60,8 +60,8 @@ RSpec.describe "inheriting from a parent and extending its rules" do
                 required(:amaze).value(array[:string], size?: 1)
               end
               required(:friend).hash do
-                required(:wow).filled(eql?: "c")
-                required(:such).filled(eql?: "cool")
+                required(:wow).filled(:string, eql?: "c")
+                required(:such).filled(:string, eql?: "cool")
                 required(:amaze).value(array[:string], size?: 1)
               end
             end
