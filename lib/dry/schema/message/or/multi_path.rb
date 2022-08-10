@@ -36,15 +36,12 @@ module Dry
 
           # @api private
           def self.handler(message)
-            handlers.find { |k,| message.is_a?(k) }&.last
-          end
-
-          # @api private
-          private_class_method def self.handlers
-            @handlers ||= {
-              self => :itself.to_proc,
-              Array => MessageArray.method(:new)
-            }.freeze
+            case message
+            when self
+              :itself.to_proc
+            when Array
+              MessageArray.method(:new)
+            end
           end
 
           # @api public
