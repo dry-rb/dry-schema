@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
+require "dry/logic"
 
 require "dry/schema/constants"
 require "dry/schema/path"
@@ -16,6 +17,7 @@ require "dry/schema/key_coercer"
 require "dry/schema/key_validator"
 require "dry/schema/value_coercer"
 require "dry/schema/rule_applier"
+require "dry/schema/types_merger"
 
 module Dry
   module Schema
@@ -316,7 +318,7 @@ module Dry
         type = resolve_type(spec)
         meta = {required: false, maybe: type.optional?}
 
-        types[name] = type.meta(meta)
+        @types[name] = type.meta(meta)
       end
 
       # Check if a custom type was set under provided key name
@@ -367,6 +369,18 @@ module Dry
         end
 
         parents.any?(&:filter_rules?)
+      end
+
+      # This DSL's type map merged with any parent type maps
+      #
+      # @api private
+      def types
+        [*parents.map(&:types), @types].reduce(:merge)
+      end
+
+      # @api private
+      def merge_types(op_class, lhs, rhs)
+        types_merger.(op_class, lhs, rhs)
       end
 
       protected
@@ -494,6 +508,10 @@ module Dry
         end
 
         (parent || Schema).config.dup
+      end
+
+      def types_merger
+        @types_merger ||= TypesMerger.new(type_registry)
       end
     end
   end

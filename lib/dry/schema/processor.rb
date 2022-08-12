@@ -186,6 +186,13 @@ module Dry
         rule_applier.rules
       end
 
+      # Return the types from the schema DSL
+      #
+      # @api private
+      def types
+        schema_dsl.types
+      end
+
       # Check if there are filter rules
       #
       # @api private

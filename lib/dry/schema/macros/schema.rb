@@ -30,18 +30,29 @@ module Dry
 
         # @api private
         def process_operation(op)
-          schemas = op.rules.select { |rule| rule.is_a?(Processor) }
-
-          hash_schema = hash_type.schema(
-            schemas.map(&:schema_dsl).map(&:types).reduce(:merge)
-          )
-
-          type(hash_schema)
+          type(hash_type.schema(merge_operation_types(op)))
         end
 
         # @api private
         def hash_type
           schema_dsl.resolve_type(:hash)
+        end
+
+        # @api private
+        def merge_operation_types(op)
+          op.rules.reduce({}) do |acc, rule|
+            types =
+              case rule
+              when Dry::Logic::Operations::Abstract
+                merge_operation_types(rule)
+              when Processor
+                rule.types
+              else
+                EMPTY_HASH.dup
+              end
+
+            schema_dsl.merge_types(op.class, acc, types)
+          end
         end
 
         # @api private
