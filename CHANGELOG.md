@@ -11,6 +11,7 @@
 
 - Fix `or` messages for complex schemas (via #413) (@robhanlon22)
 - Using `filled` with a constrained constructor type works as expected (via #416) (@robhanlon22)
+- Fix types and key maps for composed schemas (via #415) (@robhanlon22)
 
 ### Changed
 
