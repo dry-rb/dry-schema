@@ -34,14 +34,13 @@ module Dry
             end
           end
 
-          MULTI_PATH_HANDLER = -> { _1 }
           MESSAGE_ARRAY_HANDLER = -> { MessageArray.new(_1) }
 
           # @api private
           def self.handler(message)
             case message
             when self
-              MULTI_PATH_HANDLER
+              IDENTITY
             when Array
               MESSAGE_ARRAY_HANDLER
             end
