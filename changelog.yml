@@ -9,7 +9,7 @@
   - 'Fix types and key maps for composed schemas (via #415) (@robhanlon22)'
   added:
   - 'Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)'
-  - Support for more complex scenarios when composing schemas (via #420) (@robhanlon22)
+  - 'Support for more complex scenarios when composing schemas (via #420) (@robhanlon22)'
   changed:
   - 'Freeze message hash (fixes #417 via #418) (@solnic)'
 - version: 1.9.3
