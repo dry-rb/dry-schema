@@ -1,7 +1,7 @@
 ---
-- version: unreleased
+- version: 1.10.0
   summary:
-  date:
+  date: '2022-08-16'
   fixed:
   - 'Fix `or` messages for complex schemas (via #413) (@robhanlon22)'
   - 'Using `filled` with a constrained constructor type works as expected (via #416)
