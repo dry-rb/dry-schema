@@ -118,7 +118,7 @@ module Dry
             end
           end
 
-          [type, rules.reduce { |acc, rule| op_class.new(acc, rule) }]
+          [type, rules.reduce(:&)]
         end
       end
 
