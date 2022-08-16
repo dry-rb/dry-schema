@@ -6,6 +6,7 @@
 ### Added
 
 - Allow nested `filled` and `value` macro usage (via #412) (@robhanlon22)
+- Support for more complex scenarios when composing schemas (via
 
 ### Fixed
 
