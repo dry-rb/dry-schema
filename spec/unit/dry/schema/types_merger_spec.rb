@@ -7,19 +7,17 @@ require "dry/schema/types_merger"
 require "dry/schema/type_registry"
 
 RSpec.describe Dry::Schema::TypesMerger do
-  let(:t) { Dry.Types }
-
   subject(:types_merger) { Dry::Schema::TypesMerger.new }
 
   describe "#call" do
     context Dry::Logic::Operations::Or do
-      it "joins types with |" do
+      it "applies all when keys collide" do
         expect(
           types_merger
             .call(
               Dry::Logic::Operations::Or,
-              {foo: t::Integer, bar: t::Integer},
-              {foo: t::String}
+              {foo: Types::Integer, bar: Types::Integer},
+              {foo: Types::String}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -68,8 +66,8 @@ RSpec.describe Dry::Schema::TypesMerger do
           types_merger
             .call(
               Dry::Logic::Operations::And,
-              {foo: t::Integer.constrained(gteq: 1)},
-              {foo: t::Integer.constrained(lteq: 3)}
+              {foo: Types::Integer.constrained(gteq: 1)},
+              {foo: Types::Integer.constrained(lteq: 3)}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -114,8 +112,8 @@ RSpec.describe Dry::Schema::TypesMerger do
           types_merger
             .call(
               Dry::Logic::Operations::And,
-              {foo: t::Hash.schema(bar: t::Integer)},
-              {foo: t::Hash.schema(baz: t::Integer)}
+              {foo: Types::Hash.schema(bar: Types::Integer)},
+              {foo: Types::Hash.schema(baz: Types::Integer)}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -219,8 +217,8 @@ RSpec.describe Dry::Schema::TypesMerger do
           types_merger
             .call(
               Dry::Logic::Operations::And,
-              {foo: t::Any},
-              {foo: t::Integer}
+              {foo: Types::Any},
+              {foo: Types::Integer}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -241,8 +239,8 @@ RSpec.describe Dry::Schema::TypesMerger do
           types_merger
             .call(
               Dry::Logic::Operations::And,
-              {foo: t::Hash},
-              {foo: t::Hash.schema(bar: t::Integer)}
+              {foo: Types::Hash},
+              {foo: Types::Hash.schema(bar: Types::Integer)}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -300,8 +298,8 @@ RSpec.describe Dry::Schema::TypesMerger do
           types_merger
             .call(
               Dry::Logic::Operations::And,
-              {foo: t::Integer},
-              {foo: t::Any}
+              {foo: Types::Integer},
+              {foo: Types::Any}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -322,8 +320,8 @@ RSpec.describe Dry::Schema::TypesMerger do
           types_merger
             .call(
               Dry::Logic::Operations::And,
-              {foo: t::Hash.schema(bar: t::Integer)},
-              {foo: t::Hash}
+              {foo: Types::Hash.schema(bar: Types::Integer)},
+              {foo: Types::Hash}
             )
             .transform_values(&:to_ast)
         ).to eq(
