@@ -108,13 +108,15 @@ module Dry
         def unwrap_type(type)
           rules = []
 
-          while type.is_a?(Dry::Types::Decorator)
-            rules << type.rule if type.is_a?(Dry::Types::Constrained)
+          loop do
+            rules << type.rule if type.respond_to?(:rule)
 
-            if type.meta[:maybe] & type.respond_to?(:right)
-              type = type.right
-            else
+            if type.optional?
+              type = type.left.primitive?(nil) ? type.right : type.left
+            elsif type.is_a?(Dry::Types::Decorator)
               type = type.type
+            else
+              break
             end
           end
 
