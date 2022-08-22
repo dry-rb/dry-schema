@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "dry/core/equalizer"
+
 module Dry
   module Schema
     # A set of messages used to generate errors

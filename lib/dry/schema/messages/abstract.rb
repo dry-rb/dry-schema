@@ -2,6 +2,8 @@
 
 require "set"
 require "concurrent/map"
+require "dry/core/equalizer"
+require "dry/configurable"
 
 require "dry/schema/constants"
 require "dry/schema/messages/template"
