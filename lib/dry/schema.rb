@@ -3,7 +3,6 @@
 require "dry/core/extensions"
 require "dry/configurable"
 require "dry/logic"
-require "dry/types"
 
 require "dry/schema/config"
 require "dry/schema/constants"

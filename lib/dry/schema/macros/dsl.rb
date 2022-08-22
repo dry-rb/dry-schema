@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "dry/logic/operators"
+
 require "dry/schema/macros/core"
 require "dry/schema/predicate_inferrer"
 require "dry/schema/primitive_inferrer"

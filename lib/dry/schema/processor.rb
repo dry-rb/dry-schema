@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "dry/configurable"
 require "dry/initializer"
+require "dry/logic/operators"
 
 require "dry/schema/type_registry"
 require "dry/schema/type_container"
