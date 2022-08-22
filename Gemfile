@@ -14,12 +14,9 @@ if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
   gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
 end
 
-gem "dry-types", github: "dry-rb/dry-types", branch: "main"
-gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
-
 group :test do
-  gem "dry-monads", require: false, github: "dry-rb/dry-monads", branch: "main"
-  gem "dry-struct", require: false, github: "dry-rb/dry-struct", branch: "main"
+  gem "dry-monads"
+  gem "dry-struct"
   gem "i18n", "1.8.2", require: false
   gem "transproc"
   gem "json-schema"
