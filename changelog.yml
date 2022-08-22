@@ -1,4 +1,8 @@
 ---
+- version: 1.10.1
+  date: '2022-08-22'
+  changed:
+    - Reverted zeitwerk-related changes that were included in 1.10.0 by an accident (@solnic)
 - version: 1.10.0
   summary:
   date: '2022-08-16'
