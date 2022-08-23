@@ -27,34 +27,34 @@ module Dry
 
         # @api private
         def call
-          handlers.fetch(op_class).call
+          if op_class <= Dry::Logic::Operations::Or
+            merge_or
+          elsif op_class <= Dry::Logic::Operations::And
+            merge_and
+          elsif op_class <= Dry::Logic::Operations::Implication
+            merge_implication
+          else
+            raise ArgumentError, <<~MESSAGE
+              Can't merge operations, op_class=#{op_class}
+            MESSAGE
+          end
         end
 
         private
 
         # @api private
-        def handlers
-          @handlers ||=
-            {
-              Dry::Logic::Operations::Or => method(:handle_or),
-              Dry::Logic::Operations::And => method(:handle_and),
-              Dry::Logic::Operations::Implication => method(:handle_implication)
-            }
-        end
-
-        # @api private
-        def handle_or
+        def merge_or
           old | new
         end
 
         # @api private
-        def handle_ordered
+        def merge_ordered
           return old if old == new
 
           unwrapped_old, old_rule = unwrap_type(old)
           unwrapped_new, new_rule = unwrap_type(new)
 
-          type = merge_underlying_types(unwrapped_old, unwrapped_new)
+          type = merge_unwrapped_types(unwrapped_old, unwrapped_new)
 
           rule = [old_rule, new_rule].compact.reduce { op_class.new(_1, _2) }
 
@@ -63,32 +63,44 @@ module Dry
           type
         end
 
-        alias_method :handle_and, :handle_ordered
-        alias_method :handle_implication, :handle_ordered
+        alias_method :merge_and, :merge_ordered
+        alias_method :merge_implication, :merge_ordered
 
         # @api private
-        def merge_underlying_types(unwrapped_old, unwrapped_new)
+        def merge_unwrapped_types(unwrapped_old, unwrapped_new)
           case [unwrapped_old, unwrapped_new]
           in Dry::Types::Schema, Dry::Types::Schema
-            types_merger.type_registry["hash"].schema(
-              types_merger.call(
-                op_class,
-                unwrapped_old.name_key_map,
-                unwrapped_new.name_key_map
-              )
-            )
+            merge_schemas(unwrapped_old, unwrapped_new)
           in [Dry::Types::AnyClass, _] | [Dry::Types::Hash, Dry::Types::Schema]
             unwrapped_new
-          in [Dry::Types::Hash, Dry::Types::Schema] | [_, Dry::Types::AnyClass]
+          in [Dry::Types::Schema, Dry::Types::Hash] | [_, Dry::Types::AnyClass]
             unwrapped_old
           else
-            if unwrapped_old.primitive != unwrapped_new.primitive
-              raise ArgumentError, <<~MESSAGE
-                Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}
-              MESSAGE
-            end
+            merge_equivalent_types(unwrapped_old, unwrapped_new)
+          end
+        end
 
+        # @api private
+        def merge_schemas(unwrapped_old, unwrapped_new)
+          types_merger.type_registry["hash"].schema(
+            types_merger.call(
+              op_class,
+              unwrapped_old.name_key_map,
+              unwrapped_new.name_key_map
+            )
+          )
+        end
+
+        # @api private
+        def merge_equivalent_types(unwrapped_old, unwrapped_new)
+          if unwrapped_old.primitive <= unwrapped_new.primitive
+            unwrapped_new
+          elsif unwrapped_new.primitive <= unwrapped_old.primitive
             unwrapped_old
+          else
+            raise ArgumentError, <<~MESSAGE
+              Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}
+            MESSAGE
           end
         end
 
@@ -96,13 +108,15 @@ module Dry
         def unwrap_type(type)
           rules = []
 
-          while type.is_a?(Dry::Types::Decorator)
-            rules << type.rule if type.is_a?(Dry::Types::Constrained)
+          loop do
+            rules << type.rule if type.respond_to?(:rule)
 
-            if type.meta[:maybe] & type.respond_to?(:right)
-              type = type.right
-            else
+            if type.optional?
+              type = type.left.primitive?(nil) ? type.right : type.left
+            elsif type.is_a?(Dry::Types::Decorator)
               type = type.type
+            else
+              break
             end
           end
 

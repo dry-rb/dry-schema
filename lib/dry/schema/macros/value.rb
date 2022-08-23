@@ -30,9 +30,9 @@ module Dry
 
             updated_type =
               if array_type?(current_type)
-                build_array_type(current_type, schema.type_schema)
+                build_array_type(current_type, schema.strict_type_schema)
               else
-                schema.type_schema
+                schema.strict_type_schema
               end
 
             import_steps(schema)

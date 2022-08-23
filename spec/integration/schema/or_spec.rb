@@ -195,14 +195,18 @@ RSpec.describe Dry::Schema, "OR messages" do
       required(:type).filled(:string)
     end
 
+    foo_1_value_schema = Dry::Schema.JSON do
+      required(:timestamp).filled(:date_time)
+    end
+
     foo_schema_1 = Dry::Schema.JSON(parent: [foo_schema_base]) do
       required(:type).filled(:string, included_in?: %w[foo_1])
-      required(:value).array { filled? & str? }
+      required(:value).filled(:array).array(:hash, foo_1_value_schema)
     end
 
     foo_schema_2 = Dry::Schema.JSON(parent: [foo_schema_base]) do
       required(:type).filled(:string, included_in?: %w[foo_2])
-      required(:value).array { filled? & str? }
+      required(:value).filled(:array).value(array[:date_time])
     end
 
     foo_schema_3 = Dry::Schema.JSON(parent: [foo_schema_base]) do
@@ -213,7 +217,20 @@ RSpec.describe Dry::Schema, "OR messages" do
       end
     end
 
-    foo_schema = [foo_schema_1, foo_schema_2, foo_schema_3].reduce(:|)
+    foo_schema_4 = Dry::Schema.JSON(parent: [foo_schema_base]) do
+      required(:type).filled(:string, included_in?: %w[foo_4])
+      required(:value).hash do
+        required(:top).filled(:string)
+        required(:bottom).filled(:string)
+      end
+    end
+
+    foo_schema = [
+      foo_schema_1,
+      foo_schema_2,
+      foo_schema_3,
+      foo_schema_4
+    ].reduce(:|)
 
     foo_schema_extra = Dry::Schema.JSON(parent: [foo_schema_base]) do
       required(:type).filled(:string, included_in?: %w[foo_extra])
@@ -274,6 +291,40 @@ RSpec.describe Dry::Schema, "OR messages" do
         schema.(
           bars: [
             {
+              type: "bar_1",
+              foos: [
+                {
+                  type: "foo_1",
+                  id: "id",
+                  value: [{timestamp: Time.now.iso8601}]
+                }
+              ]
+            }
+          ]
+        )
+      ).to be_success
+
+      expect(
+        schema.(
+          bars: [
+            {
+              type: "bar_1",
+              foos: [
+                {
+                  type: "foo_2",
+                  id: "id",
+                  value: [Time.now.iso8601]
+                }
+              ]
+            }
+          ]
+        )
+      ).to be_success
+
+      expect(
+        schema.(
+          bars: [
+            {
               type: "bar_2",
               bazes: [
                 {
@@ -297,121 +348,108 @@ RSpec.describe Dry::Schema, "OR messages" do
 
     it "provides error messages for a failure" do
       expect(
-        schema.(
-          bars: [
-            {
-              type: "bar_1",
-              foos: [
-                {
-                  type: "foo_extra",
-                  id: "id"
-                }
-              ]
-            }
-          ]
-        ).errors.to_h
-      )
-        .to eq(
-          bars: {
-            0 => {
-              or: [
-                {
-                  bars: {
-                    0 => {
-                      foos: {
-                        0 => {
-                          or: [
-                            {
-                              value: ["is missing"]
-                            },
-                            {
-                              type: ["must be one of: foo_1"],
-                              value: ["is missing"]
-                            },
-                            {
-                              type: ["must be one of: foo_2"],
-                              value: ["is missing"]
-                            },
-                            {
-                              type: ["must be one of: foo_3"],
-                              value: ["is missing"]
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                },
-                {
-                  type: ["must be one of: bar_2"],
-                  bazes: ["is missing"]
-                },
-                {
-                  type: ["must be one of: bar_3"],
-                  bars: {
-                    0 => {
-                      foos: {
-                        0 => {
-                          or: [
-                            {
-                              value: ["is missing"]
-                            },
-                            {
-                              type: ["must be one of: foo_1"],
-                              value: ["is missing"]
-                            },
-                            {
-                              type: ["must be one of: foo_2"],
-                              value: ["is missing"]
-                            },
-                            {
-                              type: ["must be one of: foo_3"],
-                              value: ["is missing"]
-                            }
-                          ]
-                        }
+        schema
+          .(bars: [{type: "bar_1", foos: [{type: "foo_extra", id: "id"}]}])
+          .errors
+          .to_h
+      ).to eq(
+        bars: {
+          0 => {
+            or: [
+              {
+                bars: {
+                  0 => {
+                    foos: {
+                      0 => {
+                        or: [
+                          {value: ["is missing"]},
+                          {
+                            type: ["must be one of: foo_1"],
+                            value: ["is missing"]
+                          },
+                          {
+                            type: ["must be one of: foo_2"],
+                            value: ["is missing"]
+                          },
+                          {
+                            type: ["must be one of: foo_3"],
+                            value: ["is missing"]
+                          },
+                          {
+                            type: ["must be one of: foo_4"],
+                            value: ["is missing"]
+                          }
+                        ]
                       }
                     }
                   }
                 }
-              ]
-            }
+              },
+              {bazes: ["is missing"], type: ["must be one of: bar_2"]},
+              {
+                bars: {
+                  0 => {
+                    foos: {
+                      0 => {
+                        or: [
+                          {value: ["is missing"]},
+                          {
+                            type: ["must be one of: foo_1"],
+                            value: ["is missing"]
+                          },
+                          {
+                            type: ["must be one of: foo_2"],
+                            value: ["is missing"]
+                          },
+                          {
+                            type: ["must be one of: foo_3"],
+                            value: ["is missing"]
+                          },
+                          {
+                            type: ["must be one of: foo_4"],
+                            value: ["is missing"]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                type: ["must be one of: bar_3"]
+              }
+            ]
           }
-        )
+        }
+      )
 
       expect(
-        schema.(
-          bars: [
-            {
-              type: "bar_1",
-              foos: [
-                {
-                  type: "foo_extra",
-                  id: "id",
-                  value: "foobar"
-                }
-              ],
-              args: [{value: false}]
-            }
-          ]
-        ).errors.to_h
-      )
-        .to eq(
-          bars: {
-            0 => {
-              or: [
-                {args: {value: ["must be an integer or must be a string"]}},
-                {bazes: ["is missing"], type: ["must be one of: bar_2"]},
-                {
-                  args: {
-                    value: ["must be an integer or must be a string"]
-                  },
-                  type: ["must be one of: bar_3"]
-                }
-              ]
-            }
+        schema
+          .(
+            bars: [
+              {
+                type: "bar_1",
+                foos: [{type: "foo_extra", id: "id", value: "foobar"}],
+                args: [{value: false}]
+              }
+            ]
+          )
+          .errors
+          .to_h
+      ).to eq(
+        bars: {
+          0 => {
+            or: [
+              {args: {value: ["must be an integer or must be a string"]}},
+              {bazes: ["is missing"], type: ["must be one of: bar_2"]},
+              {
+                args: {
+                  value: ["must be an integer or must be a string"]
+                },
+                type: ["must be one of: bar_3"]
+              }
+            ]
           }
-        )
+        }
+      )
     end
   end
 end
