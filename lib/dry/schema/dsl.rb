@@ -288,13 +288,20 @@ module Dry
 
       # Return type schema used by the value coercer
       #
-      # @return [Dry::Types::Safe]
+      # @return [Dry::Types::Lax]
       #
       # @api private
       def type_schema
-        our_schema = type_registry["hash"].schema(types).lax
-        schemas = [*parents.map(&:type_schema), our_schema]
-        schemas.inject { |result, schema| result.schema(schema.to_a) }
+        strict_type_schema.lax
+      end
+
+      # Return type schema used when composing subschemas
+      #
+      # @return [Dry::Types::Schema]
+      #
+      # @api private
+      def strict_type_schema
+        type_registry["hash"].schema(types)
       end
 
       # Return a new DSL instance using the same processor type
@@ -316,7 +323,7 @@ module Dry
       # @api private
       def set_type(name, spec)
         type = resolve_type(spec)
-        meta = {required: false, maybe: type.optional?}
+        meta = {required: true, maybe: type.optional?}
 
         @types[name] = type.meta(meta)
       end

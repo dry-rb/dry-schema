@@ -7,19 +7,17 @@ require "dry/schema/types_merger"
 require "dry/schema/type_registry"
 
 RSpec.describe Dry::Schema::TypesMerger do
-  let(:t) { Dry.Types }
-
   subject(:types_merger) { Dry::Schema::TypesMerger.new }
 
   describe "#call" do
     context Dry::Logic::Operations::Or do
-      it "joins types with |" do
+      it "applies all when keys collide" do
         expect(
           types_merger
             .call(
               Dry::Logic::Operations::Or,
-              {foo: t::Integer, bar: t::Integer},
-              {foo: t::String}
+              {foo: Types::Integer, bar: Types::Integer},
+              {foo: Types::String}
             )
             .transform_values(&:to_ast)
         ).to eq(
@@ -62,95 +60,136 @@ RSpec.describe Dry::Schema::TypesMerger do
       end
     end
 
-    context Dry::Logic::Operations::And do
-      it "applies all when keys collide" do
-        expect(
-          types_merger
-            .call(
-              Dry::Logic::Operations::And,
-              {foo: t::Integer.constrained(gteq: 1)},
-              {foo: t::Integer.constrained(lteq: 3)}
-            )
-            .transform_values(&:to_ast)
-        ).to eq(
-          {
-            foo: [
-              :constrained,
-              [
-                [:nominal, [Integer, {}]],
+    [
+      [Dry::Logic::Operations::And, :and],
+      [Dry::Logic::Operations::Implication, :implication]
+    ].each do |op_class, op_node_type|
+      context op_class do
+        it "applies all when keys collide" do
+          expect(
+            types_merger
+              .call(
+                op_class,
+                {foo: Types::Integer.constrained(gteq: 1)},
+                {foo: Types::Integer.constrained(lteq: 3)}
+              )
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
                 [
-                  :and,
+                  [:nominal, [Integer, {}]],
                   [
+                    op_node_type,
                     [
-                      :and,
                       [
+                        :and,
                         [
-                          :predicate,
-                          [:type?, [[:type, Integer], [:input, Undefined]]]
-                        ],
-                        [:predicate, [:gteq?, [[:num, 1], [:input, Undefined]]]]
-                      ]
-                    ],
-                    [
-                      :and,
+                          [
+                            :predicate,
+                            [:type?, [[:type, Integer], [:input, Undefined]]]
+                          ],
+                          [
+                            :predicate,
+                            [:gteq?, [[:num, 1], [:input, Undefined]]]
+                          ]
+                        ]
+                      ],
                       [
+                        :and,
                         [
-                          :predicate,
-                          [:type?, [[:type, Integer], [:input, Undefined]]]
-                        ],
-                        [:predicate, [:lteq?, [[:num, 3], [:input, Undefined]]]]
+                          [
+                            :predicate,
+                            [:type?, [[:type, Integer], [:input, Undefined]]]
+                          ],
+                          [
+                            :predicate,
+                            [:lteq?, [[:num, 3], [:input, Undefined]]]
+                          ]
+                        ]
                       ]
                     ]
                   ]
                 ]
               ]
-            ]
-          }
-        )
-      end
+            }
+          )
+        end
 
-      it "merges schema types on collision" do
-        expect(
-          types_merger
-            .call(
-              Dry::Logic::Operations::And,
-              {foo: t::Hash.schema(bar: t::Integer)},
-              {foo: t::Hash.schema(baz: t::Integer)}
-            )
-            .transform_values(&:to_ast)
-        ).to eq(
-          {
-            foo: [
-              :constrained,
-              [
+        it "merges schema types on collision" do
+          expect(
+            types_merger
+              .call(
+                op_class,
+                {foo: Types::Hash.schema(bar: Types::Integer)},
+                {foo: Types::Hash.schema(baz: Types::Integer)}
+              )
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
                 [
-                  :constrained,
                   [
+                    :constrained,
                     [
-                      :schema,
                       [
+                        :schema,
                         [
                           [
-                            :key,
                             [
-                              :bar,
-                              true,
+                              :key,
                               [
-                                :key,
+                                :bar,
+                                true,
                                 [
-                                  :bar,
-                                  true,
+                                  :key,
                                   [
-                                    :constrained,
+                                    :bar,
+                                    true,
                                     [
-                                      [:nominal, [Integer, {}]],
+                                      :constrained,
                                       [
-                                        :predicate,
+                                        [:nominal, [Integer, {}]],
                                         [
-                                          :type?,
+                                          :predicate,
                                           [
-                                            [:type, Integer],
-                                            [:input, Undefined]
+                                            :type?,
+                                            [
+                                              [:type, Integer],
+                                              [:input, Undefined]
+                                            ]
+                                          ]
+                                        ]
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ],
+                            [
+                              :key,
+                              [
+                                :baz,
+                                true,
+                                [
+                                  :key,
+                                  [
+                                    :baz,
+                                    true,
+                                    [
+                                      :constrained,
+                                      [
+                                        [:nominal, [Integer, {}]],
+                                        [
+                                          :predicate,
+                                          [
+                                            :type?,
+                                            [
+                                              [:type, Integer],
+                                              [:input, Undefined]
+                                            ]
                                           ]
                                         ]
                                       ]
@@ -160,220 +199,378 @@ RSpec.describe Dry::Schema::TypesMerger do
                               ]
                             ]
                           ],
+                          {},
+                          {}
+                        ]
+                      ],
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ]
+                    ]
+                  ],
+                  [
+                    op_node_type,
+                    [
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ],
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            }
+          )
+        end
+
+        it "merges schema types on collision with multiple constraints" do
+          expect(
+            types_merger
+              .call(
+                op_class,
+                {foo: Types::Hash.schema(bar: Types::Integer.optional)},
+                {
+                  foo: Types::Hash.schema(baz: Types::Integer.optional).optional
+                }
+              )
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
+                [
+                  [
+                    :constrained,
+                    [
+                      [
+                        :schema,
+                        [
                           [
-                            :key,
                             [
-                              :baz,
-                              true,
+                              :key,
                               [
-                                :key,
+                                :bar,
+                                true,
                                 [
-                                  :baz,
-                                  true,
+                                  :key,
                                   [
-                                    :constrained,
+                                    :bar,
+                                    true,
                                     [
-                                      [:nominal, [Integer, {}]],
+                                      :sum,
                                       [
-                                        :predicate,
                                         [
-                                          :type?,
+                                          :constrained,
                                           [
-                                            [:type, Integer],
-                                            [:input, Undefined]
+                                            [:nominal, [NilClass, {}]],
+                                            [
+                                              :predicate,
+                                              [
+                                                :type?,
+                                                [
+                                                  [:type, NilClass],
+                                                  [:input, Undefined]
+                                                ]
+                                              ]
+                                            ]
                                           ]
-                                        ]
+                                        ],
+                                        [
+                                          :constrained,
+                                          [
+                                            [:nominal, [Integer, {}]],
+                                            [
+                                              :predicate,
+                                              [
+                                                :type?,
+                                                [
+                                                  [:type, Integer],
+                                                  [:input, Undefined]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ],
+                                        {}
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ],
+                            [
+                              :key,
+                              [
+                                :baz,
+                                true,
+                                [
+                                  :key,
+                                  [
+                                    :baz,
+                                    true,
+                                    [
+                                      :sum,
+                                      [
+                                        [
+                                          :constrained,
+                                          [
+                                            [:nominal, [NilClass, {}]],
+                                            [
+                                              :predicate,
+                                              [
+                                                :type?,
+                                                [
+                                                  [:type, NilClass],
+                                                  [:input, Undefined]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ],
+                                        [
+                                          :constrained,
+                                          [
+                                            [:nominal, [Integer, {}]],
+                                            [
+                                              :predicate,
+                                              [
+                                                :type?,
+                                                [
+                                                  [:type, Integer],
+                                                  [:input, Undefined]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ],
+                                        {}
                                       ]
                                     ]
                                   ]
                                 ]
                               ]
                             ]
-                          ]
-                        ],
-                        {},
-                        {}
+                          ],
+                          {},
+                          {}
+                        ]
+                      ],
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
                       ]
-                    ],
-                    [:predicate, [:type?, [[:type, Hash], [:input, Undefined]]]]
-                  ]
-                ],
-                [
-                  :and,
+                    ]
+                  ],
                   [
-                    [
-                      :predicate,
-                      [:type?, [[:type, Hash], [:input, Undefined]]]
-                    ],
-                    [:predicate, [:type?, [[:type, Hash], [:input, Undefined]]]]
-                  ]
-                ]
-              ]
-            ]
-          }
-        )
-      end
-
-      it "uses the rhs if the lhs is an Any" do
-        expect(
-          types_merger
-            .call(
-              Dry::Logic::Operations::And,
-              {foo: t::Any},
-              {foo: t::Integer}
-            )
-            .transform_values(&:to_ast)
-        ).to eq(
-          {
-            foo: [
-              :constrained,
-              [
-                [:nominal, [Integer, {}]],
-                [:predicate, [:type?, [[:type, Integer], [:input, Undefined]]]]
-              ]
-            ]
-          }
-        )
-      end
-
-      it "uses the rhs if the rhs is a subclass of lhs" do
-        expect(
-          types_merger
-            .call(
-              Dry::Logic::Operations::And,
-              {foo: t::Hash},
-              {foo: t::Hash.schema(bar: t::Integer)}
-            )
-            .transform_values(&:to_ast)
-        ).to eq(
-          {
-            foo: [
-              :constrained,
-              [
-                [
-                  :schema,
-                  [
+                    op_node_type,
                     [
                       [
-                        :key,
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ],
+                      [
+                        :and,
                         [
-                          :bar,
-                          true,
                           [
-                            :constrained,
+                            :or,
                             [
-                              [:nominal, [Integer, {}]],
                               [
                                 :predicate,
                                 [
                                   :type?,
-                                  [[:type, Integer], [:input, Undefined]]
+                                  [[:type, NilClass], [:input, Undefined]]
+                                ]
+                              ],
+                              [
+                                :predicate,
+                                [:type?, [[:type, Hash], [:input, Undefined]]]
+                              ]
+                            ]
+                          ],
+                          [
+                            :predicate,
+                            [:type?, [[:type, Hash], [:input, Undefined]]]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            }
+          )
+        end
+
+        it "uses the rhs if the lhs is an Any" do
+          expect(
+            types_merger
+              .call(op_class, {foo: Types::Any}, {foo: Types::Integer})
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
+                [
+                  [:nominal, [Integer, {}]],
+                  [
+                    :predicate,
+                    [:type?, [[:type, Integer], [:input, Undefined]]]
+                  ]
+                ]
+              ]
+            }
+          )
+        end
+
+        it "uses the rhs if the rhs is a subclass of lhs" do
+          expect(
+            types_merger
+              .call(
+                op_class,
+                {foo: Types::Hash},
+                {foo: Types::Hash.schema(bar: Types::Integer)}
+              )
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
+                [
+                  [
+                    :schema,
+                    [
+                      [
+                        [
+                          :key,
+                          [
+                            :bar,
+                            true,
+                            [
+                              :constrained,
+                              [
+                                [:nominal, [Integer, {}]],
+                                [
+                                  :predicate,
+                                  [
+                                    :type?,
+                                    [[:type, Integer], [:input, Undefined]]
+                                  ]
                                 ]
                               ]
                             ]
                           ]
                         ]
-                      ]
-                    ],
-                    {},
-                    {}
-                  ]
-                ],
-                [
-                  :and,
+                      ],
+                      {},
+                      {}
+                    ]
+                  ],
                   [
+                    op_node_type,
                     [
-                      :predicate,
-                      [:type?, [[:type, Hash], [:input, Undefined]]]
-                    ],
-                    [:predicate, [:type?, [[:type, Hash], [:input, Undefined]]]]
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ],
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ]
+                    ]
                   ]
                 ]
               ]
-            ]
-          }
-        )
-      end
+            }
+          )
+        end
 
-      it "uses the lhs if the rhs is an Any" do
-        expect(
-          types_merger
-            .call(
-              Dry::Logic::Operations::And,
-              {foo: t::Integer},
-              {foo: t::Any}
-            )
-            .transform_values(&:to_ast)
-        ).to eq(
-          {
-            foo: [
-              :constrained,
-              [
-                [:nominal, [Integer, {}]],
-                [:predicate, [:type?, [[:type, Integer], [:input, Undefined]]]]
-              ]
-            ]
-          }
-        )
-      end
-
-      it "uses the lhs if the lhs is a subclass of rhs" do
-        expect(
-          types_merger
-            .call(
-              Dry::Logic::Operations::And,
-              {foo: t::Hash.schema(bar: t::Integer)},
-              {foo: t::Hash}
-            )
-            .transform_values(&:to_ast)
-        ).to eq(
-          {
-            foo: [
-              :constrained,
-              [
+        it "uses the lhs if the rhs is an Any" do
+          expect(
+            types_merger
+              .call(op_class, {foo: Types::Integer}, {foo: Types::Any})
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
                 [
-                  :schema,
+                  [:nominal, [Integer, {}]],
                   [
+                    :predicate,
+                    [:type?, [[:type, Integer], [:input, Undefined]]]
+                  ]
+                ]
+              ]
+            }
+          )
+        end
+
+        it "uses the lhs if the lhs is a subclass of rhs" do
+          expect(
+            types_merger
+              .call(
+                op_class,
+                {foo: Types::Hash.schema(bar: Types::Integer)},
+                {foo: Types::Hash}
+              )
+              .transform_values(&:to_ast)
+          ).to eq(
+            {
+              foo: [
+                :constrained,
+                [
+                  [
+                    :schema,
                     [
                       [
-                        :key,
                         [
-                          :bar,
-                          true,
+                          :key,
                           [
-                            :constrained,
+                            :bar,
+                            true,
                             [
-                              [:nominal, [Integer, {}]],
+                              :constrained,
                               [
-                                :predicate,
+                                [:nominal, [Integer, {}]],
                                 [
-                                  :type?,
-                                  [[:type, Integer], [:input, Undefined]]
+                                  :predicate,
+                                  [
+                                    :type?,
+                                    [[:type, Integer], [:input, Undefined]]
+                                  ]
                                 ]
                               ]
                             ]
                           ]
                         ]
-                      ]
-                    ],
-                    {},
-                    {}
-                  ]
-                ],
-                [
-                  :and,
+                      ],
+                      {},
+                      {}
+                    ]
+                  ],
                   [
+                    op_node_type,
                     [
-                      :predicate,
-                      [:type?, [[:type, Hash], [:input, Undefined]]]
-                    ],
-                    [:predicate, [:type?, [[:type, Hash], [:input, Undefined]]]]
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ],
+                      [
+                        :predicate,
+                        [:type?, [[:type, Hash], [:input, Undefined]]]
+                      ]
+                    ]
                   ]
                 ]
               ]
-            ]
-          }
-        )
+            }
+          )
+        end
       end
     end
   end

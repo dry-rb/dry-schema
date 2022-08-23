@@ -136,11 +136,20 @@ module Dry
 
       # Return the type schema
       #
-      # @return [Dry::Types::Safe]
+      # @return [Dry::Types::Lax]
       #
       # @api private
       def type_schema
         steps.type_schema
+      end
+
+      # Return type schema used when composing subschemas
+      #
+      # @return [Dry::Types::Schema]
+      #
+      # @api private
+      def strict_type_schema
+        schema_dsl.strict_type_schema
       end
 
       # Return the rule applier
