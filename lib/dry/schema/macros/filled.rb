@@ -15,7 +15,8 @@ module Dry
 
           append_macro(Macros::Value) do |macro|
             if opts[:type_spec] && !filter_empty_string?
-              macro.call(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts, &block)
+              macro.call(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts,
+                         &block)
             elsif opts[:type_rule]
               macro.call(:filled?).value(*predicates, **opts, &block)
             else

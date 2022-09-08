@@ -85,7 +85,7 @@ RSpec.describe "Registering custom types" do
       end
 
       it "coerces the type" do
-        expect(result[:number]).to eql(BigDecimal('19.3'))
+        expect(result[:number]).to eql(BigDecimal("19.3"))
       end
     end
 
