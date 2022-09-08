@@ -173,6 +173,10 @@ RSpec.describe "Registering custom types" do
 
         let(:calendar_date) do
           Class.new(::Date) do
+            def to_json(*args)
+              strftime("--%m-%d").to_json(*args)
+            end
+
             def self.parse(date)
               mon, mday = Date._iso8601(date).values_at(:mon, :mday)
               raise ArgumentError, "invalid ISO8601 calendar day string, expected format \"--MM-DD\"" unless mon && mday
@@ -198,7 +202,7 @@ RSpec.describe "Registering custom types" do
         specify do
           expect(result).to be_success
           expect(result[:date]).to be_a(CalendarDate)
-          expect(result[:date].strftime("--%m-%d")).to eq("--02-09")
+          expect(result[:date].to_json).to eq('"--02-09"')
         end
       end
     end
