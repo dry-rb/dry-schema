@@ -19,7 +19,9 @@ module Dry
             raise ::Dry::Schema::InvalidSchemaError, "Using maybe with nil? predicate is redundant"
           end
 
-          value(*args, **opts, &block)
+          append_macro(Macros::Value) do |macro|
+            macro.call(*args, **opts, &block)
+          end
 
           self
         end

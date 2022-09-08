@@ -81,11 +81,32 @@ RSpec.describe "Registering custom types" do
       end
 
       let(:params) do
-        { number: "19.3" }
+        {number: "19.3"}
       end
 
       it "coerces the type" do
         expect(result[:number]).to eql(BigDecimal('19.3'))
+      end
+    end
+
+    context "filled string" do
+      let(:klass) do
+        class Test::CustomTypeSchema < Dry::Schema::JSON
+          define do
+            required(:string).filled(
+              Types::Strict::String.constrained(format: /foo/) |
+              Types::Strict::String.constrained(format: /bar/)
+            )
+          end
+        end
+      end
+
+      let(:params) do
+        {string: "foo"}
+      end
+
+      it "coerces the type" do
+        expect(result[:string]).to eql("foo")
       end
     end
   end
