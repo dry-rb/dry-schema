@@ -191,7 +191,7 @@ RSpec.describe "Macros #filled" do
       Dry::Schema.define do
         required(:foo).filled(:array).each do
           filled(:array).each do
-            filled(:string)
+            filled(Types::Strict::String)
           end
         end
       end
