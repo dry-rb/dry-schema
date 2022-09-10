@@ -1,7 +1,7 @@
 ---
 - version: 1.10.3
   summary:
-  date: '2019-10-10'
+  date: '2022-10-10'
   fixed:
   - 'Addressed regressions causing issues with handling sum types (see #419 and #423
     fixed via #425) (@robhanlon22)'
