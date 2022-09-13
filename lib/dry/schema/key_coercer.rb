@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "dry/core/cache"
+require "dry/core/equalizer"
+
 module Dry
   module Schema
     # Coerces keys in a hash using provided coercer function

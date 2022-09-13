@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require "dry/core"
-require "dry/configurable"
-require "dry/logic"
+require "dry/core/extensions"
 
 require "dry/schema/config"
 require "dry/schema/constants"

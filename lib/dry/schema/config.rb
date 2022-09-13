@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "dry/core/equalizer"
+require "dry/configurable"
+
 require "dry/schema/constants"
 require "dry/schema/predicate_registry"
 require "dry/schema/type_container"
