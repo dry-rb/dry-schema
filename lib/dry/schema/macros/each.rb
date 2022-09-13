@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dry/types/type"
 require "dry/schema/macros/dsl"
 
 module Dry
