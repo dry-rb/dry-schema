@@ -1,4 +1,15 @@
 ---
+- version: 1.10.4
+  date: '2022-10-13'
+  fixed:
+    - 'Once again reverting zeitwerk related changes that were included in 1.10.3 by an accident :( (@solnic)'
+- version: 1.10.3
+  summary:
+  date: '2022-10-10'
+  fixed:
+  - 'Addressed regressions causing issues with handling sum types (see #419 and #423 fixed via #425) (@robhanlon22)'
+  added:
+  changed:
 - version: 1.10.2
   summary:
   date: '2022-08-23'
@@ -9,8 +20,7 @@
 - version: 1.10.1
   date: '2022-08-22'
   changed:
-  - Reverted zeitwerk-related changes that were included in 1.10.0 by an accident
-    (@solnic)
+  - Reverted zeitwerk-related changes that were included in 1.10.0 by an accident (@solnic)
 - version: 1.10.0
   summary:
   date: '2022-08-16'

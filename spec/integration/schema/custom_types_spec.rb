@@ -70,6 +70,45 @@ RSpec.describe "Registering custom types" do
         expect(result[:age]).to eql("i am not that old")
       end
     end
+
+    context "maybe decimal" do
+      let(:klass) do
+        class Test::CustomTypeSchema < Dry::Schema::JSON
+          define do
+            required(:number).maybe(Types::JSON::Decimal | Types::Params::Nil)
+          end
+        end
+      end
+
+      let(:params) do
+        {number: "19.3"}
+      end
+
+      it "coerces the type" do
+        expect(result[:number]).to eql(BigDecimal("19.3"))
+      end
+    end
+
+    context "filled string" do
+      let(:klass) do
+        class Test::CustomTypeSchema < Dry::Schema::JSON
+          define do
+            required(:string).filled(
+              Types::Strict::String.constrained(format: /foo/) |
+              Types::Strict::String.constrained(format: /bar/)
+            )
+          end
+        end
+      end
+
+      let(:params) do
+        {string: "foo"}
+      end
+
+      it "coerces the type" do
+        expect(result[:string]).to eql("foo")
+      end
+    end
   end
 
   context "DSL-based definition" do
@@ -121,6 +160,49 @@ RSpec.describe "Registering custom types" do
 
         specify do
           expect(result[:user][:age]).to eql("i am not that old")
+        end
+      end
+
+      context "custom constructor" do
+        subject(:schema) do
+          Dry::Schema.Params do
+            config.types = ContainerWithTypes
+            optional(:date).maybe(:calendar_day)
+          end
+        end
+
+        let(:calendar_date) do
+          Class.new(::Date) do
+            def to_json(*args)
+              strftime("--%m-%d").to_json(*args)
+            end
+
+            def self.parse(date)
+              mon, mday = Date._iso8601(date).values_at(:mon, :mday)
+              raise ArgumentError, "invalid ISO8601 calendar day string, expected format \"--MM-DD\"" unless mon && mday
+
+              new(2000, mon, mday)
+            end
+          end
+        end
+
+        before do
+          stub_const("CalendarDate", calendar_date)
+
+          container_with_types.register(
+            :calendar_day,
+            Types::Strict(CalendarDate).constructor(CalendarDate.method(:parse))
+          )
+        end
+
+        let(:params) do
+          {"date" => "--02-09"}
+        end
+
+        specify do
+          expect(result).to be_success
+          expect(result[:date]).to be_a(CalendarDate)
+          expect(result[:date].to_json).to eq('"--02-09"')
         end
       end
     end

@@ -175,4 +175,29 @@ RSpec.describe "Macros #maybe" do
       expect(schema.(users: [{name: 1}]).errors.to_h).to eq(users: {0 => {name: ["must be a string"]}})
     end
   end
+
+  describe "nested into further DSLs" do
+    subject(:schema) do
+      Dry::Schema.define do
+        required(:foo).maybe(:array).each do
+          maybe(:array).each do
+            maybe(Types::Strict::String)
+          end
+        end
+      end
+    end
+
+    it "passes when valid" do
+      expect(schema.call(foo: [["bar"]])).to be_success
+      expect(schema.call(foo: [])).to be_success
+      expect(schema.call(foo: [nil])).to be_success
+      expect(schema.call(foo: [[nil]])).to be_success
+    end
+
+    it "fails when invalid" do
+      expect(schema.call(foo: 1).messages).to eql(foo: ["must be an array"])
+      expect(schema.call(foo: [1]).messages).to eql(foo: {0 => ["must be an array"]})
+      expect(schema.call(foo: [[1]]).messages).to eql(foo: {0 => {0 => ["must be a string"]}})
+    end
+  end
 end

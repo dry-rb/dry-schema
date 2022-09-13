@@ -32,24 +32,6 @@ module Dry
         end
         ruby2_keywords(:filter) if respond_to?(:ruby2_keywords, true)
 
-        # Set type specification and predicates for a maybe value
-        #
-        # @example
-        #   required(:name).maybe(:string)
-        #
-        # @see Macros::Key#value
-        #
-        # @return [Macros::Key]
-        #
-        # @api public
-        def maybe(*args, **opts, &block)
-          extract_type_spec(args, nullable: true) do |*predicates, type_spec:, type_rule:|
-            append_macro(Macros::Maybe) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
-            end
-          end
-        end
-
         # Coerce macro to a rule
         #
         # @return [Dry::Logic::Rule]
