@@ -437,7 +437,7 @@ module Dry
       #
       # @api private
       def key_validator
-        KeyValidator.new(key_map: key_map + parent_key_map)
+        KeyValidator.new(key_map: key_map)
       end
 
       # Build a key coercer
