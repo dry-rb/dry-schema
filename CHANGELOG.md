@@ -7,6 +7,7 @@
 
 - Once again reverting zeitwerk related changes that were included in 1.10.3 by an accident :( (@solnic)
 - Key maps no longer include duped keys when using inheritance (issues #428 #372 fixed via #429) (@solnic)
+- Key validator and coercer no longer include duped keys when using parent schemas (via #430) (@solnic)
 
 
 [Compare v1.10.4...v1.10.4](https://github.com/dry-rb/dry-schema/compare/v1.10.4...v1.10.4)
@@ -18,6 +19,7 @@
 
 - Once again reverting zeitwerk related changes that were included in 1.10.3 by an accident :( (@solnic)
 - Key maps no longer include duped keys when using inheritance (issues #428 #372 fixed via #429) (@solnic)
+- Key validator and coercer no longer include duped keys when using parent schemas (via #430) (@solnic)
 
 
 [Compare v1.10.3...v1.10.4](https://github.com/dry-rb/dry-schema/compare/v1.10.3...v1.10.4)
