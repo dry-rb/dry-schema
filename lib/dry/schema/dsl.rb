@@ -446,7 +446,7 @@ module Dry
       #
       # @api private
       def key_coercer
-        KeyCoercer.symbolized(key_map + parent_key_map)
+        KeyCoercer.symbolized(key_map)
       end
 
       # Build a value coercer
