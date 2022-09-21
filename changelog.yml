@@ -7,6 +7,8 @@
     an accident :( (@solnic)
   - 'Key maps no longer include duped keys when using inheritance (issues #428 #372
     fixed via #429) (@solnic)'
+  - 'Key validator and coercer no longer include duped keys when using parent schemas
+    (via #430) (@solnic)'
   added: 
   changed: 
 - version: 1.10.4
