@@ -204,4 +204,24 @@ RSpec.describe Dry::Schema, "callbacks" do
       }.to raise_error(ArgumentError, /oops/)
     end
   end
+
+  context "with an inherited params" do
+    describe "core step key maps" do
+      it "copies key map from the parent and includes new keys from child" do
+        parent = Dry::Schema.Params do
+          config.validate_keys = true
+
+          required(:name).filled(:string)
+        end
+
+        child = Dry::Schema.Params(parent: parent) do
+          required(:email).filled(:string)
+        end
+
+        %i[key_validator key_coercer].each do |step|
+          expect(child.steps[step].executor.key_map.map(&:name)).to eql(%w[name email])
+        end
+      end
+    end
+  end
 end

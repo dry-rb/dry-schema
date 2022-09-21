@@ -150,4 +150,21 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       end
     end
   end
+
+  context "with an inherited params" do
+    it "copies key map from the parent and includes new keys from child" do
+      parent = Dry::Schema.Params do
+        config.validate_keys = true
+
+        required(:name).filled(:string)
+      end
+
+      child = Dry::Schema.Params(parent: parent) do
+        required(:email).filled(:string)
+      end
+
+      expect(child.(name: "Jane", email: "jane@doe.org", unexpected_key: "boo!").errors.to_h)
+        .to eql({unexpected_key: ["is not allowed"]})
+    end
+  end
 end
