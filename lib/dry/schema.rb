@@ -27,6 +27,11 @@ module Dry
       @config ||= Config.new
     end
 
+    # @api public
+    def self.configure(&block)
+      config.configure(&block)
+    end
+
     # Define a schema
     #
     # @example

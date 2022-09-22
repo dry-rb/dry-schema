@@ -290,7 +290,7 @@ RSpec.describe Dry::Schema, "types specs" do
           types.register("trimmed_string", trimmed_string)
 
           Dry::Schema.define do
-            config.types = types
+            configure { |c| c.types = types }
 
             required(:name).maybe(:trimmed_string)
           end

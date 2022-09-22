@@ -7,9 +7,11 @@ RSpec.describe Dry::Schema, "with localized messages" do
     context "without a namespace" do
       subject(:schema) do
         Dry::Schema.define do
-          config.messages.backend = :i18n
-          config.messages.load_paths = %w[en pl ja]
-            .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+          configure do |config|
+            config.messages.backend = :i18n
+            config.messages.load_paths = %w[en pl ja]
+              .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+          end
 
           required(:email).value(:filled?)
         end
@@ -31,10 +33,12 @@ RSpec.describe Dry::Schema, "with localized messages" do
     context "with a namespace" do
       subject(:schema) do
         Dry::Schema.define do
-          config.messages.backend = :i18n
-          config.messages.namespace = :user
-          config.messages.load_paths = %w[en pl ja]
-            .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+          configure do |config|
+            config.messages.backend = :i18n
+            config.messages.namespace = :user
+            config.messages.load_paths = %w[en pl ja]
+              .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+          end
 
           required(:email).value(:filled?)
         end
@@ -52,11 +56,13 @@ RSpec.describe Dry::Schema, "with localized messages" do
     context "with a config.default_locale set" do
       subject(:schema) do
         Dry::Schema.define do
-          config.messages.backend = :i18n
-          config.messages.namespace = :user
-          config.messages.default_locale = :pl
-          config.messages.load_paths = %w[en pl ja]
-            .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+          configure do |config|
+            config.messages.backend = :i18n
+            config.messages.namespace = :user
+            config.messages.default_locale = :pl
+            config.messages.load_paths = %w[en pl ja]
+              .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+          end
 
           required(:email).value(:filled?)
         end
@@ -71,11 +77,13 @@ RSpec.describe Dry::Schema, "with localized messages" do
 
         it "returns localized error messages with defined whitespace character for 'full' option" do
           schema = Dry::Schema.define do
-            config.messages.backend = :i18n
-            config.messages.namespace = :user
-            config.messages.default_locale = :ja
-            config.messages.load_paths = %w[en pl ja]
-              .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+            configure do |config|
+              config.messages.backend = :i18n
+              config.messages.namespace = :user
+              config.messages.default_locale = :ja
+              config.messages.load_paths = %w[en pl ja]
+                .map { |l| SPEC_ROOT.join("fixtures/locales/#{l}.yml") }
+            end
 
             required(:email).value(:filled?)
           end

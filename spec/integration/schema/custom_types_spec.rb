@@ -37,7 +37,7 @@ RSpec.describe "Registering custom types" do
       let(:klass) do
         class Test::CustomTypeSchema < Dry::Schema::Params
           define do
-            config.types = ContainerWithoutTypes
+            configure { |c| c.types = ContainerWithoutTypes }
 
             required(:email).filled(:string)
             required(:age).filled(:trimmed_string)
@@ -54,7 +54,7 @@ RSpec.describe "Registering custom types" do
       let(:klass) do
         class Test::CustomTypeSchema < Dry::Schema::Params
           define do
-            config.types = ContainerWithTypes
+            configure { |c| c.types = ContainerWithTypes }
 
             required(:email).filled(:string)
             required(:age).filled(:trimmed_string)
@@ -115,7 +115,7 @@ RSpec.describe "Registering custom types" do
     context "custom type is not registered" do
       subject(:schema) do
         Dry::Schema.Params do
-          config.types = ContainerWithoutTypes
+          configure { |c| c.types = ContainerWithoutTypes }
 
           required(:email).filled(:string)
           required(:age).filled(:trimmed_string)
@@ -130,7 +130,7 @@ RSpec.describe "Registering custom types" do
     context "custom type is registered" do
       subject(:schema) do
         Dry::Schema.Params do
-          config.types = ContainerWithTypes
+          configure { |c| c.types = ContainerWithTypes }
 
           required(:email).filled(:string)
           required(:age).filled(:trimmed_string)
@@ -148,7 +148,7 @@ RSpec.describe "Registering custom types" do
       context "nested schema" do
         subject(:schema) do
           Dry::Schema.Params do
-            config.types = ContainerWithTypes
+            configure { |c| c.types = ContainerWithTypes }
 
             required(:user).hash do
               required(:age).filled(:trimmed_string)
@@ -166,7 +166,7 @@ RSpec.describe "Registering custom types" do
       context "custom constructor" do
         subject(:schema) do
           Dry::Schema.Params do
-            config.types = ContainerWithTypes
+            configure { |c| c.types = ContainerWithTypes }
             optional(:date).maybe(:calendar_day)
           end
         end
@@ -221,7 +221,7 @@ RSpec.describe "Registering custom types" do
     let(:klass) do
       class Test::CustomTypeSchema < Dry::Schema::Params
         define do
-          config.types = ContainerWithTypes
+          configure { |c| c.types = ContainerWithTypes }
 
           required(:age).filled(:string_or_integer)
         end
@@ -235,7 +235,7 @@ RSpec.describe "Registering custom types" do
     }
 
     before do
-      klass.definition.configure { |config| config.messages.backend = backend }
+      klass.definition.configure { |c| c.messages.backend = backend }
     end
 
     context "with YAML backend" do

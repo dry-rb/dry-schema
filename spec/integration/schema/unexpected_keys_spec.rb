@@ -3,7 +3,7 @@
 RSpec.describe Dry::Schema, "unexpected keys" do
   subject(:schema) do
     Dry::Schema.define do
-      config.validate_keys = true
+      configure { |c| c.validate_keys = true }
 
       required(:name).filled(:string)
       required(:ids).filled(:array).each(:integer)
@@ -67,9 +67,11 @@ RSpec.describe Dry::Schema, "unexpected keys" do
 
   it "supports meta tags" do
     schema = Dry::Schema.define do
-      config.validate_keys = true
-      config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/pl.yml"
-      config.messages.default_locale = :pl
+      configure do |config|
+        config.validate_keys = true
+        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/pl.yml"
+        config.messages.default_locale = :pl
+      end
 
       required(:title).filled
     end
@@ -82,7 +84,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
   context "with an array validation" do
     subject(:schema) do
       Dry::Schema.define do
-        config.validate_keys = true
+        configure { |c| c.validate_keys = true }
 
         required(:name).filled(:string)
         optional(:tags).array(:string)
@@ -100,7 +102,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
 
     it "doesn't add the unexpected key error message when the type is wrong" do
       schema = Dry::Schema.define do
-        config.validate_keys = true
+        configure { |c| c.validate_keys = true }
 
         required(:pets).array(:hash) do
           required(:name).filled(:string)
@@ -117,7 +119,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     context "with a nested maybe hash validator" do
       subject(:schema) do
         Dry::Schema.define do
-          config.validate_keys = true
+          configure { |c| c.validate_keys = true }
 
           required(:locations).array(:hash) do
             required(:feedback_location).maybe(:hash) do
@@ -136,7 +138,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
     context "with a non-nested maybe hash validator" do
       subject(:schema) do
         Dry::Schema.define do
-          config.validate_keys = true
+          configure { |c| c.validate_keys = true }
 
           required(:feedback_location).maybe(:hash) do
             required(:lat).filled(:float)
@@ -154,7 +156,7 @@ RSpec.describe Dry::Schema, "unexpected keys" do
   context "with an inherited params" do
     it "copies key map from the parent and includes new keys from child" do
       parent = Dry::Schema.Params do
-        config.validate_keys = true
+        configure { |c| c.validate_keys = true }
 
         required(:name).filled(:string)
       end

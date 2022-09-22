@@ -13,7 +13,7 @@ RSpec.describe Dry::Schema::Config do
     end
 
     it "returns overridden value" do
-      config.messages.backend = :i18n
+      config.configure { |c| c.messages.backend = :i18n }
 
       expect(config.messages.backend).to be(:i18n)
     end
@@ -40,7 +40,7 @@ RSpec.describe Dry::Schema::Config do
 
     it "returns false when configs differ" do
       other = config.dup
-      other.messages.backend = :i18n
+      other.configure { |c| c.messages.backend = :i18n }
 
       expect(config).to_not eql(other)
     end

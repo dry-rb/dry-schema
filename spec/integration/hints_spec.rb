@@ -30,7 +30,7 @@ RSpec.describe "Validation hints" do
   context "with i18n messages" do
     subject(:schema) do
       Dry::Schema.define do
-        config.messages.backend = :i18n
+        configure { |c| c.messages.backend = :i18n }
 
         required(:age).maybe(:int?, gt?: 18)
       end

@@ -209,7 +209,7 @@ RSpec.describe Dry::Schema, "callbacks" do
     describe "core step key maps" do
       it "copies key map from the parent and includes new keys from child" do
         parent = Dry::Schema.Params do
-          config.validate_keys = true
+          configure { |c| c.validate_keys = true }
 
           required(:name).filled(:string)
         end

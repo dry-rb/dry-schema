@@ -40,27 +40,29 @@ RSpec.describe Dry::Schema::DSL do
     let(:replacement_namespace) { :replacement_test_namespace }
 
     it "uses a dup of the parent's config when a parent is present" do
-      config = Dry::Schema::Config.new.tap { |c| c.messages.namespace = namespace }
+      config = Dry::Schema::Config.new
+      config.configure { |c| c.messages.namespace = namespace }
       parent = Dry::Schema::DSL.new(config: config)
       dsl = Dry::Schema::DSL.new(parent: parent)
 
       expect(dsl.config.messages.namespace).to eq(namespace)
 
-      parent.config.messages.namespace = replacement_namespace
+      parent.configure { |c| c.messages.namespace = replacement_namespace }
       expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
     end
 
     it "uses a dup of the global config when no parent is present" do
-      Dry::Schema.config.messages.namespace = namespace
+      Dry::Schema.configure { |c| c.messages.namespace = namespace }
       expect(dsl.config.messages.namespace).to eq(namespace)
 
-      Dry::Schema.config.messages.namespace = replacement_namespace
+      Dry::Schema.configure { |c| c.messages.namespace = replacement_namespace }
       expect(dsl.config.messages.namespace).not_to eq(replacement_namespace)
     end
 
     it "raises an ArgumentError if the parent configs differ" do
       parent = [namespace, namespace, replacement_namespace, namespace].map do |namespace|
-        config = Dry::Schema::Config.new.tap { |c| c.messages.namespace = namespace }
+        config = Dry::Schema::Config.new
+        config.configure { |c| c.messages.namespace = namespace }
         Dry::Schema::DSL.new(config: config)
       end
 
@@ -70,7 +72,8 @@ RSpec.describe Dry::Schema::DSL do
 
     it "does not raise an error if the parent configs are the same" do
       parent = Array.new(4) do
-        config = Dry::Schema::Config.new.tap { |c| c.messages.namespace = namespace }
+        config = Dry::Schema::Config.new
+        config.configure { |c| c.messages.namespace = namespace }
         Dry::Schema::DSL.new(config: config)
       end
 

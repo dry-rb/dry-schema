@@ -11,9 +11,11 @@ module Dry
     #
     # @api public
     class JSON < Processor
-      config.key_map_type = :stringified
-      config.type_registry_namespace = :json
-      config.filter_empty_string = false
+      configure do |config|
+        config.key_map_type = :stringified
+        config.type_registry_namespace = :json
+        config.filter_empty_string = false
+      end
     end
   end
 end

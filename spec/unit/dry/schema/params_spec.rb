@@ -50,7 +50,7 @@ RSpec.describe Dry::Schema::Params do
     let(:parent_class) do
       class Test::UserSchema < Dry::Schema::Params
         define do
-          config.messages.backend = :i18n
+          configure { |c| c.messages.backend = :i18n }
 
           required(:name).filled(:string)
         end

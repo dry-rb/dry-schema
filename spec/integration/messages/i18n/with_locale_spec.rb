@@ -13,8 +13,10 @@ RSpec.describe "I18n validation messages / using I18n.with_locale" do
   context "with current locale" do
     subject(:schema) do
       Dry::Schema.Params do
-        config.messages.backend = :i18n
-        config.messages.namespace = :user
+        configure do |config|
+          config.messages.backend = :i18n
+          config.messages.namespace = :user
+        end
 
         required(:name).filled(:string)
       end
@@ -65,7 +67,7 @@ RSpec.describe "I18n validation messages / using I18n.with_locale" do
     context "without namespace" do
       subject(:schema) do
         Dry::Schema.Params do
-          config.messages.backend = :i18n
+          configure { |c| c.messages.backend = :i18n }
 
           required(:name).filled(:string)
         end
@@ -85,8 +87,10 @@ RSpec.describe "I18n validation messages / using I18n.with_locale" do
     context "with namespace" do
       subject(:schema) do
         Dry::Schema.Params do
-          config.messages.backend = :i18n
-          config.messages.namespace = :user
+          configure do |config|
+            config.messages.backend = :i18n
+            config.messages.namespace = :user
+          end
 
           required(:name).filled(:string)
         end

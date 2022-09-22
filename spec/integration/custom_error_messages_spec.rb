@@ -16,7 +16,7 @@ RSpec.describe Dry::Schema do
   context "yaml" do
     subject(:schema) do
       Dry::Schema.define do
-        configure do
+        configure do |config|
           config.messages.load_paths << SPEC_ROOT.join("fixtures/locales/en.yml")
         end
 
@@ -36,7 +36,7 @@ RSpec.describe Dry::Schema do
     context "with custom messages set globally" do
       subject(:schema) do
         Dry::Schema.define do
-          configure do
+          configure do |config|
             config.messages.backend = :i18n
           end
 
@@ -49,7 +49,7 @@ RSpec.describe Dry::Schema do
 
     context "with global configuration" do
       before do
-        Dry::Schema.config.messages.backend = :i18n
+        Dry::Schema.configure { |c| c.messages.backend = :i18n }
       end
 
       subject(:schema) do

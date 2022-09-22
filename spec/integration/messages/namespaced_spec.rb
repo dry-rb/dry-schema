@@ -6,8 +6,10 @@ RSpec.describe "Namespaced messages" do
   context "namespace with nested schema" do
     let(:post_schema) do
       Dry::Schema.Params do
-        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
-        config.messages.namespace = :post
+        configure do |config|
+          config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+          config.messages.namespace = :post
+        end
 
         required(:post_body).filled(:string)
         required(:comment).schema do
@@ -29,8 +31,10 @@ RSpec.describe "Namespaced messages" do
   context "in nested, re-used schemas" do
     let!(:comment_schema) do
       Test::CommentSchema = Dry::Schema.Params do
-        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
-        config.messages.namespace = :comment
+        configure do |config|
+          config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+          config.messages.namespace = :comment
+        end
 
         required(:comment_body).filled
       end
@@ -38,8 +42,10 @@ RSpec.describe "Namespaced messages" do
 
     let(:post_schema) do
       Test::PostSchema = Dry::Schema.Params do
-        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
-        config.messages.namespace = :post
+        configure do |config|
+          config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+          config.messages.namespace = :post
+        end
 
         required(:post_body).filled
         required(:comment).hash(::Test::CommentSchema)
@@ -59,8 +65,10 @@ RSpec.describe "Namespaced messages" do
   context "with OR types" do
     let(:post_schema) do
       Dry::Schema.Params do
-        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
-        config.messages.namespace = :post
+        configure do |config|
+          config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+          config.messages.namespace = :post
+        end
 
         required(:some_ids).maybe(Types::Array.of(Types::Params::Integer | Types::Params::String))
       end
