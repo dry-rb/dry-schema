@@ -9,10 +9,7 @@ gemspec
 # if ENV["DRY_CONFIGURABLE_FROM_MAIN"].eql?("true")
 #   gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "main"
 # end
-gem "dry-configurable",
-  github: "dry-rb/dry-configurable",
-  branch: "write-settings-in-configure-only"
-gem "dry-core", github: "dry-rb/dry-core"
+gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "write-settings-in-configure-only"
 
 if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
   gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
