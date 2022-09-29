@@ -72,4 +72,22 @@ RSpec.describe "Namespaced messages" do
       expect(result.errors[:some_ids]).to eql({0 => ["must be an integer or must be a string"]})
     end
   end
+
+  context "with top namespace" do
+    let(:post_schema) do
+      Dry::Schema.Params do
+        config.messages.load_paths << "#{SPEC_ROOT}/fixtures/locales/namespaced.yml"
+        config.messages.namespace = :post
+        config.messages.top_namespace = "dry_validation"
+
+        required(:post_body).filled(:string)
+      end
+    end
+
+    it "uses namespaced messages" do
+      result = post_schema.call(post_body: "")
+
+      expect(result.errors(full: true)[:post_body]).to eql(["(dry_validation) Post body must be filled"])
+    end
+  end
 end

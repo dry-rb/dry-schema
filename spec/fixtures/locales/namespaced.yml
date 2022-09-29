@@ -11,3 +11,7 @@ en:
             filled?: "POST can't be blank"
           comment_body:
             filled?: "post comment must be filled"
+  dry_validation:
+    post:
+      rules:
+        post_body: "(dry_validation) Post body"
