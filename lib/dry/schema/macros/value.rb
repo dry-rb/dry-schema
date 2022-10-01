@@ -12,66 +12,20 @@ module Dry
       class Value < DSL
         # @api private
         #
-        # rubocop:disable Metrics/AbcSize
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
-        def call(*args, **opts, &block)
-          types, predicates = args.partition { |arg| arg.is_a?(Dry::Types::Type) }
+        def call(type_spec, *predicates, **opts, &block)
+          set_type(type_spec)
 
-          constructor = types.select { |type| type.is_a?(Dry::Types::Constructor) }.reduce(:>>)
-          schema = predicates.detect { |predicate| predicate.is_a?(Processor) }
+          type = schema_dsl.types[name]
 
-          schema_dsl.set_type(name, constructor) if constructor
-
-          type_spec = opts[:type_spec]
-
-          if schema
-            current_type = schema_dsl.types[name]
-
-            updated_type =
-              if array_type?(current_type)
-                build_array_type(current_type, schema.strict_type_schema)
-              else
-                schema.strict_type_schema
-              end
-
-            import_steps(schema)
-
-            if !custom_type? || array_type?(current_type) || hash_type?(current_type)
-              type(updated_type)
-            elsif maybe_type?(current_type)
-              type(updated_type.optional)
-            end
-          end
-
-          trace_opts = opts.reject { |key, _| %i[type_spec type_rule].include?(key) }
-
-          if (type_rule = opts[:type_rule])
-            trace.append(type_rule).evaluate(*predicates, **trace_opts)
-            trace.append(new(chain: false).instance_exec(&block)) if block
-          else
-            trace.evaluate(*predicates, **trace_opts)
-
-            if block && type_spec.equal?(:hash)
-              hash(&block)
-            elsif type_spec.is_a?(::Dry::Types::Type) && hash_type?(type_spec)
-              hash(type_spec)
-            elsif block
-              trace.append(new(chain: false).instance_exec(&block))
-            end
-          end
+          trace.evaluate(*predicate_inferrer[type], *predicates, **opts)
+          trace.append(new(chain: false).instance_exec(&block)) if block
 
           if trace.captures.empty?
             raise ArgumentError, "wrong number of arguments (given 0, expected at least 1)"
           end
 
-          each(type_spec.type.member) if type_spec.respond_to?(:member)
-
           self
         end
-        # rubocop:enable Metrics/AbcSize
-        # rubocop:enable Metrics/CyclomaticComplexity
-        # rubocop:enable Metrics/PerceivedComplexity
 
         # @api private
         def array_type?(type)

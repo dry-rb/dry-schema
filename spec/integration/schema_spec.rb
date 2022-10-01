@@ -33,8 +33,8 @@ RSpec.describe Dry::Schema, ".define" do
   context "using macros" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:email).filled(:str?)
-        optional(:age).value(:int?)
+        required(:email).filled(:string)
+        optional(:age).value(:integer)
       end
     end
 
@@ -55,8 +55,8 @@ RSpec.describe Dry::Schema, ".define" do
   context "chaining calls" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:email).value(:str?).filled
-        optional(:age).value(:int?)
+        required(:email).value(:string).filled
+        optional(:age).value(:integer)
       end
     end
 

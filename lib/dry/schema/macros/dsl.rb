@@ -37,7 +37,7 @@ module Dry
         #   @api private
         option :primitive_inferrer, default: proc { PrimitiveInferrer.new }
 
-        # @overload value(*predicates, **predicate_opts)
+        # @overload value(type_spec, *predicates, **predicate_opts)
         #   Set predicates without and with arguments
         #
         #   @param [Array<Symbol>] predicates
@@ -58,11 +58,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def value(*args, **opts, &block)
-          extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
-            append_macro(Macros::Value) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
-            end
+        def value(type_spec, ...)
+          append_macro(Macros::Value) do |macro|
+            macro.call(type_spec, ...)
           end
         end
 
@@ -77,11 +75,9 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def filled(*args, **opts, &block)
-          extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
-            append_macro(Macros::Filled) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
-            end
+        def filled(type_spec, ...)
+          append_macro(Macros::Filled) do |macro|
+            macro.call(type_spec, ...)
           end
         end
 
@@ -95,11 +91,9 @@ module Dry
         # @return [Macros::Key]
         #
         # @api public
-        def maybe(*args, **opts, &block)
-          extract_type_spec(args, nullable: true) do |*predicates, type_spec:, type_rule:|
-            append_macro(Macros::Maybe) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
-            end
+        def maybe(type_spec, ...)
+          append_macro(Macros::Maybe) do |macro|
+            macro.call(type_spec, ...)
           end
         end
 
@@ -193,10 +187,11 @@ module Dry
         # @return [Macros::Key]
         #
         # @api public
-        def type(spec)
-          schema_dsl.set_type(name, spec)
+        def type(type)
+          schema_dsl.set_type(name, type)
           self
         end
+        alias_method :set_type, :type
 
         # @api private
         def custom_type?
@@ -220,39 +215,7 @@ module Dry
         end
 
         # @api private
-        # rubocop: disable Metrics/PerceivedComplexity
-        def extract_type_spec(args, nullable: false, set_type: true)
-          type_spec = args[0] unless schema_or_predicate?(args[0])
-
-          predicates = Array(type_spec ? args[1..] : args)
-          type_rule = nil
-
-          if type_spec
-            resolved_type = resolve_type(type_spec, nullable)
-
-            if type_spec.is_a?(::Array)
-              type_rule = type_spec.map { |ts| new(chain: false).value(ts) }.reduce(:|)
-            else
-              type_predicates = predicate_inferrer[resolved_type]
-
-              predicates.replace(type_predicates + predicates) unless type_predicates.empty?
-
-              return self if predicates.empty?
-            end
-          end
-
-          type(resolved_type) if set_type && resolved_type
-
-          if type_rule
-            yield(*predicates, type_spec: nil, type_rule: type_rule)
-          else
-            yield(*predicates, type_spec: type_spec, type_rule: nil)
-          end
-        end
-        # rubocop: enable Metrics/PerceivedComplexity
-
-        # @api private
-        def resolve_type(type_spec, nullable)
+        def resolve_type(type_spec, nullable: false)
           resolved = schema_dsl.resolve_type(type_spec)
 
           if type_spec.is_a?(::Array) || !nullable || resolved.optional?
@@ -260,13 +223,6 @@ module Dry
           else
             schema_dsl.resolve_type([:nil, resolved])
           end
-        end
-
-        # @api private
-        def schema_or_predicate?(arg)
-          arg.is_a?(Dry::Schema::Processor) ||
-            (arg.is_a?(Symbol) &&
-              arg.to_s.end_with?(QUESTION_MARK))
         end
       end
     end
