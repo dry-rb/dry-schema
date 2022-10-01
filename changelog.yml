@@ -3,8 +3,7 @@
   summary: 
   date: 
   fixed:
-  - 'Fix issues with rule name when top_namespace and namespace passed (issue #304
-    fixed via #432) (@solnic)'
+  - 'Fix issues with rule name when top_namespace and namespace passed (issue #304 fixed via #432) (@RudskikhIvan)'
   added: 
   changed: 
 - version: 1.10.5
