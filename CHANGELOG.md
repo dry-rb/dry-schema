@@ -5,7 +5,7 @@
 
 ### Fixed
 
-- Fix issues with rule name when top_namespace and namespace passed (issue #304 fixed via #432) (@solnic)
+- Fix issues with rule name when top_namespace and namespace passed (issue #304 fixed via #432) (@RudskikhIvan)
 
 
 [Compare v1.10.5...main](https://github.com/dry-rb/dry-schema/compare/v1.10.5...main)
