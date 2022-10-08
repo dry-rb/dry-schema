@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
-require "dry/core/equalizer"
-
-require "dry/schema/path"
-require "dry/schema/message/or"
 
 module Dry
   module Schema

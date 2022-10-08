@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/macros/core"
-require "dry/schema/predicate_inferrer"
-require "dry/schema/primitive_inferrer"
-
 module Dry
   module Schema
     module Macros

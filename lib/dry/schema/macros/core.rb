@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
-
 require "dry/schema/constants"
-require "dry/schema/compiler"
-require "dry/schema/trace"
 
 module Dry
   module Schema

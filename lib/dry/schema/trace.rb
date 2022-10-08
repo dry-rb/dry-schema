@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/constants"
-require "dry/schema/compiler"
-require "dry/schema/predicate"
-
 module Dry
   module Schema
     # Captures predicates defined within the DSL

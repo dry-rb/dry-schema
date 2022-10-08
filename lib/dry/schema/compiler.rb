@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/namespaced_rule"
-require "dry/schema/predicate_registry"
-
 module Dry
   module Schema
     # Extended rule compiler used internally by the DSL

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/path"
-require "dry/schema/macros/dsl"
-
 module Dry
   module Schema
     module Macros

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/message/or/abstract"
-require "dry/schema/path"
-
 module Dry
   module Schema
     class Message
