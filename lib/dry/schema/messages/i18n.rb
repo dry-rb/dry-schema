@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "i18n"
-require "dry/schema/messages/abstract"
 
 module Dry
   module Schema

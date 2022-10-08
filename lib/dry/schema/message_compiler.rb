@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
-
 require "dry/schema/constants"
-require "dry/schema/message"
-require "dry/schema/message_compiler/visitor_opts"
-require "dry/schema/message_set"
-require "dry/schema/path"
 
 module Dry
   module Schema

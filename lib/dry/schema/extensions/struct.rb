@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "dry/struct"
-require "dry/schema/predicate_inferrer"
-require "dry/schema/primitive_inferrer"
-require "dry/schema/macros/dsl"
-require "dry/schema/macros/hash"
 
 module Dry
   module Schema

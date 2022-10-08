@@ -3,8 +3,6 @@
 require "dry/initializer"
 require "dry/core/equalizer"
 
-require "dry/schema/path"
-
 module Dry
   module Schema
     # Processing result

@@ -3,9 +3,7 @@
 require "yaml"
 require "pathname"
 
-require "dry/core/equalizer"
 require "dry/schema/constants"
-require "dry/schema/messages/abstract"
 
 module Dry
   module Schema

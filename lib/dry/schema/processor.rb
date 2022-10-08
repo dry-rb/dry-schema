@@ -2,13 +2,6 @@
 
 require "dry/initializer"
 
-require "dry/schema/type_registry"
-require "dry/schema/type_container"
-require "dry/schema/processor_steps"
-require "dry/schema/rule_applier"
-require "dry/schema/key_coercer"
-require "dry/schema/value_coercer"
-
 module Dry
   module Schema
     # Processes input data using objects configured within the DSL

@@ -1,23 +1,7 @@
 # frozen_string_literal: true
 
 require "dry/initializer"
-require "dry/logic"
-
 require "dry/schema/constants"
-require "dry/schema/path"
-require "dry/schema/config"
-require "dry/schema/compiler"
-require "dry/schema/types"
-require "dry/schema/macros"
-
-require "dry/schema/processor"
-require "dry/schema/processor_steps"
-require "dry/schema/key_map"
-require "dry/schema/key_coercer"
-require "dry/schema/key_validator"
-require "dry/schema/value_coercer"
-require "dry/schema/rule_applier"
-require "dry/schema/types_merger"
 
 module Dry
   module Schema

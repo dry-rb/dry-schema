@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/schema/processor"
-
 module Dry
   module Schema
     # Params schema type
