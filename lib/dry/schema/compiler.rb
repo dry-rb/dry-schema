@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/logic/rule_compiler"
 require "dry/schema/namespaced_rule"
 require "dry/schema/predicate_registry"
 
