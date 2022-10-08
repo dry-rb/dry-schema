@@ -2,6 +2,7 @@
 
 require "dry/core/equalizer"
 require "dry/configurable"
+require "dry/schema/constants"
 
 module Dry
   module Schema
