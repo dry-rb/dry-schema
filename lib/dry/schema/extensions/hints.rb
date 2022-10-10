@@ -52,6 +52,10 @@ module Dry
 
     # Hints extensions
     module Extensions
+      # @api private
+      module Hints
+      end
+
       Compiler.prepend(Hints::CompilerMethods)
       MessageCompiler.prepend(Hints::MessageCompilerMethods)
       MessageSet.prepend(Hints::MessageSetMethods)

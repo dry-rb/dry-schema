@@ -29,7 +29,8 @@ module Dry
         loader.push_dir(root)
         loader.ignore(
           "#{root}/dry-schema.rb",
-          "#{root}/dry/schema/{constants,errors,version,extensions}.rb"
+          "#{root}/dry/schema/{constants,errors,version,extensions}.rb",
+          "#{root}/dry/schema/extensions"
         )
         loader.inflector.inflect("dsl" => "DSL")
       end
