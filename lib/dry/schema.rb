@@ -21,7 +21,7 @@ module Dry
         loader.tag = "dry-schema"
         loader.inflector = Zeitwerk::GemInflector.new("#{root}/dry-schema.rb")
         loader.inflector.inflect(
-          "dsl"  => "DSL",
+          "dsl" => "DSL",
           "yaml" => "YAML",
           "json" => "JSON",
           "i18n" => "I18n"
