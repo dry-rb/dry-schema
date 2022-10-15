@@ -15,7 +15,7 @@ if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
 end
 
 gem "dry-core", require: false, github: "dry-rb/dry-core", branch: "main"
-gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
+gem "dry-logic", github: "dry-rb/dry-logic", branch: "release-1.3"
 gem "dry-types", github: "dry-rb/dry-types", branch: "main"
 
 group :test do
