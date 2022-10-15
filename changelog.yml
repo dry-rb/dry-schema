@@ -1,5 +1,9 @@
 ---
 - version: 1.11.0
+  date: 2022-10-15
+  changed:
+    - 'Depend on dry-configurable >= 0.16 - this was needed to play nice with Zeitwerk (@solnic)'
+- version: 1.11.0
   summary:
   date: 2022-10-15
   fixed:
