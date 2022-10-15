@@ -5,6 +5,15 @@
 
 ### Changed
 
+- Depend on dry-configurable >= 0.16 - this was needed to play nice with Zeitwerk (@solnic)
+
+[Compare v1.11.0...v1.11.0](https://github.com/dry-rb/dry-schema/compare/v1.11.0...v1.11.0)
+
+## 1.11.0 2022-10-15
+
+
+### Changed
+
 - Use zeitwerk for auto-loading which speeds up requires (via #427) (@flash-gordon + @solnic)
 
 [Compare v1.10.6...v1.11.0](https://github.com/dry-rb/dry-schema/compare/v1.10.6...v1.11.0)
