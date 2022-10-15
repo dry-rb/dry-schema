@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-require "dry/monads/result"
+require "dry/monads"
+
+# preload monads
+Dry::Monads[:result]
 
 module Dry
   module Schema
