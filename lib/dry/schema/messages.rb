@@ -19,7 +19,7 @@ module Dry
         end
 
         namespace = config.namespace
-        options = config.to_h.select { |k, _| Abstract.settings.map(&:name).include?(k) }
+        options = config.to_h.select { |k, _| Abstract.setting_names.include?(k) }
 
         messages = Messages.const_get(backend_class).build(options)
 
