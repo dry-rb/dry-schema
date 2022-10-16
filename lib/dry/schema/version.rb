@@ -2,6 +2,6 @@
 
 module Dry
   module Schema
-    VERSION = "1.11.1"
+    VERSION = "1.11.2"
   end
 end
