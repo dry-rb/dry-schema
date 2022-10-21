@@ -53,9 +53,15 @@ module Dry
         #
         # @api public
         def value(*args, **opts, &block)
-          extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
+          if (type_spec_from_opts = opts[:type_spec])
             append_macro(Macros::Value) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
+              macro.call(*args, type_spec: type_spec_from_opts, **opts, &block)
+            end
+          else
+            extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
+              append_macro(Macros::Value) do |macro|
+                macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
+              end
             end
           end
         end
