@@ -60,4 +60,21 @@ RSpec.describe "Params / Macros / array" do
       end
     end
   end
+
+  context "with a sum type as member" do
+    it "applies coercion and rules" do
+      schema = Dry::Schema.Params {
+        required(:nums).array(Types::Params::Integer | Types::Params::Nil)
+      }
+
+      result = schema.(nums: ["3", nil, "1"])
+
+      expect(result).to be_success
+
+      result = schema.(nums: ["3", {}, "1"])
+
+      expect(result).to be_failure
+      expect(result.errors.to_h).to eql(nums: {1 => ["must be an integer or cannot be defined"]})
+    end
+  end
 end
