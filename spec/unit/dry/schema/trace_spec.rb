@@ -15,13 +15,13 @@ RSpec.describe Dry::Schema::Trace do
     it "stores evaluated predicates with args" do
       trace.evaluate(is_eql?: "foo")
 
-      expect(trace.captures).to include(trace.eql?("foo"))
+      expect(trace.captures).to include(trace.is_eql?("foo"))
     end
   end
 
   describe "#method_missing" do
     it "creates predicate objects" do
-      predicate = trace.eql?("foo")
+      predicate = trace.is_eql?("foo")
 
       expect(predicate.name).to be(:is_eql?)
       expect(predicate.args).to eql(["foo"])

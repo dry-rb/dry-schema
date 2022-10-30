@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Predicates: Eql" do
+RSpec.describe "Predicates: IsEql" do
   context "with required" do
     subject(:schema) do
       Dry::Schema.Params do
@@ -44,7 +44,7 @@ RSpec.describe "Predicates: Eql" do
   context "with optional" do
     subject(:schema) do
       Dry::Schema.Params do
-        optional(:foo).value(:string) { eql?("23") }
+        optional(:foo).value(:string) { is_eql?("23") }
       end
     end
 
@@ -126,7 +126,7 @@ RSpec.describe "Predicates: Eql" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.Params do
-            required(:foo).filled(:string, eql?: "23")
+            required(:foo).filled(:string, is_eql?: "23")
           end
         end
 
@@ -208,7 +208,7 @@ RSpec.describe "Predicates: Eql" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).value(:string, eql?: "23")
+            optional(:foo).value(:string, is_eql?: "23")
           end
         end
 
@@ -288,7 +288,7 @@ RSpec.describe "Predicates: Eql" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.Params do
-            optional(:foo).maybe(:string, eql?: "23")
+            optional(:foo).maybe(:string, is_eql?: "23")
           end
         end
 

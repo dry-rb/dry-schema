@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe "Predicates: Respond To" do
+RSpec.describe "Predicates: Interface" do
   context "with required" do
     subject(:schema) do
-      Dry::Schema.define { required(:foo) { respond_to?(:bar) } }
+      Dry::Schema.define { required(:foo) { interface?(:bar) } }
     end
 
     context "with valid input" do
@@ -49,7 +49,7 @@ RSpec.describe "Predicates: Respond To" do
 
   context "with optional" do
     subject(:schema) do
-      Dry::Schema.define { optional(:foo) { respond_to?(:bar) } }
+      Dry::Schema.define { optional(:foo) { interface?(:bar) } }
     end
 
     context "with valid input" do
