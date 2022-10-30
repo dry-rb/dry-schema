@@ -6,17 +6,24 @@ eval_gemfile "Gemfile.devtools"
 
 gemspec
 
-if ENV["DRY_CONFIGURABLE_FROM_MAIN"].eql?("true")
-  gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "main"
-end
+gem "dry-core", github: "dry-rb/dry-core", branch: "main"
 
-if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
-  gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
-end
+# if ENV["DRY_CONFIGURABLE_FROM_MAIN"].eql?("true")
+#   gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "main"
+# end
+
+gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "main"
+
+# if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
+#   gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
+# end
+
+gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
+gem "dry-types", github: "dry-rb/dry-types", branch: "main"
 
 group :test do
   gem "dry-monads", require: false, github: "dry-rb/dry-monads", branch: "main"
-  gem "dry-struct"
+  gem "dry-struct", github: "dry-rb/dry-struct", branch: "main"
   gem "i18n", "1.8.2", require: false
   gem "json-schema"
   gem "transproc"
