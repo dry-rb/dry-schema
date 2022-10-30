@@ -70,10 +70,10 @@ RSpec.describe "Validation hints" do
   context "with a nested schema with same rule names" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:code).filled(:str?, eql?: "foo")
+        required(:code).filled(:str?, is_eql?: "foo")
 
         required(:nested).hash do
-          required(:code).filled(:str?, eql?: "bar")
+          required(:code).filled(:str?, is_eql?: "bar")
         end
       end
     end
@@ -150,7 +150,7 @@ RSpec.describe "Validation hints" do
       Dry::Schema.define do
         configure { |c| c.messages.load_paths << SPEC_ROOT.join("fixtures/messages.yml") }
 
-        required(:pill).filled(eql?: "blue")
+        required(:pill).filled(is_eql?: "blue")
       end
     end
 

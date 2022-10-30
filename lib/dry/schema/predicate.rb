@@ -71,7 +71,7 @@ module Dry
 
       # @api private
       def ensure_valid
-        if compiler.predicates[name].arity - 1 != args.size
+        if compiler.predicates[name].arity - 1 != args.size && !name.eql?(:eql?)
           raise ArgumentError, "#{name} predicate arity is invalid"
         end
       end

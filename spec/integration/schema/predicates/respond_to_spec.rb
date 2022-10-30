@@ -97,7 +97,7 @@ RSpec.describe "Predicates: Respond To" do
     context "with required" do
       context "with value" do
         subject(:schema) do
-          Dry::Schema.define { required(:foo).value(respond_to?: :bar) }
+          Dry::Schema.define { required(:foo).value(interface?: :bar) }
         end
 
         context "with valid input" do
@@ -143,7 +143,7 @@ RSpec.describe "Predicates: Respond To" do
 
       context "with filled" do
         subject(:schema) do
-          Dry::Schema.define { required(:foo).filled(respond_to?: :bar) }
+          Dry::Schema.define { required(:foo).filled(interface?: :bar) }
         end
 
         context "with valid input" do
@@ -189,7 +189,7 @@ RSpec.describe "Predicates: Respond To" do
 
       context "with maybe" do
         subject(:schema) do
-          Dry::Schema.define { required(:foo).maybe(respond_to?: :bar) }
+          Dry::Schema.define { required(:foo).maybe(interface?: :bar) }
         end
 
         context "with valid input" do
@@ -237,7 +237,7 @@ RSpec.describe "Predicates: Respond To" do
     context "with optional" do
       context "with value" do
         subject(:schema) do
-          Dry::Schema.define { optional(:foo).value(respond_to?: :bar) }
+          Dry::Schema.define { optional(:foo).value(interface?: :bar) }
         end
 
         context "with valid input" do
@@ -283,7 +283,7 @@ RSpec.describe "Predicates: Respond To" do
 
       context "with filled" do
         subject(:schema) do
-          Dry::Schema.define { optional(:foo).filled(respond_to?: :bar) }
+          Dry::Schema.define { optional(:foo).filled(interface?: :bar) }
         end
 
         context "with valid input" do
@@ -329,7 +329,7 @@ RSpec.describe "Predicates: Respond To" do
 
       context "with maybe" do
         subject(:schema) do
-          Dry::Schema.define { optional(:foo).maybe(respond_to?: :bar) }
+          Dry::Schema.define { optional(:foo).maybe(interface?: :bar) }
         end
 
         context "with valid input" do

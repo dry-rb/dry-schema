@@ -4,7 +4,7 @@ RSpec.describe "Predicates: Eql" do
   context "with required" do
     subject(:schema) do
       Dry::Schema.define do
-        required(:foo) { eql?(23) }
+        required(:foo) { is_eql?(23) }
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe "Predicates: Eql" do
   context "with optional" do
     subject(:schema) do
       Dry::Schema.define do
-        optional(:foo) { eql?(23) }
+        optional(:foo) { is_eql?(23) }
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe "Predicates: Eql" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).value(eql?: 23)
+            required(:foo).value(is_eql?: 23)
           end
         end
 
@@ -126,7 +126,7 @@ RSpec.describe "Predicates: Eql" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).filled(eql?: 23)
+            required(:foo).filled(is_eql?: 23)
           end
         end
 
@@ -166,7 +166,7 @@ RSpec.describe "Predicates: Eql" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
-            required(:foo).maybe(eql?: 23)
+            required(:foo).maybe(is_eql?: 23)
           end
         end
 
@@ -208,7 +208,7 @@ RSpec.describe "Predicates: Eql" do
       context "with value" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).value(eql?: 23)
+            optional(:foo).value(is_eql?: 23)
           end
         end
 
@@ -248,7 +248,7 @@ RSpec.describe "Predicates: Eql" do
       context "with filled" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).filled(eql?: 23)
+            optional(:foo).filled(is_eql?: 23)
           end
         end
 
@@ -288,7 +288,7 @@ RSpec.describe "Predicates: Eql" do
       context "with maybe" do
         subject(:schema) do
           Dry::Schema.define do
-            optional(:foo).maybe(eql?: 23)
+            optional(:foo).maybe(is_eql?: 23)
           end
         end
 

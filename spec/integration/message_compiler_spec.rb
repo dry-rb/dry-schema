@@ -406,10 +406,10 @@ RSpec.describe Dry::Schema::MessageCompiler do
       end
     end
 
-    describe ":eql?" do
+    describe ":is_eql?" do
       it "returns valid message" do
         msg = message_compiler.visit(
-          [:failure, [:str, [:key, [:str, p(:eql?, "Bar", "Foo")]]]]
+          [:failure, [:str, [:key, [:str, p(:is_eql?, "Bar", "Foo")]]]]
         )
 
         expect(msg).to eql("must be equal to Bar")
