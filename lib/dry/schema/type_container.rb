@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "dry/container"
+require "dry/core/container"
 require "dry/types"
 
 module Dry
@@ -13,7 +13,7 @@ module Dry
     #
     # @api public
     class TypeContainer
-      include Dry::Container::Mixin
+      include Dry::Core::Container::Mixin
 
       def initialize(types_container = Dry::Types.container)
         super()
