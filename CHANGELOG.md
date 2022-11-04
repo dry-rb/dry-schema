@@ -292,7 +292,7 @@ This release ships with a bunch of internal refactorings that should improve per
 
 [Compare v1.5.4...v1.5.5](https://github.com/dry-rb/dry-schema/compare/v1.5.4...v1.5.5)
 
-## 1.5.4 
+## 1.5.4
 
 2020-09-03
 

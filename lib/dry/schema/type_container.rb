@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "dry/core/container"
+require "dry/types"
+
 module Dry
   module Schema
     # A class to build containers for custom types, which can be used in schemas
@@ -10,7 +13,7 @@ module Dry
     #
     # @api public
     class TypeContainer
-      include Core::Container::Mixin
+      include Dry::Core::Container::Mixin
 
       def initialize(types_container = ::Dry::Types.container)
         super()
