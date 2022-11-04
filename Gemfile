@@ -10,9 +10,9 @@ if ENV["DRY_CONFIGURABLE_FROM_MAIN"].eql?("true")
   gem "dry-configurable", github: "dry-rb/dry-configurable", branch: "main"
 end
 
-if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
-  gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
-end
+# if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
+gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
+# end
 
 group :test do
   gem "dry-monads", require: false, github: "dry-rb/dry-monads", branch: "main"
