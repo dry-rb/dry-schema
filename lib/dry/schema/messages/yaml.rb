@@ -70,7 +70,9 @@ module Dry
 
         # @api private
         def self.cache
-          @cache ||= Concurrent::Map.new { |h, k| h[k] = Concurrent::Map.new }
+          @cache ||= Concurrent::Map.new do |h, k|
+            h.compute_if_absent(k) { Concurrent::Map.new }
+          end
         end
 
         # @api private
@@ -162,6 +164,7 @@ module Dry
 
         # @api private
         def evaluation_context(key, options)
+          p key
           cache.fetch_or_store(get(key, options).fetch(:text)) do |input|
             tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
             text = input.gsub("%", "#")
