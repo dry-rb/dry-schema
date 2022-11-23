@@ -6,6 +6,8 @@
 ### Fixed
 
 - Change required metadata back to true to fix regressions (issue #438 fixed via #439) (@robhanlon22)
+- Compatibility with dry-configurable 1.0.1 (@flash-gordon)
+- Warnings about using pattern matching on Ruby 2.7 (issue #441 fixed via #442) (@r7kamura)
 
 
 [Compare v1.12.0...main](https://github.com/dry-rb/dry-schema/compare/v1.12.0...main)
