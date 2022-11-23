@@ -45,13 +45,7 @@ module Dry
 
         # @api private
         def self.setting_names
-          # TODO: this is compatibility tweak to make it work with dry-configurable < 0.16.1
-          #       and should be removed in dry-schema 2.0.0
-          @setting_names ||= settings
-            .map { |setting|
-              setting.respond_to?(:name) ? setting.name : setting
-            }
-            .map(&:to_sym)
+          @setting_names ||= settings.map { _1.name.to_sym }
         end
 
         # @api private
