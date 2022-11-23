@@ -82,7 +82,7 @@ module Dry
         def initialize(data: EMPTY_HASH, config: nil)
           super()
           @data = data
-          @config = config if config
+          @__config__ = config if config
           @t = proc { |key, locale: default_locale| get("%<locale>s.#{key}", locale: locale) }
         end
 
