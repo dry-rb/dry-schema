@@ -66,17 +66,61 @@ module Dry
         alias_method :merge_and, :merge_ordered
         alias_method :merge_implication, :merge_ordered
 
-        # @api private
-        def merge_unwrapped_types(unwrapped_old, unwrapped_new)
-          case [unwrapped_old, unwrapped_new]
-          in Dry::Types::Schema, Dry::Types::Schema
-            merge_schemas(unwrapped_old, unwrapped_new)
-          in [Dry::Types::AnyClass, _] | [Dry::Types::Hash, Dry::Types::Schema]
-            unwrapped_new
-          in [Dry::Types::Schema, Dry::Types::Hash] | [_, Dry::Types::AnyClass]
-            unwrapped_old
-          else
-            merge_equivalent_types(unwrapped_old, unwrapped_new)
+        if RUBY_VERSION >= "3.0"
+          class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
+            # @api private
+            def merge_unwrapped_types(unwrapped_old, unwrapped_new)
+              case [unwrapped_old, unwrapped_new]
+              in Dry::Types::Schema, Dry::Types::Schema
+                merge_schemas(unwrapped_old, unwrapped_new)
+              in [Dry::Types::AnyClass, _] | [Dry::Types::Hash, Dry::Types::Schema]
+                unwrapped_new
+              in [Dry::Types::Schema, Dry::Types::Hash] | [_, Dry::Types::AnyClass]
+                unwrapped_old
+              else
+                merge_equivalent_types(unwrapped_old, unwrapped_new)
+              end
+            end
+          RUBY
+        else
+          # @api private
+          def merge_unwrapped_types(unwrapped_old, unwrapped_new)
+            if change_from_schema_to_schema?(unwrapped_old, unwrapped_new)
+              merge_schemas(unwrapped_old, unwrapped_new)
+            elsif change_from_any?(unwrapped_old) || change_from_hash_to_schema?(unwrapped_old,
+                                                                                 unwrapped_new)
+              unwrapped_new
+            elsif change_from_schema_to_hash?(unwrapped_old,
+                                              unwrapped_new) || change_to_any?(unwrapped_new)
+              unwrapped_old
+            else
+              merge_equivalent_types(unwrapped_old, unwrapped_new)
+            end
+          end
+
+          # @api private
+          def change_from_any?(unwrapped_old)
+            unwrapped_old.is_a?(Dry::Types::AnyClass)
+          end
+
+          # @api private
+          def change_to_any?(unwrapped_new)
+            unwrapped_new.is_a?(Dry::Types::AnyClass)
+          end
+
+          # @api private
+          def change_from_hash_to_schema?(unwrapped_old, unwrapped_new)
+            unwrapped_old.is_a?(Dry::Types::Hash) && unwrapped_new.is_a?(Dry::Types::Schema)
+          end
+
+          # @api private
+          def change_from_schema_to_hash?(unwrapped_old, unwrapped_new)
+            unwrapped_old.is_a?(Dry::Types::Schema) && unwrapped_new.is_a?(Dry::Types::Hash)
+          end
+
+          # @api private
+          def change_from_schema_to_schema?(unwrapped_old, unwrapped_new)
+            unwrapped_old.is_a?(Dry::Types::Schema) && unwrapped_new.is_a?(Dry::Types::Schema)
           end
         end
 
