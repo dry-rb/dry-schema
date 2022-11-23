@@ -70,7 +70,9 @@ module Dry
 
         # @api private
         def self.cache
-          @cache ||= Concurrent::Map.new { |h, k| h[k] = Concurrent::Map.new }
+          @cache ||= Concurrent::Map.new do |h, k|
+            h.compute_if_absent(k) { Concurrent::Map.new }
+          end
         end
 
         # @api private
