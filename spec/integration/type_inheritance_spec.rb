@@ -50,25 +50,25 @@ RSpec.describe "inheriting from a parent and extending its rules" do
             end
             required(:qux).hash do
               required(:hello).hash do
-                required(:wow).value(:string, is_eql?: "a")
-                required(:such).value(:string, is_eql?: "cool")
+                required(:wow).value(:string, eql?: "a")
+                required(:such).value(:string, eql?: "cool")
                 required(:amaze).value(array[:string], size?: 1)
               end
               required(:my).hash do
-                required(:wow).value(:string, is_eql?: "b")
-                required(:such).value(:string, is_eql?: "cool")
+                required(:wow).value(:string, eql?: "b")
+                required(:such).value(:string, eql?: "cool")
                 required(:amaze).value(array[:string], size?: 1)
               end
               required(:friend).hash do
-                required(:wow).filled(:string, is_eql?: "c")
-                required(:such).filled(:string, is_eql?: "cool")
+                required(:wow).filled(:string, eql?: "c")
+                required(:such).filled(:string, eql?: "cool")
                 required(:amaze).value(array[:string], size?: 1)
               end
             end
           end
           required(:last).filled.hash do
-            required(:not).value(:array, is_eql?: ["rad"])
-            required(:least).value(:string, is_eql?: "done")
+            required(:not).value(:array, eql?: ["rad"])
+            required(:least).value(:string, eql?: "done")
           end
         end
       end

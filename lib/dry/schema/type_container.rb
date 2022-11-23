@@ -15,7 +15,7 @@ module Dry
     class TypeContainer
       include Dry::Core::Container::Mixin
 
-      def initialize(types_container = ::Dry::Types.container)
+      def initialize(types_container = Dry::Types.container)
         super()
 
         merge(types_container)

@@ -20,8 +20,6 @@ en:
 
       eql?: "must be equal to %{left}"
 
-      is_eql?: "must be equal to %{left}"
-
       not_eql?: "must not be equal to %{left}"
 
       filled?: "must be filled"
@@ -90,8 +88,6 @@ en:
       type?: "must be %{type}"
 
       respond_to?: "must respond to %{method}"
-
-      interface?: "must respond to %{method}"
 
       size?:
         arg:
