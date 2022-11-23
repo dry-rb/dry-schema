@@ -47,6 +47,9 @@ module Dry
       attr_reader :args
 
       # @api private
+      attr_reader :arity
+
+      # @api private
       attr_reader :block
 
       # @api private
@@ -55,6 +58,8 @@ module Dry
         @name = name
         @args = args
         @block = block
+        # Cater for optional second argument like in case of `eql?` or `respond_to?`
+        @arity = compiler.predicates[name].arity.abs
       end
 
       # Negate a predicate
@@ -71,7 +76,7 @@ module Dry
 
       # @api private
       def ensure_valid
-        if compiler.predicates[name].arity - 1 != args.size
+        if arity - 1 != args.size
           raise ArgumentError, "#{name} predicate arity is invalid"
         end
       end

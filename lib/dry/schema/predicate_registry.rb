@@ -9,11 +9,13 @@ module Dry
       # @api private
       def arg_list(name, *values)
         predicate = self[name]
+        # Cater for optional second argument like in case of `eql?` or `respond_to?`
+        arity = predicate.arity.abs
 
         predicate
           .parameters
           .map(&:last)
-          .zip(values + Array.new(predicate.arity - values.size, Undefined))
+          .zip(values + Array.new(arity - values.size, Undefined))
       end
     end
   end
