@@ -1,12 +1,14 @@
 ---
-- version: unreleased
+- version: 1.13.0
   summary:
-  date:
+  date: 2022-11-24
   fixed:
-  - 'Change required metadata back to true to fix regressions (issue #438 fixed via
-    #439) (@robhanlon22)'
+  - 'Change required metadata back to true to fix regressions (issue #438 fixed via 439) (@robhanlon22)'
   - 'Compatibility with dry-configurable 1.0.1 (@flash-gordon)'
   - 'Warnings about using pattern matching on Ruby 2.7 (issue #441 fixed via #442) (@r7kamura)'
+  - 'Make message cache fully thread-safe (via #440) (@mensfeld)'
+  changed:
+  - 'Bump dry-logic to >= 1.5.0 (@solnic)'
   added:
   changed:
 - version: 1.12.0
