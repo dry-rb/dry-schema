@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-configurable", "~> 1.0", ">= 1.0.1"
   spec.add_runtime_dependency "dry-core", "~> 1.0", "< 2"
   spec.add_runtime_dependency "dry-initializer", "~> 3.0"
-  spec.add_runtime_dependency "dry-logic", ">= 1.4", "< 2"
+  spec.add_runtime_dependency "dry-logic", ">= 1.5", "< 2"
   spec.add_runtime_dependency "dry-types", ">= 1.7", "< 2"
   spec.add_runtime_dependency "zeitwerk", "~> 2.6"
 

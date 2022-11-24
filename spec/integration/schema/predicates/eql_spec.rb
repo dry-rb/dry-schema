@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-RSpec.describe "Predicates: Interface" do
+RSpec.describe "Predicates: Eql" do
   context "with required" do
     subject(:schema) do
-      Dry::Schema.define { required(:foo) { interface?(:bar) } }
+      Dry::Schema.define do
+        required(:foo) { eql?(23) }
+      end
     end
 
     context "with valid input" do
-      let(:input) { {foo: double(bar: 23)} }
+      let(:input) { {foo: 23} }
 
       it "is successful" do
         expect(result).to be_successful
@@ -18,7 +20,7 @@ RSpec.describe "Predicates: Interface" do
       let(:input) { {} }
 
       it "is not successful" do
-        expect(result).to be_failing ["is missing", "must respond to bar"]
+        expect(result).to be_failing ["is missing", "must be equal to 23"]
       end
     end
 
@@ -26,7 +28,7 @@ RSpec.describe "Predicates: Interface" do
       let(:input) { {foo: nil} }
 
       it "is not successful" do
-        expect(result).to be_failing ["must respond to bar"]
+        expect(result).to be_failing ["must be equal to 23"]
       end
     end
 
@@ -34,26 +36,20 @@ RSpec.describe "Predicates: Interface" do
       let(:input) { {foo: ""} }
 
       it "is not successful" do
-        expect(result).to be_failing ["must respond to bar"]
-      end
-    end
-
-    context "with invalid input" do
-      let(:input) { {foo: double(baz: 23)} }
-
-      it "is not successful" do
-        expect(result).to be_failing ["must respond to bar"]
+        expect(result).to be_failing ["must be equal to 23"]
       end
     end
   end
 
   context "with optional" do
     subject(:schema) do
-      Dry::Schema.define { optional(:foo) { interface?(:bar) } }
+      Dry::Schema.define do
+        optional(:foo) { eql?(23) }
+      end
     end
 
     context "with valid input" do
-      let(:input) { {foo: double(bar: 23)} }
+      let(:input) { {foo: 23} }
 
       it "is successful" do
         expect(result).to be_successful
@@ -72,7 +68,7 @@ RSpec.describe "Predicates: Interface" do
       let(:input) { {foo: nil} }
 
       it "is not successful" do
-        expect(result).to be_failing ["must respond to bar"]
+        expect(result).to be_failing ["must be equal to 23"]
       end
     end
 
@@ -80,15 +76,7 @@ RSpec.describe "Predicates: Interface" do
       let(:input) { {foo: ""} }
 
       it "is not successful" do
-        expect(result).to be_failing ["must respond to bar"]
-      end
-    end
-
-    context "with invalid input" do
-      let(:input) { {foo: double(baz: 23)} }
-
-      it "is not successful" do
-        expect(result).to be_failing ["must respond to bar"]
+        expect(result).to be_failing ["must be equal to 23"]
       end
     end
   end
@@ -97,11 +85,13 @@ RSpec.describe "Predicates: Interface" do
     context "with required" do
       context "with value" do
         subject(:schema) do
-          Dry::Schema.define { required(:foo).value(interface?: :bar) }
+          Dry::Schema.define do
+            required(:foo).value(eql?: 23)
+          end
         end
 
         context "with valid input" do
-          let(:input) { {foo: double(bar: 23)} }
+          let(:input) { {foo: 23} }
 
           it "is successful" do
             expect(result).to be_successful
@@ -112,7 +102,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {} }
 
           it "is not successful" do
-            expect(result).to be_failing ["is missing", "must respond to bar"]
+            expect(result).to be_failing ["is missing", "must be equal to 23"]
           end
         end
 
@@ -120,7 +110,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: nil} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be equal to 23"]
           end
         end
 
@@ -128,26 +118,20 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: ""} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
-          end
-        end
-
-        context "with invalid input" do
-          let(:input) { {foo: double(baz: 23)} }
-
-          it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be equal to 23"]
           end
         end
       end
 
       context "with filled" do
         subject(:schema) do
-          Dry::Schema.define { required(:foo).filled(interface?: :bar) }
+          Dry::Schema.define do
+            required(:foo).filled(eql?: 23)
+          end
         end
 
         context "with valid input" do
-          let(:input) { {foo: double(bar: 23)} }
+          let(:input) { {foo: 23} }
 
           it "is successful" do
             expect(result).to be_successful
@@ -158,7 +142,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {} }
 
           it "is not successful" do
-            expect(result).to be_failing ["is missing", "must respond to bar"]
+            expect(result).to be_failing ["is missing", "must be equal to 23"]
           end
         end
 
@@ -166,7 +150,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: nil} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must be filled", "must respond to bar"]
+            expect(result).to be_failing ["must be filled", "must be equal to 23"]
           end
         end
 
@@ -174,26 +158,20 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: ""} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must be filled", "must respond to bar"]
-          end
-        end
-
-        context "with invalid input" do
-          let(:input) { {foo: double(baz: 23)} }
-
-          it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be filled", "must be equal to 23"]
           end
         end
       end
 
       context "with maybe" do
         subject(:schema) do
-          Dry::Schema.define { required(:foo).maybe(interface?: :bar) }
+          Dry::Schema.define do
+            required(:foo).maybe(eql?: 23)
+          end
         end
 
         context "with valid input" do
-          let(:input) { {foo: double(bar: 23)} }
+          let(:input) { {foo: 23} }
 
           it "is successful" do
             expect(result).to be_successful
@@ -204,7 +182,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {} }
 
           it "is not successful" do
-            expect(result).to be_failing ["is missing", "must respond to bar"]
+            expect(result).to be_failing ["is missing", "must be equal to 23"]
           end
         end
 
@@ -220,15 +198,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: ""} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
-          end
-        end
-
-        context "with invalid input" do
-          let(:input) { {foo: double(baz: 23)} }
-
-          it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be equal to 23"]
           end
         end
       end
@@ -237,11 +207,13 @@ RSpec.describe "Predicates: Interface" do
     context "with optional" do
       context "with value" do
         subject(:schema) do
-          Dry::Schema.define { optional(:foo).value(interface?: :bar) }
+          Dry::Schema.define do
+            optional(:foo).value(eql?: 23)
+          end
         end
 
         context "with valid input" do
-          let(:input) { {foo: double(bar: 23)} }
+          let(:input) { {foo: 23} }
 
           it "is successful" do
             expect(result).to be_successful
@@ -260,7 +232,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: nil} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be equal to 23"]
           end
         end
 
@@ -268,26 +240,20 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: ""} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
-          end
-        end
-
-        context "with invalid input" do
-          let(:input) { {foo: double(baz: 23)} }
-
-          it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be equal to 23"]
           end
         end
       end
 
       context "with filled" do
         subject(:schema) do
-          Dry::Schema.define { optional(:foo).filled(interface?: :bar) }
+          Dry::Schema.define do
+            optional(:foo).filled(eql?: 23)
+          end
         end
 
         context "with valid input" do
-          let(:input) { {foo: double(bar: 23)} }
+          let(:input) { {foo: 23} }
 
           it "is successful" do
             expect(result).to be_successful
@@ -306,7 +272,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: nil} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must be filled", "must respond to bar"]
+            expect(result).to be_failing ["must be filled", "must be equal to 23"]
           end
         end
 
@@ -314,26 +280,20 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: ""} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must be filled", "must respond to bar"]
-          end
-        end
-
-        context "with invalid input" do
-          let(:input) { {foo: double(baz: 23)} }
-
-          it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be filled", "must be equal to 23"]
           end
         end
       end
 
       context "with maybe" do
         subject(:schema) do
-          Dry::Schema.define { optional(:foo).maybe(interface?: :bar) }
+          Dry::Schema.define do
+            optional(:foo).maybe(eql?: 23)
+          end
         end
 
         context "with valid input" do
-          let(:input) { {foo: double(bar: 23)} }
+          let(:input) { {foo: 23} }
 
           it "is successful" do
             expect(result).to be_successful
@@ -360,15 +320,7 @@ RSpec.describe "Predicates: Interface" do
           let(:input) { {foo: ""} }
 
           it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
-          end
-        end
-
-        context "with invalid input" do
-          let(:input) { {foo: double(baz: 23)} }
-
-          it "is not successful" do
-            expect(result).to be_failing ["must respond to bar"]
+            expect(result).to be_failing ["must be equal to 23"]
           end
         end
       end

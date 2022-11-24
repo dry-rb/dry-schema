@@ -184,7 +184,7 @@ RSpec.describe Dry::Schema, ".define" do
 
     context "sum type" do
       let(:type) do
-        Types::Params::Integer.constrained(gteq: 18) | Types::String.constrained(is_eql: "old enough")
+        Types::Params::Integer.constrained(gteq: 18) | Types::String.constrained(eql: "old enough")
       end
 
       subject(:schema) do
@@ -209,7 +209,7 @@ RSpec.describe Dry::Schema, ".define" do
     context "constrained sum type" do
       let(:type) do
         int = Types::Integer
-        (int.constrained([:odd]) | int.constrained(is_eql: 0)).constrained(gteq: 18)
+        (int.constrained([:odd]) | int.constrained(eql: 0)).constrained(gteq: 18)
       end
 
       subject(:schema) do

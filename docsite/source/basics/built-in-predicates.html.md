@@ -38,7 +38,7 @@ Checks that a key's value is equal to the given value.
 describe 'eql?' do
   let(:schema) do
     Dry::Schema.Params do
-      required(:sample).value(is_eql?: 1234)
+      required(:sample).value(eql?: 1234)
     end
   end
 
