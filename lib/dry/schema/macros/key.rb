@@ -26,7 +26,6 @@ module Dry
           (filter_schema_dsl[name] || filter_schema_dsl.optional(name)).value(...)
           self
         end
-        ruby2_keywords(:filter) if respond_to?(:ruby2_keywords, true)
 
         # Coerce macro to a rule
         #

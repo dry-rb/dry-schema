@@ -122,7 +122,6 @@ module Dry
             macro.call(...)
           end
         end
-        ruby2_keywords :schema if respond_to?(:ruby2_keywords, true)
 
         # Specify a nested hash with enforced `hash?` type-check
         #
@@ -137,7 +136,6 @@ module Dry
             macro.call(...)
           end
         end
-        ruby2_keywords :hash if respond_to?(:ruby2_keywords, true)
 
         # Specify predicates that should be applied to each element of an array
         #
@@ -161,7 +159,6 @@ module Dry
             macro.value(...)
           end
         end
-        ruby2_keywords :each if respond_to?(:ruby2_keywords, true)
 
         # Like `each` but sets `array?` type-check
         #
@@ -181,7 +178,6 @@ module Dry
             macro.value(...)
           end
         end
-        ruby2_keywords :array if respond_to?(:ruby2_keywords, true)
 
         # Set type spec
         #
