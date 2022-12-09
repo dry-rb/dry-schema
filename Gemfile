@@ -23,8 +23,6 @@ group :test do
 end
 
 group :tools do
-  gem "pry"
-  gem "pry-byebug", platform: :mri
   gem "redcarpet", platform: :mri
 end
 
