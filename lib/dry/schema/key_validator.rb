@@ -9,8 +9,8 @@ module Dry
     class KeyValidator
       extend Dry::Initializer
 
-      INDEX_REGEX = /\[\d+\]/.freeze
-      DIGIT_REGEX = /\A\d+\z/.freeze
+      INDEX_REGEX = /\[\d+\]/
+      DIGIT_REGEX = /\A\d+\z/
       BRACKETS = "[]"
 
       # @api private
@@ -53,7 +53,10 @@ module Dry
       def none_key_paths_match?(key_paths, path)
         !key_paths.bsearch do |key_path|
           path_size = path.size
-          match = key_path.start_with?(path) && (key_path.size == path_size || key_path[path_size] == DOT || key_path[path_size, 2] == BRACKETS)
+          match = key_path.start_with?(path) &&
+                  (key_path.size == path_size ||
+                    key_path[path_size] == DOT ||
+                    key_path[path_size, 2] == BRACKETS)
           match ? 0 : path <=> key_path
         end
       end
