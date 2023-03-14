@@ -21,7 +21,7 @@ module Dry
         input = result.to_h
 
         input_paths = key_paths(input)
-        key_paths = key_map.to_dot_notation
+        key_paths = key_map.to_dot_notation.sort
 
         input_paths.each do |path|
           error_path = validate_path(key_paths, path)
@@ -41,12 +41,20 @@ module Dry
         if path[INDEX_REGEX]
           key = path.gsub(INDEX_REGEX, BRACKETS)
 
-          if key_paths.none? { paths_match?(key, _1) }
+          if none_key_paths_match?(key_paths, key)
             arr = path.gsub(INDEX_REGEX) { ".#{_1[1]}" }
             arr.split(DOT).map { DIGIT_REGEX.match?(_1) ? Integer(_1, 10) : _1.to_sym }
           end
-        elsif key_paths.none? { paths_match?(path, _1) }
+        elsif none_key_paths_match?(key_paths, path)
           path
+        end
+      end
+
+      def none_key_paths_match?(key_paths, path)
+        !key_paths.bsearch do |key_path|
+          path_size = path.size
+          match = key_path.start_with?(path) && (key_path.size == path_size || key_path[path_size] == DOT || key_path[path_size, 2] == BRACKETS)
+          match ? 0 : path <=> key_path
         end
       end
 
