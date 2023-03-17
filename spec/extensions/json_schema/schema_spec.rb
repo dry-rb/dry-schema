@@ -230,6 +230,54 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
   end
 
+  context "when using eql? predicate" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:id).value(:integer, :filled?, eql?: 42)
+        required(:category).value(:string, eql?: "fruits")
+        required(:sub_categories).value(array[:string], eql?: %w[citrus berry])
+        required(:quantities).value(:hash, eql?: {citrus: 2, berry: 1})
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            not: {
+              type: "null"
+            },
+            const: 42
+          },
+          category: {
+            type: "string",
+            const: "fruits"
+          },
+          sub_categories: {
+            type: "array",
+            const: %w[citrus berry],
+            items: {
+              type: "string"
+            }
+          },
+          quantities: {
+            type: "object",
+            const: {
+              berry: 1,
+              citrus: 2
+            }
+          }
+        },
+        required: %w[id category sub_categories quantities]
+      )
+    end
+  end
+
   describe "inferring types" do
     {
       array: {type: "array"},

@@ -46,6 +46,7 @@ module Dry
           uuid_v5?: {
             pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
           },
+          eql?: {const: IDENTITY},
           gt?: {exclusiveMinimum: IDENTITY},
           gteq?: {minimum: IDENTITY},
           lt?: {exclusiveMaximum: IDENTITY},
@@ -162,9 +163,15 @@ module Dry
         def visit_predicate(node, opts = EMPTY_HASH)
           name, rest = node
 
-          if name.equal?(:key?)
+          case name
+          when :key?
             prop_name = rest[0][1]
             keys[prop_name] = {}
+          when :eql?
+            target = keys[opts[:key]]
+            type_opts = fetch_type_opts_for_predicate(:eql?, rest, target)
+
+            merge_opts!(target, type_opts)
           else
             target = keys[opts[:key]]
             type_opts = fetch_type_opts_for_predicate(name, rest, target)
