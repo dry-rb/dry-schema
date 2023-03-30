@@ -72,6 +72,8 @@ module Dry
       # Dump result to a hash returning processed and validated data
       #
       # @return [Hash]
+      #
+      # @api private
       def output
         path.equal?(Path::EMPTY) ? @output : @output.dig(*path)
       end
