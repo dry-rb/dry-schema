@@ -268,5 +268,31 @@ RSpec.describe "Macros #value" do
         end
       end
     end
+
+    context "with a sum of hash type" do
+      let(:type) do
+        Types::Hash.schema(name: "string") | Types::Hash.schema(other_name: "string")
+      end
+
+      subject(:schema) do
+        env = self
+        Dry::Schema.define do
+          required(:data).value(env.type)
+        end
+      end
+
+      it "is supported" do
+        expect(schema.(data: {name: nil}).messages).to eql(
+          data: {or: [
+            {name: ["must be a string"]},
+            {other_name: ["is missing", "must be a string"]}
+          ]}
+        )
+
+        expect(schema.(data: {name: "name"}).output).to eql(data: {name: "name"})
+        expect(schema.(data: {other_name: "name"}).output).to eql(data: {other_name: "name"})
+        expect(schema.(data: {name: "name", other_name: "name"}).output).to eql(data: {name: "name"})
+      end
+    end
   end
 end

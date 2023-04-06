@@ -13,7 +13,7 @@ module Dry
       # @api public
       class YAML < Abstract
         LOCALE_TOKEN = "%<locale>s"
-        TOKEN_REGEXP = /%{(\w*)}/.freeze
+        TOKEN_REGEXP = /%{(\w*)}/
         EMPTY_CONTEXT = Object.new.tap { |ctx|
           def ctx.context
             binding
