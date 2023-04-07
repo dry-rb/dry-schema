@@ -293,8 +293,8 @@ module Dry
       # @return [Dry::Types::Safe]
       #
       # @api private
-      def new(**options, &block)
-        self.class.new(**options, processor_type: processor_type, config: config, &block)
+      def new(klass: self.class, **options, &block)
+        klass.new(**options, processor_type: processor_type, config: config, &block)
       end
 
       # Set a type for the given key name
