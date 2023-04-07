@@ -3,6 +3,10 @@
 ## unreleased 
 
 
+### Fixed
+
+- Support sum types of hashes (issue
+
 ### Changed
 
 - Make KeyValidator much faster (via #453) (@radarek)
