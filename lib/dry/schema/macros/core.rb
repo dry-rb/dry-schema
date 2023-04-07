@@ -25,8 +25,8 @@ module Dry
         option :schema_dsl, optional: true
 
         # @api private
-        def new(**options)
-          self.class.new(name: name, compiler: compiler, schema_dsl: schema_dsl, **options)
+        def new(klass: self.class, **options)
+          klass.new(name: name, compiler: compiler, schema_dsl: schema_dsl, **options)
         end
 
         # @api private
