@@ -179,7 +179,7 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
       it "can use a proc for a message" do
         store_errors(
-          predicate_proc: ->(_path, **opts) { opts[:text] }
+          predicate_proc: ->(_path, opts) { opts[:text] }
         )
 
         template, meta = messages[:predicate_proc, path: :path, text: "text"]
