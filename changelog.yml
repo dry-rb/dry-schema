@@ -1,12 +1,10 @@
 ---
-- version: unreleased
+- version: 1.13.1
   summary: 
-  date: 
+  date: 2023-04-07
   fixed:
-  - Support sum types of hashes (issue
+  - "Support sum types of hashes (issue #446 fixed via #457) (@segiddins)"
   added: 
-  changed:
-  - 'Make KeyValidator much faster (via #453) (@radarek)'
 - version: 1.13.0
   summary: 
   date: 2022-11-24
