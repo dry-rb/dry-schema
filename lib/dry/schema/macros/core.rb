@@ -19,10 +19,10 @@ module Dry
         option :compiler, default: proc { Compiler.new }
 
         # @api private
-        option :trace, default: proc { Trace.new }
+        option :schema_dsl, optional: true
 
         # @api private
-        option :schema_dsl, optional: true
+        option :trace, default: proc { Trace.new(schema_dsl&.compiler || Compiler.new) }
 
         # @api private
         def new(**options)

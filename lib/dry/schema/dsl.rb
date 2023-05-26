@@ -39,9 +39,6 @@ module Dry
 
       extend Dry::Initializer
 
-      # @return [Compiler] The rule compiler object
-      option :compiler, default: -> { Compiler.new }
-
       # @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
       option :processor_type, default: -> { Processor }
 
@@ -84,6 +81,7 @@ module Dry
       def self.new(**options, &block)
         dsl = super
         dsl.instance_eval(&block) if block
+        dsl.instance_variable_set("@compiler", options[:compiler]) if options[:compiler]
         dsl
       end
 
@@ -104,6 +102,16 @@ module Dry
       def configure(&block)
         config.configure(&block)
         self
+      end
+
+      # @api private
+      def compiler
+        @compiler ||= Compiler.new(predicates)
+      end
+
+      # @api private
+      def predicates
+        @predicates ||= config.predicates
       end
 
       # Return a macro with the provided name

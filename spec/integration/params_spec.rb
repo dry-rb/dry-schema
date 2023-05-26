@@ -27,4 +27,8 @@ RSpec.describe Dry::Schema, ".Params" do
     expect(params.(address: []).to_h).to eql(address: [])
     expect(params.(address: "foo").to_h).to eql(address: "foo")
   end
+
+  it_behaves_like "schema with custom predicates" do
+    let(:schema_class) { Class.new(Dry::Schema::Params) }
+  end
 end
