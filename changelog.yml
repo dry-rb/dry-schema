@@ -1,9 +1,16 @@
 ---
+- version: unreleased
+  summary: 
+  date: 
+  fixed:
+  - 'Fix custom predicates setting (via #460) (@solnic)'
+  added: 
+  changed: 
 - version: 1.13.1
   summary: 
   date: 2023-04-07
   fixed:
-  - "Support sum types of hashes (issue #446 fixed via #457) (@segiddins)"
+  - 'Support sum types of hashes (issue #446 fixed via #457) (@segiddins)'
   added: 
 - version: 1.13.0
   summary: 
