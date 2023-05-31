@@ -22,7 +22,9 @@ module Dry
       # @return [Schema::PredicateRegistry]
       #
       # @api public
-      setting :predicates, default: Schema::PredicateRegistry.new
+      setting :predicates, default: PredicateRegistry.new, constructor: -> predicates {
+        predicates.is_a?(PredicateRegistry) ? predicates : PredicateRegistry.new(predicates)
+      }
 
       # @!method types
       #
