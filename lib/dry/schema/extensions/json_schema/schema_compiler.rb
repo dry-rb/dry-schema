@@ -97,7 +97,7 @@ module Dry
           target_info = opts[:member] ? {items: target.to_h} : target.to_h
           type = opts[:member] ? "array" : "object"
 
-          keys.update(key => {**keys[key], type: type, **target_info})
+          merge_opts!(keys[key], {type: type, **target_info})
         end
 
         # @api private
@@ -210,7 +210,7 @@ module Dry
           orig_type = orig_opts[:type]
 
           if orig_type && new_type && orig_type != new_type
-            new_opts[:type] = [orig_type, new_type]
+            new_opts[:type] = [orig_type, new_type].flatten.uniq
           end
 
           orig_opts.merge!(new_opts)
