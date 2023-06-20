@@ -69,8 +69,8 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
                   properties: {
                     assigned_at: {
                       format: "time",
-                      type: "string",
-                    },
+                      type: "string"
+                    }
                   },
                   required: %w[assigned_at]
                 }
