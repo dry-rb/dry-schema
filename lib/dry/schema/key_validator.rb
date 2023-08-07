@@ -9,8 +9,8 @@ module Dry
     class KeyValidator
       extend Dry::Initializer
 
-      INDEX_REGEX = /\[\d+\]/.freeze
-      DIGIT_REGEX = /\A\d+\z/.freeze
+      INDEX_REGEX = /\[\d+\]/
+      DIGIT_REGEX = /\A\d+\z/
       BRACKETS = "[]"
 
       # @api private
