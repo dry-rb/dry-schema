@@ -203,6 +203,42 @@ RSpec.describe Dry::Schema::Messages::I18n do
           expect(meta).to eql(code: 123)
         end
       end
+
+      context "with plural message" do
+        before do
+          store_errors(
+            apples: {
+              one: "single apple",
+              other: "%{count} apples"
+            }
+          )
+        end
+
+        it "uses correct variant" do
+          template, meta = messages[:apples, path: :path, count: 3]
+
+          expect(template.()).to eql("3 apples")
+          expect(meta).to eql({})
+        end
+
+        context "without count" do
+          it "returns meta" do
+            template, meta = messages[:apples, path: :path]
+
+            expect(template.()).to eql({
+                                         one: "single apple",
+                                         other: "%{count} apples"
+                                       })
+
+            expect(template.(count: 1)).to eql("single apple")
+
+            expect(meta).to eql({
+                                  one: "single apple",
+                                  other: "%{count} apples"
+                                })
+          end
+        end
+      end
     end
 
     context "with dynamic locale" do
