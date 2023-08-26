@@ -1,4 +1,11 @@
 ---
+- version: 1.13.3
+  summary:
+  date: 2023-08-26
+  fixed:
+  - 'Fix struct extension for nested struct definitions (via #466) (@flash-gordon)'
+  added:
+  changed:
 - version: 1.13.2
   summary:
   date: 2023-05-31
