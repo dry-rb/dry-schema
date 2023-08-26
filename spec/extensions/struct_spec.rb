@@ -47,6 +47,38 @@ RSpec.describe "struct extension" do
         )
       end
     end
+
+    context "complex struct" do
+      let(:struct) do
+        Class.new(Dry::Struct) do
+          attribute :name, Types::String
+          attribute :addresses, Types::Array do
+            attribute  :city,   Types::String
+            attribute? :street, Types::String
+          end
+        end
+      end
+
+      context "with valid input" do
+        let(:input) do
+          {foo: {name: "Jane", addresses: [{city: "New York"}]}}
+        end
+
+        it "has no errors" do
+          expect(schema.(input).errors.to_h).to eq({})
+        end
+      end
+
+      context "with empty nested array" do
+        let(:input) do
+          {foo: {name: "Jane", addresses: []}}
+        end
+
+        it "has no errors" do
+          expect(schema.(input).errors.to_h).to eq({})
+        end
+      end
+    end
   end
 
   context "value macro" do

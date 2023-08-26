@@ -28,8 +28,8 @@ group :tools do
 end
 
 group :benchmarks do
-  gem "actionpack", "~> 5.0"
-  gem "activemodel", "~> 5.0"
+  gem "actionpack"
+  gem "activemodel"
   gem "benchmark-ips"
   gem "hotch", platform: :mri
   gem "virtus"
