@@ -83,7 +83,7 @@ This works like `hash` but does not prepend `hash?` predicate. It's a simpler bu
 
 ```ruby
 Dry::Schema.Params do
-  # expands to: `required(:tags) { hash? & filled? & schema { required(:name).filled(:string) } } }`
+  # expands to: `required(:tags) { filled? & schema { required(:name).filled(:string) } } }`
   required(:tags).filled(:hash).schema do
     required(:name).filled(:string)
   end
