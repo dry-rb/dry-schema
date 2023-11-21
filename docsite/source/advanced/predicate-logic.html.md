@@ -48,7 +48,7 @@ Dry::Schema.Params do
 end
 ```
 
-`:status` is valid if it's either an even integer, or it's value is less than `0`.
+`:status` is valid if it's either an even integer, or its value is less than `0`.
 
 ### Operator Aliases
 
