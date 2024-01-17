@@ -8,7 +8,7 @@ RSpec.describe "Predicates: uuid_v3?" do
   end
 
   it "passes with valid input" do
-    expect(schema.(uuid: '1d955abe-9522-33d5-a788-a1b186b163dc')).to be_success
+    expect(schema.(uuid: "1d955abe-9522-33d5-a788-a1b186b163dc")).to be_success
   end
 
   it "fails with invalid input" do
