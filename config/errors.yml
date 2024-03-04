@@ -107,5 +107,7 @@ en:
 
       uuid_v4?: "is not a valid UUID"
 
+      uri?: "is not a valid URI"
+
       not:
         empty?: "cannot be empty"
