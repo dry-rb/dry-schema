@@ -27,6 +27,10 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
         required(:roles).array(:hash) do
           required(:name).value(:string, min_size?: 12, max_size?: 36)
+
+          required(:metadata).hash do
+            required(:assigned_at).value(:time)
+          end
         end
 
         optional(:address).hash do
@@ -59,9 +63,19 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
                   type: "string",
                   minLength: 12,
                   maxLength: 36
+                },
+                metadata: {
+                  type: "object",
+                  properties: {
+                    assigned_at: {
+                      format: "time",
+                      type: "string"
+                    }
+                  },
+                  required: %w[assigned_at]
                 }
               },
-              required: ["name"]
+              required: %w[name metadata]
             }
           },
           address: {

@@ -90,7 +90,7 @@ module Dry
         def visit_set(node, opts = EMPTY_HASH)
           target = (key = opts[:key]) ? self.class.new(loose: loose?) : self
 
-          node.map { |child| target.visit(child, opts) }
+          node.map { |child| target.visit(child, opts.except(:member)) }
 
           return unless key
 
