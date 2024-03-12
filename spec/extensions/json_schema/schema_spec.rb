@@ -108,6 +108,68 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
   end
 
+  context "when using maybe array types" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:list).maybe(:array).each(:str?)
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            type: %w[null array],
+            items: {
+              type: "string"
+            }
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
+  context "when using maybe array types with nested properties" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:list).maybe(:array).each do
+          hash do
+            required(:name).value(:string)
+          end
+        end
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            type: %w[null array],
+            items: {
+              type: "object",
+              properties: {
+                name: {
+                  type: "string"
+                }
+              },
+              required: %w[name]
+            }
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
   describe "filled macro" do
     context "when there is no type" do
       include_examples "metaschema validation"
