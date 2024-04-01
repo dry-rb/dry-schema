@@ -32,6 +32,7 @@ module Dry
           "#{root}/dry/schema/{constants,errors,version,extensions}.rb",
           "#{root}/dry/schema/extensions"
         )
+        loader.do_not_eager_load("#{root}/dry/schema/messages/i18n.rb")
         loader.inflector.inflect("dsl" => "DSL")
       end
     end
