@@ -6,6 +6,7 @@
 ### Fixed
 
 - Fix struct extension for nested struct definitions (via #466) (@flash-gordon)
+- Fix json-schema type of objects nested under arrays. Fixes
 
 
 [Compare v1.13.2...v1.13.3](https://github.com/dry-rb/dry-schema/compare/v1.13.2...v1.13.3)
