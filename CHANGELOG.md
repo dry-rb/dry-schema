@@ -3,10 +3,17 @@
 ## 1.13.4 2024-05-22
 
 
+### Added
+
+- Default error message for `:uri?` (issue
+
 ### Fixed
 
 - Fix json-schema type of objects nested under arrays (issue
 
+### Changed
+
+- i18n backend is no longer eager-loaded (via 85a9e0b) (@adam12)
 
 [Compare v1.13.3...v1.13.4](https://github.com/dry-rb/dry-schema/compare/v1.13.3...v1.13.4)
 
