@@ -2,11 +2,11 @@
 - version: 1.13.4
   date: 2024-05-22
   fixed:
-  - Fix json-schema type of objects nested under arrays (issue #400 fixed via #462) (@tomgi)
+  - 'Fix json-schema type of objects nested under arrays (issue #400 fixed via #462) (@tomgi)'
   changed:
-  - i18n backend is no longer eager-loaded (via 85a9e0b) (@adam12)
+  - 'i18n backend is no longer eager-loaded (via 85a9e0b) (@adam12)'
   added:
-  - Default error message for `:uri?` (issue #476 via #477) (@timjnh)
+  - 'Default error message for `:uri?` (issue #476 via #477) (@timjnh)'
 - version: 1.13.3
   summary:
   date: 2023-08-26
