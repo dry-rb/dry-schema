@@ -5,11 +5,11 @@
 
 ### Added
 
-- Default error message for `:uri?` (issue
+- Default error message for `:uri?` (issue #476 via #477) (@timjnh)
 
 ### Fixed
 
-- Fix json-schema type of objects nested under arrays (issue
+- Fix json-schema type of objects nested under arrays (issue #400 fixed via #462) (@tomgi)
 
 ### Changed
 
