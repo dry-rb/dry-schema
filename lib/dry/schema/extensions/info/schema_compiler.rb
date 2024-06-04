@@ -71,7 +71,7 @@ module Dry
         # @api private
         def visit_implication(node, opts = EMPTY_HASH)
           node.each do |el|
-            visit(el, opts.merge(required: false))
+            visit(el, opts.merge(required: false, nullable: false))
           end
         end
 
@@ -83,7 +83,14 @@ module Dry
         # @api private
         def visit_key(node, opts = EMPTY_HASH)
           name, rest = node
-          visit(rest, opts.merge(key: name, required: true))
+          visit(rest, opts.merge(key: name, required: true, nullable: false))
+        end
+
+        # @api private
+        def visit_not(_node, opts = EMPTY_HASH)
+          key = opts[:key]
+
+          keys[key][:nullable] = true
         end
 
         # @api private
@@ -93,7 +100,10 @@ module Dry
           key = opts[:key]
 
           if name.equal?(:key?)
-            keys[rest[0][1]] = {required: opts.fetch(:required, true)}
+            required = opts.fetch(:required, true)
+            nullable = opts.fetch(:nullable, false)
+
+            keys[rest[0][1]] = {required: required, nullable: nullable}
           else
             type = PREDICATE_TO_TYPE[name]
             assign_type(key, type) if type

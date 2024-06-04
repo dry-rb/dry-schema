@@ -8,7 +8,7 @@ RSpec.describe Dry::Schema::JSON, "#info" do
   subject(:schema) do
     Dry::Schema.JSON do
       required(:email).filled(:string)
-      optional(:age).filled(:integer)
+      optional(:age).maybe(:integer)
 
       required(:roles).array(:hash) do
         required(:name).filled(:string)
@@ -17,9 +17,9 @@ RSpec.describe Dry::Schema::JSON, "#info" do
 
       optional(:address).hash do
         required(:street).filled(:string)
-        required(:zipcode).filled(:string)
+        optional(:zipcode).filled(:string)
         required(:city).filled(:string)
-        optional(:phone).filled(:string)
+        optional(:phone).maybe(:string)
       end
     end
   end
@@ -28,23 +28,28 @@ RSpec.describe Dry::Schema::JSON, "#info" do
     {
       keys: {
         email: {
+          nullable: false,
           required: true,
           type: "string"
         },
         age: {
+          nullable: true,
           required: false,
           type: "integer"
         },
         roles: {
+          nullable: false,
           required: true,
           type: "array",
           member: {
             keys: {
               name: {
+                nullable: false,
                 required: true,
                 type: "string"
               },
               desc: {
+                nullable: false,
                 required: false,
                 type: "string"
               }
@@ -52,22 +57,27 @@ RSpec.describe Dry::Schema::JSON, "#info" do
           }
         },
         address: {
+          nullable: false,
           required: false,
           type: "hash",
           keys: {
             street: {
+              nullable: false,
               required: true,
               type: "string"
             },
             zipcode: {
-              required: true,
+              nullable: false,
+              required: false,
               type: "string"
             },
             city: {
+              nullable: false,
               required: true,
               type: "string"
             },
             phone: {
+              nullable: true,
               required: false,
               type: "string"
             }
@@ -95,20 +105,24 @@ RSpec.describe Dry::Schema::JSON, "#info" do
       {
         keys: {
           opt1: {
+            nullable: false,
             required: true,
             type: "array"
           },
           opt2: {
+            nullable: false,
             required: true,
             type: "array",
             member: "string"
           },
           opt3: {
+            nullable: false,
             required: true,
             type: "array",
             member: "integer"
           },
           opt4: {
+            nullable: false,
             required: true,
             type: "array",
             member: "bool"
@@ -136,7 +150,7 @@ RSpec.describe Dry::Schema::JSON, "#info" do
     }.each do |type_spec, type_name|
       it "infers '#{type_name}' from '#{type_spec}'" do
         expect(Dry::Schema.define { required(:key).value(type_spec) }.info).to eql(
-          keys: {key: {required: true, type: type_name}}
+          keys: {key: {nullable: false, required: true, type: type_name}}
         )
       end
     end
