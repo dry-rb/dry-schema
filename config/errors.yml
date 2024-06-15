@@ -105,9 +105,17 @@ en:
           default: "must be %{size} bytes long"
           range: "must be within %{size_left} - %{size_right} bytes long"
 
+      uri?: "is not a valid URI"
+      
+      uuid_v1?: "is not a valid UUID"
+
+      uuid_v2?: "is not a valid UUID"
+
+      uuid_v3?: "is not a valid UUID"
+
       uuid_v4?: "is not a valid UUID"
 
-      uri?: "is not a valid URI"
+      uuid_v5?: "is not a valid UUID"
 
       not:
         empty?: "cannot be empty"
