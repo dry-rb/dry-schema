@@ -126,7 +126,7 @@ puts errors.to_h.inspect
 
 ```
 
-If you have a value that could be `nil` or an array of hashes, use the !nil? operator to check if the value is present:
+If you have a value that could be `nil` or an array of hashes, use the nil? operator to check if the value is present first:
 
 ```ruby
 # This allows "people": null or "people": [{ "name": "Alice", "age": 19 }, { "name": "Bob", "age": 20 }]
