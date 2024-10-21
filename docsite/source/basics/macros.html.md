@@ -19,6 +19,15 @@ Dry::Schema.Params do
 end
 ```
 
+Predicates passed as an array will be `OR`-ed automatically:
+
+```ruby
+Dry::Schema.Params do
+  # expands to `required(:id) { str? | int? }`
+  required(:id).value([:string, :integer])
+end
+```
+
 ### filled
 
 Use it when a value is expected to be filled. "filled" means that the value is non-nil and, in the case of a `String`, `Hash`, or `Array` value, that the value is not `.empty?`.
