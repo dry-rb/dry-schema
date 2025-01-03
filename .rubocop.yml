@@ -268,3 +268,7 @@ Naming/VariableNumber:
 
 Naming/BinaryOperatorParameterName:
   Enabled: false
+
+Style/MapIntoArray:
+  Exclude:
+    - "spec/**/*.rb"
