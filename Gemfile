@@ -14,7 +14,7 @@ gem "dry-core", github: "dry-rb/dry-core", branch: "main"
 group :test do
   gem "dry-monads"
   gem "dry-struct"
-  gem "i18n", "1.8.2", require: false
+  gem "i18n", require: false
   gem "json-schema"
   gem "transproc"
 end
