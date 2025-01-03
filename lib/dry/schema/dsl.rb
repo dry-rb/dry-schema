@@ -99,8 +99,8 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def configure(&block)
-        config.configure(&block)
+      def configure(&)
+        config.configure(&)
         self
       end
 
@@ -141,8 +141,8 @@ module Dry
       # @return [Macros::Required]
       #
       # @api public
-      def required(name, &block)
-        key(name, macro: Macros::Required, &block)
+      def required(name, &)
+        key(name, macro: Macros::Required, &)
       end
 
       # Define an optional key
@@ -157,8 +157,8 @@ module Dry
       # @return [Macros::Optional]
       #
       # @api public
-      def optional(name, &block)
-        key(name, macro: Macros::Optional, &block)
+      def optional(name, &)
+        key(name, macro: Macros::Optional, &)
       end
 
       # A generic method for defining keys
@@ -249,8 +249,8 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def before(key, &block)
-        steps.before(key, &block)
+      def before(key, &)
+        steps.before(key, &)
         self
       end
 
@@ -264,8 +264,8 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def after(key, &block)
-        steps.after(key, &block)
+      def after(key, &)
+        steps.after(key, &)
         self
       end
 

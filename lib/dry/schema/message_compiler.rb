@@ -212,8 +212,8 @@ module Dry
           when ::Array
             hash[arg[0]] = arg[1].join(LIST_SEPARATOR)
           when ::Range
-            hash["#{arg[0]}_left".to_sym] = arg[1].first
-            hash["#{arg[0]}_right".to_sym] = arg[1].last
+            hash[:"#{arg[0]}_left"] = arg[1].first
+            hash[:"#{arg[0]}_right"] = arg[1].last
           else
             hash[arg[0]] = arg[1]
           end

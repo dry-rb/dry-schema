@@ -165,12 +165,12 @@ module Dry
         # @api private
         def evaluation_context(key, options)
           cache.fetch_or_store(get(key, options).fetch(:text)) do |input|
-            tokens = input.scan(TOKEN_REGEXP).flatten(1).map(&:to_sym).to_set
+            tokens = input.scan(TOKEN_REGEXP).flatten(1).to_set(&:to_sym)
             text = input.gsub("%", "#")
 
             # rubocop:disable Security/Eval
             evaluator = eval(<<~RUBY, EMPTY_CONTEXT, __FILE__, __LINE__ + 1)
-              -> (#{tokens.map { |token| "#{token}:" }.join(", ")}) { "#{text}" }
+              -> (#{tokens.map { |token| "#{token}:" }.join(", ")}) { "#{text}" }  # -> (a:, b:) { "Translation #\{a} #\{b}" }
             RUBY
             # rubocop:enable Security/Eval
 

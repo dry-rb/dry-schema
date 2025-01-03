@@ -41,7 +41,7 @@ module Dry
             end
           end
 
-          trace_opts = opts.reject { |key, _| %i[type_spec type_rule].include?(key) }
+          trace_opts = opts.except(:type_spec, :type_rule)
 
           if (type_rule = opts[:type_rule])
             trace.append(type_rule).evaluate(*predicates, **trace_opts)
@@ -112,9 +112,9 @@ module Dry
         private
 
         # @api private
-        def method_missing(meth, *args, &block)
+        def method_missing(meth, ...)
           if meth.to_s.end_with?(QUESTION_MARK)
-            trace.__send__(meth, *args, &block)
+            trace.__send__(meth, ...)
           else
             super
           end

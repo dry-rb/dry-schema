@@ -27,7 +27,7 @@ module Dry
       def self.call(spec)
         case spec
         when ::Symbol, ::Array
-          new(::Array[*spec])
+          new([*spec])
         when ::String
           new(spec.split(DOT).map(&:to_sym))
         when ::Hash
@@ -49,7 +49,7 @@ module Dry
       # @api private
       def self.keys_from_hash(hash)
         hash.inject([]) { |a, (k, v)|
-          v.is_a?(::Hash) ? a.concat([k, *keys_from_hash(v)]) : a.concat([k, v])
+          v.is_a?(::Hash) ? a.push(k, *keys_from_hash(v)) : a.push(k, v)
         }
       end
 
@@ -66,8 +66,8 @@ module Dry
       end
 
       # @api private
-      def each(&block)
-        keys.each(&block)
+      def each(&)
+        keys.each(&)
       end
 
       # @api private

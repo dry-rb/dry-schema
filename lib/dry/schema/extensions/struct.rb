@@ -23,7 +23,7 @@ module Dry
         def call(*args)
           if args.size >= 1 && struct?(args[0])
             if block_given?
-              raise ArgumentError, "blocks are not supported when using "\
+              raise ArgumentError, "blocks are not supported when using " \
                                    "a struct class (#{name.inspect} => #{args[0]})"
             end
 

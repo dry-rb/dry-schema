@@ -43,18 +43,18 @@ module Dry
       # @return [Result]
       #
       # @api private
-      def at(at_path, &block)
-        new(@output, path: Path.new([*path, *Path[at_path]]), &block)
+      def at(at_path, &)
+        new(@output, path: Path.new([*path, *Path[at_path]]), &)
       end
 
       # @api private
-      def new(output, **opts, &block)
+      def new(output, **opts, &)
         self.class.new(
           output,
           message_compiler: message_compiler,
           result_ast: result_ast,
           **opts,
-          &block
+          &
         )
       end
 

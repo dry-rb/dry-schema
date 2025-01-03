@@ -42,9 +42,9 @@ module Dry
         # @return [Class]
         #
         # @api public
-        def define(&block)
+        def define(&)
           @definition ||= DSL.new(
-            processor_type: self, parent: superclass.definition, **config.to_h, &block
+            processor_type: self, parent: superclass.definition, **config.to_h, &
           )
           self
         end

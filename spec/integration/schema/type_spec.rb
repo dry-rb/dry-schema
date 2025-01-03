@@ -247,7 +247,7 @@ RSpec.describe Dry::Schema, "types specs" do
   context "constructor on optional type" do
     let(:trimmed_string) do
       Types::String.optional.constructor do |str, &block|
-        if str.is_a?(::String)
+        if str.is_a?(String)
           stripped = str.strip
 
           if stripped.empty?

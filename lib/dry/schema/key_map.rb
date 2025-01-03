@@ -105,8 +105,8 @@ module Dry
       # Iterate over keys
       #
       # @api public
-      def each(&block)
-        keys.each(&block)
+      def each(&)
+        keys.each(&)
       end
 
       # Return a new key map merged with the provided one

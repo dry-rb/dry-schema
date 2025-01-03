@@ -64,8 +64,8 @@ module Dry
     # @see DSL.new
     #
     # @api public
-    def self.define(**options, &block)
-      DSL.new(**options, &block).call
+    def self.define(...)
+      DSL.new(...).call
     end
 
     # Define a schema suitable for HTTP params
@@ -83,8 +83,8 @@ module Dry
     # @see Schema#define
     #
     # @api public
-    def self.Params(**options, &block)
-      define(**options, processor_type: Params, &block)
+    def self.Params(**options, &)
+      define(**options, processor_type: Params, &)
     end
     singleton_class.send(:alias_method, :Form, :Params)
 
@@ -103,8 +103,8 @@ module Dry
     # @see Schema#define
     #
     # @api public
-    def self.JSON(**options, &block)
-      define(**options, processor_type: JSON, &block)
+    def self.JSON(**options, &)
+      define(**options, processor_type: JSON, &)
     end
 
     loader.setup

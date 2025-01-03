@@ -27,8 +27,8 @@ module Dry
       end
 
       # @api private
-      def initialize(key_map, &coercer)
-        @key_map = key_map.coercible(&coercer)
+      def initialize(key_map, &)
+        @key_map = key_map.coercible(&)
       end
 
       # @api private

@@ -74,9 +74,9 @@ module Dry
       # Forward to the underlying config object
       #
       # @api private
-      def method_missing(meth, *args, &block)
+      def method_missing(meth, ...)
         super unless config.respond_to?(meth)
-        config.public_send(meth, *args)
+        config.public_send(meth, ...)
       end
     end
   end

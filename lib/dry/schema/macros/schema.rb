@@ -55,8 +55,8 @@ module Dry
 
         # @api private
         # rubocop: disable Metrics/AbcSize
-        def define(*args, &block)
-          definition = schema_dsl.new(path: schema_dsl.path, &block)
+        def define(*args, &)
+          definition = schema_dsl.new(path: schema_dsl.path, &)
           schema = definition.call
           type_schema =
             if array_type?(parent_type)
