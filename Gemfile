@@ -14,6 +14,10 @@ if ENV["DRY_LOGIC_FROM_MAIN"].eql?("true")
   gem "dry-logic", github: "dry-rb/dry-logic", branch: "main"
 end
 
+if ENV["DRY_TYPES_FROM_MAIN"].eql?("true")
+  gem "dry-types", github: "dry-rb/dry-types", branch: "main"
+end
+
 group :test do
   gem "dry-monads"
   gem "dry-struct"
