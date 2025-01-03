@@ -5,7 +5,7 @@ module Dry
     # A registry with predicate objects from `Dry::Logic::Predicates`
     #
     # @api private
-    class PredicateRegistry < Dry::Types::PredicateRegistry
+    class PredicateRegistry < ::Dry::Types::PredicateRegistry
       # @api private
       def arg_list(name, *values)
         predicate = self[name]
@@ -15,7 +15,7 @@ module Dry
         predicate
           .parameters
           .map(&:last)
-          .zip(values + Array.new(arity - values.size, Undefined))
+          .zip(values + ::Array.new(arity - values.size, Undefined))
       end
     end
   end

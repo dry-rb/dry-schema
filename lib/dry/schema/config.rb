@@ -12,8 +12,8 @@ module Dry
     #
     # @api public
     class Config
-      include Dry::Configurable
-      include Dry::Equalizer(:to_h, inspect: false)
+      include ::Dry::Configurable
+      include ::Dry::Equalizer(:to_h, inspect: false)
 
       # @!method predicates
       #
@@ -33,7 +33,7 @@ module Dry
       # @return [Hash]
       #
       # @api public
-      setting :types, default: Dry::Types
+      setting :types, default: ::Dry::Types
 
       # @!method messages
       #
@@ -45,7 +45,7 @@ module Dry
       setting :messages do
         setting :backend, default: :yaml
         setting :namespace
-        setting :load_paths, default: Set[DEFAULT_MESSAGES_PATH], constructor: :dup.to_proc
+        setting :load_paths, default: ::Set[DEFAULT_MESSAGES_PATH], constructor: :dup.to_proc
         setting :top_namespace, default: DEFAULT_MESSAGES_ROOT
         setting :default_locale
       end

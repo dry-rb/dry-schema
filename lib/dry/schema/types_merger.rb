@@ -27,14 +27,14 @@ module Dry
 
         # @api private
         def call
-          if op_class <= Dry::Logic::Operations::Or
+          if op_class <= ::Dry::Logic::Operations::Or
             merge_or
-          elsif op_class <= Dry::Logic::Operations::And
+          elsif op_class <= ::Dry::Logic::Operations::And
             merge_and
-          elsif op_class <= Dry::Logic::Operations::Implication
+          elsif op_class <= ::Dry::Logic::Operations::Implication
             merge_implication
           else
-            raise ArgumentError, <<~MESSAGE
+            raise ::ArgumentError, <<~MESSAGE
               Can't merge operations, op_class=#{op_class}
             MESSAGE
           end
@@ -58,7 +58,7 @@ module Dry
 
           rule = [old_rule, new_rule].compact.reduce { op_class.new(_1, _2) }
 
-          type = Dry::Types::Constrained.new(type, rule: rule) if rule
+          type = ::Dry::Types::Constrained.new(type, rule: rule) if rule
 
           type
         end
@@ -71,11 +71,11 @@ module Dry
             # @api private
             def merge_unwrapped_types(unwrapped_old, unwrapped_new)
               case [unwrapped_old, unwrapped_new]
-              in Dry::Types::Schema, Dry::Types::Schema
+              in ::Dry::Types::Schema, ::Dry::Types::Schema
                 merge_schemas(unwrapped_old, unwrapped_new)
-              in [Dry::Types::AnyClass, _] | [Dry::Types::Hash, Dry::Types::Schema]
+              in [::Dry::Types::AnyClass, _] | [::Dry::Types::Hash, ::Dry::Types::Schema]
                 unwrapped_new
-              in [Dry::Types::Schema, Dry::Types::Hash] | [_, Dry::Types::AnyClass]
+              in [::Dry::Types::Schema, ::Dry::Types::Hash] | [_, ::Dry::Types::AnyClass]
                 unwrapped_old
               else
                 merge_equivalent_types(unwrapped_old, unwrapped_new)
@@ -100,27 +100,27 @@ module Dry
 
           # @api private
           def change_from_any?(unwrapped_old)
-            unwrapped_old.is_a?(Dry::Types::AnyClass)
+            unwrapped_old.is_a?(::Dry::Types::AnyClass)
           end
 
           # @api private
           def change_to_any?(unwrapped_new)
-            unwrapped_new.is_a?(Dry::Types::AnyClass)
+            unwrapped_new.is_a?(::Dry::Types::AnyClass)
           end
 
           # @api private
           def change_from_hash_to_schema?(unwrapped_old, unwrapped_new)
-            unwrapped_old.is_a?(Dry::Types::Hash) && unwrapped_new.is_a?(Dry::Types::Schema)
+            unwrapped_old.is_a?(::Dry::Types::Hash) && unwrapped_new.is_a?(::Dry::Types::Schema)
           end
 
           # @api private
           def change_from_schema_to_hash?(unwrapped_old, unwrapped_new)
-            unwrapped_old.is_a?(Dry::Types::Schema) && unwrapped_new.is_a?(Dry::Types::Hash)
+            unwrapped_old.is_a?(::Dry::Types::Schema) && unwrapped_new.is_a?(::Dry::Types::Hash)
           end
 
           # @api private
           def change_from_schema_to_schema?(unwrapped_old, unwrapped_new)
-            unwrapped_old.is_a?(Dry::Types::Schema) && unwrapped_new.is_a?(Dry::Types::Schema)
+            unwrapped_old.is_a?(::Dry::Types::Schema) && unwrapped_new.is_a?(::Dry::Types::Schema)
           end
         end
 
@@ -142,7 +142,7 @@ module Dry
           elsif unwrapped_new.primitive <= unwrapped_old.primitive
             unwrapped_old
           else
-            raise ArgumentError, <<~MESSAGE
+            raise ::ArgumentError, <<~MESSAGE
               Can't merge types, unwrapped_old=#{unwrapped_old.inspect}, unwrapped_new=#{unwrapped_new.inspect}
             MESSAGE
           end
@@ -157,7 +157,7 @@ module Dry
 
             if type.optional?
               type = type.left.primitive?(nil) ? type.right : type.left
-            elsif type.is_a?(Dry::Types::Decorator)
+            elsif type.is_a?(::Dry::Types::Decorator)
               type = type.type
             else
               break

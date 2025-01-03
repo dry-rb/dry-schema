@@ -8,9 +8,9 @@ module Dry
     #
     # @api private
     class Path
-      include Dry.Equalizer(:keys)
-      include Comparable
-      include Enumerable
+      include ::Dry.Equalizer(:keys)
+      include ::Comparable
+      include ::Enumerable
 
       # @return [Array<Symbol>]
       attr_reader :keys
@@ -26,16 +26,16 @@ module Dry
       # @api private
       def self.call(spec)
         case spec
-        when Symbol, Array
-          new(Array[*spec])
-        when String
+        when ::Symbol, ::Array
+          new(::Array[*spec])
+        when ::String
           new(spec.split(DOT).map(&:to_sym))
-        when Hash
+        when ::Hash
           new(keys_from_hash(spec))
         when self
           spec
         else
-          raise ArgumentError, "+spec+ must be either a Symbol, Array, Hash or a #{name}"
+          raise ::ArgumentError, "+spec+ must be either a Symbol, Array, Hash or a #{name}"
         end
       end
 
@@ -49,7 +49,7 @@ module Dry
       # @api private
       def self.keys_from_hash(hash)
         hash.inject([]) { |a, (k, v)|
-          v.is_a?(Hash) ? a.concat([k, *keys_from_hash(v)]) : a.concat([k, v])
+          v.is_a?(::Hash) ? a.concat([k, *keys_from_hash(v)]) : a.concat([k, v])
         }
       end
 
@@ -60,7 +60,7 @@ module Dry
 
       # @api private
       def to_h(value = EMPTY_ARRAY.dup)
-        value = [value] unless value.is_a?(Array)
+        value = [value] unless value.is_a?(::Array)
 
         keys.reverse_each.reduce(value) { |result, key| {key => result} }
       end

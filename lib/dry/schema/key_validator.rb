@@ -7,7 +7,7 @@ module Dry
   module Schema
     # @api private
     class KeyValidator
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       INDEX_REGEX = /\[\d+\]/
       DIGIT_REGEX = /\A\d+\z/

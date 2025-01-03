@@ -18,7 +18,7 @@ module Dry
       attr_reader :namespace
 
       # @api private
-      def self.new(types = Dry::Types, namespace = :strict)
+      def self.new(types = ::Dry::Types, namespace = :strict)
         super
       end
 

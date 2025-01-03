@@ -13,7 +13,7 @@ module Dry
       #
       # @api private
       class Negation
-        include Dry::Logic::Operators
+        include ::Dry::Logic::Operators
 
         # @api private
         attr_reader :predicate
@@ -34,8 +34,8 @@ module Dry
         alias_method :ast, :to_ast
       end
 
-      include Dry::Logic::Operators
-      include Dry::Equalizer(:name, :args, :block)
+      include ::Dry::Logic::Operators
+      include ::Dry::Equalizer(:name, :args, :block)
 
       # @api private
       attr_reader :compiler
@@ -77,7 +77,7 @@ module Dry
       # @api private
       def ensure_valid
         if arity - 1 != args.size
-          raise ArgumentError, "#{name} predicate arity is invalid"
+          raise ::ArgumentError, "#{name} predicate arity is invalid"
         end
       end
 

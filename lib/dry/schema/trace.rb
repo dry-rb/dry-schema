@@ -5,7 +5,7 @@ module Dry
     # Captures predicates defined within the DSL
     #
     # @api private
-    class Trace < BasicObject
+    class Trace < ::BasicObject
       INVALID_PREDICATES = %i[key?].freeze
 
       include ::Dry::Equalizer(:compiler, :captures)

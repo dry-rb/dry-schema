@@ -12,11 +12,11 @@ module Dry
       #
       # @api public
       class Abstract
-        include Dry::Configurable
-        include Dry::Equalizer(:config)
+        include ::Dry::Configurable
+        include ::Dry::Equalizer(:config)
 
         setting :default_locale
-        setting :load_paths, default: Set[DEFAULT_MESSAGES_PATH]
+        setting :load_paths, default: ::Set[DEFAULT_MESSAGES_PATH]
         setting :top_namespace, default: DEFAULT_MESSAGES_ROOT
         setting :root, default: "errors"
         setting :lookup_options, default: %i[root predicate path val_type arg_type].freeze
@@ -34,13 +34,13 @@ module Dry
 
         setting :rule_lookup_paths, default: ["rules.%<name>s"].freeze
 
-        setting :arg_types, default: Hash.new { |*| "default" }.update(
-          Range => "range"
+        setting :arg_types, default: ::Hash.new { |*| "default" }.update(
+          ::Range => "range"
         )
 
-        setting :val_types, default: Hash.new { |*| "default" }.update(
-          Range => "range",
-          String => "string"
+        setting :val_types, default: ::Hash.new { |*| "default" }.update(
+          ::Range => "range",
+          ::String => "string"
         )
 
         # @api private
@@ -80,7 +80,7 @@ module Dry
           path = rule_lookup_paths(tokens).detect { |key| key?(key, options) }
 
           rule = get(path, options) if path
-          rule.is_a?(Hash) ? rule[:text] : rule
+          rule.is_a?(::Hash) ? rule[:text] : rule
         end
 
         # Retrieve a message template
@@ -115,7 +115,7 @@ module Dry
         #
         # @api public
         def key?(_key, _options = EMPTY_HASH)
-          raise NotImplementedError
+          raise ::NotImplementedError
         end
 
         # Retrieve an array of looked up paths
@@ -172,12 +172,12 @@ module Dry
 
         # @api private
         def interpolatable_data(_key, _options, **_data)
-          raise NotImplementedError
+          raise ::NotImplementedError
         end
 
         # @api private
         def interpolate(_key, _options, **_data)
-          raise NotImplementedError
+          raise ::NotImplementedError
         end
 
         private

@@ -13,10 +13,10 @@ module Dry
     #
     # @api public
     class KeyMap
-      extend Dry::Core::Cache
+      extend ::Dry::Core::Cache
 
-      include Dry.Equalizer(:keys)
-      include Enumerable
+      include ::Dry.Equalizer(:keys)
+      include ::Enumerable
 
       # @return [Array<Key>] A list of defined key objects
       attr_reader :keys

@@ -12,14 +12,14 @@ module Dry
   #
   # @api public
   module Schema
-    extend Dry::Core::Extensions
+    extend ::Dry::Core::Extensions
 
     # @api private
     def self.loader
-      @loader ||= Zeitwerk::Loader.new.tap do |loader|
-        root = File.expand_path("..", __dir__)
+      @loader ||= ::Zeitwerk::Loader.new.tap do |loader|
+        root = ::File.expand_path("..", __dir__)
         loader.tag = "dry-schema"
-        loader.inflector = Zeitwerk::GemInflector.new("#{root}/dry-schema.rb")
+        loader.inflector = ::Zeitwerk::GemInflector.new("#{root}/dry-schema.rb")
         loader.inflector.inflect(
           "dsl" => "DSL",
           "yaml" => "YAML",

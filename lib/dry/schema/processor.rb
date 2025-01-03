@@ -13,10 +13,10 @@ module Dry
     #
     # @api public
     class Processor
-      extend Dry::Initializer
-      extend Dry::Configurable
+      extend ::Dry::Initializer
+      extend ::Dry::Configurable
 
-      include Dry::Logic::Operators
+      include ::Dry::Logic::Operators
 
       setting :key_map_type
       setting :type_registry_namespace, default: :strict
@@ -62,7 +62,7 @@ module Dry
           elsif definition
             definition.call
           else
-            raise ArgumentError, "Cannot create a schema without a definition"
+            raise ::ArgumentError, "Cannot create a schema without a definition"
           end
         end
       end
@@ -83,7 +83,7 @@ module Dry
 
       # @api public
       def xor(_other)
-        raise NotImplementedError, "composing schemas using `xor` operator is not supported yet"
+        raise ::NotImplementedError, "composing schemas using `xor` operator is not supported yet"
       end
       alias_method :^, :xor
 

@@ -9,7 +9,7 @@ module Dry
     #
     # @api private
     class ValueCoercer
-      extend Dry::Initializer
+      extend ::Dry::Initializer
       include ::Dry::Equalizer(:type_schema)
 
       # @api private

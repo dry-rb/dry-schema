@@ -37,7 +37,7 @@ module Dry
     class DSL
       Types = Schema::Types
 
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       # @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
       option :processor_type, default: -> { Processor }
@@ -501,7 +501,7 @@ module Dry
       def default_config
         parents.each_cons(2) do |left, right|
           unless left.config == right.config
-            raise ArgumentError,
+            raise ::ArgumentError,
                   "Parent configs differ, left=#{left.inspect}, right=#{right.inspect}"
           end
         end

@@ -9,7 +9,7 @@ module Dry
       # @api private
       class SchemaCompiler
         # An error raised when a predicate cannot be converted
-        UnknownConversionError = Class.new(StandardError)
+        UnknownConversionError = ::Class.new(::StandardError)
 
         IDENTITY = ->(v, _) { v }.freeze
         TO_INTEGER = ->(v, _) { v.to_i }.freeze

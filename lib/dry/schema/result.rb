@@ -11,9 +11,9 @@ module Dry
     #
     # @api public
     class Result
-      include Dry::Equalizer(:output, :errors)
+      include ::Dry::Equalizer(:output, :errors)
 
-      extend Dry::Initializer[undefined: false]
+      extend ::Dry::Initializer[undefined: false]
 
       # @api private
       param :output, reader: false

@@ -8,9 +8,9 @@ module Dry
     #
     # @api public
     class Message
-      include Dry::Equalizer(:text, :path, :predicate, :input)
+      include ::Dry::Equalizer(:text, :path, :predicate, :input)
 
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       # @!attribute [r] text
       #   Message text representation created from a localized template
@@ -75,7 +75,7 @@ module Dry
       #
       # @api private
       def eql?(other)
-        other.is_a?(String) ? text == other : super
+        other.is_a?(::String) ? text == other : super
       end
 
       # @api private
@@ -94,7 +94,7 @@ module Dry
         r_path = other._path
 
         unless l_path.same_root?(r_path)
-          raise ArgumentError, "Cannot compare messages from different root paths"
+          raise ::ArgumentError, "Cannot compare messages from different root paths"
         end
 
         l_path <=> r_path

@@ -10,8 +10,8 @@ module Dry
     #
     # @api public
     class MessageSet
-      include Enumerable
-      include Dry::Equalizer(:messages, :options)
+      include ::Enumerable
+      include ::Dry::Equalizer(:messages, :options)
 
       # A list of compiled message objects
       #
@@ -82,7 +82,7 @@ module Dry
       #
       # @api public
       def fetch(key)
-        self[key] || raise(KeyError, "+#{key}+ message was not found")
+        self[key] || raise(::KeyError, "+#{key}+ message was not found")
       end
 
       # Check if a message set is empty
@@ -135,9 +135,9 @@ module Dry
       # @api private
       def partition_message_values(values)
         values
-          .map { |value| value.is_a?(Array) ? value : [value] }
+          .map { |value| value.is_a?(::Array) ? value : [value] }
           .reduce(EMPTY_ARRAY.dup, :+)
-          .partition { |value| value.is_a?(Hash) && !value[:text].is_a?(String) }
+          .partition { |value| value.is_a?(::Hash) && !value[:text].is_a?(::String) }
       end
     end
   end

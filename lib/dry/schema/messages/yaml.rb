@@ -14,7 +14,7 @@ module Dry
       class YAML < Abstract
         LOCALE_TOKEN = "%<locale>s"
         TOKEN_REGEXP = /%{(\w*)}/
-        EMPTY_CONTEXT = Object.new.tap { |ctx|
+        EMPTY_CONTEXT = ::Object.new.tap { |ctx|
           def ctx.context
             binding
           end

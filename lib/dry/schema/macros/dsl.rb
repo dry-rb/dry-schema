@@ -7,7 +7,7 @@ module Dry
       #
       # @api public
       class DSL < Core
-        include Dry::Logic::Operators
+        include ::Dry::Logic::Operators
 
         undef :eql?
         undef :nil?

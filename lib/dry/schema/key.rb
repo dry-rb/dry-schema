@@ -6,11 +6,11 @@ module Dry
     #
     # @api public
     class Key
-      extend Dry::Core::Cache
+      extend ::Dry::Core::Cache
 
       DEFAULT_COERCER = :itself.to_proc.freeze
 
-      include Dry.Equalizer(:name, :coercer)
+      include ::Dry.Equalizer(:name, :coercer)
 
       # @return [Symbol] The key identifier
       attr_reader :id
@@ -90,7 +90,7 @@ module Dry
       #
       # @api private
       class Hash < self
-        include Dry.Equalizer(:name, :members, :coercer)
+        include ::Dry.Equalizer(:name, :members, :coercer)
 
         # @api private
         attr_reader :members
@@ -137,7 +137,7 @@ module Dry
       #
       # @api private
       class Array < self
-        include Dry.Equalizer(:name, :member, :coercer)
+        include ::Dry.Equalizer(:name, :member, :coercer)
 
         attr_reader :member
 
