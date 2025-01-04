@@ -114,9 +114,15 @@ RSpec.describe Dry::Schema::KeyMap do
 
     describe "#inspect" do
       it "returns a string representation" do
-        expect(key_map.inspect).to eql(<<-STR.strip)
-          #<Dry::Schema::KeyMap[:id, :name, {:contact=>[:email, :phone]}]>
-        STR
+        if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+          expect(key_map.inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::KeyMap[:id, :name, {contact: [:email, :phone]}]>
+          STR
+        else
+          expect(key_map.inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::KeyMap[:id, :name, {:contact=>[:email, :phone]}]>
+          STR
+        end
       end
     end
   end

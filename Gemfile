@@ -16,11 +16,13 @@ group :test do
   gem "dry-struct"
   gem "i18n", require: false
   gem "json-schema"
+  gem "ostruct"
   gem "transproc"
 end
 
 group :tools do
   gem "pry-byebug"
+  gem "readline"
   gem "redcarpet", platform: :mri
 end
 
