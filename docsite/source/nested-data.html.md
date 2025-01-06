@@ -133,3 +133,33 @@ puts errors.to_h.inspect
 # }
 
 ```
+
+Use `maybe(array[?])` to validate an array that could be `nil`:
+
+```ruby
+nested_schema = Dry::Schema.Params do
+  required(:name).filled(:string)
+end
+
+schema = Dry::Schema.Params do
+  required(:tags).maybe(array[nested_schema])
+end
+
+schema.call(tags: nil).success? # true
+schema.call(tags: [{ name: 'Alice' }, { name: 'Bob' }]).success? # true
+```
+
+Or use `maybe(:array)` with a block:
+
+```ruby
+schema = Dry::Schema.Params do
+  required(:tags).maybe(:array) do
+    nil? | each(:hash) do
+      required(:name).filled(:string)
+    end
+  end
+end
+
+schema.call(tags: nil).success? # true
+schema.call(tags: [{ name: 'Alice' }, { name: 'Bob' }]).success? # true
+```
