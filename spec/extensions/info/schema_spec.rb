@@ -19,7 +19,7 @@ RSpec.describe Dry::Schema::JSON, "#info" do
         required(:street).filled(:string)
         required(:zipcode).filled(:string)
         required(:city).filled(:string)
-        optional(:phone).filled(:string)
+        optional(:phone).maybe(:string)
       end
     end
   end
@@ -29,24 +29,29 @@ RSpec.describe Dry::Schema::JSON, "#info" do
       keys: {
         email: {
           required: true,
+          nullable: false,
           type: "string"
         },
         age: {
           required: false,
+          nullable: false,
           type: "integer"
         },
         roles: {
           required: true,
           type: "array",
+          nullable: false,
           member: {
             keys: {
               name: {
                 required: true,
-                type: "string"
+                type: "string",
+                nullable: false
               },
               desc: {
                 required: false,
-                type: "string"
+                type: "string",
+                nullable: false
               }
             }
           }
@@ -54,22 +59,27 @@ RSpec.describe Dry::Schema::JSON, "#info" do
         address: {
           required: false,
           type: "hash",
+          nullable: false,
           keys: {
             street: {
               required: true,
-              type: "string"
+              type: "string",
+              nullable: false
             },
             zipcode: {
               required: true,
-              type: "string"
+              type: "string",
+              nullable: false
             },
             city: {
               required: true,
-              type: "string"
+              type: "string",
+              nullable: false
             },
             phone: {
               required: false,
-              type: "string"
+              type: "string",
+              nullable: true
             }
           }
         }
@@ -88,6 +98,7 @@ RSpec.describe Dry::Schema::JSON, "#info" do
         required(:opt2).filled(Types::Array(:string))
         required(:opt3).filled(Types::Array(:integer))
         required(:opt4).filled(Types::Array(:bool))
+        required(:opt5).maybe(Types::Array(:bool))
       end
     end
 
@@ -96,21 +107,31 @@ RSpec.describe Dry::Schema::JSON, "#info" do
         keys: {
           opt1: {
             required: true,
-            type: "array"
+            type: "array",
+            nullable: false
           },
           opt2: {
             required: true,
             type: "array",
+            nullable: false,
             member: "string"
           },
           opt3: {
             required: true,
             type: "array",
+            nullable: false,
             member: "integer"
           },
           opt4: {
             required: true,
             type: "array",
+            nullable: false,
+            member: "bool"
+          },
+          opt5: {
+            required: true,
+            type: "array",
+            nullable: true,
             member: "bool"
           }
         }
@@ -136,7 +157,7 @@ RSpec.describe Dry::Schema::JSON, "#info" do
     }.each do |type_spec, type_name|
       it "infers '#{type_name}' from '#{type_spec}'" do
         expect(Dry::Schema.define { required(:key).value(type_spec) }.info).to eql(
-          keys: {key: {required: true, type: type_name}}
+          keys: {key: {required: true, nullable: false, type: type_name}}
         )
       end
     end

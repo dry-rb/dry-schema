@@ -12,6 +12,7 @@ group :test do
   gem "i18n", require: false
   gem "json-schema"
   gem "ostruct"
+  gem "super_diff"
   gem "transproc"
 end
 
