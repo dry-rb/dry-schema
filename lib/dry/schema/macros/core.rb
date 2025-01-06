@@ -25,8 +25,8 @@ module Dry
         option :trace, default: proc { Trace.new(schema_dsl&.compiler || Compiler.new) }
 
         # @api private
-        def new(**options)
-          self.class.new(name: name, compiler: compiler, schema_dsl: schema_dsl, **options)
+        def new(klass: self.class, **options)
+          klass.new(name: name, compiler: compiler, schema_dsl: schema_dsl, **options)
         end
 
         # @api private
