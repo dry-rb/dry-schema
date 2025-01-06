@@ -11,6 +11,7 @@
 
 - Fix info extension for maybe macro (via #484) (@flash-gordon + @santiagodoldan)
 - Missing message for :uri? predicate (via #477) (@timjnh)
+- JSON schema output for `maybe(:array)` (via #463) (@tomgi)
 
 ### Changed
 
