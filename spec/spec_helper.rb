@@ -17,6 +17,10 @@ SPEC_ROOT = Pathname(__dir__)
 Dir[SPEC_ROOT.join("shared/**/*.rb")].each(&method(:require))
 Dir[SPEC_ROOT.join("support/**/*.rb")].each(&method(:require))
 
+Warning.ignore(%r{rspec/matchers})
+
+require "super_diff/rspec"
+
 require "dry/schema"
 require "dry/types"
 
