@@ -5,6 +5,7 @@
   - 'Better support for sets in `excluded_from?` and `included_in?` predicates (via #480) (@flash-gordon)'
   fixed:
   - 'Fix info extension for maybe macro (via #484) (@flash-gordon + @santiagodoldan)'
+  - 'Missing message for :uri? predicate (via #477) (@timjnh)'
   changed:
   - "Set minimum Ruby version to 3.1 (@flash-gordon)"
 - version: 1.13.4
