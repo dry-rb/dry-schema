@@ -2,9 +2,13 @@
 
 RSpec.describe "Predicates: Excluded From" do
   context "with required" do
+    let(:list) { %w[1 3 5] }
+
     subject(:schema) do
+      list = self.list
+
       Dry::Schema.Params do
-        required(:foo).value(:string) { excluded_from?(%w[1 3 5]) }
+        required(:foo).value(:string) { excluded_from?(list) }
       end
     end
 
@@ -21,6 +25,14 @@ RSpec.describe "Predicates: Excluded From" do
 
       it "is not successful" do
         expect(result).to be_failing ["is missing", "must be a string", "must not be one of: 1, 3, 5"]
+      end
+
+      context "when list is a set" do
+        let(:list) { Set.new(%w[1 3 5]) }
+
+        it "is not successful" do
+          expect(result).to be_failing ["is missing", "must be a string", "must not be one of: 1, 3, 5"]
+        end
       end
     end
 

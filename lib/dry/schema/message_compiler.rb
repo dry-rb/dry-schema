@@ -209,7 +209,7 @@ module Dry
       def message_tokens(args)
         tokens = args.each_with_object({}) do |arg, hash|
           case arg[1]
-          when ::Array
+          when ::Array, ::Set
             hash[arg[0]] = arg[1].join(LIST_SEPARATOR)
           when ::Range
             hash[:"#{arg[0]}_left"] = arg[1].first
