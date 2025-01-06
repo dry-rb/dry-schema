@@ -44,7 +44,7 @@ module Dry
       })
     end
 
-    PredicateInferrer::Compiler.send(:alias_method, :visit_struct, :visit_hash)
-    PrimitiveInferrer::Compiler.send(:alias_method, :visit_struct, :visit_hash)
+    PredicateInferrer::Compiler.alias_method(:visit_struct, :visit_hash)
+    PrimitiveInferrer::Compiler.alias_method(:visit_struct, :visit_hash)
   end
 end

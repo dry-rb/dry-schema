@@ -86,7 +86,7 @@ module Dry
     def self.Params(**options, &)
       define(**options, processor_type: Params, &)
     end
-    singleton_class.send(:alias_method, :Form, :Params)
+    singleton_class.alias_method(:Form, :Params)
 
     # Define a schema suitable for JSON data
     #
