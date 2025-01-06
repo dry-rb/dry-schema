@@ -7,6 +7,10 @@
 
 - Better support for sets in `excluded_from?` and `included_in?` predicates (via #480) (@flash-gordon)
 
+### Fixed
+
+- Fix info extension for maybe macro (via #484) (@flash-gordon + @santiagodoldan)
+
 ### Changed
 
 - Set minimum Ruby version to 3.1 (@flash-gordon)
