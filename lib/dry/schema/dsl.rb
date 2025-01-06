@@ -78,9 +78,9 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def self.new(**options, &block)
+      def self.new(**options, &)
         dsl = super
-        dsl.instance_eval(&block) if block
+        dsl.instance_eval(&) if block_given?
         dsl.instance_variable_set("@compiler", options[:compiler]) if options[:compiler]
         dsl
       end
@@ -170,7 +170,7 @@ module Dry
       # @return [Macros::Key]
       #
       # @api public
-      def key(name, macro:, &block)
+      def key(name, macro:, &)
         raise ArgumentError, "Key +#{name}+ is not a symbol" unless name.is_a?(::Symbol)
 
         set_type(name, Types::Any.meta(default: true))
@@ -182,7 +182,7 @@ module Dry
           filter_schema_dsl: filter_schema_dsl
         )
 
-        macro.value(&block) if block
+        macro.value(&) if block_given?
         macros << macro
         macro
       end
@@ -301,8 +301,8 @@ module Dry
       # @return [Dry::Types::Safe]
       #
       # @api private
-      def new(klass: self.class, **options, &block)
-        klass.new(**options, processor_type: processor_type, config: config, &block)
+      def new(klass: self.class, **options, &)
+        klass.new(**options, processor_type: processor_type, config: config, &)
       end
 
       # Set a type for the given key name

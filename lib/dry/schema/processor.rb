@@ -54,10 +54,10 @@ module Dry
         # @return [Processor]
         #
         # @api public
-        def new(options = nil, &block)
-          if options || block
+        def new(options = nil)
+          if options || block_given?
             processor = super(**(options || EMPTY_HASH))
-            yield(processor) if block
+            yield(processor) if block_given?
             processor
           elsif definition
             definition.call

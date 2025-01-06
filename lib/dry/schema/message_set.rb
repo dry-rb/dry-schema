@@ -44,11 +44,11 @@ module Dry
       # @return [Array]
       #
       # @api public
-      def each(&block)
+      def each(&)
         return self if empty?
-        return to_enum unless block
+        return to_enum unless block_given?
 
-        messages.each(&block)
+        messages.each(&)
       end
 
       # Dump message set to a hash

@@ -13,6 +13,6 @@ PersonSchema = Dry::Schema.Params do
   required(:email).value(:string)
 end
 
-def profile(&block)
-  Hotch(filter: "Dry", &block)
+def profile(&)
+  Hotch(filter: "Dry", &)
 end

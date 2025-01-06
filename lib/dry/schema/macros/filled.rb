@@ -8,17 +8,16 @@ module Dry
       # @api private
       class Filled < Value
         # @api private
-        def call(*predicates, **opts, &block)
+        def call(*predicates, **opts, &)
           ensure_valid_predicates(predicates)
 
           append_macro(Macros::Value) do |macro|
             if opts[:type_spec] && !filter_empty_string?
-              macro.call(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts,
-                         &block)
+              macro.call(predicates[0], :filled?, *predicates.drop(1), **opts, &)
             elsif opts[:type_rule]
-              macro.call(:filled?).value(*predicates, **opts, &block)
+              macro.call(:filled?).value(*predicates, **opts, &)
             else
-              macro.call(:filled?, *predicates, **opts, &block)
+              macro.call(:filled?, *predicates, **opts, &)
             end
           end
         end

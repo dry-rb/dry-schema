@@ -11,7 +11,7 @@ module Dry
         def call(*args, &block)
           super(*args, &nil) unless args.empty?
 
-          if args.size.equal?(1) && (op = args.first).is_a?(Dry::Logic::Operations::Abstract)
+          if args.size.equal?(1) && (op = args.first).is_a?(::Dry::Logic::Operations::Abstract)
             process_operation(op)
           end
 
