@@ -3,6 +3,10 @@
 ## 1.14.0 2025-01-03
 
 
+### Added
+
+- Better support for sets in `excluded_from?` and `included_in?` predicates (via #480) (@flash-gordon)
+
 ### Changed
 
 - Set minimum Ruby version to 3.1 (@flash-gordon)
