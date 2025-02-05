@@ -10,7 +10,7 @@ group :test do
   gem "dry-monads"
   gem "dry-struct"
   gem "i18n", require: false
-  gem "json-schema"
+  gem "json_schemer"
   gem "ostruct"
   gem "super_diff"
   gem "transproc"
