@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "json-schema"
+require "json_schemer"
 
 RSpec.describe Dry::Schema::JSON, "#json_schema" do
   before do
@@ -10,10 +10,9 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
   shared_examples "metaschema validation" do
     describe "validating against the metaschema" do
       it "produces a valid json schema document for draft6" do
-        metaschema = JSON::Validator.validator_for_name("draft6").metaschema
         input = schema.respond_to?(:json_schema) ? schema.json_schema : schema
 
-        JSON::Validator.validate!(metaschema, input)
+        expect(JSONSchemer.validate_schema(input).to_a).to be_empty
       end
     end
   end
