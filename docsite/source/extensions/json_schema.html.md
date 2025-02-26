@@ -38,6 +38,5 @@ UserSchema.json_schema
 ### Learn more
 
 - [Official JSON Schema docs](https://json-schema.org/)
-- [Auto-generate forms with React + JSON Schema](https://github.com/rjsf-team/react-jsonschema-form))
-- [Integrate with other languages more easily](https://json-schema.org/implementations.html)
-
+- [Auto-generate forms with React + JSON Schema](https://github.com/rjsf-team/react-jsonschema-form)
+- [Integrate with other languages more easily](https://json-schema.org/tools)
