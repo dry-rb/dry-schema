@@ -8,7 +8,7 @@ module Dry
       # @api private
       class Maybe < DSL
         # @api private
-        def call(*args, **opts, &)
+        def call(*args, **opts, &block)
           if args.include?(:empty?)
             raise ::Dry::Schema::InvalidSchemaError, "Using maybe with empty? predicate is invalid"
           end
@@ -18,7 +18,7 @@ module Dry
           end
 
           append_macro(Macros::Value) do |macro|
-            macro.call(*args, **opts, &)
+            macro.call(*args, **opts, &block)
           end
 
           self

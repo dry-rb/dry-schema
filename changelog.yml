@@ -1,4 +1,8 @@
 ---
+- version: 1.14.1
+  date: 2025-03-03
+  fixed:
+    - "Syntax errors on 3.3.0 (@flash-gordon, see #488)"
 - version: 1.14.0
   date: 2025-01-06
   added:

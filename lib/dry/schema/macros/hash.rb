@@ -8,7 +8,7 @@ module Dry
       # @api private
       class Hash < Schema
         # @api private
-        def call(*args, &)
+        def call(*args, &block)
           if args.size >= 1 && args[0].respond_to?(:keys)
             hash_type = args[0]
             type_predicates = predicate_inferrer[hash_type]
@@ -21,7 +21,7 @@ module Dry
                 else
                   optional(key.name).value(key.type)
                 end
-                instance_exec(&) if block_given?
+                instance_exec(&block) if block_given?
               end
             end
           else

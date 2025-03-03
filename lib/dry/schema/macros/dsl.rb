@@ -52,15 +52,15 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def value(*args, **opts, &)
+        def value(*args, **opts, &block)
           if (type_spec_from_opts = opts[:type_spec])
             append_macro(Macros::Value) do |macro|
-              macro.call(*args, type_spec: type_spec_from_opts, **opts, &)
+              macro.call(*args, type_spec: type_spec_from_opts, **opts, &block)
             end
           else
             extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
               append_macro(Macros::Value) do |macro|
-                macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &)
+                macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
               end
             end
           end
@@ -77,10 +77,10 @@ module Dry
         # @return [Macros::Core]
         #
         # @api public
-        def filled(*args, **opts, &)
+        def filled(*args, **opts, &block)
           extract_type_spec(args) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Filled) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &)
+              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end
           end
         end
@@ -95,10 +95,10 @@ module Dry
         # @return [Macros::Key]
         #
         # @api public
-        def maybe(*args, **opts, &)
+        def maybe(*args, **opts, &block)
           extract_type_spec(args, nullable: true) do |*predicates, type_spec:, type_rule:|
             append_macro(Macros::Maybe) do |macro|
-              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &)
+              macro.call(*predicates, type_spec: type_spec, type_rule: type_rule, **opts, &block)
             end
           end
         end
