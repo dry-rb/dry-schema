@@ -3,7 +3,6 @@
 require "pathname"
 require_relative "support/coverage"
 require_relative "support/warnings"
-require_relative "support/rspec_options"
 
 Warning.ignore(%r{gems/i18n})
 Warning.ignore(/byebug/)

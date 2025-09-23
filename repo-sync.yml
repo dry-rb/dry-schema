@@ -1,14 +1,23 @@
-name: dry-schema
-codacy_id: 961f5c776f1d49218b2cede3745e059c
+name:
+  gem: dry-schema
+  constant: Dry::Schema
+github_org: dry-rb
 gemspec:
-  authors: ["Piotr Solnica"]
-  email: ["piotr.solnica@gmail.com"]
+  authors: ["Hanakai team"]
+  email: ["info@hanakai.org"]
   summary: "Coercion and validation for data structures"
   description: |
     dry-schema provides a DSL for defining schemas with keys and rules that should be applied to
     values. It supports coercion, input sanitization, custom types and localized error messages
     (with or without I18n gem). It's also used as the schema engine in dry-validation.
   files: ["config/*.yml"]
+  homepage: "https://dry-rb.org/gems/dry-schema"
+  required_ruby_version: ">= 3.1.0"
+  development_dependencies:
+    - bundler
+    - rake
+    - rspec
+    - yard
   runtime_dependencies:
     - [concurrent-ruby, "~> 1.0"]
     - [zeitwerk, "~> 2.6"]
