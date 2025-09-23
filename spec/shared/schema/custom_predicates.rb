@@ -5,11 +5,13 @@ RSpec.shared_examples_for "schema with custom predicates" do
     subject(:schema) { schema_class.new }
 
     before do
-      module Test::Predicates
-        include Dry::Logic::Predicates
+      module Test
+        module Predicates
+          include Dry::Logic::Predicates
 
-        def self.future_date?(date)
-          date > Date.today
+          def self.future_date?(date)
+            date > Date.today
+          end
         end
       end
 
