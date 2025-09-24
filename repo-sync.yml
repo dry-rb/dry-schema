@@ -3,7 +3,7 @@ name:
   constant: Dry::Schema
 github_org: dry-rb
 ci:
-  rubies: ["3.3.0"
+  rubies: ["3.3.0"]
 gemspec:
   authors: ["Hanakai team"]
   email: ["info@hanakai.org"]
