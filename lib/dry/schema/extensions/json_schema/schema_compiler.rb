@@ -169,12 +169,33 @@ module Dry
             target = keys[opts[:key]]
             type_opts = fetch_type_opts_for_predicate(name, rest, target)
 
-            if target[:type]&.include?("array")
+            if target[:type]&.include?("array") && array_size_predicate?(name) && !opts[:member]
+              array_type_opts = convert_array_size_predicate(name, rest)
+              merge_opts!(target, array_type_opts)
+            elsif target[:type]&.include?("array")
               target[:items] ||= {}
               merge_opts!(target[:items], type_opts)
             else
               merge_opts!(target, type_opts)
             end
+          end
+        end
+
+        # @api private
+        def array_size_predicate?(name)
+          name == :min_size? || name == :max_size?
+        end
+
+        # @api private
+        def convert_array_size_predicate(name, rest)
+          value = rest[0][1].to_i
+          case name
+          when :min_size?
+            { minItems: value }
+          when :max_size?
+            { maxItems: value }
+          else
+            {}
           end
         end
 
