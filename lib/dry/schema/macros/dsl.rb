@@ -234,6 +234,10 @@ module Dry
               type_rule = [type_spec.left, type_spec.right].map { |ts|
                 new(klass: Core, chain: false).value(ts)
               }.reduce(:|)
+            elsif type_spec.is_a?(Dry::Types::Intersection) && set_type
+              type_rule = [type_spec.left, type_spec.right].map { |ts|
+                new(klass: Core, chain: false).value(ts)
+              }.reduce(:&)
             else
               type_predicates = predicate_inferrer[resolved_type]
 
