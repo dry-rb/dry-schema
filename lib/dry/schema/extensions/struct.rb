@@ -27,7 +27,8 @@ module Dry
                                    "a struct class (#{name.inspect} => #{args[0]})"
             end
 
-            schema = struct_compiler.(args[0])
+            struct_class = extract_struct_class(args[0])
+            schema = struct_compiler.(struct_class)
 
             super(schema, *args.drop(1))
             type(schema_dsl.types[name].constructor(schema))
@@ -39,7 +40,18 @@ module Dry
         private
 
         def struct?(type)
-          type.is_a?(::Class) && type <= ::Dry::Struct
+          (type.is_a?(::Class) && type <= ::Dry::Struct) ||
+            (type.is_a?(::Dry::Types::Constructor) && type.primitive <= ::Dry::Struct)
+        end
+
+        def extract_struct_class(type)
+          if type.is_a?(::Class) && type <= ::Dry::Struct
+            type
+          elsif type.is_a?(::Dry::Types::Constructor) && type.primitive <= ::Dry::Struct
+            type.primitive
+          else
+            type
+          end
         end
       })
     end

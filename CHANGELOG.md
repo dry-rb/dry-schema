@@ -7,6 +7,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Fixed
+
+- JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
 
 ## [1.14.1] - 2025-03-03
 
