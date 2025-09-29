@@ -28,6 +28,7 @@ module Dry
           time?: {type: "string", format: "time"},
           min_size?: {minLength: TO_INTEGER},
           max_size?: {maxLength: TO_INTEGER},
+          size?: {maxLength: TO_INTEGER, minLength: TO_INTEGER},
           included_in?: {enum: ->(v, _) { v.to_a }},
           filled?: EMPTY_HASH,
           uri?: {format: "uri"},
