@@ -19,7 +19,7 @@ RSpec.describe "JSON Schema with array size predicates" do
         type: "array",
         minItems: 5,
         maxItems: 10,
-        items: { type: "string" }
+        items: {type: "string"}
       )
 
       expect(json_schema[:properties][:users][:items]).not_to have_key(:minLength)
