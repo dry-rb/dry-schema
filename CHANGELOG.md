@@ -10,6 +10,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 ### Fixed
 
 - JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
+- JSON schema generation now correctly uses `minItems`/`maxItems` for array size predicates instead of `minLength`/`maxLength` (fixes #481) (@baweaver)
+
 
 ## [1.14.1] - 2025-03-03
 
