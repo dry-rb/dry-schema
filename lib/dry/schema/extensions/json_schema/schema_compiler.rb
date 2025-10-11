@@ -163,18 +163,64 @@ module Dry
           name, rest = node
 
           if name.equal?(:key?)
-            prop_name = rest[0][1]
-            keys[prop_name] = {}
+            handle_key_predicate(rest)
           else
-            target = keys[opts[:key]]
-            type_opts = fetch_type_opts_for_predicate(name, rest, target)
+            handle_value_predicate(name, rest, opts)
+          end
+        end
 
-            if target[:type]&.include?("array")
-              target[:items] ||= {}
-              merge_opts!(target[:items], type_opts)
-            else
-              merge_opts!(target, type_opts)
-            end
+        # @api private
+        def handle_key_predicate(rest)
+          prop_name = rest[0][1]
+          keys[prop_name] = {}
+        end
+
+        # @api private
+        def handle_value_predicate(name, rest, opts)
+          target = keys[opts[:key]]
+          type_opts = fetch_type_opts_for_predicate(name, rest, target)
+
+          if array_with_size_predicate?(target, name, opts)
+            apply_array_size_constraint(target, name, rest)
+          elsif target[:type]&.include?("array")
+            apply_array_item_constraint(target, type_opts)
+          else
+            merge_opts!(target, type_opts)
+          end
+        end
+
+        # @api private
+        def array_with_size_predicate?(target, name, opts)
+          target[:type]&.include?("array") && array_size_predicate?(name) && !opts[:member]
+        end
+
+        # @api private
+        def apply_array_size_constraint(target, name, rest)
+          array_type_opts = convert_array_size_predicate(name, rest)
+          merge_opts!(target, array_type_opts)
+        end
+
+        # @api private
+        def apply_array_item_constraint(target, type_opts)
+          target[:items] ||= {}
+          merge_opts!(target[:items], type_opts)
+        end
+
+        # @api private
+        def array_size_predicate?(name)
+          name == :min_size? || name == :max_size?
+        end
+
+        # @api private
+        def convert_array_size_predicate(name, rest)
+          value = rest[0][1].to_i
+          case name
+          when :min_size?
+            {minItems: value}
+          when :max_size?
+            {maxItems: value}
+          else
+            {}
           end
         end
 
