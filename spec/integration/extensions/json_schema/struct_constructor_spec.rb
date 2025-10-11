@@ -29,10 +29,10 @@ RSpec.describe "JSON Schema with struct constructors" do
       expect(json_schema[:properties][:address]).to include(
         type: "object",
         properties: {
-          street: { anyOf: [{ type: "null" }, { type: "string" }] },
-          city: { type: "string" }
+          street: {anyOf: [{type: "null"}, {type: "string"}]},
+          city: {type: "string"}
         },
-        required: ["street", "city"]
+        required: %w[street city]
       )
     end
   end
@@ -51,10 +51,10 @@ RSpec.describe "JSON Schema with struct constructors" do
       expect(json_schema[:properties][:address]).to include(
         type: "object",
         properties: {
-          street: { anyOf: [{ type: "null" }, { type: "string" }] },
-          city: { type: "string" }
+          street: {anyOf: [{type: "null"}, {type: "string"}]},
+          city: {type: "string"}
         },
-        required: ["street", "city"]
+        required: %w[street city]
       )
     end
   end
