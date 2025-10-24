@@ -315,7 +315,13 @@ module Dry
       # @api private
       def set_type(name, spec)
         type = resolve_type(spec)
-        meta = {required: false, maybe: type.optional?}
+        meta = type.meta.dup
+        meta[:required] = false
+        meta[:maybe] = type.optional?
+        
+        if !meta.key?(:description) && @types[name]&.meta&.key?(:description)
+          meta[:description] = @types[name].meta[:description]
+        end
 
         @types[name] = type.meta(meta)
       end
