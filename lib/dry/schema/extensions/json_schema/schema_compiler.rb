@@ -91,11 +91,11 @@ module Dry
         def visit_set(node, opts = EMPTY_HASH)
           key = opts[:key]
           target = if key
-            nested_types = extract_nested_types(@types[key])
-            self.class.new(loose: loose?, types: nested_types)
-          else
-            self
-          end
+                     nested_types = extract_nested_types(@types[key])
+                     self.class.new(loose: loose?, types: nested_types)
+                   else
+                     self
+                   end
 
           node.map { |child| target.visit(child, opts.except(:member)) }
 
@@ -113,7 +113,7 @@ module Dry
 
           # Unwrap Constrained types
           type = type.type if type.respond_to?(:type)
-          
+
           # Extract keys from Schema types
           if type.respond_to?(:keys)
             type.keys.each_with_object({}) { |key, hash| hash[key.name] = key }
@@ -197,7 +197,7 @@ module Dry
         def handle_key_predicate(rest)
           prop_name = rest[0][1]
           keys[prop_name] = {}
-          
+
           # Add description from type metadata if available
           if @types[prop_name]&.meta&.key?(:description)
             keys[prop_name][:description] = @types[prop_name].meta[:description]

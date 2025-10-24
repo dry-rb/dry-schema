@@ -318,7 +318,7 @@ module Dry
         meta = type.meta.dup
         meta[:required] = false
         meta[:maybe] = type.optional?
-        
+
         if !meta.key?(:description) && @types[name]&.meta&.key?(:description)
           meta[:description] = @types[name].meta[:description]
         end
