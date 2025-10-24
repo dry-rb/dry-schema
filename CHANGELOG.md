@@ -7,6 +7,10 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Added
+
+- Support for `.description(text)` method on schema keys to add field descriptions stored in type metadata and included in JSON schema output (@baweaver)
+
 ### Fixed
 
 - JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
