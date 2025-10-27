@@ -208,7 +208,9 @@ module Dry
         # @api public
         def description(text)
           type = schema_dsl.types[name]
-          schema_dsl.set_type(name, type.meta(type.meta.merge(description: text)))
+          new_meta = type.meta.merge(description: text)
+
+          schema_dsl.set_type(name, type.meta(new_meta))
           self
         end
 

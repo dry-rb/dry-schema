@@ -90,12 +90,13 @@ module Dry
         # @api private
         def visit_set(node, opts = EMPTY_HASH)
           key = opts[:key]
-          target = if key
-                     nested_types = extract_nested_types(@types[key])
-                     self.class.new(loose: loose?, types: nested_types)
-                   else
-                     self
-                   end
+          target =
+            if key
+              nested_types = extract_nested_types(@types[key])
+              self.class.new(loose: loose?, types: nested_types)
+            else
+              self
+            end
 
           node.map { |child| target.visit(child, opts.except(:member)) }
 
@@ -198,9 +199,9 @@ module Dry
           prop_name = rest[0][1]
           keys[prop_name] = {}
 
-          # Add description from type metadata if available
-          if @types[prop_name]&.meta&.key?(:description)
-            keys[prop_name][:description] = @types[prop_name].meta[:description]
+          current_meta = @types[prop_name]&.meta
+          if current_meta&.key?(:description)
+            keys[prop_name][:description] = current_meta[:description]
           end
         end
 
