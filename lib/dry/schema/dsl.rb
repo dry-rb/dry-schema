@@ -314,16 +314,17 @@ module Dry
       #
       # @api private
       def set_type(name, spec)
-        type = resolve_type(spec)
-        meta = type.meta.dup
-        meta[:required] = false
-        meta[:maybe] = type.optional?
+        new_type = resolve_type(spec)
 
-        if !meta.key?(:description) && @types[name]&.meta&.key?(:description)
-          meta[:description] = @types[name].meta[:description]
-        end
+        new_meta = new_type.meta.dup
+        new_meta[:required] = false
+        new_meta[:maybe] = new_type.optional?
 
-        @types[name] = type.meta(meta)
+        current_meta = @types[name]&.meta
+
+        new_meta[:description] ||= current_meta[:description] if current_meta&.key?(:description)
+
+        @types[name] = new_type.meta(new_meta)
       end
 
       # Check if a custom type was set under provided key name
