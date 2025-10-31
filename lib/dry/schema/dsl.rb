@@ -305,13 +305,6 @@ module Dry
         klass.new(**options, processor_type: processor_type, config: config, &)
       end
 
-      # Set a type for the given key name
-      #
-      # @param [Symbol] name The key name
-      # @param [Symbol, Array<Symbol>, Dry::Types::Type] spec The type spec or a type object
-      #
-      # @return [Dry::Types::Safe]
-      #
       # Merge user-defined metadata from existing type into new type metadata
       #
       # This enables fluent API patterns where metadata can be set before the actual
@@ -342,6 +335,11 @@ module Dry
       end
 
       # Set a type for the given key name
+      #
+      # @param [Symbol] name The key name
+      # @param [Symbol, Array<Symbol>, Dry::Types::Type] spec The type spec or a type object
+      #
+      # @return [Dry::Types::Safe]
       #
       # @api private
       def set_type(name, spec)
