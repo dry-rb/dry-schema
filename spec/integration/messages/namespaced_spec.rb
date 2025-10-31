@@ -89,5 +89,12 @@ RSpec.describe "Namespaced messages" do
 
       expect(result.errors(full: true)[:post_body]).to eql(["(dry_validation) Post body must be filled"])
     end
+
+    it "allows symbol for top namespace" do
+      schema = Dry::Schema.Params do
+        config.messages.top_namespace = :dry_validation
+      end
+      expect(schema.config.messages.top_namespace).to eql "dry_validation"
+    end
   end
 end

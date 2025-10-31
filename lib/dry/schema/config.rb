@@ -46,7 +46,7 @@ module Dry
         setting :backend, default: :yaml
         setting :namespace
         setting :load_paths, default: ::Set[DEFAULT_MESSAGES_PATH], constructor: :dup.to_proc
-        setting :top_namespace, default: DEFAULT_MESSAGES_ROOT
+        setting :top_namespace, default: DEFAULT_MESSAGES_ROOT, constructor: :to_s.to_proc
         setting :default_locale
       end
 
