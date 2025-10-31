@@ -324,7 +324,7 @@ module Dry
         return new_meta unless current_meta
 
         # System-managed keys that should be overwritten by new type
-        system_keys = [:required, :maybe, :default]
+        system_keys = %i[required maybe default]
         preserved_keys = current_meta.keys - system_keys
 
         preserved_keys.each do |key|
