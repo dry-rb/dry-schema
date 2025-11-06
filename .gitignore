@@ -12,3 +12,4 @@ doc
 pkg/
 .byebug_history
 spec/examples.txt
+/.rubocop-http*
