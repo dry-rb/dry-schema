@@ -17,7 +17,7 @@ module Dry
         #
         # @api public
         def json_schema(loose: false)
-          compiler = SchemaCompiler.new(root: true, loose: loose)
+          compiler = SchemaCompiler.new(root: true, loose: loose, types: types)
           compiler.call(to_ast)
           compiler.to_hash
         end

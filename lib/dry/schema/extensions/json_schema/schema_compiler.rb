@@ -58,11 +58,12 @@ module Dry
         attr_reader :keys, :required
 
         # @api private
-        def initialize(root: false, loose: false)
+        def initialize(root: false, loose: false, types: EMPTY_HASH)
           @keys = EMPTY_HASH.dup
           @required = Set.new
           @root = root
           @loose = loose
+          @types = types
         end
 
         # @api private
@@ -88,7 +89,14 @@ module Dry
 
         # @api private
         def visit_set(node, opts = EMPTY_HASH)
-          target = (key = opts[:key]) ? self.class.new(loose: loose?) : self
+          key = opts[:key]
+          target =
+            if key
+              nested_types = extract_nested_types(@types[key])
+              self.class.new(loose: loose?, types: nested_types)
+            else
+              self
+            end
 
           node.map { |child| target.visit(child, opts.except(:member)) }
 
@@ -98,6 +106,23 @@ module Dry
           type = opts[:member] ? "array" : "object"
 
           merge_opts!(keys[key], {type: type, **target_info})
+        end
+
+        # @api private
+        def extract_nested_types(type)
+          return EMPTY_HASH unless type
+
+          # Unwrap Constrained types
+          type = type.type if type.respond_to?(:type)
+
+          # Extract keys from Schema types
+          if type.respond_to?(:keys)
+            type.keys.each_with_object({}) { |key, hash| hash[key.name] = key }
+          elsif type.respond_to?(:member_types)
+            type.member_types
+          else
+            EMPTY_HASH
+          end
         end
 
         # @api private
@@ -173,6 +198,11 @@ module Dry
         def handle_key_predicate(rest)
           prop_name = rest[0][1]
           keys[prop_name] = {}
+
+          current_meta = @types[prop_name]&.meta
+          if current_meta&.key?(:description)
+            keys[prop_name][:description] = current_meta[:description]
+          end
         end
 
         # @api private

@@ -305,6 +305,35 @@ module Dry
         klass.new(**options, processor_type: processor_type, config: config, &)
       end
 
+      # Merge user-defined metadata from existing type into new type metadata
+      #
+      # This enables fluent API patterns where metadata can be set before the actual
+      # type constraint, such as:
+      #   required(:name).description("User's full name").filled(:string)
+      #
+      # Without this preservation, the description would be lost when .filled(:string)
+      # creates a new type and replaces the existing one. This method preserves all
+      # user-defined metadata while allowing system-managed metadata to be updated.
+      #
+      # @param new_meta [Hash] metadata from the new type being set
+      # @param current_meta [Hash, nil] metadata from the existing type (if any)
+      # @return [Hash] merged metadata with user-defined keys preserved
+      #
+      # @api private
+      def merge_preserved_metadata(new_meta, current_meta)
+        return new_meta unless current_meta
+
+        # System-managed keys that should be overwritten by new type
+        system_keys = %i[required maybe default]
+        preserved_keys = current_meta.keys - system_keys
+
+        preserved_keys.each do |key|
+          new_meta[key] ||= current_meta[key]
+        end
+
+        new_meta
+      end
+
       # Set a type for the given key name
       #
       # @param [Symbol] name The key name
@@ -314,10 +343,16 @@ module Dry
       #
       # @api private
       def set_type(name, spec)
-        type = resolve_type(spec)
-        meta = {required: false, maybe: type.optional?}
+        new_type = resolve_type(spec)
 
-        @types[name] = type.meta(meta)
+        new_meta = new_type.meta.dup
+        new_meta[:required] = false
+        new_meta[:maybe] = new_type.optional?
+
+        current_meta = @types[name]&.meta
+        new_meta = merge_preserved_metadata(new_meta, current_meta)
+
+        @types[name] = new_type.meta(new_meta)
       end
 
       # Check if a custom type was set under provided key name

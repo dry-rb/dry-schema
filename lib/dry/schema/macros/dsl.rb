@@ -199,6 +199,21 @@ module Dry
           schema_dsl.custom_type?(name)
         end
 
+        # Set description for the key
+        #
+        # @param [String] text Description text
+        #
+        # @return [Macros::DSL]
+        #
+        # @api public
+        def description(text)
+          type = schema_dsl.types[name]
+          new_meta = type.meta.merge(description: text)
+
+          schema_dsl.set_type(name, type.meta(new_meta))
+          self
+        end
+
         private
 
         # @api private
