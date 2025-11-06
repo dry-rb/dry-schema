@@ -7,6 +7,10 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Changed
+
+- Set mimimum Ruby version to 3.2 (@timriley)
+
 ### Fixed
 
 - JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
