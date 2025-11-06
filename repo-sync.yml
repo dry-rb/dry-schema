@@ -14,7 +14,6 @@ gemspec:
     (with or without I18n gem). It's also used as the schema engine in dry-validation.
   files: ["config/*.yml"]
   homepage: "https://dry-rb.org/gems/dry-schema"
-  required_ruby_version: ">= 3.1.0"
   development_dependencies:
     - bundler
     - rake
