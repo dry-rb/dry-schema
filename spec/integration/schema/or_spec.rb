@@ -438,16 +438,52 @@ RSpec.describe Dry::Schema, "OR messages" do
         bars: {
           0 => {
             or: [
-              {args: {value: ["must be an integer or must be a string"]}},
+              {
+                args: {
+                  0 => {
+                    value: ["must be an integer or must be a string"]
+                  }
+                }
+              },
               {bazes: ["is missing"], type: ["must be one of: bar_2"]},
               {
                 args: {
-                  value: ["must be an integer or must be a string"]
+                  0 => {
+                    value: ["must be an integer or must be a string"]
+                  }
                 },
                 type: ["must be one of: bar_3"]
               }
             ]
           }
+        }
+      )
+    end
+  end
+
+  # https://github.com/dry-rb/dry-schema/issues/502
+  context "the same key in nested schemas" do
+    value_schema = Dry::Schema.define { required(:value) }
+    extension_schema = Dry::Schema.define { required(:extension) }
+
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:extension) { value_schema | extension_schema }
+      end
+    end
+
+    it "returns success for valid input", :aggregate_failures do
+      expect(schema.(extension: {value: 1})).to be_success
+      expect(schema.(extension: {extension: 1})).to be_success
+    end
+
+    it "provides error messages for invalid input where both sides failed" do
+      expect(schema.(extension: {}).errors.to_h).to eql(
+        extension: {
+          or: [
+            {value: ["is missing"]},
+            {extension: ["is missing"]}
+          ]
         }
       )
     end

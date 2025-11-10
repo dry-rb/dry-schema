@@ -12,6 +12,8 @@ module Dry
 
       extend ::Dry::Initializer
 
+      using ::Dry::Schema::CoreExt::CoreArray
+
       # @!attribute [r] text
       #   Message text representation created from a localized template
       #   @return [String]
@@ -81,7 +83,7 @@ module Dry
       # @api private
       def to_or(root)
         clone = dup
-        clone.instance_variable_set("@path", path - root.to_a)
+        clone.instance_variable_set("@path", path.delete_prefix(root.to_a))
         clone.instance_variable_set("@_path", nil)
         clone
       end
