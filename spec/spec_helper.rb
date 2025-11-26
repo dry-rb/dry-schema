@@ -5,12 +5,8 @@ require_relative "support/coverage"
 require_relative "support/warnings"
 
 Warning.ignore(%r{gems/i18n})
-Warning.ignore(/byebug/)
 Warning.process { |w| raise w }
 
-begin
-  require "pry-byebug"
-rescue LoadError; end
 SPEC_ROOT = Pathname(__dir__)
 
 Dir[SPEC_ROOT.join("shared/**/*.rb")].each(&method(:require))
