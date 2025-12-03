@@ -149,6 +149,191 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       end
     end
 
+    context "with a nested array of hashes validator" do
+      subject(:schema) do
+        Dry::Schema.define do
+          config.validate_keys = true
+          required(:stringkey).filled(:string)
+          required(:harray).value(:array, size?: 2).each do
+            hash do
+              required(:foo).filled(:string)
+              required(:bar).filled(:integer)
+            end
+          end
+          required(:matrix).value(:array, size?: 2).each do
+            value(:array, size?: 3).each do
+              hash do
+                optional(:fzz).filled(:string)
+                optional(:bzz).filled(:integer)
+                optional(:grr).filled(:integer)
+              end
+            end
+          end
+        end
+      end
+
+      it "doesn't add error messages when there are no unexpected keys" do
+        array = [
+          {foo: "a", bar: 1},
+          {foo: "b", bar: 2}
+        ]
+        matrix = [
+          [{fzz: "a", bzz: 1, grr: 3}, {fzz: "b", bzz: 2, grr: 4}, {fzz: "c", bzz: 3, grr: 5}],
+          [{fzz: "a", bzz: 1}, {fzz: "b", bzz: 2}, {fzz: "c", bzz: 3}]
+        ]
+        expect(schema.(stringkey: "toto", harray: array, matrix: matrix).errors.to_h).to eq({})
+      end
+
+      it "adds error messages when matrix has wrong type members" do
+        array = [
+          {foo: "a", bar: 1},
+          {foo: "b", bar: 2}
+        ]
+        matrix = [
+          [{fzz: 1, bzz: "a"}, {fzz: "b", bzz: 2}, {fzz: "c", bzz: 3}],
+          [{fzz: "a", bzz: 1}, {fzz: 2, bzz: "b"}, {fzz: "c", bzz: 3}]
+        ]
+        expect(schema.(stringkey: "toto", harray: array, matrix: matrix).errors.to_h)
+          .to eq(
+            {
+              matrix: {
+                0 => {0 => {fzz: ["must be a string"], bzz: ["must be an integer"]}},
+                1 => {1 => {fzz: ["must be a string"], bzz: ["must be an integer"]}}
+              }
+            }
+          )
+      end
+
+      it "adds error messages when matrix has wrong dimensions" do
+        array = [
+          {foo: "a", bar: 1},
+          {foo: "b", bar: 2}
+        ]
+        matrix = [
+          [{fzz: "a", bzz: 1}, {fzz: "b", bzz: 2}, {fzz: "c", bzz: 3}],
+          [{fzz: "a", bzz: 1}, {fzz: "c", bzz: 3}],
+          [{fzz: "a", bzz: 1}, {fzz: "c", bzz: 3}]
+        ]
+        expect(schema.(stringkey: "toto", harray: array, matrix: matrix).errors.to_h)
+          .to eq(
+            {
+              matrix: ["size must be 2"]
+            }
+          )
+      end
+
+      it "adds error messages when matrix has wrong nested dimensions" do
+        array = [
+          {foo: "a", bar: 1},
+          {foo: "b", bar: 2}
+        ]
+        matrix = [
+          [{fzz: "a", bzz: 1}, {fzz: "b", bzz: 2}, {fzz: "c", bzz: 3}],
+          [{fzz: "a", bzz: 1}, {fzz: "c", bzz: 3}]
+        ]
+        expect(schema.(stringkey: "toto", harray: array, matrix: matrix).errors.to_h)
+          .to eq(
+            {
+              matrix: {1 => ["size must be 3"]}
+            }
+          )
+      end
+
+      it "adds error messages when there are unexpected array elements" do
+        array = [
+          {foo: "a", bar: 1, baz: "unexpected"},
+          {foo: "b", bar: 2}
+        ]
+        matrix = [
+          [{title: "a", bzz: 1}, {fzz: "b", bzz: 2}, {fzz: "c", bzz: 3}],
+          [{fzz: "a", bzz: 1}, {fzz: "b", bzz: 2}, {name: "c", bzz: 3}]
+        ]
+        expect(schema.(stringkey: "toto", harray: array, matrix: matrix).errors.to_h)
+          .to eq(
+            harray: {0 => {baz: ["is not allowed"]}},
+            matrix: {
+              0 => {0 => {title: ["is not allowed"]}},
+              1 => {2 => {name: ["is not allowed"]}}
+            }
+          )
+      end
+    end
+
+    context "with a nested array of strings" do
+      subject(:schema) do
+        Dry::Schema.define do
+          config.validate_keys = true
+          required(:matrix).value(:array, size?: 2).each do
+            value(:array, size?: 3).each do
+              value(:string, size?: 1)
+            end
+          end
+        end
+      end
+
+      it "doesn't add error messages when there are no unexpected keys" do
+        matrix = [
+          %w[a b c],
+          %w[d e f]
+        ]
+        expect(schema.(matrix: matrix).errors.to_h).to eq({})
+      end
+
+      it "adds error messages when matrix has wrong type members" do
+        matrix = [
+          ["a", 1, "c"],
+          %w[d e f]
+        ]
+        expect(schema.(matrix: matrix).errors.to_h).to eq(
+          {
+            matrix: {
+              0 => {1 => ["must be a string"]}
+            }
+          }
+        )
+      end
+
+      it "adds error messages when matrix has wrong dimensions" do
+        matrix = [
+          %w[a b c],
+          %w[d e f],
+          %w[g h i]
+        ]
+        expect(schema.(matrix: matrix).errors.to_h)
+          .to eq(
+            {
+              matrix: ["size must be 2"]
+            }
+          )
+      end
+
+      it "adds error messages when matrix has wrong nested dimensions" do
+        matrix = [
+          %w[a b c],
+          %w[d e f g]
+        ]
+        expect(schema.(matrix: matrix).errors.to_h)
+          .to eq(
+            {
+              matrix: {1 => ["size must be 3"]}
+            }
+          )
+      end
+
+      it "adds error messages when there are unexpected array elements" do
+        matrix = [
+          %w[a b c],
+          ["d", {foo: "unexpected"}, "f"]
+        ]
+        expect(schema.(matrix: matrix).errors.to_h)
+          .to eq(
+            matrix: {
+              1 => {1 => {foo: ["is not allowed"]}}
+            }
+          )
+      end
+    end
+
     context "with a non-nested maybe hash validator" do
       subject(:schema) do
         Dry::Schema.define do

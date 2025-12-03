@@ -18,7 +18,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - Support for intersection types (created with `&` operator) in schema definitions (fixes #494) (@baweaver)
 - JSON schema generation now correctly uses `minItems`/`maxItems` for array size predicates instead of `minLength`/`maxLength` (fixes #481) (@baweaver)
 - Show correct index in errors when validating unexpected keys in arrays (via #510) (@katafrakt)
-
+- Fix support for nested arrays when validating unexpected keys (via #508) (@misdoro)
 
 ## [1.14.1] - 2025-03-03
 

@@ -9,6 +9,7 @@ module Dry
     class KeyValidator
       extend ::Dry::Initializer
 
+      MULTI_INDEX_REGEX = /(\[\d+\])+/
       INDEX_REGEX = /\[\d+\]/
       DIGIT_REGEX = /\A\d+\z/
       BRACKETS = "[]"
@@ -38,8 +39,8 @@ module Dry
 
       # @api private
       def validate_path(key_paths, path)
-        if path[INDEX_REGEX]
-          key = path.gsub(INDEX_REGEX, BRACKETS)
+        if path[MULTI_INDEX_REGEX]
+          key = path.gsub(MULTI_INDEX_REGEX, BRACKETS)
           if none_key_paths_match?(key_paths, key)
             arr = path.gsub(INDEX_REGEX) { ".#{_1[1...-1]}" }
             arr.split(DOT).map { DIGIT_REGEX.match?(_1) ? Integer(_1, 10) : _1.to_sym }
@@ -83,9 +84,7 @@ module Dry
             if hashes_or_arrays.empty?
               [key.to_s]
             else
-              hashes_or_arrays.flat_map.with_index { |el, idx|
-                key_paths(el).map { ["#{key}[#{idx}]", *_1].join(DOT) }
-              }
+              traverse_array(value).map { |sub_path| [key, sub_path].join("") }
             end
           else
             key.to_s
@@ -98,6 +97,20 @@ module Dry
         xs.select { |x|
           (x.is_a?(::Array) || x.is_a?(::Hash)) && !x.empty?
         }
+      end
+
+      # @api private
+      def traverse_array(arr)
+        arr.each_with_index.flat_map do |el, idx|
+          case el
+          when ::Hash
+            key_paths(el).map { ["[#{idx}]", *_1].join(DOT) }
+          when ::Array
+            traverse_array(el).map { ["[#{idx}]", *_1].join("") }
+          else
+            []
+          end
+        end
       end
     end
   end
