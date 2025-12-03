@@ -163,3 +163,25 @@ end
 schema.call(tags: nil).success? # true
 schema.call(tags: [{ name: 'Alice' }, { name: 'Bob' }]).success? # true
 ```
+
+### Nested Array of Arrays
+
+To define a matrix-like structure (an array of arrays), nest `value(:array)` macros:
+
+```ruby
+schema = Dry::Schema.Params do
+  config.validate_keys = true
+  required(:matrix).value(:array).each do
+    value(:array).each do
+      value(:integer, gteq?: 0)
+    end
+  end
+end
+
+errors = schema.call(matrix: [[1, 2, 3], [4, -5, 6]]).errors
+
+puts errors.to_h.inspect
+
+# => {:matrix=>{1=>{1=>["must be greater than or equal to 0"]}}}
+```
+
