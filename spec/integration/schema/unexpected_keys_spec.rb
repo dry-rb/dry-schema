@@ -50,6 +50,22 @@ RSpec.describe Dry::Schema, "unexpected keys" do
       )
   end
 
+  it "reports correct index for arrays with more than 10 elements" do
+    roles = (0..20).map { |i| {name: "role-#{i}", expires_at: Date.today} }
+    roles[17][:foo] = "unexpected"
+
+    input = {
+      name: "Jane",
+      ids: [1],
+      address: {city: "Yokohama", zipcode: "00987"},
+      roles: roles
+    }
+
+    expect(schema.(input).errors.to_h).to eql(
+      roles: {17 => {foo: ["is not allowed"]}}
+    )
+  end
+
   it "is treated as a failure when passed unexpected keys" do
     input = {
       foo: "unexpected",

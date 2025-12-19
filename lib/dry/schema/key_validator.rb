@@ -41,7 +41,7 @@ module Dry
         if path[INDEX_REGEX]
           key = path.gsub(INDEX_REGEX, BRACKETS)
           if none_key_paths_match?(key_paths, key)
-            arr = path.gsub(INDEX_REGEX) { ".#{_1[1]}" }
+            arr = path.gsub(INDEX_REGEX) { ".#{_1[1...-1]}" }
             arr.split(DOT).map { DIGIT_REGEX.match?(_1) ? Integer(_1, 10) : _1.to_sym }
           end
         elsif none_key_paths_match?(key_paths, path)
