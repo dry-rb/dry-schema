@@ -16,6 +16,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
 - Support for intersection types (created with `&` operator) in schema definitions (fixes #494) (@baweaver)
 - JSON schema generation now correctly uses `minItems`/`maxItems` for array size predicates instead of `minLength`/`maxLength` (fixes #481) (@baweaver)
+- Show correct index in errors when validating unexpected keys in arrays (via #510) (@katafrakt)
 
 
 ## [1.14.1] - 2025-03-03
