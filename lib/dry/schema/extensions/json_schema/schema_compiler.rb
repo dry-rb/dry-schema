@@ -46,6 +46,15 @@ module Dry
           uuid_v5?: {
             pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
           },
+          uuid_v6?: {
+            pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-6[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+          },
+          uuid_v7?: {
+            pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-7[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+          },
+          uuid_v8?: {
+            pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-8[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+          },
           gt?: {exclusiveMinimum: IDENTITY},
           gteq?: {minimum: IDENTITY},
           lt?: {exclusiveMaximum: IDENTITY},

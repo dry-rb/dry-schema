@@ -117,5 +117,11 @@ en:
 
       uuid_v5?: "is not a valid UUID"
 
+      uuid_v6?: "is not a valid UUID"
+
+      uuid_v7?: "is not a valid UUID"
+
+      uuid_v8?: "is not a valid UUID"
+
       not:
         empty?: "cannot be empty"
