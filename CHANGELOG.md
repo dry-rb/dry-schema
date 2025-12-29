@@ -13,6 +13,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
+- Support UUID v6, v7 and v8 predicates (`:uuid_v6?`, `:uuid_v7?` and `:uuid_v8?`) (via #509) (@illiatdesdindes)
 - JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
 - Support for intersection types (created with `&` operator) in schema definitions (fixes #494) (@baweaver)
 - JSON schema generation now correctly uses `minItems`/`maxItems` for array size predicates instead of `minLength`/`maxLength` (fixes #481) (@baweaver)
