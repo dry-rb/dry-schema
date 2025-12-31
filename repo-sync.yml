@@ -25,5 +25,5 @@ gemspec:
     - [dry-core, "~> 1.1"]
     - [dry-configurable, "~> 1.0", ">= 1.0.1"]
     - [dry-initializer, "~> 3.2"]
-    - [dry-logic, "~> 1.5"]
+    - [dry-logic, "~> 1.6"]
     - [dry-types, "~> 1.8"]
