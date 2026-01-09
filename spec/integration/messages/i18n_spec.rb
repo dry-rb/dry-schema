@@ -188,6 +188,17 @@ RSpec.describe Dry::Schema::Messages::I18n do
         expect(meta).to eql({})
       end
 
+      it "can use a proc returning hash for a message" do
+        store_errors(
+          predicate_proc: ->(_path, **opts) { {text: opts[:text], code: 123, name: opts[:name]} }
+        )
+
+        template, meta = messages[:predicate_proc, path: :path, text: "text", name: "abc"]
+
+        expect(template.()).to eql("text")
+        expect(meta).to eql({code: 123, name: "abc"})
+      end
+
       context "with meta-data" do
         it "finds the meta-data" do
           store_errors(
@@ -201,6 +212,26 @@ RSpec.describe Dry::Schema::Messages::I18n do
 
           expect(template.()).to eql("text")
           expect(meta).to eql(code: 123)
+        end
+      end
+
+      context "with meta-data and arg type" do
+        it "returns a template for a specific rule, meta and default arg type" do
+          store_errors(
+            predicate_with_meta: {
+              arg: {
+                default: {
+                  text: "text %{arg}",
+                  code: 123
+                }
+              }
+            }
+          )
+
+          template, meta = messages[:predicate_with_meta, path: :pages, locale: :en]
+
+          expect(template.(arg: "some arg")).to eql("text some arg")
+          expect(meta).to eq({code: 123})
         end
       end
     end
