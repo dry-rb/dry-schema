@@ -462,7 +462,7 @@ RSpec.describe Dry::Schema, "OR messages" do
   end
 
   # https://github.com/dry-rb/dry-schema/issues/502
-  context "the same key in nested schemas" do
+  context "key reused in a nested schemas" do
     value_schema = Dry::Schema.define { required(:value) }
     extension_schema = Dry::Schema.define { required(:extension) }
 
