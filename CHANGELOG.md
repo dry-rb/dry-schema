@@ -7,9 +7,15 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Added
+
 ### Changed
 
 - Set mimimum Ruby version to 3.2 (@timriley)
+
+### Deprecated
+
+### Removed
 
 ### Fixed
 
@@ -20,18 +26,19 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - Show correct index in errors when validating unexpected keys in arrays (via #510) (@katafrakt)
 - Fix support for nested arrays when validating unexpected keys (via #508) (@misdoro)
 
-## [1.14.1] - 2025-03-03
+### Security
 
+[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.14.1...main
+
+## [1.14.1] - 2025-03-03
 
 ### Fixed
 
 - Syntax errors on 3.3.0 (@flash-gordon, see #488)
 
-
-[Compare v1.14.0...v1.14.1](https://github.com/dry-rb/dry-schema/compare/v1.14.0...v1.14.1)
+[1.14.1]: https://github.com/dry-rb/dry-schema/compare/v1.14.0...v1.14.1
 
 ## [1.14.0] - 2025-01-06
-
 
 ### Added
 
@@ -48,10 +55,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - Set minimum Ruby version to 3.1 (@flash-gordon)
 - `KeyValidator` works faster for large schemas (via #461) (@radarek)
 
-[Compare v1.13.4...v1.14.0](https://github.com/dry-rb/dry-schema/compare/v1.13.4...v1.14.0)
+[1.14.0]: https://github.com/dry-rb/dry-schema/compare/v1.13.4...v1.14.0
 
 ## [1.13.4] - 2024-05-22
-
 
 ### Added
 
@@ -65,40 +71,33 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - i18n backend is no longer eager-loaded (via 85a9e0b) (@adam12)
 
-[Compare v1.13.3...v1.13.4](https://github.com/dry-rb/dry-schema/compare/v1.13.3...v1.13.4)
+[1.13.4]: https://github.com/dry-rb/dry-schema/compare/v1.13.3...v1.13.4
 
 ## [1.13.3] - 2023-08-26
-
 
 ### Fixed
 
 - Fix struct extension for nested struct definitions (via #466) (@flash-gordon)
 
-
-[Compare v1.13.2...v1.13.3](https://github.com/dry-rb/dry-schema/compare/v1.13.2...v1.13.3)
+[1.13.3]: https://github.com/dry-rb/dry-schema/compare/v1.13.2...v1.13.3
 
 ## [1.13.2] - 2023-05-31
-
 
 ### Fixed
 
 - Fix custom predicates setting (via #460) (@solnic)
 
-
-[Compare v1.13.1...v1.13.2](https://github.com/dry-rb/dry-schema/compare/v1.13.1...v1.13.2)
+[1.13.2]: https://github.com/dry-rb/dry-schema/compare/v1.13.1...v1.13.2
 
 ## [1.13.1] - 2023-04-07
-
 
 ### Fixed
 
 - Support sum types of hashes (issue #446 fixed via #457) (@segiddins)
 
-
-[Compare v1.13.0...v1.13.1](https://github.com/dry-rb/dry-schema/compare/v1.13.0...v1.13.1)
+[1.13.1]: https://github.com/dry-rb/dry-schema/compare/v1.13.0...v1.13.1
 
 ## [1.13.0] - 2022-11-24
-
 
 ### Fixed
 
@@ -107,118 +106,98 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - Warnings about using pattern matching on Ruby 2.7 (issue #441 fixed via #442) (@r7kamura)
 - Make message cache fully thread-safe (via #440) (@mensfeld)
 
-
-[Compare v1.12.0...v1.13.0](https://github.com/dry-rb/dry-schema/compare/v1.12.0...v1.13.0)
+[1.13.0]: https://github.com/dry-rb/dry-schema/compare/v1.12.0...v1.13.0
 
 ## [1.12.0] - 2022-11-04
-
 
 ### Changed
 
 - This version depends on dry-core 1.0 and dry-configurable 1.0 (@flash-gordon)
 
-[Compare v1.11.3...v1.12.0](https://github.com/dry-rb/dry-schema/compare/v1.11.3...v1.12.0)
+[1.12.0]: https://github.com/dry-rb/dry-schema/compare/v1.11.3...v1.12.0
 
 ## [1.11.3] - 2022-10-21
-
 
 ### Fixed
 
 - Fixed `array(sum_type)` syntax which was a regression introduced in 1.10.0 (issue #436 fixed via #437) (@solnic)
 
-
-[Compare v1.11.2...v1.11.3](https://github.com/dry-rb/dry-schema/compare/v1.11.2...v1.11.3)
+[1.11.3]: https://github.com/dry-rb/dry-schema/compare/v1.11.2...v1.11.3
 
 ## [1.11.2] - 2022-10-16
-
 
 ### Fixed
 
 - Setting up message backends with custom settings should work as before (see dry-rb/dry-validation#717 fixed via #435) (@solnic)
 
-
-[Compare v1.11.1...v1.11.2](https://github.com/dry-rb/dry-schema/compare/v1.11.1...v1.11.2)
+[1.11.2]: https://github.com/dry-rb/dry-schema/compare/v1.11.1...v1.11.2
 
 ## [1.11.1] - 2022-10-15
-
 
 ### Changed
 
 - Depend on dry-configurable >= 0.16 - this was needed to play nice with Zeitwerk (@solnic)
 
-[Compare v1.11.0...v1.11.1](https://github.com/dry-rb/dry-schema/compare/v1.11.0...v1.11.1)
+[1.11.1]: https://github.com/dry-rb/dry-schema/compare/v1.11.0...v1.11.1
 
 ## [1.11.0] - 2022-10-15
-
 
 ### Changed
 
 - Use zeitwerk for auto-loading which speeds up requires (via #427) (@flash-gordon + @solnic)
 
-[Compare v1.10.6...v1.11.0](https://github.com/dry-rb/dry-schema/compare/v1.10.6...v1.11.0)
+[1.11.0]: https://github.com/dry-rb/dry-schema/compare/v1.10.6...v1.11.0
 
 ## [1.10.6] - 2022-10-01
-
 
 ### Fixed
 
 - Fix issues with rule name when top_namespace and namespace passed (issue #304 fixed via #432) (@RudskikhIvan)
 
-
-[Compare v1.10.5...v1.10.6](https://github.com/dry-rb/dry-schema/compare/v1.10.5...v1.10.6)
+[1.10.6]: https://github.com/dry-rb/dry-schema/compare/v1.10.5...v1.10.6
 
 ## [1.10.5] - 2022-09-21
-
 
 ### Fixed
 
 - Key maps no longer include duped keys when using inheritance (issues #428 #372 fixed via #429) (@solnic)
 - Key validator and coercer no longer include duped keys when using parent schemas (via #430) (@solnic)
 
-
-[Compare v1.10.4...v1.10.5](https://github.com/dry-rb/dry-schema/compare/v1.10.4...v1.10.5)
+[1.10.5]: https://github.com/dry-rb/dry-schema/compare/v1.10.4...v1.10.5
 
 ## [1.10.4] - 2022-09-13
-
 
 ### Fixed
 
 - Once again reverting zeitwerk related changes that were included in 1.10.3 by an accident :( (@solnic)
 
-
-[Compare v1.10.3...v1.10.4](https://github.com/dry-rb/dry-schema/compare/v1.10.3...v1.10.4)
+[1.10.4]: https://github.com/dry-rb/dry-schema/compare/v1.10.3...v1.10.4
 
 ## [1.10.3] - 2022-09-10
-
 
 ### Fixed
 
 - Addressed regressions causing issues with handling sum types (see #419 and #423 fixed via #425) (@robhanlon22)
 
-
-[Compare v1.10.2...v1.10.3](https://github.com/dry-rb/dry-schema/compare/v1.10.2...v1.10.3)
+[1.10.3]: https://github.com/dry-rb/dry-schema/compare/v1.10.2...v1.10.3
 
 ## [1.10.2] - 2022-08-23
-
 
 ### Fixed
 
 - Fix value coercion for composed schemas (via #421) (@robhanlon22)
 
-
-[Compare v1.10.1...v1.10.2](https://github.com/dry-rb/dry-schema/compare/v1.10.1...v1.10.2)
+[1.10.2]: https://github.com/dry-rb/dry-schema/compare/v1.10.1...v1.10.2
 
 ## [1.10.1] - 2022-08-22
-
 
 ### Changed
 
 - Reverted zeitwerk-related changes that were included in 1.10.0 by an accident (@solnic)
 
-[Compare v1.10.0...v1.10.1](https://github.com/dry-rb/dry-schema/compare/v1.10.0...v1.10.1)
+[1.10.1]: https://github.com/dry-rb/dry-schema/compare/v1.10.0...v1.10.1
 
 ## [1.10.0] - 2022-08-16
-
 
 ### Added
 
@@ -235,10 +214,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - Freeze message hash (fixes #417 via #418) (@solnic)
 
-[Compare v1.9.3...v1.10.0](https://github.com/dry-rb/dry-schema/compare/v1.9.3...v1.10.0)
+[1.10.0]: https://github.com/dry-rb/dry-schema/compare/v1.9.3...v1.10.0
 
 ## [1.9.3] - 2022-06-23
-
 
 ### Added
 
@@ -248,11 +226,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - Allow composition of multiple ors (issue #307 fixed via #409) (@robhanlon22)
 
-
-[Compare v1.9.2...v1.9.3](https://github.com/dry-rb/dry-schema/compare/v1.9.2...v1.9.3)
+[1.9.3]: https://github.com/dry-rb/dry-schema/compare/v1.9.2...v1.9.3
 
 ## [1.9.2] - 2022-05-28
-
 
 ### Fixed
 
@@ -263,20 +239,17 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - [performance] YAML message backend allocates less strings (via #399) (@casperisfine)
 
-[Compare v1.9.1...v1.9.2](https://github.com/dry-rb/dry-schema/compare/v1.9.1...v1.9.2)
+[1.9.2]: https://github.com/dry-rb/dry-schema/compare/v1.9.1...v1.9.2
 
 ## [1.9.1] - 2022-02-17
-
 
 ### Fixed
 
 - Namespaced messages no longer crashes in certain scenarios (see dry-rb/dry-validation#692 fixed via #398) (@krekoten)
 
-
-[Compare v1.9.0...v1.9.1](https://github.com/dry-rb/dry-schema/compare/v1.9.0...v1.9.1)
+[1.9.1]: https://github.com/dry-rb/dry-schema/compare/v1.9.0...v1.9.1
 
 ## [1.9.0] - 2022-02-15
-
 
 ### Added
 
@@ -287,26 +260,23 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - Composing schemas no longer crashes in certain scenarios (issue #342 fixed via #366) (@vsuhachev)
 - Fix info extension for typed arrays (issue #394 fixed via #397) (@CandyFet)
 
-
-[Compare v1.8.0...v1.9.0](https://github.com/dry-rb/dry-schema/compare/v1.8.0...v1.9.0)
+[1.9.0]: https://github.com/dry-rb/dry-schema/compare/v1.8.0...v1.9.0
 
 ## [1.8.0] - 2021-09-12
-
 
 ### Changed
 
 - [internal] Upgraded to new `setting` API provided in dry-configurable 0.13.0 (@timriley in #356)
 
-[Compare v1.7.1...v1.8.0](https://github.com/dry-rb/dry-schema/compare/v1.7.1...v1.8.0)
+[1.8.0]: https://github.com/dry-rb/dry-schema/compare/v1.7.1...v1.8.0
 
 ## [1.7.1] - 2021-08-29
-
 
 ### Changed
 
 - [internal] Use explicit `#to_h` conversion of Dry::Configurable::Config, to ensure compatibility with upcoming dry-configurable 0.13.0 release (via #371) (@timriley)
 
-[Compare v1.7.0...v1.7.1](https://github.com/dry-rb/dry-schema/compare/v1.7.0...v1.7.1)
+[1.7.1]: https://github.com/dry-rb/dry-schema/compare/v1.7.0...v1.7.1
 
 ## [1.7.0] - 2021-06-29
 
@@ -326,10 +296,9 @@ This release ships with a bunch of internal refactorings that should improve per
 - [internal] `Dry::Schema::Path` clean up and performance improvements (via #358) (@ojab)
 - [internal] simplify and speed up handling of steps in nested schemas (via #360) (@ojab)
 
-[Compare v1.6.2...v1.7.0](https://github.com/dry-rb/dry-schema/compare/v1.6.2...v1.7.0)
+[1.7.0]: https://github.com/dry-rb/dry-schema/compare/v1.6.2...v1.7.0
 
 ## [1.6.2] - 2021-04-15
-
 
 ### Added
 
@@ -339,21 +308,17 @@ This release ships with a bunch of internal refactorings that should improve per
 
 - Using `respond_to?` predicate in blocks works now (@rindek)
 
-
-[Compare v1.6.1...v1.6.2](https://github.com/dry-rb/dry-schema/compare/v1.6.1...v1.6.2)
+[1.6.2]: https://github.com/dry-rb/dry-schema/compare/v1.6.1...v1.6.2
 
 ## [1.6.1] - 2021-02-02
-
 
 ### Fixed
 
 - Messages#[] handles meta/no meta cases more gracefully and has better interoperability with the I18n backend. This brings MessageCompiler#visit_unexpected_key up to parity with MessageCompiler#visit_predicate. Uses visit_predicate as basis for visit_unexpected_key. (@robhanlon22)
 
-
-[Compare v1.6.0...v1.6.1](https://github.com/dry-rb/dry-schema/compare/v1.6.0...v1.6.1)
+[1.6.1]: https://github.com/dry-rb/dry-schema/compare/v1.6.0...v1.6.1
 
 ## [1.6.0] - 2021-01-21
-
 
 ### Fixed
 
@@ -378,20 +343,17 @@ This release ships with a bunch of internal refactorings that should improve per
 
   See https://github.com/dry-rb/dry-schema/issues/335 for rationale.
 
-[Compare v1.5.6...v1.6.0](https://github.com/dry-rb/dry-schema/compare/v1.5.6...v1.6.0)
+[1.6.0]: https://github.com/dry-rb/dry-schema/compare/v1.5.6...v1.6.0
 
 ## [1.5.6] - 2020-10-21
-
 
 ### Fixed
 
 - Fixed stack error which was a regression introduced in 1.5.5 (issue #322 fixed via #323) (@flash-gordon)
 
-
-[Compare v1.5.5...v1.5.6](https://github.com/dry-rb/dry-schema/compare/v1.5.5...v1.5.6)
+[1.5.6]: https://github.com/dry-rb/dry-schema/compare/v1.5.5...v1.5.6
 
 ## [1.5.5] - 2020-10-08
-
 
 ### Fixed
 
@@ -399,8 +361,7 @@ This release ships with a bunch of internal refactorings that should improve per
 - Using an external schema along with a key specified as a `:hash` works as expected (issue #296 fixed via #315) (@tadeusz-niemiec + @solnic)
 - `Result#error?(path)` works correctly when the path points to an array item (issue #317 fixed via #318) (@solnic)
 
-
-[Compare v1.5.4...v1.5.5](https://github.com/dry-rb/dry-schema/compare/v1.5.4...v1.5.5)
+[1.5.5]: https://github.com/dry-rb/dry-schema/compare/v1.5.4...v1.5.5
 
 ## [1.5.4] - 2020-09-03
 
@@ -408,11 +369,7 @@ This release ships with a bunch of internal refactorings that should improve per
 
 - Key validation works correctly with a non-nested maybe hashes (issue #311 fixed via #312) (@svobom57)
 
-
-[Compare v1.5.3...main](https://github.com/dry-rb/dry-schema/compare/v1.5.3...main)
-
 ## [1.5.3] - 2020-08-21
-
 
 ### Fixed
 
@@ -422,10 +379,9 @@ This release ships with a bunch of internal refactorings that should improve per
 
 - [info extension] small performance improvement in the set visitor (see #305 for more details) (@esparta)
 
-[Compare v1.5.2...v1.5.3](https://github.com/dry-rb/dry-schema/compare/v1.5.2...v1.5.3)
+[1.5.3]: https://github.com/dry-rb/dry-schema/compare/v1.5.2...v1.5.3
 
 ## [1.5.2] - 2020-06-26
-
 
 ### Fixed
 
@@ -435,10 +391,9 @@ This release ships with a bunch of internal refactorings that should improve per
 
 - Using `full` option no longer adds a space between the name of a key and the message in case of languages that have no spaces between words (ie Japanese) (issue #161 closed via #292 by @tadeusz-niemiec)
 
-[Compare v1.5.1...v1.5.2](https://github.com/dry-rb/dry-schema/compare/v1.5.1...v1.5.2)
+[1.5.2]: https://github.com/dry-rb/dry-schema/compare/v1.5.1...v1.5.2
 
 ## [1.5.1] - 2020-05-21
-
 
 ### Fixed
 
@@ -446,11 +401,9 @@ This release ships with a bunch of internal refactorings that should improve per
 - Fixed circular require warning (issue #279 closed via #282 by @landongrindheim)
 - Validating keys against an array with non-hash members no longer crashes (issue #283 fixed via #284 by @beechnut and issue #289 fixed via #288 by @tadeusz-niemiec)
 
-
-[Compare v1.5.0...v1.5.1](https://github.com/dry-rb/dry-schema/compare/v1.5.0...v1.5.1)
+[1.5.1]: https://github.com/dry-rb/dry-schema/compare/v1.5.0...v1.5.1
 
 ## [1.5.0] - 2020-03-11
-
 
 ### Added
 
@@ -490,10 +443,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Raise ArgumentError in DSL if parent DSL configs differ (@robhanlon22)
 - (internal) `PredicateInferrer` was removed. `Dry::Types::PredicateInferrer` is a drop-in replacement (@flash-gordon)
 
-[Compare v1.4.3...v1.5.0](https://github.com/dry-rb/dry-schema/compare/v1.4.3...v1.5.0)
+[1.5.0]: https://github.com/dry-rb/dry-schema/compare/v1.4.3...v1.5.0
 
 ## [1.4.3] - 2020-01-08
-
 
 ### Added
 
@@ -519,11 +471,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 
 - Some keyword warnings that slipped into the previous release (@flash-gordon)
 
-
-[Compare v1.4.2...v1.4.3](https://github.com/dry-rb/dry-schema/compare/v1.4.2...v1.4.3)
+[1.4.3]: https://github.com/dry-rb/dry-schema/compare/v1.4.2...v1.4.3
 
 ## [1.4.2] - 2019-12-19
-
 
 ### Fixed
 
@@ -532,21 +482,17 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Fixed keyword warnings from MRI 2.7.0 (@flash-gordon)
 - Array with a member works correctly with `maybe` (issue #206) (@solnic)
 
-
-[Compare v1.4.1...v1.4.2](https://github.com/dry-rb/dry-schema/compare/v1.4.1...v1.4.2)
+[1.4.2]: https://github.com/dry-rb/dry-schema/compare/v1.4.1...v1.4.2
 
 ## [1.4.1] - 2019-10-08
-
 
 ### Fixed
 
 - Child schemas no longer mutate processing steps of their parent classes (@skryukov)
 
-
-[Compare v1.4.0...v1.4.1](https://github.com/dry-rb/dry-schema/compare/v1.4.0...v1.4.1)
+[1.4.1]: https://github.com/dry-rb/dry-schema/compare/v1.4.0...v1.4.1
 
 ## [1.4.0] - 2019-10-08
-
 
 ### Added
 
@@ -575,21 +521,17 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 
 - Added/fixed support for custom optional types (@flash-gordon)
 
-
-[Compare v1.3.4...v1.4.0](https://github.com/dry-rb/dry-schema/compare/v1.3.4...v1.4.0)
+[1.4.0]: https://github.com/dry-rb/dry-schema/compare/v1.3.4...v1.4.0
 
 ## [1.3.4] - 2019-09-11
-
 
 ### Fixed
 
 - Fixed regression where using `array?` predicate within a block would crach (issue #186) (@skryukov)
 
-
-[Compare v1.3.3...v1.3.4](https://github.com/dry-rb/dry-schema/compare/v1.3.3...v1.3.4)
+[1.3.4]: https://github.com/dry-rb/dry-schema/compare/v1.3.3...v1.3.4
 
 ## [1.3.3] - 2019-08-14
-
 
 ### Fixed
 
@@ -598,32 +540,26 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Default processor uses strict types by default, which fixes various cases when `maybe` is used with a constructor type (@flash-gordon)
 - Namespaced messages no longer causes a crash when used with nested schemas (fixed #176) (@solnic)
 
-
-[Compare v1.3.2...v1.3.3](https://github.com/dry-rb/dry-schema/compare/v1.3.2...v1.3.3)
+[1.3.3]: https://github.com/dry-rb/dry-schema/compare/v1.3.2...v1.3.3
 
 ## [1.3.2] - 2019-08-01
-
 
 ### Added
 
 - Support for new predicates: `bytesize?`, `min_bytesize?` and `max_bytesize?` (@bmalinconico)
 
-
-[Compare v1.3.1...v1.3.2](https://github.com/dry-rb/dry-schema/compare/v1.3.1...v1.3.2)
+[1.3.2]: https://github.com/dry-rb/dry-schema/compare/v1.3.1...v1.3.2
 
 ## [1.3.1] - 2019-07-08
-
 
 ### Fixed
 
 - `Result#error?` works correctly with nested hashes and arrays (@solnic)
 - `:hints` extension no longer causes a crash where base messages are generated too (issue #165) (@solnic)
 
-
-[Compare v1.3.0...v1.3.1](https://github.com/dry-rb/dry-schema/compare/v1.3.0...v1.3.1)
+[1.3.1]: https://github.com/dry-rb/dry-schema/compare/v1.3.0...v1.3.1
 
 ## [1.3.0] - 2019-07-06
-
 
 ### Added
 
@@ -644,11 +580,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 
 - Type container is passed down to nested schemas (@flash-gordon)
 
-
-[Compare v1.2.0...v1.3.0](https://github.com/dry-rb/dry-schema/compare/v1.2.0...v1.3.0)
+[1.3.0]: https://github.com/dry-rb/dry-schema/compare/v1.2.0...v1.3.0
 
 ## [1.2.0] - 2019-06-13
-
 
 ### Added
 
@@ -682,10 +616,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Fixes related to `filled` restored pre-1.1.0 behavior of `:hints` which are again included (@solnic)
 - `filled` no longer uses filter rules to handle empty strings in `Params` (@solnic)
 
-[Compare v1.1.0...v1.2.0](https://github.com/dry-rb/dry-schema/compare/v1.1.0...v1.2.0)
+[1.2.0]: https://github.com/dry-rb/dry-schema/compare/v1.1.0...v1.2.0
 
 ## [1.1.0] - 2019-05-30
-
 
 ### Added
 
@@ -702,11 +635,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - `Config#eql?` works as expected (@solnic)
 - Predicates are properly inferred from array with a member type spec, ie `array[:integer]` results in `array? + each(:integer?)` (issue #140) (@solnic)
 
-
-[Compare v1.0.3...v1.1.0](https://github.com/dry-rb/dry-schema/compare/v1.0.3...v1.1.0)
+[1.1.0]: https://github.com/dry-rb/dry-schema/compare/v1.0.3...v1.1.0
 
 ## [1.0.3] - 2019-05-21
-
 
 ### Fixed
 
@@ -714,31 +645,25 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Predicate arguments are used again for template cache keys (@solnic)
 - `I18n` messages backend no longer evaluates templates twice (@solnic)
 
-
-[Compare v1.0.2...v1.0.3](https://github.com/dry-rb/dry-schema/compare/v1.0.2...v1.0.3)
+[1.0.3]: https://github.com/dry-rb/dry-schema/compare/v1.0.2...v1.0.3
 
 ## [1.0.2] - 2019-05-12
-
 
 ### Fixed
 
 - Caching message templates uses restricted set of known keys to calculate cache keys (issue #132) (@solnic)
 
-
-[Compare v1.0.1...v1.0.2](https://github.com/dry-rb/dry-schema/compare/v1.0.1...v1.0.2)
+[1.0.2]: https://github.com/dry-rb/dry-schema/compare/v1.0.1...v1.0.2
 
 ## [1.0.1] - 2019-05-08
-
 
 ### Fixed
 
 - Applying `key?` predicate no longer causes recursive calls to `Result#errors` (issue #130) (@solnic)
 
-
-[Compare v1.0.0...v1.0.1](https://github.com/dry-rb/dry-schema/compare/v1.0.0...v1.0.1)
+[1.0.1]: https://github.com/dry-rb/dry-schema/compare/v1.0.0...v1.0.1
 
 ## [1.0.0] - 2019-05-03
-
 
 ### Fixed
 
@@ -749,10 +674,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 
 - [BREAKING] `Result#to_hash` was removed (@solnic)
 
-[Compare v0.6.0...v1.0.0](https://github.com/dry-rb/dry-schema/compare/v0.6.0...v1.0.0)
+[1.0.0]: https://github.com/dry-rb/dry-schema/compare/v0.6.0...v1.0.0
 
 ## [0.6.0] - 2019-04-24
-
 
 ### Changed
 
@@ -760,20 +684,17 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Dependency on `dry-logic` was bumped to `~> 1.0` (@solnic)
 - Dependency on `dry-initializer` was bumped to `~> 3.0` (@solnic)
 
-[Compare v0.5.1...v0.6.0](https://github.com/dry-rb/dry-schema/compare/v0.5.1...v0.6.0)
+[0.6.0]: https://github.com/dry-rb/dry-schema/compare/v0.5.1...v0.6.0
 
 ## [0.5.1] - 2019-04-17
-
 
 ### Fixed
 
 - Key map no longer crashes on unexpected input (issue #118) (@solnic)
 
-
-[Compare v0.5.0...v0.5.1](https://github.com/dry-rb/dry-schema/compare/v0.5.0...v0.5.1)
+[0.5.1]: https://github.com/dry-rb/dry-schema/compare/v0.5.0...v0.5.1
 
 ## [0.5.0] - 2019-04-04
-
 
 ### Added
 
@@ -811,10 +732,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - [BREAKING] `:monads` extension wraps entire result objects in `Success` or `Failure` (@flash-gordon)
 - When `:hints` are disabled, result AST will not include hint nodes (@solnic)
 
-[Compare v0.4.0...v0.5.0](https://github.com/dry-rb/dry-schema/compare/v0.4.0...v0.5.0)
+[0.5.0]: https://github.com/dry-rb/dry-schema/compare/v0.4.0...v0.5.0
 
 ## [0.4.0] - 2019-03-26
-
 
 ### Added
 
@@ -843,10 +763,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - [BREAKING] `Messages::I18n` uses `I18.store_translations` instead of messing with `I18n.load_path` (@solnic)
 - Schemas (`Params` and `JSON`) have nicer inspect (@solnic)
 
-[Compare v0.3.0...v0.4.0](https://github.com/dry-rb/dry-schema/compare/v0.3.0...v0.4.0)
+[0.4.0]: https://github.com/dry-rb/dry-schema/compare/v0.3.0...v0.4.0
 
 ## [0.3.0] - 2018-03-04
-
 
 ### Fixed
 
@@ -861,10 +780,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 
 - Required ruby version was removed from gemspec for people who are stuck on MRI 2.3.x (@solnic)
 
-[Compare v0.2.0...v0.3.0](https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.3.0)
+[0.3.0]: https://github.com/dry-rb/dry-schema/compare/v0.2.0...v0.3.0
 
 ## [0.2.0] - 2019-02-26
-
 
 ### Added
 
@@ -891,10 +809,9 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - [BREAKING] `schema` macro no longer prepends `hash?` check, for this behavior use the new `hash` macro (see #31) (@solnic)
 - [BREAKING] Support for MRI < 2.4 was dropped (@solnic)
 
-[Compare v0.1.1...v0.2.0](https://github.com/dry-rb/dry-schema/compare/v0.1.1...v0.2.0)
+[0.2.0]: https://github.com/dry-rb/dry-schema/compare/v0.1.1...v0.2.0
 
 ## [0.1.1] - 2019-02-17
-
 
 ### Added
 
@@ -905,8 +822,7 @@ require this behavior, we recommend using a custom type (see Advanced -> Custom 
 - Fix issues with templates and invalid tokens (issue #27) (@solnic)
 - Fix Ruby warnings (@flash-gordon)
 
-
-[Compare v0.1.0...v0.1.1](https://github.com/dry-rb/dry-schema/compare/v0.1.0...v0.1.1)
+[0.1.1]: https://github.com/dry-rb/dry-schema/compare/v0.1.0...v0.1.1
 
 ## [0.1.0] - 2019-01-30
 
