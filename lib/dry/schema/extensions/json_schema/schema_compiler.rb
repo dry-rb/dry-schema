@@ -28,6 +28,14 @@ module Dry
           time?: {type: "string", format: "time"},
           min_size?: {minLength: TO_INTEGER},
           max_size?: {maxLength: TO_INTEGER},
+          size?: {maxLength: TO_INTEGER, minLength: TO_INTEGER},
+          format?: {
+            pattern: proc do |x|
+              x.to_s.delete_prefix("(?-mix").delete_suffix(")")
+            end
+          },
+          true?: {},
+          false?: {},
           included_in?: {enum: ->(v, _) { v.to_a }},
           filled?: EMPTY_HASH,
           uri?: {format: "uri"},
