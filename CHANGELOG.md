@@ -11,24 +11,68 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Changed
 
-- Set mimimum Ruby version to 3.2 (@timriley)
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
-- Support UUID v6, v7 and v8 predicates (`:uuid_v6?`, `:uuid_v7?` and `:uuid_v8?`) (via #509) (@illiatdesdindes)
-- JSON schema generation now properly handles Dry::Struct wrapped in constructors (fixes #495) (@baweaver)
-- Support for intersection types (created with `&` operator) in schema definitions (fixes #494) (@baweaver)
-- JSON schema generation now correctly uses `minItems`/`maxItems` for array size predicates instead of `minLength`/`maxLength` (fixes #481) (@baweaver)
-- Show correct index in errors when validating unexpected keys in arrays (via #510) (@katafrakt)
-- Fix support for nested arrays when validating unexpected keys (via #508) (@misdoro)
-
 ### Security
 
-[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.14.1...main
+[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.15.0...main
+
+## [1.15.0] - 2026-01-09
+
+### Changed
+
+- Set mimimum Ruby version to 3.2 (@timriley)
+- Support UUID v6, v7 and v8 predicates (`:uuid_v6?`, `:uuid_v7?` and `:uuid_v8?`). (@illiatdesdindes in #509)
+- Support `size?`, `format?`, `true?` and `false?` predicates when generating JSON schemas. (@cramt in #499)
+- Allow symbols to be given for `top_namespace` setting. (@unused in #491)
+
+### Fixed
+
+- Support intersection types (created with `&` operator) in schema definitions. (@baweaver in #496)
+
+  Now works without errors:
+  ```ruby
+  intersection_type =
+    Types::Hash.schema(a: Types::String) & 
+    (Types::Hash.schema(b: Types::String) | Types::Hash.schema(c: Types::String))
+  
+  schema = Dry::Schema.Params do
+    required(:body).value(intersection_type)
+  end
+  
+  schema.call(body: {a: "test", b: "value"}) # passes
+  schema.call(body: {b: "value"})            # fails - missing 'a'
+  ```
+- JSON schema generation now properly handles `Dry::Struct` instances wrapped in constructors. (@baweaver in #497)
+
+  Before, when generating JSON schema for a schema containing a Dry::Struct wrapped in a constructor (e.g., `Address.constructor(&:itself)`), all struct properties were omitted from the generated schema, returning only `{type: "object"}` instead of the full schema with properties.
+
+  Before/after:
+  ```ruby
+  # Before: Missing struct properties
+  Dry::Schema.Params do 
+    required(:address).value(Address.constructor(&:itself)) 
+  end.json_schema
+  # => {:properties=>{:address=>{:type=>"object"}}} # No properties
+  
+  # After: Full struct schema included  
+  Dry::Schema.Params do 
+    required(:address).value(Address.constructor(&:itself)) 
+  end.json_schema
+  # => {:properties=>{:address=>{:type=>"object", :properties=>{:street=>{...}}}}} # Properties included
+  ```
+- JSON schema generation now correctly uses `minItems`/`maxItems` for array size predicates instead of `minLength`/`maxLength`. (@baweaver in #498)
+- Show correct index in errors when validating unexpected keys in arrays. (@katafrakt in #510)
+- Support validating nested arrays when using `config.validate_keys = true`. (@misdoro in #508)
+- Fix handling of i18n messages from proc/lambda-produced hashes. (@rrothenberger in #493)
+- Fix error arising when generating errors when a key is repeated in a nested schema. (@jacob-carlborg in #503)
+- Fix method call typo in `Dry::Schema::Trace#respond_to_missing?`. (@flash-gordon in 13ddb51)
+
+[1.15.0]: https://github.com/dry-rb/dry-schema/compare/v1.14.1...v1.15.0
 
 ## [1.14.1] - 2025-03-03
 
