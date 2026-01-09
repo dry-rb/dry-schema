@@ -347,7 +347,9 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
   describe "special string predictes" do
     {
-      {uri?: "https"} => {type: "string", format: "uri"}
+      {uri?: "https"} => {type: "string", format: "uri"},
+      {size?: 5} => {type: "string", minLength: 5, maxLength: 5},
+      {format?: /\A\d{3}-\d{4}\z/} => {type: "string", pattern: "\\A\\d{3}-\\d{4}\\z"}
     }.each do |type_spec, type_opts|
       describe "type: #{type_spec.inspect}" do
         subject(:schema) do
@@ -381,6 +383,27 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
           else
             Dry::Schema.define { required(:key).value(type_spec) }.json_schema
           end
+        end
+
+        include_examples "metaschema validation"
+
+        it "infers with correct default options - #{type_opts.to_json}" do
+          expect(schema).to include(
+            properties: {key: type_opts}
+          )
+        end
+      end
+    end
+  end
+
+  describe "special boolean predicates" do
+    {
+      true?: {},
+      false?: {}
+    }.each do |type_spec, type_opts|
+      describe "type: #{type_spec.inspect}" do
+        subject(:schema) do
+          Dry::Schema.define { required(:key).value(type_spec) }.json_schema
         end
 
         include_examples "metaschema validation"

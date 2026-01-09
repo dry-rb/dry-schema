@@ -31,7 +31,7 @@ module Dry
           size?: {maxLength: TO_INTEGER, minLength: TO_INTEGER},
           format?: {
             pattern: proc do |x|
-              x.to_s.delete_prefix("(?-mix").delete_suffix(")")
+              x.to_s.delete_prefix("(?-mix:").delete_suffix(")")
             end
           },
           true?: {},
