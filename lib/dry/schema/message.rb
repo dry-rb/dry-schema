@@ -81,7 +81,7 @@ module Dry
       # @api private
       def to_or(root)
         clone = dup
-        clone.instance_variable_set("@path", path - root.to_a)
+        clone.instance_variable_set("@path", remove_prefix(path, prefix: root.to_a))
         clone.instance_variable_set("@_path", nil)
         clone
       end
@@ -103,6 +103,13 @@ module Dry
       # @api private
       def _path
         @_path ||= Path[path]
+      end
+
+      private
+
+      def remove_prefix(array, prefix:)
+        has_prefix = array[0, prefix.length] == prefix
+        has_prefix ? array[prefix.length..] : array.dup
       end
     end
   end
