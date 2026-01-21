@@ -32,8 +32,7 @@ module Dry
         def get(key, options = EMPTY_HASH)
           return unless key
 
-          options[:locale] ||= default_locale
-          result = t.(key, **options)
+          result = t.(key, locale: default_locale, **options)
 
           if result.is_a?(Hash)
             text = result[:text]
@@ -114,9 +113,12 @@ module Dry
           resolved_key = key?(text_key, opts) ? text_key : key
 
           result = t.(resolved_key, **opts)
-          return result unless result.is_a?(Hash)
 
-          result[:text]
+          if result.is_a?(::Hash)
+            result[:text]
+          else
+            result
+          end
         end
 
         private
