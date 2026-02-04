@@ -4,7 +4,6 @@ name:
 github_org: dry-rb
 ci:
   rubies: ["3.3.0"]
-  jruby: false
 gemspec:
   authors: ["Hanakai team"]
   email: ["info@hanakai.org"]
