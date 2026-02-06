@@ -9,7 +9,6 @@ gemspec
 group :test do
   gem "dry-monads"
   gem "dry-struct"
-  gem "dry-types", github: "dry-rb/dry-types"
   gem "i18n", require: false
   gem "json_schemer"
   gem "ostruct"
