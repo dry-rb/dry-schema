@@ -305,6 +305,30 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
   end
 
+  context "when using const" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:version).value(:integer, eql?: 1)
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          version: {
+            type: "integer",
+            const: 1
+          }
+        },
+        required: %w[version]
+      )
+    end
+  end
+
   describe "inferring types" do
     {
       array: {type: "array"},

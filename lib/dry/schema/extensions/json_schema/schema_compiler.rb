@@ -37,6 +37,7 @@ module Dry
           true?: {},
           false?: {},
           included_in?: {enum: ->(v, _) { v.to_a }},
+          eql?: {const: IDENTITY},
           filled?: EMPTY_HASH,
           uri?: {format: "uri"},
           uuid_v1?: {
