@@ -133,13 +133,19 @@ module Dry
 
         # @api private
         def visit_or(node, opts = EMPTY_HASH)
+          any_of = []
           node.each do |child|
             c = self.class.new(loose: loose?)
             c.keys.update(subschema: {})
-            c.visit(child, opts.merge(key: :subschema))
-
-            any_of = (keys[opts[:key]][:anyOf] ||= [])
+            c.visit(child, opts.except(:member).merge(key: :subschema))
             any_of << c.keys[:subschema]
+          end
+
+          target = keys[opts[:key]]
+          if target[:type]&.include?("array")
+            target[:items] = {anyOf: any_of}
+          else
+            target[:anyOf] = any_of
           end
         end
 
