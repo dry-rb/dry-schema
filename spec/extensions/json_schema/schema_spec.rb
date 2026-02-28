@@ -183,6 +183,98 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
   end
 
+  context "when using array types with combined schemas" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      schema_1 = Dry::Schema.JSON do
+        required(:name).value(:string)
+      end
+
+      schema_2 = Dry::Schema.JSON do
+        optional(:age).value(:string)
+      end
+
+      Dry::Schema.JSON do
+        required(:list).value(:array).each { schema_1 | schema_2 }
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            type: "array",
+            items: {
+              anyOf: [
+                {
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string"
+                    }
+                  },
+                  required: %w[name]
+                },
+                {
+                  type: "object",
+                  properties: {
+                    age: {
+                      type: "string"
+                    }
+                  },
+                  required: []
+                }
+              ]
+            }
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
+  context "when using value which is an OR of different types of arrays" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      string_array = Types::Array.of(Types::String)
+      integer_array = Types::Array.of(Types::Integer)
+
+      Dry::Schema.JSON do
+        required(:list).value(string_array | integer_array)
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            anyOf: [
+              {
+                type: "array",
+                items: {
+                  type: "string"
+                }
+              },
+              {
+                type: "array",
+                items: {
+                  type: "integer"
+                }
+              }
+            ]
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
   describe "filled macro" do
     context "when there is no type" do
       include_examples "metaschema validation"
