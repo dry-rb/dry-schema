@@ -19,7 +19,35 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Security
 
-[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.15.0...main
+[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main
+
+## [1.16.0] - 2026-03-03
+
+### Added
+
+- Support JRuby (@katafrakt in #512, @timriley in 1a6202f)
+
+### Changed
+
+- In JSON Schema output, represent values with an `eql?` constraint as "const" values. (@adamransom in #514)
+    ```ruby
+    require "dry/schema"
+    Dry::Schema.load_extensions(:json_schema)
+    
+    schema = Dry::Schema.JSON do
+      required(:version).value(:integer, eql?: 1)
+    end
+    
+    schema.json_schema
+    # => {"$schema": "http://json-schema.org/draft-06/schema#", type: "object", properties: {version: {type: "integer", const: 1}}, required: ["version"]}
+    ```
+
+### Fixed
+
+- In JSON Schema output, fix representation of arrays that are a combinations of schemas. (@adamransom in #516)
+- Avoid mutation of arguments given to `Dry::Schema::Messages::I18n#get`. (@flash-gordon in 51d48b6)
+
+[1.16.0]: https://github.com/dry-rb/dry-schema/compare/v1.15.0...v1.16.0
 
 ## [1.15.0] - 2026-01-09
 
