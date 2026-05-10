@@ -12,7 +12,7 @@ gemspec:
     dry-schema provides a DSL for defining schemas with keys and rules that should be applied to
     values. It supports coercion, input sanitization, custom types and localized error messages
     (with or without I18n gem). It's also used as the schema engine in dry-validation.
-  files: ["config/*.yml"]
+  additional_files: ["config/*.yml"]
   homepage: "https://dry-rb.org/gems/dry-schema"
   development_dependencies:
     - bundler
