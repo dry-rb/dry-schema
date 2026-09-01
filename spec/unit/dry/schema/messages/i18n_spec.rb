@@ -3,6 +3,19 @@
 require "dry/schema/messages/i18n"
 
 RSpec.describe Dry::Schema::Messages::I18n do
+  describe ".build" do
+    it "does not change the available I18n locales" do
+      original_locales = I18n.available_locales
+      I18n.available_locales = [:pl]
+
+      described_class.build
+
+      expect(I18n.available_locales).to eql([:pl])
+    ensure
+      I18n.available_locales = original_locales
+    end
+  end
+
   context "with default config" do
     subject(:messages) do
       Dry::Schema::Messages::I18n.build

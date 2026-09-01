@@ -127,11 +127,11 @@ module Dry
         def store_translations(data)
           locales = data.keys.map(&:to_sym)
 
-          ::I18n.available_locales |= locales
-
           locales.each do |locale|
             ::I18n.backend.store_translations(locale, data[locale.to_s])
           end
+
+          ::I18n.config.clear_available_locales_set
         end
       end
     end
