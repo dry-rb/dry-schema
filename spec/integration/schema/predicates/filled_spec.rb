@@ -177,7 +177,7 @@ RSpec.describe "Predicates: Filled" do
             Dry::Schema.define do
               required(:foo).filled(:filled?)
             end
-          }          .to raise_error Dry::Schema::InvalidSchemaError
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
 
         subject(:schema) do
@@ -355,7 +355,7 @@ RSpec.describe "Predicates: Filled" do
             Dry::Schema.define do
               optional(:foo).filled(:filled?)
             end
-          }          .to raise_error Dry::Schema::InvalidSchemaError
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
 
         subject(:schema) do

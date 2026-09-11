@@ -87,7 +87,7 @@ module Dry
 
               unless handler
                 raise ArgumentError,
-                      "#{message.inspect} is of unknown type #{message.class.inspect}"
+                  "#{message.inspect} is of unknown type #{message.class.inspect}"
               end
 
               handler.(message)

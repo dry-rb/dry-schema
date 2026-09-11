@@ -170,7 +170,7 @@ RSpec.describe "Predicates: None" do
             Dry::Schema.define do
               required(:foo).maybe(:nil?)
             end
-          }          .to raise_error Dry::Schema::InvalidSchemaError
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end

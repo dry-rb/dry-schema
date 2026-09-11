@@ -502,7 +502,7 @@ module Dry
         parents.each_cons(2) do |left, right|
           unless left.config == right.config
             raise ::ArgumentError,
-                  "Parent configs differ, left=#{left.inspect}, right=#{right.inspect}"
+              "Parent configs differ, left=#{left.inspect}, right=#{right.inspect}"
           end
         end
 
