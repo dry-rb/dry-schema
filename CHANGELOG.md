@@ -11,6 +11,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Changed
 
+- Accept predicate keywords without a question mark (@aaronmallen in #520)
+
 ### Deprecated
 
 ### Removed
