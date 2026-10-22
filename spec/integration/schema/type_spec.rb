@@ -137,6 +137,20 @@ RSpec.describe Dry::Schema, "types specs" do
     end
   end
 
+  context "using a constructor type built on Any" do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:stuff).value(Types::Any.constructor { |input| input.to_s.upcase })
+        required(:name).value(:string)
+      end
+    end
+
+    it "applies the constructor" do
+      expect(schema.(stuff: "foo", name: "Jane").to_h).to eql(stuff: "FOO", name: "Jane")
+      expect(schema.(stuff: 1, name: "Jane").to_h).to eql(stuff: "1", name: "Jane")
+    end
+  end
+
   context "using a type object" do
     subject(:schema) do
       Dry::Schema.Params do

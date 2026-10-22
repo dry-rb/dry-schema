@@ -17,6 +17,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
+- Apply constructor types that infer no predicates, such as `Types::Any.constructor { ... }`, when given to `value`, `filled` or `maybe` without any other predicates. Previously such a type was not set for the key, so its constructor was never called. (@anyingiit in #521)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main
