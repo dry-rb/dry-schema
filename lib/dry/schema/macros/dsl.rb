@@ -13,6 +13,16 @@ module Dry
         undef :nil?
         undef :respond_to?
 
+        # Keyword options that macros read for themselves, rather than treating them as predicates
+        #
+        # These must never share a name with a built-in predicate (minus its question mark), since
+        # predicate keywords may be written without the question mark. A custom predicate that
+        # shares one of these names can still be used by including its question mark, e.g.
+        # `type_rule?: 1`.
+        #
+        # @api private
+        MACRO_OPTIONS = %i[type_spec type_rule].freeze
+
         # @!attribute [r] chain
         #   Indicate if the macro should append its rules to the provided trace
         #   @return [Boolean]
