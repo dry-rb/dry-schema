@@ -17,6 +17,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
+- Coerce the other values of a nested hash when one of its keys fails a `filter` rule. Previously, a filter failure anywhere inside a nested hash left every value in that hash uncoerced, while at the top level only the failing value was skipped. (@anyingiit in #524)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main

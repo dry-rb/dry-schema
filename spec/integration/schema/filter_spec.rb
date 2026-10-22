@@ -60,4 +60,51 @@ RSpec.describe Dry::Schema, "pre-coercion input rules" do
       expect(schema.call({}).errors).to be_empty
     end
   end
+
+  context "with keys in a nested hash" do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:transfer).hash do
+          required(:first_date).filter(format?: /\A\d{4}-\d{2}-\d{2}\z/).value(:date)
+          optional(:last_date).filter(format?: /\A\d{4}-\d{2}-\d{2}\z/).value(:date)
+          optional(:amount).value(:integer)
+        end
+      end
+    end
+
+    it "coerces sibling values when a nested filter fails" do
+      result = schema.call(transfer: {first_date: "2025-01-01", last_date: "", amount: "10"})
+
+      expect(result.errors.to_h).to eql(transfer: {last_date: ["is in invalid format"]})
+      expect(result.to_h).to eql(transfer: {first_date: Date.new(2025, 1, 1), last_date: "", amount: 10})
+    end
+
+    it "does not coerce values that failed a nested filter" do
+      result = schema.call(transfer: {first_date: "2025-01-01", last_date: "2025/01/02"})
+
+      expect(result.errors.to_h).to eql(transfer: {last_date: ["is in invalid format"]})
+      expect(result.to_h).to eql(transfer: {first_date: Date.new(2025, 1, 1), last_date: "2025/01/02"})
+    end
+  end
+
+  context "with keys in a deeply nested hash" do
+    subject(:schema) do
+      Dry::Schema.Params do
+        required(:outer).hash do
+          required(:inner).hash do
+            required(:date).filter(format?: /\A\d{4}-\d{2}-\d{2}\z/).value(:date)
+            required(:amount).value(:integer)
+          end
+          required(:count).value(:integer)
+        end
+      end
+    end
+
+    it "coerces values around the failed filter" do
+      result = schema.call(outer: {inner: {date: "2025/01/02", amount: "5"}, count: "3"})
+
+      expect(result.errors.to_h).to eql(outer: {inner: {date: ["is in invalid format"]}})
+      expect(result.to_h).to eql(outer: {inner: {date: "2025/01/02", amount: 5}, count: 3})
+    end
+  end
 end
