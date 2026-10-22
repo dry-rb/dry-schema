@@ -176,6 +176,52 @@ RSpec.describe "Macros #maybe" do
     end
   end
 
+  context "with an array with nested schema and validate_keys enabled" do
+    inner_schema = Dry::Schema.define do
+      required(:name).filled(:string)
+    end
+
+    schema = Dry::Schema.define do
+      config.validate_keys = true
+
+      required(:users).maybe(:array).each(inner_schema)
+      required(:admins).maybe(:array).each do
+        hash do
+          required(:name).filled(:string)
+        end
+      end
+    end
+
+    it "passes when valid" do
+      expect(schema.(users: [{name: "John"}], admins: [{name: "Jane"}])).to be_success
+    end
+
+    it "builds a key map with arrays of hashes" do
+      expect(schema.key_map.to_dot_notation).to eq(%w[users[].name admins[].name])
+    end
+
+    it "fails when nested keys are not allowed" do
+      expect(schema.(users: [{name: "John", age: 1}], admins: [{name: "Jane", age: 2}]).errors.to_h).to eq(
+        users: {0 => {age: ["is not allowed"]}},
+        admins: {0 => {age: ["is not allowed"]}}
+      )
+    end
+  end
+
+  context "with an array with nested schema in params" do
+    inner_schema = Dry::Schema.Params do
+      required(:name).filled(:string)
+    end
+
+    schema = Dry::Schema.Params do
+      required(:users).maybe(:array).each(inner_schema)
+    end
+
+    it "coerces nested keys" do
+      expect(schema.("users" => [{"name" => "John"}]).to_h).to eq(users: [{name: "John"}])
+    end
+  end
+
   describe "nested into further DSLs" do
     subject(:schema) do
       Dry::Schema.define do

@@ -28,6 +28,8 @@ module Dry
             updated_type =
               if array_type?(current_type)
                 build_array_type(current_type, schema.strict_type_schema)
+              elsif maybe_array_type?(current_type)
+                build_array_type(current_type.right, schema.strict_type_schema)
               else
                 schema.strict_type_schema
               end
@@ -83,6 +85,11 @@ module Dry
         # @api private
         def maybe_type?(type)
           type.meta[:maybe].equal?(true)
+        end
+
+        # @api private
+        def maybe_array_type?(type)
+          maybe_type?(type) && type.respond_to?(:right) && array_type?(type.right)
         end
 
         # @api private

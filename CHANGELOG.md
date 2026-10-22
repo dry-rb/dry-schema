@@ -17,6 +17,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
+- Set the correct type for a nested schema given to `each` after `maybe(:array)`, e.g. `required(:foo).maybe(:array).each(NestedSchema)`. Previously the key was typed as an optional hash instead of an optional array of hashes, so with `config.validate_keys = true` every nested key was reported as "is not allowed", and `Params` schemas did not coerce or sanitize the nested keys. (@anyingiit in #522)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main
