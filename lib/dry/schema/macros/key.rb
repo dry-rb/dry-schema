@@ -15,7 +15,7 @@ module Dry
         # Specify predicates that should be applied before coercion
         #
         # @example check format before coercing to a date
-        #   required(:publish_date).filter(format?: /\d{4}-\d{2}-\d{2}).value(:date)
+        #   required(:publish_date).filter(format: /\d{4}-\d{2}-\d{2}).value(:date)
         #
         # @see Macros::Key#value
         #

@@ -34,6 +34,10 @@ module Dry
         # @overload value(*predicates, **predicate_opts)
         #   Set predicates without and with arguments
         #
+        #   Predicates with arguments may be given as keywords, with or without their question
+        #   mark: `min_size: 2` and `min_size?: 2` are the same. Including the question mark is
+        #   always unambiguous, so use it if a predicate name could clash with a macro option.
+        #
         #   @param [Array<Symbol>] predicates
         #   @param [Hash] predicate_opts
         #
@@ -41,10 +45,13 @@ module Dry
         #     required(:name).value(:filled?)
         #
         #   @example with a predicate with arguments
-        #     required(:name).value(min_size?: 2)
+        #     required(:name).value(min_size: 2)
         #
         #   @example with a predicate with and without arguments
-        #     required(:name).value(:filled?, min_size?: 2)
+        #     required(:name).value(:filled?, min_size: 2)
+        #
+        #   @example with a predicate name that includes its question mark
+        #     required(:name).value(min_size?: 2)
         #
         #   @example with a block
         #     required(:name).value { filled? & min_size?(2) }
@@ -72,7 +79,7 @@ module Dry
         #   required(:name).filled(:string)
         #
         # @example with a type spec and a predicate
-        #   required(:name).filled(:string, format?: /\w+/)
+        #   required(:name).filled(:string, format: /\w+/)
         #
         # @return [Macros::Core]
         #
@@ -110,7 +117,7 @@ module Dry
         # manually.
         #
         # @example
-        #   required(:tags).value(:hash, min_size?: 1).schema do
+        #   required(:tags).value(:hash, min_size: 1).schema do
         #     required(:name).value(:string)
         #   end
         #
@@ -144,10 +151,10 @@ module Dry
         # manually.
         #
         # @example a list of strings
-        #   required(:tags).value(:array, min_size?: 2).each(:str?)
+        #   required(:tags).value(:array, min_size: 2).each(:str?)
         #
         # @example a list of hashes
-        #   required(:tags).value(:array, min_size?: 2).each(:hash) do
+        #   required(:tags).value(:array, min_size: 2).each(:hash) do
         #     required(:name).filled(:string)
         #   end
         #
@@ -182,7 +189,7 @@ module Dry
         # Set type spec
         #
         # @example
-        #   required(:name).type(:string).value(min_size?: 2)
+        #   required(:name).type(:string).value(min_size: 2)
         #
         # @param [Symbol, Array, Dry::Types::Type] spec
         #

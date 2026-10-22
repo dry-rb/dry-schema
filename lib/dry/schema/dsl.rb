@@ -132,7 +132,7 @@ module Dry
       #
       #   required(:age).value(:integer)
       #
-      #   required(:user_limit).value(:integer, gt?: 0)
+      #   required(:user_limit).value(:integer, gt: 0)
       #
       #   required(:tags).filled { array? | str? }
       #
