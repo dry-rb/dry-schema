@@ -9,9 +9,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Added
 
-### Changed
-
 - Accept predicate keywords without a question mark (@aaronmallen in #520)
+
+### Changed
 
 ### Deprecated
 
