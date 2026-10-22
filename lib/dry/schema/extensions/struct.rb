@@ -31,7 +31,6 @@ module Dry
             schema = struct_compiler.(struct_class)
 
             super(schema, *args.drop(1))
-            type(schema_dsl.types[name].constructor(schema))
           else
             super
           end

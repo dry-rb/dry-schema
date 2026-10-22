@@ -17,6 +17,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
+- With the struct extension, coerce each struct attribute on its own. Previously, the whole struct was also coerced at once, so a single invalid attribute stopped every other attribute from being coerced, and valid attributes with coercible types (e.g. `Types::JSON::Decimal`) were reported as errors too. This also fixes coercion of struct elements in `array(Struct)` and accepting `nil` in `maybe(Struct)`. (@anyingiit in #523)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main
