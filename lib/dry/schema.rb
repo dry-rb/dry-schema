@@ -54,7 +54,7 @@ module Dry
     # @example
     #   Dry::Schema.define do
     #     required(:name).filled(:string)
-    #     required(:age).value(:integer, gt?: 0)
+    #     required(:age).value(:integer, gt: 0)
     #   end
     #
     # @param [Hash] options
@@ -75,7 +75,7 @@ module Dry
     # @example
     #   Dry::Schema.Params do
     #     required(:name).filled(:string)
-    #     required(:age).value(:integer, gt?: 0)
+    #     required(:age).value(:integer, gt: 0)
     #   end
     #
     # @return [Params]
@@ -95,7 +95,7 @@ module Dry
     # @example
     #   Dry::Schema.JSON do
     #     required(:name).filled(:string)
-    #     required(:age).value(:integer, gt?: 0)
+    #     required(:age).value(:integer, gt: 0)
     #   end
     #
     # @return [Params]

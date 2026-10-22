@@ -41,7 +41,7 @@ module Dry
             end
           end
 
-          trace_opts = opts.except(:type_spec, :type_rule)
+          trace_opts = opts.except(*MACRO_OPTIONS)
 
           if (type_rule = opts[:type_rule])
             trace.append(type_rule).evaluate(*predicates, **trace_opts)

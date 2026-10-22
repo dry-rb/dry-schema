@@ -44,7 +44,7 @@ module Dry
           elsif predicate.is_a?(::Array)
             predicate.map { |pred| evaluate_predicates(pred).reduce(:&) }.reduce(:|)
           elsif predicate.is_a?(::Hash)
-            predicate.map { |pred, *args| __send__(pred, *args) }
+            predicate.map { |pred, *args| __send__(:"#{pred.to_s.delete_suffix("?")}?", *args) }
           else
             __send__(predicate)
           end
