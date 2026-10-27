@@ -260,7 +260,10 @@ module Dry
 
               predicates.replace(type_predicates + predicates) unless type_predicates.empty?
 
-              return self if predicates.empty?
+              if predicates.empty?
+                type(resolved_type) if set_type && resolved_type
+                return self
+              end
             end
           end
 
