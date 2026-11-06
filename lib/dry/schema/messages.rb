@@ -14,18 +14,28 @@ module Dry
       module_function
 
       public def setup(config)
-        backend_class = BACKENDS.fetch(config.backend) do
-          raise "+#{config.backend}+ is not a valid messages identifier"
-        end
-
         namespace = config.namespace
         options = config.to_h.select { |k, _| Abstract.setting_names.include?(k) }
 
-        messages = Messages.const_get(backend_class).build(options)
+        messages = backend(config.backend).build(options)
 
         return messages.namespaced(namespace) if namespace
 
         messages
+      end
+
+      # Returns the backend for the given identifier (`:i18n` or `:yaml`), or the given object
+      # itself if it can build messages, such as a subclass of {Abstract}
+      #
+      # @api private
+      public def backend(identifier)
+        return identifier if identifier.respond_to?(:build)
+
+        backend_class = BACKENDS.fetch(identifier) do
+          raise "+#{identifier}+ is not a valid messages identifier"
+        end
+
+        Messages.const_get(backend_class)
       end
     end
   end
