@@ -10,7 +10,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 ### Added
 
 - Accept predicate keywords without a question mark (@aaronmallen in #520)
-- Accept a custom messages backend for `config.messages.backend`: a `Dry::Schema::Messages::Abstract` subclass, or any object responding to `build(options)` (@parndt)
+- Accept a custom messages backend for `config.messages.backend`: a `Dry::Schema::Messages::Abstract` subclass, or any object responding to `build(options)` (@parndt in #526)
 
 ### Changed
 
