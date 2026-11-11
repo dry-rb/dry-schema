@@ -8,9 +8,9 @@ module Dry
     #
     # @api public
     class Message
-      include Dry::Equalizer(:text, :path, :predicate, :input)
+      include ::Dry::Equalizer(:text, :path, :predicate, :input)
 
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       # @!attribute [r] text
       #   Message text representation created from a localized template
@@ -75,13 +75,13 @@ module Dry
       #
       # @api private
       def eql?(other)
-        other.is_a?(String) ? text == other : super
+        other.is_a?(::String) ? text == other : super
       end
 
       # @api private
       def to_or(root)
         clone = dup
-        clone.instance_variable_set("@path", path - root.to_a)
+        clone.instance_variable_set("@path", remove_prefix(path, prefix: root.to_a))
         clone.instance_variable_set("@_path", nil)
         clone
       end
@@ -94,7 +94,7 @@ module Dry
         r_path = other._path
 
         unless l_path.same_root?(r_path)
-          raise ArgumentError, "Cannot compare messages from different root paths"
+          raise ::ArgumentError, "Cannot compare messages from different root paths"
         end
 
         l_path <=> r_path
@@ -103,6 +103,13 @@ module Dry
       # @api private
       def _path
         @_path ||= Path[path]
+      end
+
+      private
+
+      def remove_prefix(array, prefix:)
+        has_prefix = array[0, prefix.length] == prefix
+        has_prefix ? array[prefix.length..] : array.dup
       end
     end
   end

@@ -12,8 +12,8 @@ module Dry
     #
     # @api public
     class Config
-      include Dry::Configurable
-      include Dry::Equalizer(:to_h, inspect: false)
+      include ::Dry::Configurable
+      include ::Dry::Equalizer(:to_h, inspect: false)
 
       # @!method predicates
       #
@@ -22,7 +22,9 @@ module Dry
       # @return [Schema::PredicateRegistry]
       #
       # @api public
-      setting :predicates, default: Schema::PredicateRegistry.new
+      setting :predicates, default: PredicateRegistry.new, constructor: -> predicates {
+        predicates.is_a?(PredicateRegistry) ? predicates : PredicateRegistry.new(predicates)
+      }
 
       # @!method types
       #
@@ -31,7 +33,7 @@ module Dry
       # @return [Hash]
       #
       # @api public
-      setting :types, default: Dry::Types
+      setting :types, default: ::Dry::Types
 
       # @!method messages
       #
@@ -43,8 +45,8 @@ module Dry
       setting :messages do
         setting :backend, default: :yaml
         setting :namespace
-        setting :load_paths, default: Set[DEFAULT_MESSAGES_PATH], constructor: :dup.to_proc
-        setting :top_namespace, default: DEFAULT_MESSAGES_ROOT
+        setting :load_paths, default: ::Set[DEFAULT_MESSAGES_PATH], constructor: :dup.to_proc
+        setting :top_namespace, default: DEFAULT_MESSAGES_ROOT, constructor: :to_s.to_proc
         setting :default_locale
       end
 
@@ -72,9 +74,9 @@ module Dry
       # Forward to the underlying config object
       #
       # @api private
-      def method_missing(meth, *args, &block)
+      def method_missing(meth, ...)
         super unless config.respond_to?(meth)
-        config.public_send(meth, *args)
+        config.public_send(meth, ...)
       end
     end
   end

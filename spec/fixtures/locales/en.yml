@@ -10,3 +10,4 @@ en:
         email:
           filled?: "Please provide your email"
       email?: "must be an email"
+      future_date?: "must be in the future"

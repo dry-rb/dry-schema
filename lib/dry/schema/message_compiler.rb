@@ -9,7 +9,7 @@ module Dry
     #
     # @api private
     class MessageCompiler
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       resolve_key_predicate = proc { |node, opts|
         *arg_vals, val = node.map(&:last)
@@ -20,12 +20,12 @@ module Dry
         [Array(opts.path), *node.map(&:last)]
       }
 
-      DEFAULT_PREDICATE_RESOLVERS = Hash
+      DEFAULT_PREDICATE_RESOLVERS = ::Hash
         .new(resolve_predicate).update(key?: resolve_key_predicate).freeze
 
       EMPTY_OPTS = VisitorOpts.new
       EMPTY_MESSAGE_SET = MessageSet.new(EMPTY_ARRAY).freeze
-      FULL_MESSAGE_WHITESPACE = Hash.new(" ").merge(
+      FULL_MESSAGE_WHITESPACE = ::Hash.new(" ").merge(
         ja: "",
         zh: "",
         bn: "",
@@ -190,7 +190,7 @@ module Dry
       def lookup_options(arg_vals:, input:)
         default_lookup_options.merge(
           arg_type: arg_vals.size == 1 && arg_vals[0].class,
-          val_type: input.equal?(Undefined) ? NilClass : input.class
+          val_type: input.equal?(Undefined) ? ::NilClass : input.class
         )
       end
 
@@ -209,11 +209,11 @@ module Dry
       def message_tokens(args)
         tokens = args.each_with_object({}) do |arg, hash|
           case arg[1]
-          when Array
+          when ::Array, ::Set
             hash[arg[0]] = arg[1].join(LIST_SEPARATOR)
-          when Range
-            hash["#{arg[0]}_left".to_sym] = arg[1].first
-            hash["#{arg[0]}_right".to_sym] = arg[1].last
+          when ::Range
+            hash[:"#{arg[0]}_left"] = arg[1].first
+            hash[:"#{arg[0]}_right"] = arg[1].last
           else
             hash[arg[0]] = arg[1]
           end
@@ -224,9 +224,9 @@ module Dry
       # @api private
       def append_mapped_size_tokens(tokens)
         # this is a temporary fix for the inconsistency in the "size" errors arguments
-        mapped_hash = tokens.each_with_object({}) { |(k, v), h|
-          h[k.to_s.gsub("size", "num").to_sym] = v
-        }
+        mapped_hash = tokens.transform_keys do |k|
+          k.to_s.gsub("size", "num").to_sym
+        end
         tokens.merge(mapped_hash)
       end
     end

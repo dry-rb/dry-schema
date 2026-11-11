@@ -11,7 +11,7 @@ module Dry
         def call(*args, &block)
           super(*args, &nil) unless args.empty?
 
-          if args.size.equal?(1) && (op = args.first).is_a?(Dry::Logic::Operations::Abstract)
+          if args.size.equal?(1) && (op = args.first).is_a?(::Dry::Logic::Operations::Abstract)
             process_operation(op)
           end
 
@@ -55,8 +55,8 @@ module Dry
 
         # @api private
         # rubocop: disable Metrics/AbcSize
-        def define(*args, &block)
-          definition = schema_dsl.new(path: schema_dsl.path, &block)
+        def define(*args, &)
+          definition = schema_dsl.new(path: schema_dsl.path, &)
           schema = definition.call
           type_schema =
             if array_type?(parent_type)

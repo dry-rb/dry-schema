@@ -187,7 +187,7 @@ RSpec.describe "Predicates: Empty" do
             Dry::Schema.define do
               required(:foo).maybe(:empty?)
             end
-          }          .to raise_error Dry::Schema::InvalidSchemaError
+          } .to raise_error Dry::Schema::InvalidSchemaError
         end
       end
     end

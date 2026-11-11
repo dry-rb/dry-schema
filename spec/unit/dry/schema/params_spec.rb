@@ -35,9 +35,15 @@ RSpec.describe Dry::Schema::Params do
     end
 
     it "returns a representation of a params object" do
-      expect(klass.new.inspect).to eql(<<~STR.strip)
-        #<Test::UserSchema keys=["name"] rules={:name=>"key?(:name) AND key[name](filled? AND str?)"}>
-      STR
+      if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+        expect(klass.new.inspect).to eql(<<~STR.strip)
+          #<Test::UserSchema keys=["name"] rules={name: "key?(:name) AND key[name](filled? AND str?)"}>
+        STR
+      else
+        expect(klass.new.inspect).to eql(<<~STR.strip)
+          #<Test::UserSchema keys=["name"] rules={:name=>"key?(:name) AND key[name](filled? AND str?)"}>
+        STR
+      end
     end
 
     it "raises exception when definition is missing" do

@@ -10,8 +10,8 @@ module Dry
     module Messages
       # @api private
       class Template
-        extend Dry::Initializer
-        include Dry::Equalizer(:messages, :key, :options)
+        extend ::Dry::Initializer
+        include ::Dry::Equalizer(:messages, :key, :options)
 
         option :messages
         option :key

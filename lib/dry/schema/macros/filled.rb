@@ -15,8 +15,7 @@ module Dry
             if opts[:type_rule]
               macro.call(:filled?).value(*predicates, **opts, &block)
             elsif opts[:type_spec] && !filter_empty_string?
-              macro.call(predicates[0], :filled?, *predicates[1..predicates.size - 1], **opts,
-                         &block)
+              macro.call(predicates[0], :filled?, *predicates.drop(1), **opts, &block)
             else
               macro.call(:filled?, *predicates, **opts, &block)
             end

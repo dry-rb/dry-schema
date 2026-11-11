@@ -1,0 +1,31 @@
+name: CI lint
+
+on:
+  push:
+    branches: ["main", "release-*", "ci/*"]
+    tags: ["v*"]
+    paths:
+      - ".github/**"
+  pull_request:
+    branches: ["main", "release-*"]
+    paths:
+      - ".github/**"
+  schedule:
+    - cron: "0 0 * * 0" # every Sunday at midnight
+
+permissions: {}
+
+jobs:
+  zizmor:
+    name: Run zizmor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+        with:
+          advanced-security: false

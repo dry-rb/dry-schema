@@ -9,7 +9,7 @@ module Dry
     #
     # @api private
     class KeyCoercer
-      extend Dry::Core::Cache
+      extend ::Dry::Core::Cache
       include ::Dry::Equalizer(:key_map, :coercer)
 
       TO_SYM = :to_sym.to_proc.freeze
@@ -27,8 +27,8 @@ module Dry
       end
 
       # @api private
-      def initialize(key_map, &coercer)
-        @key_map = key_map.coercible(&coercer)
+      def initialize(key_map, &)
+        @key_map = key_map.coercible(&)
       end
 
       # @api private

@@ -9,7 +9,7 @@ module Dry
     #
     # @api private
     class RuleApplier
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       # @api private
       param :rules

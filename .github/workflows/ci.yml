@@ -1,72 +1,114 @@
-# This file is synced from dry-rb/template-gem repo
+# This file is synced from hanakai-rb/repo-sync
+
 name: CI
+run-name: ${{ github.ref_type == 'tag' && format('Release {0}', github.ref_name) || 'CI' }}
 
 on:
   push:
-    paths:
-      - ".github/workflows/ci.yml"
-      - ".devtools"
-      - "lib/**"
-      - "*.gemspec"
-      - "spec/**"
-      - "Rakefile"
-      - "Gemfile"
-      - "Gemfile.devtools"
-      - ".rubocop.yml"
-      - "project.yml"
+    branches: ["main", "release-*", "ci/*"]
+    tags: ["v*"]
   pull_request:
-    branches:
-      - main
-  create:
+    branches: ["main", "release-*"]
+  schedule:
+    - cron: "30 4 * * *"
+
+permissions:
+  contents: read
 
 jobs:
   tests:
+    name: Tests (Ruby ${{ matrix.ruby }})
     runs-on: ubuntu-latest
-    name: Tests
+    continue-on-error: ${{ matrix.optional || false }}
     strategy:
       fail-fast: false
       matrix:
         ruby:
-        - "3.2"
-        - "3.1"
-        - "3.0"
-        - "2.7"
+          - "4.0"
+          - "3.4"
+          - "3.3"
+          - "3.3.0"
+          - "jruby"
         include:
-          - ruby: "3.2"
+          - ruby: "4.0"
             coverage: "true"
     env:
-      COVERAGE: ${{matrix.coverage}}
-      COVERAGE_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+      COVERAGE: ${{ matrix.coverage }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+        with:
+          persist-credentials: false
       - name: Install package dependencies
         run: "[ -e $APT_DEPS ] || sudo apt-get install -y --no-install-recommends $APT_DEPS"
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@7f797815d8adceb1c412e7abefdd1ab4abc47a5f # zizmor: ignore[cache-poisoning]
         with:
-          ruby-version: ${{matrix.ruby}}
+          ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Run all tests
-        run: bundle exec rake
+        id: test
+        run: |
+          status=0
+          bundle exec rake || status=$?
+          if [ ${status} -ne 0 ] && [ "${{ matrix.optional }}" == "true" ]; then
+            echo "::warning::Optional matrix job failed."
+            echo "optional_fail=true" >> "${GITHUB_OUTPUT}"
+            echo "optional_fail_status=${status}" >> "${GITHUB_OUTPUT}"
+            exit 0  # Ignore error here to keep the green checkmark
+          fi
+          exit ${status}
+      - name: Create optional failure comment
+        if: ${{ matrix.optional && github.event.pull_request }}
+        uses: hanakai-rb/repo-sync/pr-comment-artifact@main
+        with:
+          name: ci-ruby-${{ matrix.ruby }}
+          pr-number: ${{ github.event.pull_request.number }}
+          comment-tag: ruby-${{ matrix.ruby }}-optional-failure
+          message: "ℹ️ Optional job failed: Ruby ${{ matrix.ruby }}"
+          mode: ${{ steps.test.outputs.optional_fail == 'true' && 'upsert' || 'delete' }}
+
+  workflow-keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@7a9194bad497f0b993708eeaf10fc0a2d726eb71
+
   release:
     runs-on: ubuntu-latest
-    if: contains(github.ref, 'tags') && github.event_name == 'create'
+    if: github.ref_type == 'tag'
     needs: tests
-    env:
-      GITHUB_LOGIN: dry-bot
-      GITHUB_TOKEN: ${{secrets.GH_PAT}}
     steps:
-      - uses: actions/checkout@v2
-      - name: Install package dependencies
-        run: "[ -e $APT_DEPS ] || sudo apt-get install -y --no-install-recommends $APT_DEPS"
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0
-      - name: Install dependencies
-        run: gem install ossy --no-document
       - name: Trigger release workflow
-        run: |
-          tag=$(echo $GITHUB_REF | cut -d / -f 3)
-          ossy gh w dry-rb/devtools release --payload "{\"tag\":\"$tag\",\"sha\":\"${{github.sha}}\",\"tag_creator\":\"$GITHUB_ACTOR\",\"repo\":\"$GITHUB_REPOSITORY\",\"repo_name\":\"${{github.event.repository.name}}\"}"
+        uses: actions/github-script@450193c5abd4cdb17ba9f3ffcfe8f635c4bb6c2a
+        with:
+          github-token: ${{ secrets.RELEASE_MACHINE_DISPATCH_TOKEN }}
+          script: |
+            const tag = context.ref.replace("refs/tags/", "");
+            const repo = context.repo.owner + "/" + context.repo.repo;
+
+            const tagMessage = await github.rest.git.getTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_sha: context.sha
+            }).then(res => res.data.message).catch(() => "");
+            const announce = /(skip-announce|no-announce)/i.test(tagMessage) ? "false" : "true";
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "hanakai-rb",
+              repo: "release-machine",
+              workflow_id: "release.yml",
+              ref: "main",
+              inputs: { repo, tag, announce }
+            });
+
+            const workflowUrl = "https://github.com/hanakai-rb/release-machine/actions/workflows/release.yml";
+            await core.summary
+              .addHeading("Release Triggered")
+              .addRaw(`Triggered release workflow for <code>${tag}</code>`)
+              .addLink("View release workflow", workflowUrl)
+              .write();
+  
+

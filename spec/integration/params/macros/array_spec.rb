@@ -55,7 +55,7 @@ RSpec.describe "Params / Macros / array" do
         result = schema.("id" => "1", "age" => "12", "user" => nil)
 
         expect(result.errors.to_h).to eql(user: ["must be an array"],
-                                          age: ["must be greater than 17"])
+          age: ["must be greater than 17"])
         expect(result.to_h).to eql(id: 1, user: nil, age: 12)
       end
     end

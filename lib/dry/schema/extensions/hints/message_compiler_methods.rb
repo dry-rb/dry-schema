@@ -31,7 +31,7 @@ module Dry
 
           # @api private
           def filter(messages, opts)
-            Array(messages).flatten.map { |msg| msg unless exclude?(msg, opts) }.compact.uniq
+            Array(messages).flatten.reject { |msg| exclude?(msg, opts) }.uniq
           end
 
           # @api private

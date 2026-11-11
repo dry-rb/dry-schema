@@ -9,7 +9,7 @@ module Dry
       # @api private
       class SchemaCompiler
         # An error raised when a predicate cannot be converted
-        UnknownConversionError = Class.new(StandardError)
+        UnknownConversionError = ::Class.new(::StandardError)
 
         IDENTITY = ->(v, _) { v }.freeze
         TO_INTEGER = ->(v, _) { v.to_i }.freeze
@@ -28,7 +28,16 @@ module Dry
           time?: {type: "string", format: "time"},
           min_size?: {minLength: TO_INTEGER},
           max_size?: {maxLength: TO_INTEGER},
+          size?: {maxLength: TO_INTEGER, minLength: TO_INTEGER},
+          format?: {
+            pattern: proc do |x|
+              x.to_s.delete_prefix("(?-mix:").delete_suffix(")")
+            end
+          },
+          true?: {},
+          false?: {},
           included_in?: {enum: ->(v, _) { v.to_a }},
+          eql?: {const: IDENTITY},
           filled?: EMPTY_HASH,
           uri?: {format: "uri"},
           uuid_v1?: {
@@ -45,6 +54,15 @@ module Dry
           },
           uuid_v5?: {
             pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+          },
+          uuid_v6?: {
+            pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-6[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+          },
+          uuid_v7?: {
+            pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-7[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+          },
+          uuid_v8?: {
+            pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-8[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
           },
           gt?: {exclusiveMinimum: IDENTITY},
           gteq?: {minimum: IDENTITY},
@@ -90,14 +108,14 @@ module Dry
         def visit_set(node, opts = EMPTY_HASH)
           target = (key = opts[:key]) ? self.class.new(loose: loose?) : self
 
-          node.map { |child| target.visit(child, opts) }
+          node.map { |child| target.visit(child, opts.except(:member)) }
 
           return unless key
 
           target_info = opts[:member] ? {items: target.to_h} : target.to_h
           type = opts[:member] ? "array" : "object"
 
-          keys.update(key => {**keys[key], type: type, **target_info})
+          merge_opts!(keys[key], {type: type, **target_info})
         end
 
         # @api private
@@ -116,13 +134,19 @@ module Dry
 
         # @api private
         def visit_or(node, opts = EMPTY_HASH)
+          any_of = []
           node.each do |child|
             c = self.class.new(loose: loose?)
             c.keys.update(subschema: {})
-            c.visit(child, opts.merge(key: :subschema))
-
-            any_of = (keys[opts[:key]][:anyOf] ||= [])
+            c.visit(child, opts.except(:member).merge(key: :subschema))
             any_of << c.keys[:subschema]
+          end
+
+          target = keys[opts[:key]]
+          if target[:type]&.include?("array")
+            target[:items] = {anyOf: any_of}
+          else
+            target[:anyOf] = any_of
           end
         end
 
@@ -163,18 +187,64 @@ module Dry
           name, rest = node
 
           if name.equal?(:key?)
-            prop_name = rest[0][1]
-            keys[prop_name] = {}
+            handle_key_predicate(rest)
           else
-            target = keys[opts[:key]]
-            type_opts = fetch_type_opts_for_predicate(name, rest, target)
+            handle_value_predicate(name, rest, opts)
+          end
+        end
 
-            if target[:type]&.include?("array")
-              target[:items] ||= {}
-              merge_opts!(target[:items], type_opts)
-            else
-              merge_opts!(target, type_opts)
-            end
+        # @api private
+        def handle_key_predicate(rest)
+          prop_name = rest[0][1]
+          keys[prop_name] = {}
+        end
+
+        # @api private
+        def handle_value_predicate(name, rest, opts)
+          target = keys[opts[:key]]
+          type_opts = fetch_type_opts_for_predicate(name, rest, target)
+
+          if array_with_size_predicate?(target, name, opts)
+            apply_array_size_constraint(target, name, rest)
+          elsif target[:type]&.include?("array")
+            apply_array_item_constraint(target, type_opts)
+          else
+            merge_opts!(target, type_opts)
+          end
+        end
+
+        # @api private
+        def array_with_size_predicate?(target, name, opts)
+          target[:type]&.include?("array") && array_size_predicate?(name) && !opts[:member]
+        end
+
+        # @api private
+        def apply_array_size_constraint(target, name, rest)
+          array_type_opts = convert_array_size_predicate(name, rest)
+          merge_opts!(target, array_type_opts)
+        end
+
+        # @api private
+        def apply_array_item_constraint(target, type_opts)
+          target[:items] ||= {}
+          merge_opts!(target[:items], type_opts)
+        end
+
+        # @api private
+        def array_size_predicate?(name)
+          name == :min_size? || name == :max_size?
+        end
+
+        # @api private
+        def convert_array_size_predicate(name, rest)
+          value = rest[0][1].to_i
+          case name
+          when :min_size?
+            {minItems: value}
+          when :max_size?
+            {maxItems: value}
+          else
+            {}
           end
         end
 
@@ -210,7 +280,7 @@ module Dry
           orig_type = orig_opts[:type]
 
           if orig_type && new_type && orig_type != new_type
-            new_opts[:type] = [orig_type, new_type]
+            new_opts[:type] = [orig_type, new_type].flatten.uniq
           end
 
           orig_opts.merge!(new_opts)

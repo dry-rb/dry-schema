@@ -42,7 +42,7 @@ RSpec.describe "Namespaced messages" do
         config.messages.namespace = :post
 
         required(:post_body).filled
-        required(:comment).hash(::Test::CommentSchema)
+        required(:comment).hash(Test::CommentSchema)
       end
     end
 
@@ -88,6 +88,13 @@ RSpec.describe "Namespaced messages" do
       result = post_schema.call(post_body: "")
 
       expect(result.errors(full: true)[:post_body]).to eql(["(dry_validation) Post body must be filled"])
+    end
+
+    it "allows symbol for top namespace" do
+      schema = Dry::Schema.Params do
+        config.messages.top_namespace = :dry_validation
+      end
+      expect(schema.config.messages.top_namespace).to eql "dry_validation"
     end
   end
 end

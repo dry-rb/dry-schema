@@ -13,10 +13,10 @@ module Dry
     #
     # @api public
     class Processor
-      extend Dry::Initializer
-      extend Dry::Configurable
+      extend ::Dry::Initializer
+      extend ::Dry::Configurable
 
-      include Dry::Logic::Operators
+      include ::Dry::Logic::Operators
 
       setting :key_map_type
       setting :type_registry_namespace, default: :strict
@@ -42,9 +42,9 @@ module Dry
         # @return [Class]
         #
         # @api public
-        def define(&block)
+        def define(&)
           @definition ||= DSL.new(
-            processor_type: self, parent: superclass.definition, **config.to_h, &block
+            processor_type: self, parent: superclass.definition, **config.to_h, &
           )
           self
         end
@@ -54,15 +54,15 @@ module Dry
         # @return [Processor]
         #
         # @api public
-        def new(options = nil, &block)
-          if options || block
+        def new(options = nil)
+          if options || block_given?
             processor = super(**(options || EMPTY_HASH))
-            yield(processor) if block
+            yield(processor) if block_given?
             processor
           elsif definition
             definition.call
           else
-            raise ArgumentError, "Cannot create a schema without a definition"
+            raise ::ArgumentError, "Cannot create a schema without a definition"
           end
         end
       end
@@ -83,7 +83,7 @@ module Dry
 
       # @api public
       def xor(_other)
-        raise NotImplementedError, "composing schemas using `xor` operator is not supported yet"
+        raise ::NotImplementedError, "composing schemas using `xor` operator is not supported yet"
       end
       alias_method :^, :xor
 

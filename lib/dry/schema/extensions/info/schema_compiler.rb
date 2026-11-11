@@ -70,20 +70,25 @@ module Dry
 
         # @api private
         def visit_implication(node, opts = EMPTY_HASH)
-          node.each do |el|
-            visit(el, opts.merge(required: false))
+          case node
+          in [:not, [:predicate, [:nil?, _]]], el
+            visit(el, {**opts, nullable: true})
+          else
+            node.each do |el|
+              visit(el, {**opts, required: false})
+            end
           end
         end
 
         # @api private
         def visit_each(node, opts = EMPTY_HASH)
-          visit(node, opts.merge(member: true))
+          visit(node, {**opts, member: true})
         end
 
         # @api private
         def visit_key(node, opts = EMPTY_HASH)
           name, rest = node
-          visit(rest, opts.merge(key: name, required: true))
+          visit(rest, {**opts, key: name, required: true})
         end
 
         # @api private
@@ -93,19 +98,23 @@ module Dry
           key = opts[:key]
 
           if name.equal?(:key?)
-            keys[rest[0][1]] = {required: opts.fetch(:required, true)}
+            keys[rest[0][1]] = {
+              required: opts.fetch(:required, true)
+            }
           else
             type = PREDICATE_TO_TYPE[name]
-            assign_type(key, type) if type
+            nullable = opts.fetch(:nullable, false)
+            assign_type(key, type, nullable) if type
           end
         end
 
         # @api private
-        def assign_type(key, type)
+        def assign_type(key, type, nullable)
           if keys[key][:type]
             keys[key][:member] = type
           else
             keys[key][:type] = type
+            keys[key][:nullable] = nullable
           end
         end
       end

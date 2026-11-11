@@ -30,10 +30,10 @@ module Dry
     DEFAULT_MESSAGES_ROOT = "dry_schema"
 
     # An error raised when DSL is used in an incorrect way
-    InvalidSchemaError = Class.new(StandardError)
+    InvalidSchemaError = ::Class.new(::StandardError)
 
     # An error raised when a localized message cannot be found
-    MissingMessageError = Class.new(StandardError) do
+    MissingMessageError = ::Class.new(::StandardError) do
       # @api private
       def initialize(path, paths = [])
         *rest, rule = path

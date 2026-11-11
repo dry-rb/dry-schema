@@ -5,8 +5,9 @@ module Dry
     # Captures predicates defined within the DSL
     #
     # @api private
-    class Trace < BasicObject
+    class Trace < ::BasicObject
       INVALID_PREDICATES = %i[key?].freeze
+      RESPOND_TO_MISSING_METHOD = ::Kernel.instance_method(:respond_to_missing?)
 
       include ::Dry::Equalizer(:compiler, :captures)
 
@@ -43,7 +44,7 @@ module Dry
           elsif predicate.is_a?(::Array)
             predicate.map { |pred| evaluate_predicates(pred).reduce(:&) }.reduce(:|)
           elsif predicate.is_a?(::Hash)
-            predicate.map { |pred, *args| __send__(pred, *args) }
+            predicate.map { |pred, *args| __send__(:"#{pred.to_s.delete_suffix("?")}?", *args) }
           else
             __send__(predicate)
           end
@@ -86,12 +87,13 @@ module Dry
       end
 
       def respond_to_missing?(meth, include_private = false)
-        super || (meth.to_s.end_with?(QUESTION_MARK) && compuiler.support?(meth))
+        RESPOND_TO_MISSING_METHOD.bind_call(self, meth, include_private) ||
+          (meth.to_s.end_with?(QUESTION_MARK) && compiler.support?(meth))
       end
 
       # @api private
       def method_missing(meth, *args, &block)
-        if meth.to_s.end_with?(QUESTION_MARK)
+        if !meth.equal?(:respond_to_missing?) && meth.to_s.end_with?(QUESTION_MARK)
           if ::Dry::Schema::Trace::INVALID_PREDICATES.include?(meth)
             ::Kernel.raise InvalidSchemaError, "#{meth} predicate cannot be used in this context"
           end

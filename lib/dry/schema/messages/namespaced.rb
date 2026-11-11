@@ -6,7 +6,7 @@ module Dry
       # Namespaced messages backend
       #
       # @api public
-      class Namespaced < Dry::Schema::Messages::Abstract
+      class Namespaced < ::Dry::Schema::Messages::Abstract
         # @api private
         attr_reader :namespace
 

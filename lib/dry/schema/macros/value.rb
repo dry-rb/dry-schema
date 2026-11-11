@@ -12,11 +12,11 @@ module Dry
         # rubocop:disable Metrics/AbcSize
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
-        def call(*args, **opts, &block)
-          types, predicates = args.partition { |arg| arg.is_a?(Dry::Types::Type) }
+        def call(*args, **opts, &)
+          types, predicates = args.partition { _1.is_a?(::Dry::Types::Type) }
 
-          constructor = types.select { |type| type.is_a?(Dry::Types::Constructor) }.reduce(:>>)
-          schema = predicates.detect { |predicate| predicate.is_a?(Processor) }
+          constructor = types.select { _1.is_a?(::Dry::Types::Constructor) }.reduce(:>>)
+          schema = predicates.detect { _1.is_a?(Processor) }
 
           schema_dsl.set_type(name, constructor) if constructor
 
@@ -41,20 +41,20 @@ module Dry
             end
           end
 
-          trace_opts = opts.reject { |key, _| %i[type_spec type_rule].include?(key) }
+          trace_opts = opts.except(*MACRO_OPTIONS)
 
           if (type_rule = opts[:type_rule])
             trace.append(type_rule).evaluate(*predicates, **trace_opts)
-            trace.append(new(chain: false).instance_exec(&block)) if block
+            trace.append(new(chain: false).instance_exec(&)) if block_given?
           else
             trace.evaluate(*predicates, **trace_opts)
 
-            if block && type_spec.equal?(:hash)
-              hash(&block)
+            if block_given? && type_spec.equal?(:hash)
+              hash(&)
             elsif type_spec.is_a?(::Dry::Types::Type) && hash_type?(type_spec)
               hash(type_spec)
-            elsif block
-              trace.append(new(chain: false).instance_exec(&block))
+            elsif block_given?
+              trace.append(new(chain: false).instance_exec(&))
             end
           end
 
@@ -112,9 +112,9 @@ module Dry
         private
 
         # @api private
-        def method_missing(meth, *args, &block)
+        def method_missing(meth, ...)
           if meth.to_s.end_with?(QUESTION_MARK)
-            trace.__send__(meth, *args, &block)
+            trace.__send__(meth, ...)
           else
             super
           end

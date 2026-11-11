@@ -37,10 +37,7 @@ module Dry
     class DSL
       Types = Schema::Types
 
-      extend Dry::Initializer
-
-      # @return [Compiler] The rule compiler object
-      option :compiler, default: -> { Compiler.new }
+      extend ::Dry::Initializer
 
       # @return [Compiler] The type of the processor (Params, JSON, or a custom sub-class)
       option :processor_type, default: -> { Processor }
@@ -81,9 +78,10 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def self.new(**options, &block)
+      def self.new(**options, &)
         dsl = super
-        dsl.instance_eval(&block) if block
+        dsl.instance_eval(&) if block_given?
+        dsl.instance_variable_set("@compiler", options[:compiler]) if options[:compiler]
         dsl
       end
 
@@ -101,9 +99,19 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def configure(&block)
-        config.configure(&block)
+      def configure(&)
+        config.configure(&)
         self
+      end
+
+      # @api private
+      def compiler
+        @compiler ||= Compiler.new(predicates)
+      end
+
+      # @api private
+      def predicates
+        @predicates ||= config.predicates
       end
 
       # Return a macro with the provided name
@@ -124,7 +132,7 @@ module Dry
       #
       #   required(:age).value(:integer)
       #
-      #   required(:user_limit).value(:integer, gt?: 0)
+      #   required(:user_limit).value(:integer, gt: 0)
       #
       #   required(:tags).filled { array? | str? }
       #
@@ -133,8 +141,8 @@ module Dry
       # @return [Macros::Required]
       #
       # @api public
-      def required(name, &block)
-        key(name, macro: Macros::Required, &block)
+      def required(name, &)
+        key(name, macro: Macros::Required, &)
       end
 
       # Define an optional key
@@ -149,8 +157,8 @@ module Dry
       # @return [Macros::Optional]
       #
       # @api public
-      def optional(name, &block)
-        key(name, macro: Macros::Optional, &block)
+      def optional(name, &)
+        key(name, macro: Macros::Optional, &)
       end
 
       # A generic method for defining keys
@@ -162,7 +170,7 @@ module Dry
       # @return [Macros::Key]
       #
       # @api public
-      def key(name, macro:, &block)
+      def key(name, macro:, &)
         raise ArgumentError, "Key +#{name}+ is not a symbol" unless name.is_a?(::Symbol)
 
         set_type(name, Types::Any.meta(default: true))
@@ -174,7 +182,7 @@ module Dry
           filter_schema_dsl: filter_schema_dsl
         )
 
-        macro.value(&block) if block
+        macro.value(&) if block_given?
         macros << macro
         macro
       end
@@ -241,8 +249,8 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def before(key, &block)
-        steps.before(key, &block)
+      def before(key, &)
+        steps.before(key, &)
         self
       end
 
@@ -256,8 +264,8 @@ module Dry
       # @return [DSL]
       #
       # @api public
-      def after(key, &block)
-        steps.after(key, &block)
+      def after(key, &)
+        steps.after(key, &)
         self
       end
 
@@ -293,8 +301,8 @@ module Dry
       # @return [Dry::Types::Safe]
       #
       # @api private
-      def new(klass: self.class, **options, &block)
-        klass.new(**options, processor_type: processor_type, config: config, &block)
+      def new(klass: self.class, **options, &)
+        klass.new(**options, processor_type: processor_type, config: config, &)
       end
 
       # Set a type for the given key name
@@ -493,8 +501,8 @@ module Dry
       def default_config
         parents.each_cons(2) do |left, right|
           unless left.config == right.config
-            raise ArgumentError,
-                  "Parent configs differ, left=#{left.inspect}, right=#{right.inspect}"
+            raise ::ArgumentError,
+              "Parent configs differ, left=#{left.inspect}, right=#{right.inspect}"
           end
         end
 

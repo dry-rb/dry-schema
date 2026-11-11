@@ -7,8 +7,9 @@ module Dry
   module Schema
     # @api private
     class KeyValidator
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
+      MULTI_INDEX_REGEX = /(\[\d+\])+/
       INDEX_REGEX = /\[\d+\]/
       DIGIT_REGEX = /\A\d+\z/
       BRACKETS = "[]"
@@ -21,7 +22,7 @@ module Dry
         input = result.to_h
 
         input_paths = key_paths(input)
-        key_paths = key_map.to_dot_notation
+        key_paths = key_map.to_dot_notation.sort
 
         input_paths.each do |path|
           error_path = validate_path(key_paths, path)
@@ -38,22 +39,33 @@ module Dry
 
       # @api private
       def validate_path(key_paths, path)
-        if path[INDEX_REGEX]
-          key = path.gsub(INDEX_REGEX, BRACKETS)
-
-          if key_paths.none? { paths_match?(key, _1) }
-            arr = path.gsub(INDEX_REGEX) { ".#{_1[1]}" }
+        if path[MULTI_INDEX_REGEX]
+          key = path.gsub(MULTI_INDEX_REGEX, BRACKETS)
+          if none_key_paths_match?(key_paths, key)
+            arr = path.gsub(INDEX_REGEX) { ".#{_1[1...-1]}" }
             arr.split(DOT).map { DIGIT_REGEX.match?(_1) ? Integer(_1, 10) : _1.to_sym }
           end
-        elsif key_paths.none? { paths_match?(path, _1) }
+        elsif none_key_paths_match?(key_paths, path)
           path
         end
       end
 
       # @api private
-      def paths_match?(input_path, key_path)
-        residue = key_path.sub(input_path, "")
-        residue.empty? || residue.start_with?(DOT, BRACKETS)
+      def none_key_paths_match?(key_paths, path)
+        !any_key_paths_match?(key_paths, path)
+      end
+
+      # @api private
+      def any_key_paths_match?(key_paths, path)
+        find_path(key_paths, path, false) ||
+          find_path(key_paths, path + DOT, true) ||
+          find_path(key_paths, path + BRACKETS, true)
+      end
+
+      # @api private
+      def find_path(key_paths, path, prefix_match)
+        key = key_paths.bsearch { |key_path| key_path >= path }
+        prefix_match ? key&.start_with?(path) : key == path
       end
 
       # @api private
@@ -72,9 +84,7 @@ module Dry
             if hashes_or_arrays.empty?
               [key.to_s]
             else
-              hashes_or_arrays.flat_map.with_index { |el, idx|
-                key_paths(el).map { ["#{key}[#{idx}]", *_1].join(DOT) }
-              }
+              traverse_array(value).map { |sub_path| [key, sub_path].join("") }
             end
           else
             key.to_s
@@ -87,6 +97,20 @@ module Dry
         xs.select { |x|
           (x.is_a?(::Array) || x.is_a?(::Hash)) && !x.empty?
         }
+      end
+
+      # @api private
+      def traverse_array(arr)
+        arr.each_with_index.flat_map do |el, idx|
+          case el
+          when ::Hash
+            key_paths(el).map { ["[#{idx}]", *_1].join(DOT) }
+          when ::Array
+            traverse_array(el).map { ["[#{idx}]", *_1].join("") }
+          else
+            []
+          end
+        end
       end
     end
   end

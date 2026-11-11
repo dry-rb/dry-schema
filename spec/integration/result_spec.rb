@@ -30,9 +30,15 @@ RSpec.describe Dry::Schema::Result do
 
     describe "#inspect" do
       it "returns a string representation" do
-        expect(result.inspect).to eql(<<-STR.strip)
-          #<Dry::Schema::Result{:name=>"Jane"} errors={} path=[]>
-        STR
+        if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+          expect(result.inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::Result{name: "Jane"} errors={} path=[]>
+          STR
+        else
+          expect(result.inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::Result{:name=>"Jane"} errors={} path=[]>
+          STR
+        end
       end
     end
 
@@ -60,9 +66,15 @@ RSpec.describe Dry::Schema::Result do
 
     describe "#inspect" do
       it "returns a string representation" do
-        expect(result.inspect).to eql(<<-STR.strip)
-          #<Dry::Schema::Result{:name=>""} errors={:name=>["must be filled"]} path=[]>
-        STR
+        if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+          expect(result.inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::Result{name: ""} errors={name: ["must be filled"]} path=[]>
+          STR
+        else
+          expect(result.inspect).to eql(<<-STR.strip)
+            #<Dry::Schema::Result{:name=>""} errors={:name=>["must be filled"]} path=[]>
+          STR
+        end
       end
     end
 
@@ -81,9 +93,15 @@ RSpec.describe Dry::Schema::Result do
 
       describe "#inspect" do
         it "returns a string representation" do
-          expect(result.at([:account, :name]).inspect).to eql(<<-STR.strip)
-            #<Dry::Schema::Result{:first=>"ojab"} errors={} path=[:account, :name]>
-          STR
+          if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+            expect(result.at([:account, :name]).inspect).to eql(<<-STR.strip)
+              #<Dry::Schema::Result{first: "ojab"} errors={} path=[:account, :name]>
+            STR
+          else
+            expect(result.at([:account, :name]).inspect).to eql(<<-STR.strip)
+              #<Dry::Schema::Result{:first=>"ojab"} errors={} path=[:account, :name]>
+            STR
+          end
         end
       end
     end

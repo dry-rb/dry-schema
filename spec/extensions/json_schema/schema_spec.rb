@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "json-schema"
+require "json_schemer"
 
 RSpec.describe Dry::Schema::JSON, "#json_schema" do
   before do
@@ -10,10 +10,9 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
   shared_examples "metaschema validation" do
     describe "validating against the metaschema" do
       it "produces a valid json schema document for draft6" do
-        metaschema = JSON::Validator.validator_for_name("draft6").metaschema
         input = schema.respond_to?(:json_schema) ? schema.json_schema : schema
 
-        JSON::Validator.validate!(metaschema, input)
+        expect(JSONSchemer.validate_schema(input).to_a).to be_empty
       end
     end
   end
@@ -27,6 +26,10 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
         required(:roles).array(:hash) do
           required(:name).value(:string, min_size?: 12, max_size?: 36)
+
+          required(:metadata).hash do
+            required(:assigned_at).value(:time)
+          end
         end
 
         optional(:address).hash do
@@ -59,9 +62,19 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
                   type: "string",
                   minLength: 12,
                   maxLength: 36
+                },
+                metadata: {
+                  type: "object",
+                  properties: {
+                    assigned_at: {
+                      format: "time",
+                      type: "string"
+                    }
+                  },
+                  required: %w[assigned_at]
                 }
               },
-              required: ["name"]
+              required: %w[name metadata]
             }
           },
           address: {
@@ -104,6 +117,160 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
           }
         },
         required: %w[email]
+      )
+    end
+  end
+
+  context "when using maybe array types" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:list).maybe(:array).each(:str?)
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            type: %w[null array],
+            items: {
+              type: "string"
+            }
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
+  context "when using maybe array types with nested properties" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:list).maybe(:array).each do
+          hash do
+            required(:name).value(:string)
+          end
+        end
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            type: %w[null array],
+            items: {
+              type: "object",
+              properties: {
+                name: {
+                  type: "string"
+                }
+              },
+              required: %w[name]
+            }
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
+  context "when using array types with combined schemas" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      schema_1 = Dry::Schema.JSON do
+        required(:name).value(:string)
+      end
+
+      schema_2 = Dry::Schema.JSON do
+        optional(:age).value(:string)
+      end
+
+      Dry::Schema.JSON do
+        required(:list).value(:array).each { schema_1 | schema_2 }
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            type: "array",
+            items: {
+              anyOf: [
+                {
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string"
+                    }
+                  },
+                  required: %w[name]
+                },
+                {
+                  type: "object",
+                  properties: {
+                    age: {
+                      type: "string"
+                    }
+                  },
+                  required: []
+                }
+              ]
+            }
+          }
+        },
+        required: %w[list]
+      )
+    end
+  end
+
+  context "when using value which is an OR of different types of arrays" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      string_array = Types::Array.of(Types::String)
+      integer_array = Types::Array.of(Types::Integer)
+
+      Dry::Schema.JSON do
+        required(:list).value(string_array | integer_array)
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          list: {
+            anyOf: [
+              {
+                type: "array",
+                items: {
+                  type: "string"
+                }
+              },
+              {
+                type: "array",
+                items: {
+                  type: "integer"
+                }
+              }
+            ]
+          }
+        },
+        required: %w[list]
       )
     end
   end
@@ -230,6 +397,30 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
   end
 
+  context "when using const" do
+    include_examples "metaschema validation"
+
+    subject(:schema) do
+      Dry::Schema.JSON do
+        required(:version).value(:integer, eql?: 1)
+      end
+    end
+
+    it "returns the correct json schema" do
+      expect(schema.json_schema).to eql(
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        type: "object",
+        properties: {
+          version: {
+            type: "integer",
+            const: 1
+          }
+        },
+        required: %w[version]
+      )
+    end
+  end
+
   describe "inferring types" do
     {
       array: {type: "array"},
@@ -247,7 +438,10 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
       uuid_v2?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-2[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
       uuid_v3?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
       uuid_v4?: {pattern: "^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}$"},
-      uuid_v5?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"}
+      uuid_v5?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
+      uuid_v6?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-6[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
+      uuid_v7?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-7[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"},
+      uuid_v8?: {pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-8[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"}
     }.each do |type_spec, type_opts|
       describe "type: #{type_spec.inspect}" do
         subject(:schema) do
@@ -269,7 +463,9 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
 
   describe "special string predictes" do
     {
-      {uri?: "https"} => {type: "string", format: "uri"}
+      {uri?: "https"} => {type: "string", format: "uri"},
+      {size?: 5} => {type: "string", minLength: 5, maxLength: 5},
+      {format?: /\A\d{3}-\d{4}\z/} => {type: "string", pattern: "\\A\\d{3}-\\d{4}\\z"}
     }.each do |type_spec, type_opts|
       describe "type: #{type_spec.inspect}" do
         subject(:schema) do
@@ -303,6 +499,27 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
           else
             Dry::Schema.define { required(:key).value(type_spec) }.json_schema
           end
+        end
+
+        include_examples "metaschema validation"
+
+        it "infers with correct default options - #{type_opts.to_json}" do
+          expect(schema).to include(
+            properties: {key: type_opts}
+          )
+        end
+      end
+    end
+  end
+
+  describe "special boolean predicates" do
+    {
+      true?: {},
+      false?: {}
+    }.each do |type_spec, type_opts|
+      describe "type: #{type_spec.inspect}" do
+        subject(:schema) do
+          Dry::Schema.define { required(:key).value(type_spec) }.json_schema
         end
 
         include_examples "metaschema validation"

@@ -63,7 +63,7 @@ RSpec.describe "GitHub issues" do
     end
 
     let(:calendar_date) do
-      Class.new(::Date) do
+      Class.new(Date) do
         def to_json(*args)
           strftime("--%m-%d").to_json(*args)
         end

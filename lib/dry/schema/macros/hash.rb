@@ -21,7 +21,7 @@ module Dry
                 else
                   optional(key.name).value(key.type)
                 end
-                instance_exec(&block) if block
+                instance_exec(&block) if block_given?
               end
             end
           else

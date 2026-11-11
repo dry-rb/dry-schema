@@ -230,4 +230,8 @@ RSpec.describe Dry::Schema, ".define" do
       end
     end
   end
+
+  it_behaves_like "schema with custom predicates" do
+    let(:schema_class) { Class.new(Dry::Schema::Params) }
+  end
 end

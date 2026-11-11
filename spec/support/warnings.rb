@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-# this file is managed by dry-rb/devtools project
+# This file is synced from hanakai-rb/repo-sync
 
 require "warning"
 
-Warning.ignore(%r{rspec/core})
-Warning.ignore(%r{rspec/mocks})
-Warning.ignore(/codacy/)
+# Ignore warnings for experimental features
 Warning[:experimental] = false if Warning.respond_to?(:[])
+
+# Ignore all warnings coming from gem dependencies
+Gem.path.each do |path|
+  Warning.ignore(//, path)
+end

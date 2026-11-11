@@ -12,14 +12,14 @@ module Dry
   #
   # @api public
   module Schema
-    extend Dry::Core::Extensions
+    extend ::Dry::Core::Extensions
 
     # @api private
     def self.loader
-      @loader ||= Zeitwerk::Loader.new.tap do |loader|
-        root = File.expand_path("..", __dir__)
+      @loader ||= ::Zeitwerk::Loader.new.tap do |loader|
+        root = ::File.expand_path("..", __dir__)
         loader.tag = "dry-schema"
-        loader.inflector = Zeitwerk::GemInflector.new("#{root}/dry-schema.rb")
+        loader.inflector = ::Zeitwerk::GemInflector.new("#{root}/dry-schema.rb")
         loader.inflector.inflect(
           "dsl" => "DSL",
           "yaml" => "YAML",
@@ -32,6 +32,7 @@ module Dry
           "#{root}/dry/schema/{constants,errors,version,extensions}.rb",
           "#{root}/dry/schema/extensions"
         )
+        loader.do_not_eager_load("#{root}/dry/schema/messages/i18n.rb")
         loader.inflector.inflect("dsl" => "DSL")
       end
     end
@@ -53,7 +54,7 @@ module Dry
     # @example
     #   Dry::Schema.define do
     #     required(:name).filled(:string)
-    #     required(:age).value(:integer, gt?: 0)
+    #     required(:age).value(:integer, gt: 0)
     #   end
     #
     # @param [Hash] options
@@ -63,8 +64,8 @@ module Dry
     # @see DSL.new
     #
     # @api public
-    def self.define(**options, &block)
-      DSL.new(**options, &block).call
+    def self.define(...)
+      DSL.new(...).call
     end
 
     # Define a schema suitable for HTTP params
@@ -74,7 +75,7 @@ module Dry
     # @example
     #   Dry::Schema.Params do
     #     required(:name).filled(:string)
-    #     required(:age).value(:integer, gt?: 0)
+    #     required(:age).value(:integer, gt: 0)
     #   end
     #
     # @return [Params]
@@ -82,10 +83,10 @@ module Dry
     # @see Schema#define
     #
     # @api public
-    def self.Params(**options, &block)
-      define(**options, processor_type: Params, &block)
+    def self.Params(**options, &)
+      define(**options, processor_type: Params, &)
     end
-    singleton_class.send(:alias_method, :Form, :Params)
+    singleton_class.alias_method(:Form, :Params)
 
     # Define a schema suitable for JSON data
     #
@@ -94,7 +95,7 @@ module Dry
     # @example
     #   Dry::Schema.JSON do
     #     required(:name).filled(:string)
-    #     required(:age).value(:integer, gt?: 0)
+    #     required(:age).value(:integer, gt: 0)
     #   end
     #
     # @return [Params]
@@ -102,8 +103,8 @@ module Dry
     # @see Schema#define
     #
     # @api public
-    def self.JSON(**options, &block)
-      define(**options, processor_type: JSON, &block)
+    def self.JSON(**options, &)
+      define(**options, processor_type: JSON, &)
     end
 
     loader.setup

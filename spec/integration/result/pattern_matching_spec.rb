@@ -12,7 +12,7 @@ RSpec.describe Dry::Schema::Result, "pattern matching" do
 
     it "allows case analysis" do
       case result
-      in { name: } => captured if name.eql?("John")
+      in {name:} => captured if name.eql?("John")
         expect(name).to eql("John")
         expect(captured).to eql(result)
       end
@@ -20,7 +20,7 @@ RSpec.describe Dry::Schema::Result, "pattern matching" do
 
     it "works in nested structure" do
       case [1, result]
-      in [Integer => int, { name: "John"}]
+      in [Integer => int, {name: "John"}]
         expect(int).to be(1)
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe Dry::Schema::Result, "pattern matching" do
 
     it "is supported" do
       case result
-      in address: { city: }
+      in address: {city:}
         expect(city).to eql("London")
       end
     end

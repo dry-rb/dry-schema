@@ -28,7 +28,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                 [
                   :constrained,
                   [
-                    [:nominal, [Integer, {}]],
+                    [:nominal, [Integer, {}, {}]],
                     [
                       :predicate,
                       [:type?, [[:type, Integer], [:input, Undefined]]]
@@ -38,7 +38,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                 [
                   :constrained,
                   [
-                    [:nominal, [String, {}]],
+                    [:nominal, [String, {}, {}]],
                     [
                       :predicate,
                       [:type?, [[:type, String], [:input, Undefined]]]
@@ -51,7 +51,7 @@ RSpec.describe Dry::Schema::TypesMerger do
             bar: [
               :constrained,
               [
-                [:nominal, [Integer, {}]],
+                [:nominal, [Integer, {}, {}]],
                 [:predicate, [:type?, [[:type, Integer], [:input, Undefined]]]]
               ]
             ]
@@ -79,7 +79,7 @@ RSpec.describe Dry::Schema::TypesMerger do
               foo: [
                 :constrained,
                 [
-                  [:nominal, [Integer, {}]],
+                  [:nominal, [Integer, {}, {}]],
                   [
                     op_node_type,
                     [
@@ -151,7 +151,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                                     [
                                       :constrained,
                                       [
-                                        [:nominal, [Integer, {}]],
+                                        [:nominal, [Integer, {}, {}]],
                                         [
                                           :predicate,
                                           [
@@ -181,7 +181,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                                     [
                                       :constrained,
                                       [
-                                        [:nominal, [Integer, {}]],
+                                        [:nominal, [Integer, {}, {}]],
                                         [
                                           :predicate,
                                           [
@@ -267,7 +267,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                                         [
                                           :constrained,
                                           [
-                                            [:nominal, [NilClass, {}]],
+                                            [:nominal, [NilClass, {}, {}]],
                                             [
                                               :predicate,
                                               [
@@ -283,7 +283,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                                         [
                                           :constrained,
                                           [
-                                            [:nominal, [Integer, {}]],
+                                            [:nominal, [Integer, {}, {}]],
                                             [
                                               :predicate,
                                               [
@@ -319,7 +319,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                                         [
                                           :constrained,
                                           [
-                                            [:nominal, [NilClass, {}]],
+                                            [:nominal, [NilClass, {}, {}]],
                                             [
                                               :predicate,
                                               [
@@ -335,7 +335,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                                         [
                                           :constrained,
                                           [
-                                            [:nominal, [Integer, {}]],
+                                            [:nominal, [Integer, {}, {}]],
                                             [
                                               :predicate,
                                               [
@@ -416,7 +416,7 @@ RSpec.describe Dry::Schema::TypesMerger do
               foo: [
                 :constrained,
                 [
-                  [:nominal, [Integer, {}]],
+                  [:nominal, [Integer, {}, {}]],
                   [
                     :predicate,
                     [:type?, [[:type, Integer], [:input, Undefined]]]
@@ -453,7 +453,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                             [
                               :constrained,
                               [
-                                [:nominal, [Integer, {}]],
+                                [:nominal, [Integer, {}, {}]],
                                 [
                                   :predicate,
                                   [
@@ -499,7 +499,7 @@ RSpec.describe Dry::Schema::TypesMerger do
               foo: [
                 :constrained,
                 [
-                  [:nominal, [Integer, {}]],
+                  [:nominal, [Integer, {}, {}]],
                   [
                     :predicate,
                     [:type?, [[:type, Integer], [:input, Undefined]]]
@@ -536,7 +536,7 @@ RSpec.describe Dry::Schema::TypesMerger do
                             [
                               :constrained,
                               [
-                                [:nominal, [Integer, {}]],
+                                [:nominal, [Integer, {}, {}]],
                                 [
                                   :predicate,
                                   [

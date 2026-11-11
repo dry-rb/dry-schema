@@ -19,7 +19,7 @@ module Dry
     #
     # @api public
     class ProcessorSteps
-      extend Dry::Initializer
+      extend ::Dry::Initializer
 
       option :steps, default: -> { EMPTY_HASH.dup }
       option :before_steps, default: -> { EMPTY_HASH.dup }
