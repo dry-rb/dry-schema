@@ -31,6 +31,26 @@ RSpec.describe Dry::Schema::Messages::YAML do
       end
     end
 
+    context "with more than one locale" do
+      subject(:messages) do
+        Dry::Schema::Messages::YAML.build.merge(
+          en: {dry_schema: {errors: {filled?: "must be filled"}}},
+          pl: {dry_schema: {errors: {filled?: "musi być wypełniony"}}}
+        )
+      end
+
+      it "returns the message for the requested locale on every lookup" do
+        2.times do
+          expect(messages[:filled?, path: [:name]].first.()).to eql("must be filled")
+          expect(messages[:filled?, path: [:name], locale: :pl].first.()).to eql("musi być wypełniony")
+        end
+      end
+
+      it "returns nil for a locale with no message on every lookup" do
+        2.times { expect(messages[:filled?, path: [:name], locale: :ja]).to be_nil }
+      end
+    end
+
     context "with no load paths" do
       subject(:messages) do
         Dry::Schema::Messages::YAML.build(load_paths: [])

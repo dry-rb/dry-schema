@@ -13,6 +13,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Changed
 
+- Speed up building error messages with the YAML backend by caching message keys once they are filled in with the locale. (@parndt)
+
 ### Deprecated
 
 ### Removed

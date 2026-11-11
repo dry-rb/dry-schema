@@ -20,6 +20,9 @@ module Dry
           end
         }.freeze.context
 
+        EVALUATED_KEYS_LIMIT = 10_000
+        private_constant :EVALUATED_KEYS_LIMIT
+
         include ::Dry::Equalizer(:data)
 
         # Loaded localized message templates
@@ -182,6 +185,13 @@ module Dry
         end
 
         # @api private
+        def evaluated_keys
+          @evaluated_keys ||= ::Concurrent::Map.new do |h, k|
+            h.compute_if_absent(k) { ::Concurrent::Map.new }
+          end
+        end
+
+        # @api private
         def cache
           @cache ||= self.class.cache[self]
         end
@@ -201,7 +211,17 @@ module Dry
         def evaluated_key(key, options)
           return key unless key.include?(LOCALE_TOKEN)
 
-          key % {locale: options[:locale] || default_locale}
+          locale = options[:locale] || default_locale
+          keys = evaluated_keys[locale]
+
+          # A message is looked up by key several times while it is built (#key?, #get, and twice
+          # more to interpolate it), so the key filled with the locale is kept. The number kept is
+          # limited, since keys can also come from callers of #translate.
+          keys.fetch(key) {
+            evaluated = (key % {locale:}).freeze
+            keys[key] = evaluated if keys.size < EVALUATED_KEYS_LIMIT
+            evaluated
+          }
         end
       end
     end
