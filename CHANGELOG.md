@@ -19,6 +19,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
+- Validate each element of an array whose member type is a sum of hash schemas, e.g. `array(Types::Hash.schema(a: "string") | Types::Hash.schema(b: "string"))`. Previously any element was accepted. (@segiddins in #458)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main

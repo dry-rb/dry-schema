@@ -234,6 +234,7 @@ module Dry
 
         # @api private
         # rubocop: disable Metrics/AbcSize
+        # rubocop: disable Metrics/CyclomaticComplexity
         # rubocop: disable Metrics/PerceivedComplexity
         def extract_type_spec(args, nullable: false, set_type: true)
           type_spec = args[0] unless schema_or_predicate?(args[0])
@@ -252,7 +253,7 @@ module Dry
               }.reduce(:|)
             elsif type_spec.is_a?(Dry::Types::Intersection) && set_type
               type_rule = [type_spec.left, type_spec.right].map { |ts|
-                new(klass: Core, chain: false).value(ts)
+                new(chain: false).value(ts)
               }.reduce(:&)
             else
               type_predicates = predicate_inferrer[resolved_type]
@@ -268,6 +269,7 @@ module Dry
           yield(*predicates, type_spec: type_spec, type_rule: type_rule)
         end
         # rubocop: enable Metrics/AbcSize
+        # rubocop: enable Metrics/CyclomaticComplexity
         # rubocop: enable Metrics/PerceivedComplexity
 
         # @api private
