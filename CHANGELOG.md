@@ -19,7 +19,7 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Fixed
 
-- Apply custom constructors for types without inferred predicates (#525)
+- Apply custom constructors for types without inferred predicates (@jay23606 in #525)
 
 ### Security
 
