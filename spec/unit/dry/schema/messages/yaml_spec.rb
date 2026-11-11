@@ -31,6 +31,59 @@ RSpec.describe Dry::Schema::Messages::YAML do
       end
     end
 
+    context "when called repeatedly" do
+      it "returns the same template for the same predicate and options" do
+        first, = messages[:filled?, path: [:name]]
+        second, = messages[:filled?, path: [:name]]
+
+        expect(second.key).to eql(first.key)
+        expect(second.()).to eql("must be filled")
+      end
+
+      it "finds the message for each set of options" do
+        expect(messages[:size?, path: [:name], arg_type: Integer, val_type: String].first.(size: 2))
+          .to eql("length must be 2")
+        expect(messages[:size?, path: [:name], arg_type: Range, val_type: String].first.(size_left: 1, size_right: 2))
+          .to eql("length must be within 1 - 2")
+        expect(messages[:size?, path: [:name], arg_type: Integer, val_type: String].first.(size: 3))
+          .to eql("length must be 3")
+      end
+
+      it "returns nil each time no message is found" do
+        2.times { expect(messages[:not_a_predicate?, path: [:name]]).to be_nil }
+      end
+
+      it "finds messages loaded after an earlier lookup" do
+        expect(messages[:filled?, path: [:name]].first.()).to eql("must be filled")
+
+        messages.config.load_paths << SPEC_ROOT.join("fixtures/locales/en.yml")
+        messages.prepare
+
+        expect(messages[:filled?, path: [:email]].first.()).not_to be_nil
+        expect(messages[:filled?, path: [:name]].first.()).to eql("must be filled")
+      end
+
+      it "does not share lookups with a merged copy" do
+        expect(messages[:filled?, path: [:name]].first.()).to eql("must be filled")
+
+        merged = messages.merge(en: {dry_schema: {errors: {filled?: "needs a name"}}})
+
+        expect(merged[:filled?, path: [:name]].first.()).to eql("needs a name")
+        expect(messages[:filled?, path: [:name]].first.()).to eql("must be filled")
+      end
+    end
+
+    context "with lookup paths using %{} tokens" do
+      subject(:messages) do
+        Dry::Schema::Messages::YAML.build(lookup_paths: ["%{root}.%{predicate}"])
+      end
+
+      it "finds the message for each predicate" do
+        expect(messages[:filled?, path: [:name]].first.()).to eql("must be filled")
+        expect(messages[:key?, path: [:name]].first.()).to eql("is missing")
+      end
+    end
+
     context "with no load paths" do
       subject(:messages) do
         Dry::Schema::Messages::YAML.build(load_paths: [])

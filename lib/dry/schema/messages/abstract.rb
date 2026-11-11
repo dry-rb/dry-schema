@@ -89,8 +89,9 @@ module Dry
         # @api public
         def call(predicate, options)
           options = {locale: default_locale, **options}
-          opts = options.reject { |k,| config.lookup_options.include?(k) }
-          path = lookup_paths(predicate, options).detect { |key| key?(key, opts) }
+          lookup_options = config.lookup_options
+          opts = options.reject { |k,| lookup_options.include?(k) }
+          path = find_path(lookup_paths(predicate, options), opts)
 
           return unless path
 
@@ -138,7 +139,19 @@ module Dry
 
         # @api private
         def filled_lookup_paths(tokens)
-          config.lookup_paths.map { |path| path % tokens }
+          # The filled paths depend only on the tokens the templates mention, so they are built
+          # once per distinct combination of those tokens.
+          cache_key = tokens.values_at(*lookup_token_names)
+
+          lookup_paths_cache.fetch(cache_key) {
+            paths = config.lookup_paths.map { |path| path % tokens }.freeze
+
+            if lookup_paths_cache.size < LOOKUP_PATHS_CACHE_LIMIT
+              lookup_paths_cache[cache_key.freeze] = paths
+            end
+
+            paths
+          }
         end
 
         # @api private
@@ -180,6 +193,35 @@ module Dry
         end
 
         private
+
+        LOOKUP_PATHS_CACHE_LIMIT = 10_000
+        private_constant :LOOKUP_PATHS_CACHE_LIMIT
+
+        LOOKUP_TOKEN_REGEXP = /%[<{](\w+)[>}]/
+        private_constant :LOOKUP_TOKEN_REGEXP
+
+        # Returns the first of the given candidate paths that has a message
+        #
+        # @api private
+        def find_path(paths, opts)
+          paths.detect { |key| key?(key, opts) }
+        end
+
+        # @api private
+        def lookup_paths_cache
+          @lookup_paths_cache ||= ::Concurrent::Map.new
+        end
+
+        # Names of the tokens used by the lookup path templates
+        #
+        # @api private
+        def lookup_token_names
+          @lookup_token_names ||= config.lookup_paths
+            .flat_map { |path| path.scan(LOOKUP_TOKEN_REGEXP).flatten }
+            .uniq
+            .map(&:to_sym)
+            .freeze
+        end
 
         # @api private
         def lookup_tokens(predicate, options)

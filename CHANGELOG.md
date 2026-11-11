@@ -13,6 +13,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Changed
 
+- Speed up building error messages by caching the lookup paths for each combination of predicate and options, and the path found for them in the YAML backend. (@parndt)
+
 ### Deprecated
 
 ### Removed

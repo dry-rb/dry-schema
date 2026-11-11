@@ -145,6 +145,7 @@ module Dry
         # @api private
         def prepare
           @data = config.load_paths.map { |path| load_translations(path) }.reduce({}, :merge)
+          @found_paths = nil
           self
         end
 
@@ -161,6 +162,27 @@ module Dry
         end
 
         private
+
+        # Remembers the path found for each list of candidates, per locale. The loaded messages
+        # only change in #prepare.
+        #
+        # @api private
+        def find_path(paths, opts)
+          found = found_paths[opts[:locale] || default_locale]
+
+          found.fetch(paths) {
+            path = super
+            found[paths] = path if path && found.size < LOOKUP_PATHS_CACHE_LIMIT
+            path
+          }
+        end
+
+        # @api private
+        def found_paths
+          @found_paths ||= ::Concurrent::Map.new do |h, k|
+            h.compute_if_absent(k) { ::Concurrent::Map.new }
+          end
+        end
 
         # @api private
         def evaluation_context(key, options)
