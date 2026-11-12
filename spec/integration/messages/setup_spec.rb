@@ -72,7 +72,8 @@ RSpec.describe Dry::Schema::Messages, ".setup" do
 
       expect(Dry::Schema::Messages.setup(config.messages)).to be(built)
       expect(builder).to have_received(:build).with(hash_including(:load_paths, :top_namespace))
-      expect(builder).not_to have_received(:build).with(hash_including(:backend, :namespace))
+      expect(builder).to have_received(:build).with(hash_excluding(:backend))
+      expect(builder).to have_received(:build).with(hash_excluding(:namespace))
     end
   end
 
