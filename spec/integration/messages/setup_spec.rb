@@ -82,6 +82,18 @@ RSpec.describe Dry::Schema::Messages, ".setup" do
     config.messages.backend = :unknown
 
     expect { Dry::Schema::Messages.setup(config.messages) }
-      .to raise_error(RuntimeError, "+unknown+ is not a valid messages identifier")
+      .to raise_error(
+        RuntimeError,
+        ":unknown is not a valid messages backend. Use :yaml, :i18n, or an object that " \
+        "responds to #build, such as a subclass of Dry::Schema::Messages::Abstract"
+      )
+  end
+
+  it "raises with a hint when given a messages instance instead of a class" do
+    config = Dry::Schema::Config.new
+    config.messages.backend = Dry::Schema::Messages::YAML.build
+
+    expect { Dry::Schema::Messages.setup(config.messages) }
+      .to raise_error(RuntimeError, /Pass the class \(Dry::Schema::Messages::YAML\), not an instance\.\z/)
   end
 end

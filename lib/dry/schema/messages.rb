@@ -32,10 +32,25 @@ module Dry
         return identifier if identifier.respond_to?(:build)
 
         backend_class = BACKENDS.fetch(identifier) do
-          raise "+#{identifier}+ is not a valid messages identifier"
+          raise invalid_backend_message(identifier)
         end
 
         Messages.const_get(backend_class)
+      end
+
+      # @api private
+      private_class_method def invalid_backend_message(identifier)
+        message =
+          "#{identifier.inspect} is not a valid messages backend. Use :yaml, :i18n, " \
+          "or an object that responds to #build, such as a subclass of #{Abstract}"
+
+        # It's an easy mistake to pass a pre-built messages object instead of its class, so add a
+        # hint for this case.
+        if identifier.is_a?(Abstract)
+          message += ". Pass the class (#{identifier.class}), not an instance."
+        end
+
+        message
       end
     end
   end
