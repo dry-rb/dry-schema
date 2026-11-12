@@ -39,6 +39,11 @@ module Dry
       #
       # Return configuration for message backend
       #
+      # `backend` is `:yaml` (the default), `:i18n`, or an object that responds to
+      # `build(options)`, such as a subclass of {Messages::Abstract}. A custom backend's `build`
+      # receives only the options for settings defined on {Messages::Abstract}, so settings that a
+      # subclass adds keep their defaults unless the subclass sets them.
+      #
       # @return [Dry::Configurable::Config]
       #
       # @api public

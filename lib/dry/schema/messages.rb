@@ -27,6 +27,9 @@ module Dry
       # Returns the backend for the given identifier (`:i18n` or `:yaml`), or the given object
       # itself if it can build messages, such as a subclass of {Abstract}
       #
+      # The backend's `build` receives only the options for settings defined on {Abstract}. If a
+      # subclass adds its own settings, they keep their defaults unless the subclass sets them.
+      #
       # @api private
       public def backend(identifier)
         return identifier if identifier.respond_to?(:build)
