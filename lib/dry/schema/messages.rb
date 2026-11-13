@@ -30,6 +30,9 @@ module Dry
       # The backend's `build` receives only the options for settings defined on {Abstract}. If a
       # subclass adds its own settings, they keep their defaults unless the subclass sets them.
       #
+      # A custom backend only needs `build(options)`, which must return an object that implements
+      # the {Abstract} interface. It does not need `#merge`.
+      #
       # @api private
       public def backend(identifier)
         return identifier if identifier.respond_to?(:build)
