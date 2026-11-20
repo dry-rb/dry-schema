@@ -2,15 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Break Versioning](https://www.taoensso.com/break-versioning).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Break Versioning](https://www.taoensso.com/break-versioning).
 
 ## [Unreleased]
 
 ### Added
-
-- Accept predicate keywords without a question mark (@aaronmallen in #520)
-- Accept a custom messages backend for `config.messages.backend`: a `Dry::Schema::Messages::Abstract` subclass, or any object responding to `build(options)` (@parndt in #526)
 
 ### Changed
 
@@ -22,7 +18,41 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Security
 
-[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...main
+[Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.17.0...main
+
+## [1.17.0] - 2026-11-20
+
+### Added
+
+- Accept predicate keywords without a question mark, matching dry-types constraints. Keywords with a question mark still work. (@aaronmallen in #520)
+
+    ```ruby
+    Dry::Schema.Params do
+      required(:name).filled(:string, min_size: 2)
+      required(:age).value(:integer, gt: 18)
+    end
+    ```
+- Accept a custom messages backend for `config.messages.backend`: a `Dry::Schema::Messages::Abstract` subclass, or any object responding to `build(options)`. (@parndt in #526)
+
+    ```ruby
+    class ShoutingMessages < Dry::Schema::Messages::YAML
+      def get(key, options = EMPTY_HASH)
+        result = super
+        result&.merge(text: result[:text].upcase)
+      end
+    end
+
+    schema = Dry::Schema.define do
+      config.messages.backend = ShoutingMessages
+
+      required(:name).filled(:string)
+    end
+
+    schema.(name: "").errors.to_h
+    # => {name: ["MUST BE FILLED"]}
+    ```
+
+[1.17.0]: https://github.com/dry-rb/dry-schema/compare/v1.16.0...v1.17.0
 
 ## [1.16.0] - 2026-03-03
 
