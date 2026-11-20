@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
+- Apply custom constructors for types without inferred predicates (@jay23606 in #525)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.17.0...main

@@ -144,4 +144,18 @@ RSpec.describe "Params / Constructor Types" do
       expect(schema.(name: "John")[:name]).to eql("JOHN")
     end
   end
+
+  context "with an Any constructor" do
+    subject(:schema) do
+      any_type = Types::Nominal::Any.constructor { |value| "constructed: #{value}" }
+
+      Dry::Schema.Params do
+        required(:value).value(any_type)
+      end
+    end
+
+    it "uses the constructor even when the type has no inferred predicates" do
+      expect(schema.(value: "input").to_h).to eql(value: "constructed: input")
+    end
+  end
 end
