@@ -202,14 +202,14 @@ module Dry
         # @api private
         def handle_value_predicate(name, rest, opts)
           target = keys[opts[:key]]
-          type_opts = fetch_type_opts_for_predicate(name, rest, target)
 
           if array_with_size_predicate?(target, name, opts)
             apply_array_size_constraint(target, name, rest)
           elsif target[:type]&.include?("array")
-            apply_array_item_constraint(target, type_opts)
+            items = target[:items] || EMPTY_HASH
+            apply_array_item_constraint(target, fetch_type_opts_for_predicate(name, rest, items))
           else
-            merge_opts!(target, type_opts)
+            merge_opts!(target, fetch_type_opts_for_predicate(name, rest, target))
           end
         end
 
@@ -232,17 +232,18 @@ module Dry
 
         # @api private
         def array_size_predicate?(name)
-          name == :min_size? || name == :max_size?
+          name == :min_size? || name == :max_size? || name == :filled?
         end
 
         # @api private
         def convert_array_size_predicate(name, rest)
-          value = rest[0][1].to_i
           case name
+          when :filled?
+            {minItems: 1}
           when :min_size?
-            {minItems: value}
+            {minItems: rest[0][1].to_i}
           when :max_size?
-            {maxItems: value}
+            {maxItems: rest[0][1].to_i}
           else
             {}
           end
@@ -266,9 +267,7 @@ module Dry
           when "string"
             {minLength: 1}
           when "array"
-            raise_unknown_conversion_error!(:type, :array) unless loose?
-
-            {not: {type: "null"}}
+            {minItems: 1}
           else
             {not: {type: "null"}}
           end

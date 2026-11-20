@@ -318,15 +318,111 @@ RSpec.describe Dry::Schema::JSON, "#json_schema" do
     end
 
     context "when its an array type" do
+      include_examples "metaschema validation"
+
       subject(:schema) do
         Dry::Schema.JSON do
           required(:tags).filled(:array)
         end
       end
 
-      it "raises an unknown type conversion error (fix later)" do
-        expect { schema.json_schema }.to raise_error(
-          Dry::Schema::JSONSchema::SchemaCompiler::UnknownConversionError
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            tags: {
+              type: "array",
+              minItems: 1
+            }
+          }
+        )
+      end
+
+      it "returns the same json schema in loose mode" do
+        expect(schema.json_schema(loose: true)).to eq(schema.json_schema)
+      end
+    end
+
+    context "when its an array type with a min_size" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:tags).filled(:array, min_size?: 3)
+        end
+      end
+
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            tags: {
+              type: "array",
+              minItems: 3
+            }
+          }
+        )
+      end
+    end
+
+    context "when its an array type with a member type" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:tags).filled(array[:string])
+        end
+      end
+
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            tags: {
+              type: "array",
+              minItems: 1,
+              items: {type: "string"}
+            }
+          }
+        )
+      end
+    end
+
+    context "when its a maybe array type" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:tags).maybe(:array, :filled?)
+        end
+      end
+
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            tags: {
+              type: %w[null array],
+              minItems: 1
+            }
+          }
+        )
+      end
+    end
+
+    context "when its applied to array members" do
+      include_examples "metaschema validation"
+
+      subject(:schema) do
+        Dry::Schema.JSON do
+          required(:tags).value(:array).each(:str?, :filled?)
+        end
+      end
+
+      it "returns the correct json schema" do
+        expect(schema.json_schema).to include(
+          properties: {
+            tags: {
+              type: "array",
+              items: {type: "string", minLength: 1}
+            }
+          }
         )
       end
     end
