@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- `json_schema` extension now propagates `:json_schema` metadata from `dry-types` `.meta(json_schema: {...})` into JSON Schema property output (@bogdan)
+- `json_schema` extension now auto-populates `default` in JSON Schema output from dry-types default values (@bogdan)
+- Added `.documentation(title:, description:, examples:, example:, deprecated:)` macro method for attaching JSON Schema annotation metadata inline when using the `json_schema` extension (@bogdan)
+
 ### Changed
 
 ### Deprecated
