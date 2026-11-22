@@ -76,5 +76,27 @@ RSpec.describe "Params / Macros / array" do
       expect(result).to be_failure
       expect(result.errors.to_h).to eql(nums: {1 => ["must be an integer or cannot be defined"]})
     end
+
+    it "applies coercion and rules to hashes" do
+      schema = Dry::Schema.Params {
+        required(:hashes).array(
+          Types::Hash.schema(name: "string") | Types::Hash.schema(other_name: "string")
+        )
+      }
+
+      result = schema.(hashes: [{name: "string"}, {name: "string", other_name: "string"}, {other_name: "string"}])
+
+      expect(result).to be_success
+      expect(result.output).to eql(hashes: [
+        {name: "string"},
+        {name: "string"},
+        {other_name: "string"}
+      ])
+
+      result = schema.(hashes: [{name: "string"}, {other_key: 1}, {name: 0}, {other_name: "string"}])
+
+      expect(result).to be_failure
+      expect(result.errors.to_h).to eq(hashes: {1 => {or: [{name: ["is missing"]}, {other_name: ["is missing"]}]}, 2 => {or: [{name: ["must be a string"]}, {other_name: ["is missing"]}]}})
+    end
   end
 end

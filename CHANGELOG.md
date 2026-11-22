@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
+- Validate each element of an array whose member type is a sum of hash schemas, e.g. `array(Types::Hash.schema(a: "string") | Types::Hash.schema(b: "string"))`. Previously any element was accepted. (@segiddins in #458)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.17.0...main
