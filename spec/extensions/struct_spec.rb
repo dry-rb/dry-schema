@@ -119,6 +119,65 @@ RSpec.describe "struct extension" do
     end
   end
 
+  context "using a struct as a parent schema" do
+    let(:schema) do
+      Dry::Schema.define(parent: parent)
+    end
+
+    shared_examples "struct parent" do
+      it "accepts valid input" do
+        expect(schema.(name: "John", email: "jane@doe.org")).to be_success
+      end
+
+      it "infers rules from the struct" do
+        errors = schema.(name: "John").errors.to_h
+
+        expect(errors.keys).to eql([:email])
+        expect(errors[:email]).to include("is missing")
+      end
+
+      it "allows defining extra rules" do
+        parent = self.parent
+
+        schema = Dry::Schema.define(parent: parent) do
+          required(:age).filled(:integer)
+        end
+
+        expect(schema.(name: "John", email: "jane@doe.org", age: 21)).to be_success
+        expect(schema.(name: "John", email: "jane@doe.org").errors.to_h.keys).to eql([:age])
+        expect(schema.(name: "John", age: 21).errors.to_h.keys).to eql([:email])
+      end
+    end
+
+    context "with a struct class" do
+      let(:parent) { struct }
+
+      include_examples "struct parent"
+    end
+
+    context "with a struct schema" do
+      let(:parent) { struct.schema }
+
+      include_examples "struct parent"
+    end
+
+    context "with a nested struct" do
+      let(:parent) do
+        Class.new(Dry::Struct) do
+          attribute :name, Types::String
+          attribute :address do
+            attribute :city, Types::String
+          end
+        end
+      end
+
+      it "infers rules for nested keys" do
+        expect(schema.(name: "Jane", address: {city: "New York"})).to be_success
+        expect(schema.(name: "Jane", address: {}).errors.to_h).to include(:address)
+      end
+    end
+  end
+
   context "valid hash" do
     let(:schema) do
       Dry::Schema.define do
