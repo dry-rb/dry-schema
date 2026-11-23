@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
+- In JSON Schema output, represent filled arrays as `minItems: 1`, instead of raising `UnknownConversionError`. (@timriley in #527)
+
 ### Security
 
 [Unreleased]: https://github.com/dry-rb/dry-schema/compare/v1.17.0...main
