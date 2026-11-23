@@ -56,6 +56,53 @@ module Dry
       })
     end
 
+    # Allow structs (or their schemas) to be used as parent schemas
+    #
+    # @example
+    #   Dry::Schema.define(parent: MyStruct) do
+    #     required(:extra).filled(:string)
+    #   end
+    #
+    # @api private
+    DSL.singleton_class.prepend(::Module.new {
+      def new(**options, &)
+        parents = options[:parent]
+        parents = [parents] unless parents.is_a?(::Array)
+
+        if parents.any? { struct_parent?(_1) }
+          options = options.merge(
+            parent: parents.map { struct_parent?(_1) ? struct_to_dsl(_1, parents, options) : _1 }
+          )
+        end
+
+        super
+      end
+
+      private
+
+      def struct_parent?(parent)
+        (parent.is_a?(::Class) && parent <= ::Dry::Struct) ||
+          (parent.is_a?(::Dry::Types::Type) && parent.respond_to?(:keys))
+      end
+
+      def struct_to_dsl(struct, parents, options)
+        schema_parent = parents.reject { struct_parent?(_1) }.last
+        config = options[:config] || (schema_parent || Schema).config.dup
+        compiler = Macros::StructToSchema.new(config.types)
+        hash_type = struct.is_a?(::Class) ? compiler.(struct) : compiler.visit(struct.to_ast)
+
+        new(processor_type: options.fetch(:processor_type, Processor), config: config) do
+          hash_type.keys.each do |key|
+            if key.required?
+              required(key.name).value(key.type)
+            else
+              optional(key.name).value(key.type)
+            end
+          end
+        end
+      end
+    })
+
     PredicateInferrer::Compiler.alias_method(:visit_struct, :visit_hash)
     PrimitiveInferrer::Compiler.alias_method(:visit_struct, :visit_hash)
   end

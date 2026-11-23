@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- With the `:struct` extension loaded, accept a struct class or a struct's schema as a parent schema, so structs can be reused at the top level (e.g. `schema(MyStruct.schema)` in dry-validation contracts). (#505)
+
+    ```ruby
+    Dry::Schema.load_extensions(:struct)
+
+    Dry::Schema.define(parent: MyStruct) do
+      required(:extra).filled(:string)
+    end
+    ```
+
 ### Changed
 
 ### Deprecated
